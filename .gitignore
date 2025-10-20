@@ -208,3 +208,6 @@ __marimo__/
 
 
 misc/
+
+# Data
+data/raw_data/*
