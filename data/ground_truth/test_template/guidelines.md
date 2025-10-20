@@ -7,7 +7,7 @@ data/
 ├─ output/
 metadata.json
 rtruth.R
-task.txt
+task.yml
 
 input/
 a comprehensive list of all input files, each input file contains only a sample and is anonymised
