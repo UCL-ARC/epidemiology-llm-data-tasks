@@ -1,0 +1,83 @@
+name: epidemiology-llm-data-tasks tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  epidemiology-llm-data-tasks_tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version:
+          - "3.15.5"
+    if: github.event.pull_request.draft == false
+    env:
+      UV_CACHE_DIR: /tmp/.uv-cache  
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Set up python
+        uses: actions/setup-python@v5
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          version: "0.8.11"
+
+      - name: Restore uv cache
+        uses: actions/cache@v4
+        with:
+          path: /tmp/.uv-cache
+          key: uv-${{ runner.os }}-${{ hashFiles('uv.lock') }}
+          restore-keys: |
+            uv-${{ runner.os }}-${{ hashFiles('uv.lock') }}
+            uv-${{ runner.os }}
+
+      - name: Install Pandoc
+        run: sudo apt-get update && sudo apt-get install -y pandoc
+
+      - name: Install the project
+        run: uv sync --locked --all-extras --dev
+
+      - name: Run tests with pytest
+        run: uv run pytest --cov=app --cov-report=xml
+
+      - name: Code coverage reporting
+        uses: irongut/CodeCoverageSummary@v1.3.0
+        with:
+          filename: coverage.xml
+          badge: true
+          fail_below_min: true
+          format: markdown
+          hide_branch_rate: false
+          hide_complexity: true
+          indicators: true
+          output: file
+          thresholds: "80 90"
+
+      - name: Add title to coverage markdown file
+        run: |
+          echo '## epidemiology-llm-data-tasks coverage' > epidemiology-llm-data-tasks.md
+          echo '---' >> epidemiology-llm-data-tasks.md
+          cat code-coverage-results.md >> epidemiology-llm-data-tasks-results.md
+
+      - name: Add Coverage PR Comment
+        uses: marocchino/sticky-pull-request-comment@v2
+        if: github.event_name == 'pull_request'
+        with:
+          header: "epidemiology-llm-data-tasks Coverage"
+          recreate: true
+          path: epidemiology-llm-data-tasks-results.md
+
+      - name: Minimize uv cache
+        run: uv cache prune --ci
