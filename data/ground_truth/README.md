@@ -1,4 +1,7 @@
-## This is a template for creating a test case
+## Ground Truth Creation
+Running initialise.sh will build each ground truth test set. We have avoided storing and sharing this data and opted for on demand recreation from the raw data. It is required to ensure that ../raw_data is populated with associated data required for each test case.
+
+To create a new test case cp test_template and edit metadata.json, task.yml and rtruth.R as required.
 
 Each test case consists of 
 
