@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# TO DO MN: There should just be one shell script that initialises all test cases
+
 # Set variables
 JSON_FILE="metadata.json"
 SOURCE_DIR="../../raw_data/UPDATE_ME"  # Update this to your actual source directory
