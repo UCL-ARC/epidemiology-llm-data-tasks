@@ -1,0 +1,242 @@
+{
+  "wave_one_lsype_young_person_2020.tab": {
+    "file_info": {
+      "number_of_variables": 350,
+      "number_of_cases": 15760
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      },
+      "W1sexYP": {
+        "position": 92,
+        "variable_label": "Admin: Interviewer code sex of YP",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-99.0": "YP not interviewed",
+          "-92.0": "Refused",
+          "-91.0": "Not applicable",
+          "1.0": "Male",
+          "2.0": "Female"
+        }
+      }
+    }
+  },
+  "wave_two_lsype_young_person_2020.tab": {
+    "file_info": {
+      "number_of_variables": 564,
+      "number_of_cases": 13530
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      },
+      "W2SexYP": {
+        "position": 84,
+        "variable_label": "Admin: Interviewer code sex of YP",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-998.0": "Interviewer missed question",
+          "-997.0": "Script error",
+          "-995.0": "Missing history section data - unexplained",
+          "-99.0": "YP not interviewed",
+          "-92.0": "Refused",
+          "-91.0": "Not applicable",
+          "-1.0": "Don't Know",
+          "1.0": "Male",
+          "2.0": "Female"
+        }
+      }
+    }
+  },
+  "wave_three_lsype_young_person_2020.tab": {
+    "file_info": {
+      "number_of_variables": 652,
+      "number_of_cases": 12430
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      },
+      "W3sexYP": {
+        "position": 60,
+        "variable_label": "Admin: Interviewer code sex of YP",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-99.0": "YP not interviewed",
+          "-92.0": "Refused",
+          "-91.0": "Not applicable",
+          "1.0": "Male",
+          "2.0": "Female"
+        }
+      }
+    }
+  },
+  "wave_four_lsype_young_person_2020.tab": {
+    "file_info": {
+      "number_of_variables": 1049,
+      "number_of_cases": 11791
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      },
+      "W4SexYP": {
+        "position": 56,
+        "variable_label": "Admin: Interviewer code sex of YP",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-99.0": "YP not interviewed",
+          "-92.0": "Refused",
+          "-91.0": "Not applicable",
+          "-1.0": "Don't know",
+          "1.0": "Male",
+          "2.0": "Female"
+        }
+      },
+      "W4Boost": {
+        "position": 6,
+        "variable_label": "Admin: Whether this is a boost respondent",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      }
+    }
+  },
+  "wave_five_lsype_young_person_2020.tab": {
+    "file_info": {
+      "number_of_variables": 730,
+      "number_of_cases": 10422
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      },
+      "W5SexYP": {
+        "position": 8,
+        "variable_label": "Admin: Sex of respondent",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-1.0": "Don't know",
+          "1.0": "Male",
+          "2.0": "Female"
+        }
+      }
+    }
+  },
+  "wave_six_lsype_young_person_2020.tab": {
+    "file_info": {
+      "number_of_variables": 760,
+      "number_of_cases": 9791
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      },
+      "W6Sex": {
+        "position": 10,
+        "variable_label": "Admin: Gender",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-92.0": "Refused",
+          "-91.0": "Not applicable",
+          "1.0": "Male",
+          "2.0": "Female"
+        }
+      }
+    }
+  },
+  "wave_seven_lsype_young_person_2020.tab": {
+    "file_info": {
+      "number_of_variables": 850,
+      "number_of_cases": 8675
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      },
+      "W7Sex": {
+        "position": 6,
+        "variable_label": "Admin: Gender",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-91.0": "Not applicable",
+          "1.0": "Male",
+          "2.0": "Female"
+        }
+      }
+    }
+  },
+  "ns8_2015_main_interview.tab": {
+    "file_info": {
+      "number_of_variables": 740,
+      "number_of_cases": 7705
+    },
+    "variables": {
+      "W8CMSEX": {
+        "position": 9,
+        "variable_label": "Gender",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -8.0 and -1.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Don't know",
+          "-1.0": "Not applicable",
+          "1.0": "Male",
+          "2.0": "Female"
+        }
+      }
+    }
+  },
+  "ns9_2022_main_interview.tab": {
+    "file_info": {
+      "number_of_variables": 1805,
+      "number_of_cases": 7279
+    },
+    "variables": {
+      "W9DSEX": {
+        "position": 8,
+        "variable_label": "DV: Sex of cohort member",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "value_labels": {
+          "1.0": "Male",
+          "2.0": "Female"
+        }
+      }
+    }
+  }
+}

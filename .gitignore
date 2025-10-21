@@ -211,3 +211,5 @@ misc/
 
 # Data
 data/raw_data/*
+data/ground_truth/*/data/output/*
+data/ground_truth/*/data/input/*
