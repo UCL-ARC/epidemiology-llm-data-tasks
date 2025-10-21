@@ -26,3 +26,5 @@ the text required for the LLM
 
 initialise.sh
 a shell script to initialise the test case, this should pull in the correct data to inpuuts and then run the rscript to produce the outputs
+
+TODO MN: This should sit in the top level of the data dir so that is not duplicated when copying
