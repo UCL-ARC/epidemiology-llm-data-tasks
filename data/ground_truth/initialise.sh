@@ -8,6 +8,7 @@ cd "$SCRIPT_DIR"
 
 # Set variables
 JSON_FILE="metadata.json"
+# To do this will need to be interpreted from the test case
 SOURCE_DIR="../../raw_data/UKDA-5545-tab/tab/safeguarded_eul"  # Update this to your actual source directory
 INPUT_DIR="data/input"
 
