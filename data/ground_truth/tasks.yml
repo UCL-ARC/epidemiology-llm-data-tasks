@@ -1,5 +1,5 @@
 tasks:
-  - task_type: data_cleaning_r
+  - task_type: data_cleaning
     prompt: |
       You have access to raw epidemiological data files that may contain inconsistencies, missing values, or formatting issues. Your task is to clean and preprocess these datasets to ensure they are ready for analysis. This includes handling missing data, correcting data types, removing duplicates, and standardising formats.
 
