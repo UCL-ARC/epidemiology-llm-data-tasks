@@ -1,0 +1,50 @@
+#!/bin/bash
+
+# Set variables
+JSON_FILE="metadata.json"
+SOURCE_DIR="../../raw_data/UPDATE_ME"  # Update this to your actual source directory
+INPUT_DIR="data/input"
+
+# Check if JSON file exists
+if [ ! -f "$JSON_FILE" ]; then
+    echo "Error: $JSON_FILE not found!"
+    exit 1
+fi
+
+# Extract all keys (filenames) from JSON and copy corresponding files
+echo "Reading filenames from $JSON_FILE..."
+
+# Use jq to extract top-level keys (filenames) and iterate over them
+jq -r 'keys[]' "$JSON_FILE" | while read -r filename; do
+    echo "Processing: $filename"
+    
+    # Check if source file exists
+    source_file="${SOURCE_DIR}/${filename}"
+
+    if [ -n "$source_file" ]; then
+        echo "Copying $source_file to $INPUT_DIR/"
+        cp "$source_file" "$INPUT_DIR/"
+    else
+        echo "Initialisation failed: No file found for $filename in $SOURCE_DIR"
+        exit 1
+    fi
+done
+
+echo "File copying completed."
+
+# Run the R script to generate outputs
+if [ -f "rtruth.R" ]; then
+    echo "Running rtruth.R..."
+    Rscript rtruth.R
+    if [ $? -eq 0 ]; then
+        echo "R script execution completed successfully."
+    else
+        echo "Initialisation failed: R script execution failed!"
+        exit 1
+    fi
+else
+    echo "Initialisation failed: rtruth.R not found!"
+    exit 1
+fi
+
+echo "Initialisation completed successfully."
