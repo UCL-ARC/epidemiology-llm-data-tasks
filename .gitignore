@@ -210,6 +210,6 @@ __marimo__/
 misc/
 
 # Data
-data/raw_data/*
-data/ground_truth/*/data/output/*
-data/ground_truth/*/data/input/*
+data/*
+ground_truth/*/data/output/*
+ground_truth/*/data/input/*
