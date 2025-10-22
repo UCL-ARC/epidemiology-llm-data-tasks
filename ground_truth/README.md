@@ -1,9 +1,9 @@
 ## Ground Truth Creation
-Running initialise.sh will build each ground truth test set. We have avoided storing and sharing this data and opted for on demand recreation from the raw data. It is required to ensure that ../raw_data is populated with associated data required for each test case.
+Running initialise.sh will build each ground truth set. We have avoided storing and sharing this data and opted for on demand recreation from the raw data. It is required to ensure that ../raw_data is populated with associated data required for each sample.
 
-To create a new test case copy `test_template` and edit `metadata.json`, `task.yml` and `rtruth.R` as required.
+To create a new sample copy `sample_template` and edit `metadata.json`, `task.yml` and `rtruth.R` as required.
 
-Each test case consists of 
+Each sample consists of 
 
 ```
 data/
