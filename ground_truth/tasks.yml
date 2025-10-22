@@ -1,15 +1,16 @@
 tasks:
-  - task_type: data_cleaning
+  - task_type: data_cleaning_r
     prompt: |
       You have access to raw epidemiological data files that may contain inconsistencies, missing values, or formatting issues. Your task is to clean and preprocess these datasets to ensure they are ready for analysis. This includes handling missing data, correcting data types, removing duplicates, and standardising formats.
 
       Please follow these steps:
-      1. Load the raw data files stored in the directory input.
+      1. Ensure when you load the input files you append the dir "data/input/" this is where they are stored.
       2. Identify and handle missing values appropriately (e.g., imputation, removal).
       3. Correct any data type inconsistencies (e.g., converting strings to dates).
       4. Remove duplicate records.
       5. Standardise formats for categorical variables
       6. Consolidate any variables
+      7. Use only standard R libraries
 
       Produce your script in R.
 

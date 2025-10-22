@@ -5,27 +5,26 @@ To create a new test case copy `test_template` and edit `metadata.json`, `task.y
 
 Each test case consists of 
 
+```
 data/
 ├─ input/
 ├─ output/
 metadata.json
 rtruth.R
 task.yml
+```
 
-input/
+`input/`
 a comprehensive list of all input files, each input file contains only a sample and is anonymised
 
-output/
+`output/`
 the output produced by rtuth.R
 
-metadata.json
+`metadata.json`
 a json dictionary containing task specific metadata, at a top level it MUST be indexed by each filename to allow for standardisation of initialise.sh.
 
-rtruth.R
+`rtruth.R`
 the target R script to produce
 
-task.txt
+`task.txt`
 the text required for the LLM
-
-initialise.sh
-a shell script to initialise the test case, this should pull in the correct data to inpuuts and then run the rscript to produce the outputs

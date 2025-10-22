@@ -8,7 +8,7 @@ library(labelled)  # for handling labelled data
 library(readr)  # for reading delimited files
 
 # Set folder path (change as needed)
-data_path <- file.path(getwd(), "data", "input")
+data_path <- file.path(getwd(),"data", "input")
 
 # Define sweep file names
 sweeps <- list(
@@ -108,4 +108,5 @@ sex_all <- sex_all %>%
   ) %>%
   select(NSID, sex)
 
-write.csv(sex_all, "data/output/output.csv", row.names = FALSE)
+output_data_path <- file.path(getwd(), "data", "output","output.csv")
+write.csv(sex_all, output_data_path, row.names = FALSE)
