@@ -19,7 +19,7 @@ output/
 the output produced by rtuth.R
 
 metadata.json
-a json dictionary containing task specific metadata, at a top level it MUST indexed by each filename to allow for standardisation of initialise.sh
+a json dictionary containing task specific metadata, at a top level it MUST be indexed by each filename to allow for standardisation of initialise.sh.
 
 rtruth.R
 the target R script to produce
