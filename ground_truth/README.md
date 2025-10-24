@@ -1,5 +1,5 @@
 ## Ground Truth Creation
-Running initialise.sh will build each ground truth set. We have avoided storing and sharing this data and opted for on demand recreation from the raw data. It is required to ensure that ../raw_data is populated with associated data required for each sample.
+Running `initialise.sh` will build each ground truth set. We have avoided storing and sharing this data and opted for on demand recreation from the raw data. It is required to ensure that `../raw_data` is populated with associated data required for each sample.
 
 To create a new sample copy `sample_template` and edit `metadata.json`, `task.yml` and `rtruth.R` as required.
 
@@ -15,16 +15,16 @@ task.yml
 ```
 
 `input/`
-a comprehensive list of all input files, each input file contains only a sample and is anonymised
+A comprehensive list of all input files, each input file contains only a sample and is anonymised.
 
 `output/`
-the output produced by rtuth.R
+The output produced by rtuth.R
 
 `metadata.json`
-a json dictionary containing task specific metadata, at a top level it MUST be indexed by each filename to allow for standardisation of initialise.sh.
+A json dictionary containing task specific metadata, at a top level it MUST be indexed by each filename to allow for standardisation of `initialise.sh`.
 
 `rtruth.R`
-the target R script to produce
+The target R script to produce.
 
 `task.txt`
-the text required for the LLM
+The text required for the LLM.
