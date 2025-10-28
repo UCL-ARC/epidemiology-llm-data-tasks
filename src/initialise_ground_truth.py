@@ -2,7 +2,6 @@
 
 import argparse
 import json
-import os
 import pathlib
 import re
 import subprocess
@@ -140,24 +139,29 @@ def run_r_script(r_script_path: pathlib.Path, *, verbose: bool) -> bool:
         # Check if R script succeeded
         if result.returncode == 0:
             return True
+
         console.print(
             f"[bold red]R script failed with exit code: {result.returncode}[/bold red]"
         )
-        return False  # noqa: TRY300
 
     except Exception as e:  # noqa: BLE001
         console.print(
             f"[bold red]Error running R script {r_script_path}: {e}[/bold red]"
         )
-        return False
+
+    return False
 
 
 def get_and_sort_sample_dirs(ground_truth_dir: pathlib.Path) -> list:
     """Get and sort sample directories in the ground truth directory."""
-    sample_dirs = [d for d in os.listdir(ground_truth_dir) if re.match(r"sample\d+", d)]
+    sample_dirs = [
+        d
+        for d in pathlib.Path.iterdir(ground_truth_dir)
+        if re.match(r"sample\d+", d.name)
+    ]
 
-    def extract_sample_number(dir_name: str) -> int:
-        match = re.search(r"sample(\d+)", dir_name)
+    def extract_sample_number(dir_name: pathlib.Path) -> int:
+        match = re.search(r"sample(\d+)", dir_name.name)
         return int(match.group(1)) if match else 0
 
     sample_dirs.sort(key=extract_sample_number)
