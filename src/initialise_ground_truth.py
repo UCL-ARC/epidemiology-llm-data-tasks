@@ -197,7 +197,7 @@ def main() -> None:
             console=console,
             refresh_per_second=4,
         ):
-            metadata_path = ground_truth_dir / ground_truth_sample / "metadata.json"
+            metadata_path = ground_truth_sample / "metadata.json"
             metadata = load_metadata(metadata_path)
 
         if not metadata:
@@ -211,7 +211,7 @@ def main() -> None:
             console=console,
             refresh_per_second=4,
         ):
-            sample_input_dir = ground_truth_dir / ground_truth_sample / "data" / "input"
+            sample_input_dir = ground_truth_sample / "data" / "input"
             failed_files = copy_raw_data(input_dir, sample_input_dir, metadata)
 
         if len(failed_files) > 0:
@@ -225,7 +225,7 @@ def main() -> None:
             console=console,
             refresh_per_second=4,
         ):
-            r_script_path = ground_truth_dir / ground_truth_sample / "rtruth.R"
+            r_script_path = ground_truth_sample / "rtruth.R"
             r_success = run_r_script(r_script_path, verbose=verbose)
 
         if not r_success:
