@@ -1,11 +1,13 @@
 # This script is used to run the Next Steps MSEU 
 # Load packages
-library(haven)  # for reading SPSS/Stata files
-library(dplyr)  # for data manipulation
-library(purrr)  # for functional programming (map, reduce)
-library(here)  # for file paths
-library(labelled)  # for handling labelled data
-library(readr)  # for reading delimited files
+suppressPackageStartupMessages({
+  library(haven)  # for reading SPSS/Stata files
+  library(dplyr)  # for data manipulation
+  library(purrr)  # for functional programming (map, reduce)
+  library(here)  # for file paths
+  library(labelled)  # for handling labelled data
+  library(readr)  # for reading delimited files
+})
 
 # Set folder path (change as needed)
 data_path <- file.path(getwd(),"data", "input")
@@ -26,23 +28,23 @@ sweeps <- list(
 #### sex ####
 # Load sex variables from relevant sweeps
 sex_vars <- list(
-  S1 = read_delim(file.path(data_path, sweeps$S1youngperson), , delim = "\t") %>% 
+  S1 = read_delim(file.path(data_path, sweeps$S1youngperson), delim = "\t",show_col_types = FALSE) %>% 
     select(NSID, sex_S1 = W1sexYP),
-  S2 = read_delim(file.path(data_path, sweeps$S2youngperson), delim = "\t") %>% 
+  S2 = read_delim(file.path(data_path, sweeps$S2youngperson), delim = "\t",show_col_types = FALSE) %>% 
     select(NSID, sex_S2 = W2SexYP),
-  S3 = read_delim(file.path(data_path, sweeps$S3youngperson), delim = "\t") %>% 
+  S3 = read_delim(file.path(data_path, sweeps$S3youngperson), delim = "\t",show_col_types = FALSE) %>% 
     select(NSID, sex_S3 = W3sexYP),
-  S4 = read_delim(file.path(data_path, sweeps$S4youngperson), delim = "\t") %>% 
+  S4 = read_delim(file.path(data_path, sweeps$S4youngperson), delim = "\t",show_col_types = FALSE) %>% 
     select(NSID, W4Boost, sex_S4 = W4SexYP),
-  S5 = read_delim(file.path(data_path, sweeps$S5youngperson), delim = "\t") %>% 
+  S5 = read_delim(file.path(data_path, sweeps$S5youngperson), delim = "\t",show_col_types = FALSE) %>% 
     select(NSID, sex_S5 = W5SexYP),
-  S6 = read_delim(file.path(data_path, sweeps$S6youngperson), delim = "\t") %>% 
+  S6 = read_delim(file.path(data_path, sweeps$S6youngperson), delim = "\t",show_col_types = FALSE) %>% 
     select(NSID, sex_S6 = W6Sex),
-  S7 = read_delim(file.path(data_path, sweeps$S7youngperson), delim = "\t") %>% 
+  S7 = read_delim(file.path(data_path, sweeps$S7youngperson), delim = "\t",show_col_types = FALSE) %>% 
     select(NSID, sex_S7 = W7Sex),
-  S8 = read_delim(file.path(data_path, sweeps$S8maininterview), delim = "\t") %>% 
+  S8 = read_delim(file.path(data_path, sweeps$S8maininterview), delim = "\t",show_col_types = FALSE) %>% 
     select(NSID, sex_S8 = W8CMSEX),
-  S9 = read_delim(file.path(data_path, sweeps$S9maininterview), delim = "\t") %>% 
+  S9 = read_delim(file.path(data_path, sweeps$S9maininterview), delim = "\t",show_col_types = FALSE) %>% 
     select(NSID, sex_S9 = W9DSEX)
 )
 
@@ -107,6 +109,9 @@ sex_all <- sex_all %>%
     )
   ) %>%
   select(NSID, sex)
+
+# Create output directory if it doesn't exist
+dir.create(file.path(getwd(), "data", "output"), recursive = TRUE, showWarnings = FALSE)
 
 output_data_path <- file.path(getwd(), "data", "output","output.csv")
 write.csv(sex_all, output_data_path, row.names = FALSE)
