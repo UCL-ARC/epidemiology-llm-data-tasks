@@ -86,12 +86,12 @@ def copy_raw_data(
 
     """
     failed_files = []
+    pathlib.Path.mkdir(sample_input_dir, exist_ok=True)
     for file_name in metadata:
         src_file = input_dir / file_name
         dest_file = sample_input_dir / file_name
 
         try:
-            pathlib.Path.mkdir(sample_input_dir, exist_ok=True)
             with (
                 pathlib.Path.open(src_file, "rb") as src,
                 pathlib.Path.open(dest_file, "wb") as dest,
