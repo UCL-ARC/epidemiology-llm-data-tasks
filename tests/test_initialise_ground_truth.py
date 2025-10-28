@@ -15,8 +15,8 @@ from src.initialise_ground_truth import (
 class TestLoadMetadata:
     """Test load_metadata function."""
 
-    @patch.object(
-        Path, "open", new_callable=mock_open, read_data='{"file1.csv": "data"}'
+    @patch(
+        "pathlib.Path.open", new_callable=mock_open, read_data='{"file1.csv": "data"}'
     )
     def test_load_metadata_success(self, mock_file):
         """Test successful metadata loading."""
@@ -230,10 +230,8 @@ class TestMain:
             verbose=False,
         )
 
-        mock_sample_dir = Mock(spec=Path)
-        mock_sample_dir.name = "sample1"
-        mock_sample_dir.__str__ = Mock(return_value="sample1")
-        mock_get_dirs.return_value = [mock_sample_dir]
+        # Use real Path objects instead of mocks
+        mock_get_dirs.return_value = [Path("ground_truth/sample1")]
 
         mock_load_metadata.return_value = {"file1.csv": "data"}
         mock_copy_data.return_value = []  # No failed files
@@ -280,10 +278,8 @@ class TestMain:
             verbose=False,
         )
 
-        mock_sample_dir = Mock(spec=Path)
-        mock_sample_dir.name = "sample1"
-        mock_sample_dir.__str__ = Mock(return_value="sample1")
-        mock_get_dirs.return_value = [mock_sample_dir]
+        # Use real Path objects instead of mocks
+        mock_get_dirs.return_value = [Path("ground_truth/sample1")]
 
         mock_load_metadata.return_value = {}  # Empty metadata (failure)
 
@@ -308,10 +304,8 @@ class TestMain:
             verbose=False,
         )
 
-        mock_sample_dir = Mock(spec=Path)
-        mock_sample_dir.name = "sample1"
-        mock_sample_dir.__str__ = Mock(return_value="sample1")
-        mock_get_dirs.return_value = [mock_sample_dir]
+        # Use real Path objects instead of mocks
+        mock_get_dirs.return_value = [Path("ground_truth/sample1")]
 
         mock_load_metadata.return_value = {"file1.csv": "data"}
         mock_copy_data.return_value = ["file1.csv"]  # Failed file
@@ -336,10 +330,8 @@ class TestMain:
             verbose=False,
         )
 
-        mock_sample_dir = Mock(spec=Path)
-        mock_sample_dir.name = "sample1"
-        mock_sample_dir.__str__ = Mock(return_value="sample1")
-        mock_get_dirs.return_value = [mock_sample_dir]
+        # Use real Path objects instead of mocks
+        mock_get_dirs.return_value = [Path("ground_truth/sample1")]
 
         mock_load_metadata.return_value = {"file1.csv": "data"}
         mock_copy_data.return_value = []  # No failed files
