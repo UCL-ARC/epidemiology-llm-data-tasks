@@ -16,6 +16,7 @@ authors = [
 dependencies = [
     "loguru>=0.7.3",
     "pandas>=2.3.3",
+    "rich>=14.2.0",
     "smolagents>=1.22.0",
     "striprtf>=0.0.29",
 ]

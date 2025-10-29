@@ -147,6 +147,7 @@ source = { virtual = "." }
 dependencies = [
     { name = "loguru" },
     { name = "pandas" },
+    { name = "rich" },
     { name = "smolagents" },
     { name = "striprtf" },
 ]
@@ -166,6 +167,7 @@ dev = [
 requires-dist = [
     { name = "loguru", specifier = ">=0.7.3" },
     { name = "pandas", specifier = ">=2.3.3" },
+    { name = "rich", specifier = ">=14.2.0" },
     { name = "smolagents", specifier = ">=1.22.0" },
     { name = "striprtf", specifier = ">=0.0.29" },
 ]
