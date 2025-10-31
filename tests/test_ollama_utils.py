@@ -178,7 +178,9 @@ def test_install_model_success(mock_exists, mock_run):
 def test_install_model_failure(mock_exists, mock_run):
     """Test model installation failure."""
     mock_exists.return_value = True
-    mock_run.return_value = Mock(returncode=1)
+    mock_run.side_effect = subprocess.CalledProcessError(
+        1, ["/usr/local/bin/ollama", "pull", "llama3.1:8b"]
+    )
 
     handler = OllamaModelHandler(
         model=Model.LLAMA_SMALL, ollama_path=Path("/usr/local/bin/ollama")
@@ -188,73 +190,109 @@ def test_install_model_failure(mock_exists, mock_run):
         handler.install_model()
 
 
-@patch("src.ollama_utils.subprocess.run")
+@patch("src.ollama_utils.subprocess.Popen")
 @patch("src.ollama_utils.Path.exists")
-def test_serve_model_success(mock_exists, mock_run):
+def test_serve_model_success(mock_exists, mock_popen):
     """Test successful model serving."""
     mock_exists.return_value = True
-    mock_run.return_value = Mock(returncode=0)
+    mock_process = Mock()
+    mock_process.poll.return_value = 1  # Not running
+    mock_popen.return_value = mock_process
 
     handler = OllamaModelHandler(
         model=Model.LLAMA_SMALL, ollama_path=Path("/usr/local/bin/ollama")
     )
     handler.serve_model()
 
-    mock_run.assert_called_once_with(
+    mock_popen.assert_called_once_with(
         [Path("/usr/local/bin/ollama"), "serve", "llama3.1:8b"],
-        capture_output=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
         text=True,
-        check=True,
     )
+    assert handler._serve_process == mock_process
 
 
-@patch("src.ollama_utils.subprocess.run")
+@patch("src.ollama_utils.subprocess.Popen")
 @patch("src.ollama_utils.Path.exists")
-def test_serve_model_failure(mock_exists, mock_run):
-    """Test model serving failure."""
+def test_serve_model_already_running(mock_exists, mock_popen):
+    """Test serving when already running raises error."""
     mock_exists.return_value = True
-    mock_run.return_value = Mock(returncode=1)
+    mock_process = Mock()
+    mock_process.poll.return_value = None  # Still running
+    mock_popen.return_value = mock_process
 
     handler = OllamaModelHandler(
         model=Model.LLAMA_SMALL, ollama_path=Path("/usr/local/bin/ollama")
     )
+    handler._serve_process = mock_process
 
-    with pytest.raises(OllamaError, match="failed to serve llama3.1:8b"):
+    with pytest.raises(OllamaError, match="already being served"):
         handler.serve_model()
 
 
-@patch("src.ollama_utils.subprocess.run")
+@patch("src.ollama_utils.subprocess.Popen")
 @patch("src.ollama_utils.Path.exists")
-def test_stop_model_success(mock_exists, mock_run):
+def test_serve_model_failure(mock_exists, mock_popen):
+    """Test model serving failure."""
+    mock_exists.return_value = True
+    mock_popen.side_effect = Exception("fail")
+
+    handler = OllamaModelHandler(
+        model=Model.LLAMA_SMALL, ollama_path=Path("/usr/local/bin/ollama")
+    )
+
+    with pytest.raises(OllamaError, match="Failed to start serving"):
+        handler.serve_model()
+
+
+@patch("src.ollama_utils.Path.exists")
+def test_stop_model_success(mock_exists):
     """Test successful model stopping."""
     mock_exists.return_value = True
-    mock_run.return_value = Mock(returncode=0)
-
+    mock_process = Mock()
+    mock_process.poll.return_value = None  # Running
     handler = OllamaModelHandler(
         model=Model.LLAMA_SMALL, ollama_path=Path("/usr/local/bin/ollama")
     )
+    handler._serve_process = mock_process
+
     handler.stop_model()
 
-    mock_run.assert_called_once_with(
-        [Path("/usr/local/bin/ollama"), "stop", "llama3.1:8b"],
-        capture_output=True,
-        text=True,
-        check=True,
-    )
+    mock_process.terminate.assert_called_once()
+    mock_process.wait.assert_called_once_with(timeout=10)
+    assert handler._serve_process is None
 
 
-@patch("src.ollama_utils.subprocess.run")
 @patch("src.ollama_utils.Path.exists")
-def test_stop_model_failure(mock_exists, mock_run):
-    """Test model stopping failure."""
+def test_stop_model_kill_on_timeout(mock_exists):
+    """Test stop_model kills process on timeout."""
     mock_exists.return_value = True
-    mock_run.return_value = Mock(returncode=1)
+    mock_process = Mock()
+    mock_process.poll.return_value = None  # Running
+    mock_process.wait.side_effect = subprocess.TimeoutExpired(cmd="ollama", timeout=10)
+    handler = OllamaModelHandler(
+        model=Model.LLAMA_SMALL, ollama_path=Path("/usr/local/bin/ollama")
+    )
+    handler._serve_process = mock_process
 
+    handler.stop_model()
+
+    mock_process.terminate.assert_called_once()
+    mock_process.wait.assert_called_once_with(timeout=10)
+    mock_process.kill.assert_called_once()
+    assert handler._serve_process is None
+
+
+@patch("src.ollama_utils.Path.exists")
+def test_stop_model_no_process(mock_exists):
+    """Test stop_model when no process is running."""
+    mock_exists.return_value = True
     handler = OllamaModelHandler(
         model=Model.LLAMA_SMALL, ollama_path=Path("/usr/local/bin/ollama")
     )
 
-    with pytest.raises(OllamaError, match="failed to serve llama3.1:8b"):
+    with pytest.raises(OllamaError, match="no model is currently being served"):
         handler.stop_model()
 
 
@@ -283,13 +321,15 @@ def test_delete_model_success(mock_exists, mock_run):
 def test_delete_model_failure(mock_exists, mock_run):
     """Test model deletion failure."""
     mock_exists.return_value = True
-    mock_run.return_value = Mock(returncode=1)
+    mock_run.side_effect = subprocess.CalledProcessError(
+        1, ["/usr/local/bin/ollama", "rm", "llama3.1:8b"]
+    )
 
     handler = OllamaModelHandler(
         model=Model.LLAMA_SMALL, ollama_path=Path("/usr/local/bin/ollama")
     )
 
-    with pytest.raises(OllamaError, match="failed to serve llama3.1:8b"):
+    with pytest.raises(OllamaError, match="failed to install llama3.1:8b"):
         handler.delete_model()
 
 

@@ -69,6 +69,7 @@ lint.per-file-ignores = {"tests*" = [
     "PLR0913", # Too many arguments in function definition
     "PLR2004", # Magic value used in comparison
     "S101", # Use of `assert` detected,
+    "SLF001", # accessing private members
 ]}
 lint.select = ["ALL"]
 lint.mccabe.max-complexity = 18
