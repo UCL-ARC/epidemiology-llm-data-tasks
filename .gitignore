@@ -208,3 +208,8 @@ __marimo__/
 
 
 misc/
+
+# Data
+data/*
+ground_truth/*/data/output/*
+ground_truth/*/data/input/*
