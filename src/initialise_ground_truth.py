@@ -6,7 +6,7 @@ import re
 import subprocess
 from pathlib import Path
 
-from .logger.logger import Live, Spinner, console, logger
+from logger.logger import Live, Spinner, console, logger
 
 
 def get_arg_parser() -> argparse.ArgumentParser:
