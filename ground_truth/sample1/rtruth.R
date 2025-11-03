@@ -1,5 +1,7 @@
 # This script is used to run the Next Steps MSEU 
-list_of_packages <- c('haven', 'dpylr', 'purrr', 'here', 'labelled', 'readr')
+# Set CRAN mirror before installing packages
+options(repos = c(CRAN = "https://cloud.r-project.org/"))
+list_of_packages <- c('haven', 'dplyr', 'purrr', 'here', 'labelled', 'readr')
 new_packages <- list_of_packages[!(list_of_packages %in% installed.packages()[,"Package"])]
 if(length(new_packages)) install.packages(new_packages)
 suppressPackageStartupMessages({
@@ -30,23 +32,23 @@ sweeps <- list(
 #### sex ####
 # Load sex variables from relevant sweeps
 sex_vars <- list(
-  S1 = read_delim(file.path(data_path, sweeps$S1youngperson), delim = "\t",show_col_types = FALSE) %>% 
+  S1 = read_delim(file.path(DATA_PATH, sweeps$S1youngperson), delim = "\t",show_col_types = FALSE) %>% 
     select(NSID, sex_S1 = W1sexYP),
-  S2 = read_delim(file.path(data_path, sweeps$S2youngperson), delim = "\t",show_col_types = FALSE) %>% 
+  S2 = read_delim(file.path(DATA_PATH, sweeps$S2youngperson), delim = "\t",show_col_types = FALSE) %>% 
     select(NSID, sex_S2 = W2SexYP),
-  S3 = read_delim(file.path(data_path, sweeps$S3youngperson), delim = "\t",show_col_types = FALSE) %>% 
+  S3 = read_delim(file.path(DATA_PATH, sweeps$S3youngperson), delim = "\t",show_col_types = FALSE) %>% 
     select(NSID, sex_S3 = W3sexYP),
-  S4 = read_delim(file.path(data_path, sweeps$S4youngperson), delim = "\t",show_col_types = FALSE) %>% 
+  S4 = read_delim(file.path(DATA_PATH, sweeps$S4youngperson), delim = "\t",show_col_types = FALSE) %>% 
     select(NSID, W4Boost, sex_S4 = W4SexYP),
-  S5 = read_delim(file.path(data_path, sweeps$S5youngperson), delim = "\t",show_col_types = FALSE) %>% 
+  S5 = read_delim(file.path(DATA_PATH, sweeps$S5youngperson), delim = "\t",show_col_types = FALSE) %>% 
     select(NSID, sex_S5 = W5SexYP),
-  S6 = read_delim(file.path(data_path, sweeps$S6youngperson), delim = "\t",show_col_types = FALSE) %>% 
+  S6 = read_delim(file.path(DATA_PATH, sweeps$S6youngperson), delim = "\t",show_col_types = FALSE) %>% 
     select(NSID, sex_S6 = W6Sex),
-  S7 = read_delim(file.path(data_path, sweeps$S7youngperson), delim = "\t",show_col_types = FALSE) %>% 
+  S7 = read_delim(file.path(DATA_PATH, sweeps$S7youngperson), delim = "\t",show_col_types = FALSE) %>% 
     select(NSID, sex_S7 = W7Sex),
-  S8 = read_delim(file.path(data_path, sweeps$S8maininterview), delim = "\t",show_col_types = FALSE) %>% 
+  S8 = read_delim(file.path(DATA_PATH, sweeps$S8maininterview), delim = "\t",show_col_types = FALSE) %>% 
     select(NSID, sex_S8 = W8CMSEX),
-  S9 = read_delim(file.path(data_path, sweeps$S9maininterview), delim = "\t",show_col_types = FALSE) %>% 
+  S9 = read_delim(file.path(DATA_PATH, sweeps$S9maininterview), delim = "\t",show_col_types = FALSE) %>% 
     select(NSID, sex_S9 = W9DSEX)
 )
 

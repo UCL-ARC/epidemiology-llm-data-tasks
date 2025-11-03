@@ -2,15 +2,11 @@
 
 import argparse
 import json
-import pathlib
 import re
 import subprocess
+from pathlib import Path
 
-from rich.console import Console
-from rich.live import Live
-from rich.spinner import Spinner
-
-console = Console()
+from logger.logger import Live, Spinner, console, logger
 
 
 def get_arg_parser() -> argparse.ArgumentParser:
@@ -19,21 +15,17 @@ def get_arg_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "-i",
         "--input_dir",
-        type=pathlib.Path,
+        type=Path,
         required=True,
-        help=(
-            "Path to the directory containing the raw data."
-            "This data will be used to generate the ground truth."
-        ),
+        help="Path to the directory containing the raw data used for ground truth generation.",
     )
     parser.add_argument(
         "-g",
         "--ground_truth_dir",
-        type=pathlib.Path,
-        help=("Path to the directory where the ground truth data will be stored."),
-        default=pathlib.Path("ground_truth"),
+        type=Path,
+        help="Path to the directory where the ground truth data will be stored.",
+        default=Path("ground_truth"),
     )
-
     parser.add_argument(
         "-v",
         "--verbose",
@@ -43,124 +35,77 @@ def get_arg_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def load_metadata(metadata_path: pathlib.Path) -> dict:
-    """
-    Load metadata from a JSON file.
-
-    Args:
-        metadata_path (pathlib.Path): Path to the metadata JSON file.
-    returns:
-        dict: Metadata dictionary if successful, or empty dict otherwise to ensure type consistency.
-
-    note that if the metadata file is successfully loaded but empty, the subsequente processing will fail.
-
-    """
+def load_metadata(metadata_path: Path) -> dict:
+    """Load metadata from JSON file."""
     try:
-        with pathlib.Path.open(metadata_path) as f:
+        with Path.open(metadata_path) as f:
             metadata = json.load(f)
     except FileNotFoundError:
-        console.print("[bold red]Metadata file not found[/bold red]")
+        logger.error(f"Metadata file not found: {metadata_path}")
         return {}
     except json.JSONDecodeError as e:
-        console.print(f"[bold red]Invalid JSON in metadata {e}[/bold red]")
+        logger.error(f"Invalid JSON in metadata {metadata_path}: {e}")
         return {}
     except Exception as e:  # noqa: BLE001
-        console.print(f"[bold red]Failed to load metadata for {e}[/bold red]")
+        logger.exception(f"Failed to load metadata: {e}")
         return {}
 
     return metadata
 
 
-def copy_raw_data(
-    input_dir: pathlib.Path, sample_input_dir: pathlib.Path, metadata: dict
-) -> list:
-    """
-    Copy raw data files from input directory to sample input directory based on metadata.
-
-    Args:
-        input_dir (pathlib.Path): Path to the directory containing raw data files.
-        sample_input_dir (pathlib.Path): Path to the sample's input directory where files will be copied.
-        metadata (dict): Metadata dictionary containing file names to copy.
-    returns:
-        list: List of file names that failed to copy.
-
-    """
+def copy_raw_data(input_dir: Path, sample_input_dir: Path, metadata: dict) -> list:
+    """Copy raw data files based on metadata."""
     failed_files = []
-    pathlib.Path.mkdir(sample_input_dir, exist_ok=True)
+    Path.mkdir(sample_input_dir, exist_ok=True)
     for file_name in metadata:
         src_file = input_dir / file_name
         dest_file = sample_input_dir / file_name
 
         try:
             with (
-                pathlib.Path.open(src_file, "rb") as src,
-                pathlib.Path.open(dest_file, "wb") as dest,
+                Path.open(src_file, "rb") as src,
+                Path.open(dest_file, "wb") as dest,
             ):
                 dest.write(src.read())
         except Exception as e:  # noqa: BLE001
-            console.print(f"[bold red]Error copying {file_name}: {e}[/bold red]")
+            logger.error(f"Error copying {file_name}: {e}")
             failed_files.append(file_name)
     return failed_files
 
 
-def run_r_script(r_script_path: pathlib.Path, *, verbose: bool) -> bool:
-    """
-    Run R script from its directory using subprocess.
-
-    Args:
-        r_script_path (pathlib.Path): Path to the R script to run.
-        verbose (bool): Whether to print verbose output.
-    returns:
-        bool: True if successful, False if failed
-
-    """
+def run_r_script(r_script_path: Path, *, verbose: bool) -> bool:
+    """Run R script via subprocess."""
     try:
-        # Get the directory containing the R script
-        script_dir = r_script_path.parent
-
-        # Run the R script with the script directory as working directory
         result = subprocess.run(  # noqa: S603
             ["Rscript", r_script_path.name],  # noqa: S607
-            cwd=script_dir,  # Set working directory to script's directory
-            capture_output=True,  # Capture stdout and stderr
-            text=True,  # Return output as strings rather than bytes
-            check=False,  # Don't raise exception on non-zero exit
+            cwd=r_script_path.parent,
+            capture_output=True,
+            text=True,
+            check=False,
         )
 
-        # Print output for debugging
         if verbose and result.stdout:
-            console.print("R script output:")
-            console.print(result.stdout)
+            logger.debug(f"R script output:\n{result.stdout}")
 
         if result.stderr:
-            console.print("[bold red]R script errors:[/bold red]")
-            console.print(result.stderr)
+            logger.warning(f"R script errors:\n{result.stderr}")
 
-        # Check if R script succeeded
         if result.returncode == 0:
             return True
 
-        console.print(
-            f"[bold red]R script failed with exit code: {result.returncode}[/bold red]"
-        )
-
+        logger.error(f"R script failed with exit code {result.returncode}")
     except Exception as e:  # noqa: BLE001
-        console.print(
-            f"[bold red]Error running R script {r_script_path}: {e}[/bold red]"
-        )
-
+        logger.exception(f"Error running R script {r_script_path}: {e}")
     return False
 
 
-def get_and_sort_sample_dirs(ground_truth_dir: pathlib.Path) -> list:
+def get_and_sort_sample_dirs(ground_truth_dir: Path) -> list:
     """Get and sort sample directories in the ground truth directory."""
     sample_dirs = [
-        d
-        for d in pathlib.Path.iterdir(ground_truth_dir)
-        if re.match(r"sample\d+", d.name)
+        d for d in Path.iterdir(ground_truth_dir) if re.match(r"sample\d+", d.name)
     ]
 
-    def extract_sample_number(dir_name: pathlib.Path) -> int:
+    def extract_sample_number(dir_name: Path) -> int:
         match = re.search(r"sample(\d+)", dir_name.name)
         return int(match.group(1)) if match else 0
 
@@ -173,25 +118,20 @@ def main() -> None:
     parser = get_arg_parser()
     args = parser.parse_args()
 
-    input_dir: pathlib.Path = args.input_dir
-    ground_truth_dir: pathlib.Path = args.ground_truth_dir
+    input_dir: Path = args.input_dir
+    ground_truth_dir: Path = args.ground_truth_dir
     verbose: bool = args.verbose
     failed_samples = []
 
-    console.print(
-        f"[bold blue]Initialising ground truth using data from:[/bold blue] {input_dir}"
-    )
-    console.print(
-        f"[bold blue]Ground truth data will be stored in:[/bold blue] {ground_truth_dir}"
-    )
+    logger.info(f"Initialising ground truth using data from: [cyan]{input_dir}[/cyan]")
+    logger.info(f"Ground truth data will be stored in: [cyan]{ground_truth_dir}[/cyan]")
 
-    # Get all sample directories and sort them
     sample_dirs = get_and_sort_sample_dirs(ground_truth_dir)
 
     for ground_truth_sample in sample_dirs:
-        console.print(f"[bold green]Processing:[/bold green] {ground_truth_sample}")
+        logger.info(f"Processing: [green]{ground_truth_sample}[/green]")
 
-        # Load metadata with spinner
+        # --- Load metadata ---
         with Live(
             Spinner("dots", text="Loading metadata..."),
             console=console,
@@ -201,11 +141,11 @@ def main() -> None:
             metadata = load_metadata(metadata_path)
 
         if not metadata:
-            console.print(f"[bold red]Failed for {ground_truth_sample}[/bold red]")
+            logger.error(f"Failed to load metadata for {ground_truth_sample}")
             failed_samples.append(ground_truth_sample)
             continue
 
-        # Copy over raw data files to sample input directory
+        # --- Copy raw data ---
         with Live(
             Spinner("dots", text="Copying raw data files..."),
             console=console,
@@ -214,12 +154,12 @@ def main() -> None:
             sample_input_dir = ground_truth_sample / "data" / "input"
             failed_files = copy_raw_data(input_dir, sample_input_dir, metadata)
 
-        if len(failed_files) > 0:
-            console.print(f"[bold red]Failed for {ground_truth_sample}[/bold red]")
+        if failed_files:
+            logger.error(f"Failed to copy files for {ground_truth_sample}")
             failed_samples.append(ground_truth_sample)
             continue
 
-        # Run R script from inside the sample directory
+        # --- Run R script ---
         with Live(
             Spinner("dots", text="Running R script..."),
             console=console,
@@ -229,25 +169,19 @@ def main() -> None:
             r_success = run_r_script(r_script_path, verbose=verbose)
 
         if not r_success:
-            console.print(
-                f"[bold red]R script failed for {ground_truth_sample}[/bold red]"
-            )
+            logger.error(f"R script failed for {ground_truth_sample}")
             failed_samples.append(ground_truth_sample)
             continue
 
-        console.print(
-            f"[bold green]✓ Successfully processed {ground_truth_sample}[/bold green]"
-        )
+        logger.success(f"✓ Successfully processed {ground_truth_sample}")
 
-    # Final summary
-    if len(failed_samples) > 0:
-        console.print(
-            "\n[bold red]The following samples failed during processing:[/bold red]"
-        )
+    # --- Summary ---
+    if failed_samples:
+        logger.error("\nThe following samples failed during processing:")
         for sample in failed_samples:
-            console.print(f"[red]- {sample}[/red]")
+            logger.error(f" - {sample}")
     else:
-        console.print("\n[bold green]All samples processed successfully![/bold green]")
+        logger.success("\nAll samples processed successfully!")
 
 
 if __name__ == "__main__":
