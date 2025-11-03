@@ -12,7 +12,7 @@ suppressPackageStartupMessages({
 })
 
 # Set folder path (change as needed)
-data_path <- file.path(getwd(),"data", "input")
+DATA_PATH <- 'data/input/' # it's a constant so all caps
 
 # Define sweep file names
 sweeps <- list(
