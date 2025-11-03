@@ -1,5 +1,7 @@
 # This script is used to run the Next Steps MSEU 
-# Load packages
+list_of_packages <- c('haven', 'dpylr', 'purrr', 'here', 'labelled', 'readr')
+new_packages <- list_of_packages[!(list_of_packages %in% installed.packages()[,"Package"])]
+if(length(new_packages)) install.packages(new_packages)
 suppressPackageStartupMessages({
   library(haven)  # for reading SPSS/Stata files
   library(dplyr)  # for data manipulation
