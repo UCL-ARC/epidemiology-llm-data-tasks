@@ -62,3 +62,7 @@ Install `pre-commit` locally (in your activated `venv`) to aid code consistency 
 ```sh
 pre-commit install
 ```
+
+### To run src/initialise_ground_truth.py
+
+Run uv run python -m src.initialise_ground_truth -i data/UKDA-5545-tab/tab/safeguarded_eul, making sure you have the corresponding raw data downloaded
