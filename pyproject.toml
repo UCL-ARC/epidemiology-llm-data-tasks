@@ -14,10 +14,13 @@ authors = [
     "Nik Loynes <n.loynes@ucl.ac.uk>",
 ]
 dependencies = [
+    "jellyfish>=1.2.1",
     "loguru>=0.7.3",
     "pandas>=2.3.3",
     "pydantic>=2.12.3",
     "rich>=14.2.0",
+    "scikit-learn>=1.7.2",
+    "sentence-transformers>=5.1.2",
     "smolagents>=1.22.0",
     "striprtf>=0.0.29",
 ]
