@@ -41,6 +41,8 @@ def check_file_type(filename: str, filetype: str = "csv") -> None:
 
 
 class ComparisonTool:
+    """Class for comparing a ground truth to predicted dataframe by means of computing several similarity metrics."""
+
     def __init__(
         self,
         ground_truth_data_path: Path,
