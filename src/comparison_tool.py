@@ -1,4 +1,7 @@
-"""Tool to compare data produced by running R code produced by agents with gold standard data."""
+"""
+Tool to compare data produced by running
+R code produced by agents with gold standard data.
+"""
 
 from pathlib import Path
 from typing import Literal
@@ -10,8 +13,7 @@ from pydantic import BaseModel
 from sentence_transformers import SentenceTransformer
 
 DEFAULT_WEIGHTS = {"columns": 8.3}
-FUZZY_MATCH_THRESHOLD = 0.8
-SEMANTIC_MATCH_THRESHOLD = 0.85
+MATCH_THRESHOLD = 0.75  # completely arbitrary, no idea what the best val is
 
 embedding_model = SentenceTransformer("all-MiniLM-L6-v2")
 
@@ -20,8 +22,8 @@ class ValueMapping(BaseModel):
     """Output data model for ground truth <> pred value mapping."""
 
     gt_value_name: str
-    pred_value_name: str
-    match_method: Literal["determininstic", "fuzzy", "semantic"]
+    pred_value_name: str | None
+    match_method: Literal["deterministic", "fuzzy", "semantic", "no_match"]
     match_value: float | None = None
 
 
@@ -41,16 +43,19 @@ def check_file_type(filename: str, filetype: str = "csv") -> None:
 
 
 class ComparisonTool:
-    """Class for comparing a ground truth to predicted dataframe by means of computing several similarity metrics."""
+    """
+    Class for comparing a ground truth to predicted dataframe
+    by means of computing several similarity metrics.
+    """
 
     def __init__(
         self,
         ground_truth_data_path: Path,
         pred_data_path: Path,
-        primary_key: str,
-        weights: dict[str, float] = DEFAULT_WEIGHTS,
+        # primary_key: str,
+        weights: dict[str, float] = DEFAULT_WEIGHTS,  # not implemented yet
     ) -> None:
-        """Class for performing comparison between gold standard and predicted datasets."""
+        """Init ComparisonTool instance."""
         [
             check_file_type(file.name, "csv")  # type: ignore[func-returns-value]
             for file in [ground_truth_data_path, pred_data_path]
@@ -58,9 +63,9 @@ class ComparisonTool:
         self.ground_truth_df = pd.read_csv(ground_truth_data_path)
         self.pred_df = pd.read_csv(pred_data_path)
 
-        if primary_key not in self.ground_truth_df.columns:
-            missing_pk = f"primary key {primary_key} is not in ground truth columns."
-            raise ValueError(missing_pk)
+        # if primary_key not in self.ground_truth_df.columns:
+        #     missing_pk = f"primary key {primary_key} is not in ground truth columns."
+        #     raise ValueError(missing_pk)
 
     def __call__(self) -> float:
         """Run default comparison flow and produce metric of similarity."""
@@ -100,16 +105,57 @@ class ComparisonTool:
             len(self._normalise_string(string_a)), len(self._normalise_string(string_b))
         )
 
-    def _exact_string_similarity(self, string_a: str, string_b: str) -> bool:
+    def _exact_string_similarity(self, string_a: str, string_b: str) -> float:
         """Check if two strings are exact matches."""
-        return string_a == string_b
+        return float(
+            self._normalise_string(string_a) == self._normalise_string(string_b)
+        )
+
+    def calculate_normalised_string_similarity(
+        self,
+        string_a: str,
+        string_b: str,
+        method: Literal["determininstic", "fuzzy", "semantic"],
+        **kwargs,
+    ) -> float:
+        """
+        Calculate normalised (0-1) string similarity.
+        (we also _normalise our strings, i.e. remove whitespace, to-lower).
+
+        Add more methods as required, first implementing as _method.
+
+        Args:
+            string_a (str): string a
+            string_b (str): string b
+            method (Literal[&#39;determininstic&#39;,
+            &#39;fuzzy&#39;, &#39;semantic&#39;]): permitted methods
+
+        Raises:
+            NotImplementedError: _description_
+
+        Returns:
+            float: b/w 0 and 1
+
+        """
+        if method == "deterministic":
+            return self._exact_string_similarity(string_a, string_b)
+        elif method == "fuzzy":
+            return self._fuzzy_string_similarity(string_a, string_b)
+        elif method == "semantic":
+            return self._semantic_string_similarity(string_a, string_b)
+        else:
+            method_not_implemented = (
+                f"method {method} is not implemented."  # noqa: S608
+                " select one from determininstic, fuzzy, semantic."
+            )
+            raise NotImplementedError(method_not_implemented)
 
     def compare_column_lengths(self) -> int:
         """Compare the number of columns between ground truth and pred."""
         return len(self.ground_truth_df.columns) - len(self.pred_df.columns)
 
     def compare_row_length(
-        self, return_type: Literal["is_match", "difference"] = "is_match"
+        self, return_type: Literal["is_match", "difference"] = "difference"
     ) -> bool | int:
         """Compare the number of rows between ground truth and pred."""
         if return_type == "is_match":
@@ -121,11 +167,47 @@ class ComparisonTool:
         )
         raise NotImplementedError(bad_return_type)
 
-    def match_column_value_names(
+    def match_column_names(
+        self, match_threshold: float = MATCH_THRESHOLD
+    ) -> dict[str, str]:
+        """
+        Produce mapping of column names between gt and pred.
+
+        NOTE: if we can't match a column, we simply don't add it to
+        the output dict resulting from this method. this might be a bad
+        choice.
+
+        Args:
+            match_threshold (float, optional): 0-1. Defaults to MATCH_THRESHOLD.
+
+        Returns:
+            dict[str, str]: a dict of column matches in gt vs pred.
+
+        """
+        column_names_mapping = {}
+        for gt_column in self.ground_truth_df.columns:
+            for method in ["deterministic", "fuzzy", "semantic"]:
+                if gt_column in column_names_mapping:
+                    logger.debug(f"gt col {gt_column} has alrdy been mapped")
+                    continue
+
+                for pred_column in self.pred_df.columns:
+                    match = self.calculate_normalised_string_similarity(
+                        string_a=gt_column,
+                        string_b=pred_column,
+                        method=method,  # type: ignore[arg-type]
+                    )
+                    if match > match_threshold:
+                        column_names_mapping[gt_column] = pred_column
+                        break
+
+        return column_names_mapping
+
+    def match_all_column_value_names(
         self,
-        column_names_mapping: dict | None = None,
-        fuzzy_match_threshold: int = FUZZY_MATCH_THRESHOLD,
-        semantic_match_threshold: int = SEMANTIC_MATCH_THRESHOLD,
+        column_names_mapping: dict[str, str] | None = None,
+        match_threshold: float = MATCH_THRESHOLD,  # we may want to implement diff
+        # thresholds for diff methods
     ) -> list[ColumnValueMapping]:
         """
         Assess whether available value names match.
@@ -150,15 +232,15 @@ class ComparisonTool:
         mappings = []
         for gt_column, pred_column in column_names_mapping.items():
             # ensure both columns exist
-            try:
-                self.ground_truth_df[gt_column] is not None
-                self.pred_df[pred_column] is not None
-            except KeyError as e:
-                logger.error(e)
+            if (
+                gt_column not in self.ground_truth_df.columns
+                and pred_column not in self.pred_df.columns
+            ):
+                logger.info("columns don't exist in df")
                 continue
 
             # find matches for unique value labels in each df
-            column_maps = []
+            column_maps: list[ValueMapping] = []
             # cast to str to make pydantic model easier.
             gt_values = [str(x) for x in self.ground_truth_df[gt_column].unique()]
             pred_values = [str(x) for x in self.ground_truth_df[pred_column].unique()]
@@ -170,36 +252,44 @@ class ComparisonTool:
             )
 
             for gt_val in gt_values:
-                # perform comparison in 3 steps of increasing complexity
-                match = None
-                for pred_val in pred_values:
-                    if gt_val == pred_val:
-                        match = ValueMapping(
-                            gt_value_name=gt_val,
-                            pred_value_name=pred_val,
-                            match_method="determininstic",
+                for method in ["deterministic", "fuzzy", "semantic"]:
+                    if gt_val in [x.gt_value_name for x in column_maps]:
+                        logger.debug(
+                            f"val {gt_val} for gt col {gt_column} has alrdy been mapped"
                         )
-                        break
-                    fuzzy_score = self._fuzzy_string_similarity(gt_val, pred_val)
-                    if fuzzy_score >= fuzzy_match_threshold:
-                        match = ValueMapping(
-                            gt_value_name=gt_val,
-                            pred_value_name=pred_val,
-                            match_method="fuzzy",
-                            match_value=fuzzy_score,
+                        continue
+
+                    for pred_val in pred_values:
+                        match = self.calculate_normalised_string_similarity(
+                            string_a=gt_val,
+                            string_b=pred_val,
+                            method=method,  # type: ignore[arg-type]
                         )
-                        break
-                    sem_score = self._semantic_string_similarity(gt_val, pred_val)
-                    if sem_score >= semantic_match_threshold:
-                        match = ValueMapping(
-                            gt_value_name=gt_val,
-                            pred_value_name=pred_val,
-                            match_method="semantic",
-                            match_value=sem_score,
+                        if match > match_threshold:
+                            column_maps.append(
+                                ValueMapping(
+                                    gt_value_name=gt_val,
+                                    pred_value_name=pred_val,
+                                    match_method=method,  # type: ignore[arg-type]
+                                    match_value=match,
+                                )
+                            )
+                            break
+
+                    if method == "semantic" and match < match_threshold:  # bit clunky
+                        # and needs changing if we add more methods. 'semantic' here is
+                        # a placeholder for reaching the end of the line.
+                        logger.debug(
+                            f"unable to find a match for {gt_val}. writing None."
                         )
-                        break
-                if match:
-                    column_maps.append(match)
+                        column_maps.append(
+                            ValueMapping(
+                                gt_value_name=gt_val,
+                                pred_value_name=None,
+                                match_method="no_match",  # type: ignore[arg-type]
+                                match_value=None,
+                            )
+                        )
 
             mappings.append(
                 ColumnValueMapping(
@@ -211,5 +301,53 @@ class ComparisonTool:
 
         return mappings
 
-    def _match_column_value_counts(self):
-        pass
+    def _match_column_value_counts(
+        self, column_value_mapping: ColumnValueMapping
+    ) -> dict[str, int]:
+        """Compare column value counts in gt vs pred."""
+        val_counts_gt = {
+            str(k): v
+            for k, v in self.ground_truth_df[column_value_mapping.gt_column_name]
+            .value_counts()
+            .to_dict()
+            .items()
+        }  # casting keys in both to strings to ensure consistency with
+        # pydantic model.
+        # we don't need to check for None; as it won't exist in the input data if
+        # there's no column match.
+        val_counts_pred = {
+            str(k): v
+            for k, v in self.pred_df[column_value_mapping.pred_column_name]
+            .value_counts()
+            .to_dict()
+            .items()
+        }
+        out = {}
+        for col_map in column_value_mapping.value_map:
+            if col_map.match_method == "no_match" or col_map.pred_value_name is None:
+                logger.debug(f"no match for {col_map.gt_value_name}. next.")
+                continue
+
+            try:
+                diff = (
+                    val_counts_gt[col_map.gt_value_name]
+                    - val_counts_pred[col_map.pred_value_name]
+                )
+            except KeyError as e:
+                logger.error("keyerror!")
+                logger.error(e)
+                continue
+            out[col_map.gt_value_name] = diff
+
+        return out
+
+    def match_all_column_value_counts(
+        self, column_value_map: list[ColumnValueMapping]
+    ) -> dict[str, dict[str, int]]:
+        """Run _match_column_value_counts for all data."""
+        out = {}
+        for col_val_map in column_value_map:
+            col_val_count_diffs = self._match_column_value_counts(col_val_map)
+            out[col_val_map.gt_column_name] = col_val_count_diffs
+
+        return out

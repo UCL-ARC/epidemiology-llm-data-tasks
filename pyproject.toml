@@ -1,3 +1,7 @@
+[build-system]
+build-backend = "setuptools.build_meta"
+requires = ["setuptools>=61.0", "wheel"]
+
 [dependency-groups]
 dev = [
     "mypy>=1.17.1",
@@ -11,7 +15,8 @@ dev = [
 
 [project]
 authors = [
-    "Nik Loynes <n.loynes@ucl.ac.uk>",
+    {email = "m.nixon@ucl.ac.uk", name = "Mack Nixon"},
+    {email = "n.loynes@ucl.ac.uk", name = "Nik Loynes"},
 ]
 dependencies = [
     "jellyfish>=1.2.1",
@@ -32,7 +37,7 @@ version = "0.1.0"
 
 [[tool.mypy.overrides]]
 ignore_missing_imports = true
-module = "loguru.*"
+module = ["loguru.*", "pandas.*"]
 
 [tool.pytest.ini_options]
 addopts = ["--color=yes", "--import-mode=importlib", "--verbose"]
@@ -55,10 +60,10 @@ lint.ignore = [
     "D403", # forcing upper-case
     "D407", # removed dashes lines under sections
     "D417", # argument description in docstring (unreliable)
-    "E501", # let's keep this for now (long lines)
     "ERA001", # allow commented code -- FOR NOW!
     "FIX002", # implicit trust that TODOs are not trivial, or else they would be fixed
     "ISC001", # simplify implicit str concatenation (ruff-format recommended)
+    "RET505", # elif pedantry -- i like elif, leave me alone!
     "RUF012", # where ruff wants type annotations using ClassVar for subclasses - mypy doesnt care, so why would we?
     "TD002", # name for TO DO
     "TD003", # pedantic issue number requester in to dos
@@ -78,6 +83,10 @@ lint.per-file-ignores = {"tests*" = [
 lint.select = ["ALL"]
 lint.mccabe.max-complexity = 18
 lint.pep8-naming.classmethod-decorators = ["classmethod"]
+
+[tool.setuptools]
+package-dir = {"" = "."}
+packages = ["src"]
 
 [tool.tomlsort]
 all = true

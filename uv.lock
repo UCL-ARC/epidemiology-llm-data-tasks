@@ -152,7 +152,7 @@ wheels = [
 [[package]]
 name = "epidemiology-llm-data-tasks"
 version = "0.1.0"
-source = { virtual = "." }
+source = { editable = "." }
 dependencies = [
     { name = "jellyfish" },
     { name = "loguru" },
