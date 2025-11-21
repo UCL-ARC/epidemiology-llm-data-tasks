@@ -66,3 +66,23 @@ pre-commit install
 ### To run src/initialise_ground_truth.py
 
 Run uv run python -m src.initialise_ground_truth -i data/UKDA-5545-tab/tab/safeguarded_eul, making sure you have the corresponding raw data downloaded
+
+
+## Agents
+
+This project includes a small agent framework in `src/agents.py` that wraps existing agentic frameworks
+
+### SmolAgent
+
+`SmolAgent` is a thin wrapper around `ToolCallingAgent` that:
+
+- Runs with one or more Python **tools** (see `src/tools.py`, e.g. `produce_and_execute_r`).
+- Uses a **temporary working directory** per run:
+  - If you pass `context_path=Path("ground_truth/sample1")`, the agent copies that directory into `./tmp/smolagent_context/<sample1>/` and runs there.
+  - If `context_path` is `None`, it just runs in the current working directory.
+- Returns a structured `AgentResult` (Pydantic model) with:
+  - `result`: final LLM output
+  - `state`: run status
+  - `time_taken`: duration in seconds
+  - `steps`: number of agent steps
+  - `token_usage`: total tokens used
