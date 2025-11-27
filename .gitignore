@@ -214,6 +214,7 @@ data/*
 ground_truth/*/data/output/*
 ground_truth/*/data/input/*
 tmp/*
+.DS_Store
 
 exploration/*
 

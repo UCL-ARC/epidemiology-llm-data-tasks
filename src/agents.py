@@ -195,7 +195,11 @@ if __name__ == "__main__":
     with tasks_path.open() as f:
         tasks = yaml.safe_load(f)["tasks"]
 
-    for test_dir in ["./ground_truth/sample1"]:
+    for test_dir in [
+        "./ground_truth/sample1",
+        "./ground_truth/sample2",
+        "./ground_truth/sample3",
+    ]:
         logger.info(f"\n=== Testing with context: {test_dir} ===")
 
         task_path = Path(test_dir) / "task.yml"
@@ -224,7 +228,7 @@ if __name__ == "__main__":
         result = agent.forward(
             prompt,
             context_path=Path(test_dir),
-            persist_context=False,  # Set to True to inspect the temp directory
+            persist_context=True,  # Set to True to inspect the temp directory
         )
 
         logger.info(f"\n=== Result for context: {test_dir} ===")
