@@ -199,6 +199,7 @@ if __name__ == "__main__":
         "./ground_truth/sample1",
         "./ground_truth/sample2",
         "./ground_truth/sample3",
+        "./ground_truth/sample4",
     ]:
         logger.info(f"\n=== Testing with context: {test_dir} ===")
 
