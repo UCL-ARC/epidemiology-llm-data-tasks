@@ -1,0 +1,108 @@
+{
+  "wave_one_lsype_young_person_2020.tab": {
+    "file_info": {
+      "number_of_variables": 350,
+      "number_of_cases": 15760
+    },
+    "variables": {
+      "W1englangYP": {
+        "position": 94,
+        "variable_label": "YP: Whether English is first or main language",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-99.0": "YP not interviewed",
+          "-92.0": "Refused",
+          "-91.0": "Not applicable",
+          "-1.0": "Don't know",
+          "1.0": "Yes - English only",
+          "2.0": "Yes - English first/ main and speaks other languages",
+          "3.0": "No, another language is respondent's first or main language",
+          "4.0": "Respondent is bilingual"
+        }
+      }
+    }
+  },
+  "wave_two_lsype_young_person_2020.tab": {
+    "file_info": {
+      "number_of_variables": 564,
+      "number_of_cases": 13530
+    },
+    "variables": {
+      "W2EnglangYP": {
+        "position": 85,
+        "variable_label": "YP: Whether English is first or main language",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-998.0": "Interviewer missed question",
+          "-997.0": "Script error",
+          "-995.0": "Missing history section data - unexplained",
+          "-99.0": "YP not interviewed",
+          "-92.0": "Refused",
+          "-91.0": "Not applicable",
+          "-1.0": "Don't Know",
+          "1.0": "Yes - English only",
+          "2.0": "Yes - English first/ main and speaks other languages",
+          "3.0": "No, another language is respondent's first or main language",
+          "4.0": "Respondent is bilingual"
+        }
+      }
+    }
+  },
+  "wave_three_lsype_family_background_2020.tab": {
+    "file_info": {
+      "number_of_variables": 161,
+      "number_of_cases": 12430
+    },
+    "variables": {
+      "W3englangHH": {
+        "position": 27,
+        "variable_label": "HH: Whether English is main language of household",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-999.0": "HH grid missing",
+          "-997.0": "Script Error",
+          "-99.0": "",
+          "-92.0": "Refused",
+          "-91.0": "Not applicable",
+          "-1.0": "Don't know",
+          "1.0": "Yes - English only",
+          "2.0": "Yes - English first/main and speaks other languages",
+          "3.0": "No - another language is household's first/main language",
+          "4.0": "Household is bilingual"
+        }
+      }
+    }
+  },
+  "wave_four_lsype_family_background_2020.tab": {
+    "file_info": {
+      "number_of_variables": 422,
+      "number_of_cases": 11791
+    },
+    "variables": {
+      "W4EngLangHH": {
+        "position": 22,
+        "variable_label": "HH: Whether English is main language of household",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-999.0": "Missing household grid",
+          "-997.0": "Script error",
+          "-92.0": "Refused",
+          "-91.0": "Not applicable",
+          "-1.0": "Don't know",
+          "1.0": "Yes - English only",
+          "2.0": "Yes - English first/main and speaks other languages",
+          "3.0": "No - another language is household's first/main language",
+          "4.0": "Household is bilingual"
+        }
+      }
+    }
+  }
+}
