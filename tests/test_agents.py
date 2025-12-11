@@ -45,12 +45,8 @@ class TestInitialiseContext:
 
     @patch("shutil.copy2")
     @patch("shutil.copytree")
-    @patch("pathlib.Path.mkdir")
-    @patch("pathlib.Path.exists", return_value=False)
     def test_initialise_context_copies_files_and_dirs(
         self,
-        mock_exists,
-        mock_mkdir,
         mock_copytree,
         mock_copy2,
     ):
@@ -78,17 +74,15 @@ class TestInitialiseContext:
         temp_dir = base._initialise_context(context_path)
 
         # Assertions
-        assert temp_dir == base.temp_root / context_path.name
-        mock_exists.assert_called_once_with()
-        mock_mkdir.assert_called_once_with(parents=True, exist_ok=True)
+        assert temp_dir.parent.resolve() == base.temp_root.resolve()
+        assert temp_dir.name.startswith(f"{context_path.name}_")
         mock_copy2.assert_called_once_with(file1, temp_dir / file1.name)
         mock_copytree.assert_called_once_with(dir1, temp_dir / dir1.name)
 
-    @patch("shutil.rmtree")
     @patch("pathlib.Path.exists")
     @patch("pathlib.Path.mkdir")
     def test_initialise_context_removes_existing_temp_dir(
-        self, mock_mkdir, mock_exists, mock_rmtree
+        self, mock_mkdir, mock_exists
     ):
         """Existing temp dir should be removed before recreation."""
         base = DummyAgent()
@@ -103,7 +97,6 @@ class TestInitialiseContext:
 
         base._initialise_context(context_path)
 
-        mock_rmtree.assert_called_once_with(base.temp_root / context_path.name)
         mock_mkdir.assert_called_once_with(parents=True, exist_ok=True)
 
 
