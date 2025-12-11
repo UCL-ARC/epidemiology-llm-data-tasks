@@ -213,3 +213,8 @@ misc/
 data/*
 ground_truth/*/data/output/*
 ground_truth/*/data/input/*
+tmp/*
+
+exploration/*
+
+.vscode/
