@@ -15,6 +15,7 @@ def produce_and_execute_r(rscript: str) -> str:
     rscript_filename = Path("rpred.R")
     rscript_filename.write_text(rscript, encoding="utf-8")
 
+    # TO DO: Handle potential security issues with subprocess
     # Execute the R script and capture stdout and stderr
     result = subprocess.run(  # noqa: S603
         ["Rscript", rscript_filename],  # noqa: S607

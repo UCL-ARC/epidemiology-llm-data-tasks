@@ -4,6 +4,7 @@
 import json
 import os
 import shutil
+import tempfile
 from abc import ABC, abstractmethod
 from collections.abc import Callable, Generator
 from contextlib import contextmanager
@@ -20,6 +21,7 @@ from smolagents import tool as stool  # renamed to avoid conflict - teehee
 from smolagents.tools import Tool
 
 
+# TO DO: When more frameworks are supported be more specific here
 class AgentResult(BaseModel):
     """Structured result from a SmolAgent run."""
 
@@ -41,7 +43,7 @@ class Agent(ABC):
     @abstractmethod
     def forward(self, *args, **kwargs) -> AgentResult:  # noqa: ANN002
         """Abstract method to run the agent."""
-        raise NotImplementedError
+        ...
 
     def _initialise_context(self, context_path: Path) -> Path:
         """
@@ -50,23 +52,25 @@ class Agent(ABC):
 
         The final temp dir is: temp_root / context_path.name
         """
-        temp_dir = self.temp_root / context_path.name
+        # Ensure base temp_root exists
+        self.temp_root.mkdir(parents=True, exist_ok=True)
 
-        if temp_dir.exists():
-            shutil.rmtree(temp_dir)
+        # Create a unique temp directory inside temp_root
+        temp_dir_path = Path(
+            tempfile.mkdtemp(prefix=f"{context_path.name}_", dir=self.temp_root)
+        )
 
-        temp_dir.mkdir(parents=True, exist_ok=True)
-
-        logger.info(f"Setting up context from: {context_path} -> {temp_dir}")
+        logger.info(f"Setting up context from: {context_path} -> {temp_dir_path}")
         for item in context_path.iterdir():
+            dest = temp_dir_path / item.name
             if item.is_file():
-                shutil.copy2(item, temp_dir / item.name)
+                shutil.copy2(item, dest)
                 logger.info(f"Copied file: {item.name}")
             elif item.is_dir():
-                shutil.copytree(item, temp_dir / item.name)
+                shutil.copytree(item, dest)
                 logger.info(f"Copied directory: {item.name}")
 
-        return temp_dir
+        return temp_dir_path
 
     @contextmanager
     def _execution_context(
