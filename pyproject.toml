@@ -7,19 +7,25 @@ dev = [
     "pytest-mock>=3.14.1",
     "pytest>=8.4.1",
     "ruff>=0.12.11",
+    "types-pyyaml>=6.0.12.20250915",
 ]
 
 [project]
 authors = [
+    "Mack Nixon <mack.nixon@ucl.ac.uk>",
     "Nik Loynes <n.loynes@ucl.ac.uk>",
 ]
 dependencies = [
+    "fhaviary>=0.28.0",
+    "ldp[nn]>=0.40.0",
     "loguru>=0.7.3",
+    "ollama>=0.6.0",
     "pandas>=2.3.3",
     "pydantic>=2.12.3",
     "rich>=14.2.0",
-    "smolagents>=1.22.0",
+    "smolagents[litellm]>=1.22.0",
     "striprtf>=0.0.29",
+    "tenacity>=9.1.2",
 ]
 description = "How good are ~open llms at performing routing data cleaning and analysis tasks for epidemiology? "
 name = "epidemiology-llm-data-tasks"
@@ -30,6 +36,10 @@ version = "0.1.0"
 [[tool.mypy.overrides]]
 ignore_missing_imports = true
 module = "loguru.*"
+
+[[tool.mypy.overrides]]
+ignore_missing_imports = true
+module = "yaml.*"
 
 [tool.pytest.ini_options]
 addopts = ["--color=yes", "--import-mode=importlib", "--verbose"]
