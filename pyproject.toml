@@ -17,6 +17,7 @@ authors = [
 ]
 dependencies = [
     "fhaviary>=0.28.0",
+    "langchain-core>=1.1.1",
     "ldp[nn]>=0.40.0",
     "loguru>=0.7.3",
     "ollama>=0.6.0",
