@@ -12,7 +12,8 @@ tasks:
       6. Consolidate any variables
       7. Use only standard R libraries
       8. Your R script must output one single cleaned csv named data/output/cleaned_data.csv
-      9. You must run your R script.
+      9. Explicitly output only the derived variables that were created during the cleaning process to the csv
+      10. You must run your R script.
 
       Produce your script in R.
 
