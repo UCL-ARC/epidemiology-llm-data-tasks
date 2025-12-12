@@ -21,6 +21,7 @@ authors = [
 ]
 dependencies = [
     "fhaviary>=0.28.0",
+    "ipython>=9.8.0",
     "jellyfish>=1.2.1",
     "langchain-core>=1.1.1",
     "ldp[nn]>=0.40.0",
