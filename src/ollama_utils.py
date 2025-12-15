@@ -28,7 +28,10 @@ def install_ollama() -> None:
 
 
 def uninstall_ollama() -> None:
-    """Uninstall ollama. Prefer Path operations; fall back to sudo when permissions prevent removal."""
+    """
+    Uninstall ollama. Prefer Path operations; fall back to sudo when permissions
+    prevent removal.
+    """
     # stop/disable service (ignore failures)
     for cmd in (["systemctl", "stop", "ollama"], ["systemctl", "disable", "ollama"]):
         try:
@@ -128,7 +131,8 @@ class OllamaModelHandler(BaseModel):
             )
             logger.debug(f"successfully served model {self.model.value}.")
         except Exception as e:
-            generic_error = f"Failed to start serving: {e}"  # let's specify once we know what it is...
+            # let's specify once we know what it is...
+            generic_error = f"Failed to start serving: {e}"
             raise OllamaError(generic_error) from e
 
     def stop_model(self) -> None:

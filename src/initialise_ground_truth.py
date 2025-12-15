@@ -1,4 +1,7 @@
-"""Script to initialise ground truth data for samples by copying raw data files and running R scripts."""
+"""
+Script to initialise ground truth data for samples by copying raw data files and
+running R scripts.
+"""
 
 import argparse
 import json
@@ -17,7 +20,8 @@ def get_arg_parser() -> argparse.ArgumentParser:
         "--input_dir",
         type=Path,
         required=True,
-        help="Path to the directory containing the raw data used for ground truth generation.",
+        help="Path to the directory containing the raw data used for ground truth"
+        "generation.",
     )
     parser.add_argument(
         "-g",
