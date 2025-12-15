@@ -103,6 +103,7 @@ def compute_numeric_similarity(
     return max(0.0, 1.0 - nrmse)
 
 
+# TO DO: is this the correct metric to use here?
 def jensen_shannon_divergence(
     p: dict[str, float],
     q: dict[str, float],
