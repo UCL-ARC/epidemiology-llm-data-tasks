@@ -44,12 +44,14 @@ class TestInferColumnType:
 
         assert result == ColumnType.CATEGORICAL
 
+    # TO DO: this has small peercentage chance of failing due to
+    # random nature of data
     def test_with_pred_series_both_numeric(self) -> None:
         """Test with both series numeric and above threshold."""
         gt_series = pd.Series(range(100))
         pred_series = pd.Series(range(100, 200))
 
-        result = infer_column_type(gt_series, pred_series, categorical_threshold=20)
+        result = infer_column_type(gt_series, pred_series, categorical_threshold=10)
 
         assert result == ColumnType.NUMERIC
 
@@ -89,6 +91,8 @@ class TestInferColumnType:
         assert result == ColumnType.CATEGORICAL
 
         # With threshold of 10, 50 unique values should be NUMERIC
+        # TO DO: this has small percentage chance of failing due to
+        # random nature of data
         result = infer_column_type(gt_series, categorical_threshold=10)
         assert result == ColumnType.NUMERIC
 

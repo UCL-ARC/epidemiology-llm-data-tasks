@@ -259,7 +259,20 @@ class DataComparator:
         *,
         use_data_matching: bool = True,
     ) -> DataComparisonResult:
-        """Perform full comparison between ground truth and predicted dataframes."""
+        """
+        Perform full comparison between ground truth and predicted dataframes.
+
+        Args:
+            gt_df: Ground truth dataframe.
+            pred_df: Predicted/generated dataframe.
+            semantic_weighting: Weight for semantic similarity in column matching.
+            use_data_matching: Whether to attempt data-based matching for unmatched
+            columns.
+
+        Returns:
+            DataComparisonResult with full comparison details.
+
+        """
         logger.info("Starting data comparison")
 
         if gt_df.index.name is None:

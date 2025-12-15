@@ -23,6 +23,10 @@ def infer_column_type(
     """
     gt_is_numeric = pd.api.types.is_numeric_dtype(gt_series)
 
+    # TO DO: something to consider here, if the data types are different then
+    # maybe column
+    # should not be a match. I.e. we match on colum names first, then check types.
+    # and if there is no type match then we do not consider it a match.
     if pred_series is not None:
         pred_is_numeric = pd.api.types.is_numeric_dtype(pred_series)
         if not gt_is_numeric or not pred_is_numeric:
@@ -209,6 +213,7 @@ def compare_categorical(
     )
 
 
+# TO DO: i think this is fairly arbirtrary weighting
 def compute_categorical_similarity(
     gt_series: pd.Series,
     pred_series: pd.Series,

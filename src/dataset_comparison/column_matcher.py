@@ -93,8 +93,8 @@ class ColumnMatcher:
 
     def match_columns(
         self,
-        gt_df: pd.DataFrame,
-        pred_df: pd.DataFrame,
+        gt_df: pd.DataFrame | list[str],
+        pred_df: pd.DataFrame | list[str],
         semantic_weighting: float = 1.0,
     ) -> list[ColumnMatch]:
         """
@@ -109,8 +109,10 @@ class ColumnMatcher:
             List of ColumnMatch objects, one per ground truth column.
 
         """
-        gt_columns = list(gt_df.columns)
-        pred_columns = list(pred_df.columns)
+        gt_columns = list(gt_df.columns) if isinstance(gt_df, pd.DataFrame) else gt_df
+        pred_columns = (
+            list(pred_df.columns) if isinstance(pred_df, pd.DataFrame) else pred_df
+        )
 
         logger.info(
             f"Matching {len(gt_columns)} GT columns to {len(pred_columns)} pred columns"

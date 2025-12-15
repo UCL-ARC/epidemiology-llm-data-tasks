@@ -11,11 +11,11 @@ from src.dataset_comparison.models import ColumnMatch, MatchMethod
 
 # Maybe this test is not needed
 class TestColumnMatcherInit:
-    """Tests for ColumnMatcher initialization."""
+    """Tests for ColumnMatcher initialisation."""
 
     @patch("src.dataset_comparison.column_matcher.CrossEncoder")
     def test_init_default_params(self, mock_cross_encoder: MagicMock) -> None:
-        """Test initialization with default parameters."""
+        """Test initialisation with default parameters."""
         matcher = ColumnMatcher()
 
         mock_cross_encoder.assert_called_once_with("cross-encoder/stsb-roberta-base")
@@ -23,7 +23,7 @@ class TestColumnMatcherInit:
 
     @patch("src.dataset_comparison.column_matcher.CrossEncoder")
     def test_init_custom_params(self, mock_cross_encoder: MagicMock) -> None:
-        """Test initialization with custom parameters."""
+        """Test initialisation with custom parameters."""
         matcher = ColumnMatcher(
             cross_encoder_model_name="custom-model",
             match_threshold=0.7,
@@ -205,6 +205,7 @@ class TestBestSimilarity:
         assert score == pytest.approx(0.4, abs=0.01)
         assert method == MatchMethod.SEMANTIC
 
+    # TO DO: this test is a bit pointless
     @patch("src.dataset_comparison.column_matcher.CrossEncoder")
     def test_levenshtein_preferred_on_tie(self, mock_cross_encoder: MagicMock) -> None:
         """Test that Levenshtein is preferred when scores are equal."""
