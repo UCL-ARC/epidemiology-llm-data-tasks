@@ -1,0 +1,99 @@
+{
+  "wave_one_lsype_young_person_2020.tab": {
+    "file_info": {
+      "number_of_variables": 350,
+      "number_of_cases": 15760
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      }
+    }
+  },
+  "wave_four_lsype_young_person_2020.tab": {
+    "file_info": {
+      "number_of_variables": 1049,
+      "number_of_cases": 11791
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      }
+    }
+  },
+  "wave_two_lsype_family_background_2020.tab": {
+    "file_info": {
+      "number_of_variables": 1030,
+      "number_of_cases": 13530
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      },
+      "IMDRSCORE": {
+        "position": 1030,
+        "variable_label": "2004 Index of Multiple Deprivation ROUNDED SCORE",
+        "type": "numeric",
+        "spss_measurement_level": "SCALE",
+        "spss_user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-94.0": "Insufficient Information"
+        }
+      }
+    }
+  },
+  "wave_three_lsype_family_background_2020.tab": {
+    "file_info": {
+      "number_of_variables": 161,
+      "number_of_cases": 12430
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      },
+      "IMDRSCORE": {
+        "position": 161,
+        "variable_label": "2004 Index of Multiple Deprivation ROUNDED SCORE",
+        "type": "numeric",
+        "spss_measurement_level": "SCALE",
+        "spss_user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-94.0": "Insufficient Information"
+        }
+      }
+    }
+  },
+  "ns9_2022_derived_variables.tab": {
+    "file_info": {
+      "number_of_variables": 68,
+      "number_of_cases": 7279
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      },
+      "W9DIMDD": {
+        "position": 3,
+        "variable_label": "DV: 2019 Index of Multiple Deprivation rank decile",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-8.0 thru None",
+        "value_labels": {
+          "-8.0": "Insufficient information",
+          "1.0": "Most deprived decile",
+          "10.0": "Least deprived decile"
+        }
+      }
+    }
+  }
+}
