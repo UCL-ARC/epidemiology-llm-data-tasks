@@ -1,0 +1,1132 @@
+{
+  "wave_one_lsype_young_person_2020.tab": {
+    "file_info": {
+      "number_of_variables": 350,
+      "number_of_cases": 15760
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      }
+    }
+  },
+  "wave_four_lsype_young_person_2020.tab": {
+    "file_info": {
+      "number_of_variables": 1049,
+      "number_of_cases": 11791
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      }
+    }
+  },
+  "ns8_2015_main_interview.tab": {
+    "file_info": {
+      "number_of_variables": 740,
+      "number_of_cases": 7705
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      },
+      "W8VCQU0A": {
+        "position": 409,
+        "variable_label": "Vocational qualifications gained: Youth training certificate",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -8.0 and -1.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Don't know",
+          "-1.0": "Not applicable",
+          "0.0": "No",
+          "1.0": "Yes"
+        }
+      },
+      "W8VCQU0B": {
+        "position": 410,
+        "variable_label": "Vocational qualifications gained: Key Skills",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -8.0 and -1.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Don't know",
+          "-1.0": "Not applicable",
+          "0.0": "No",
+          "1.0": "Yes"
+        }
+      },
+      "W8VCQU0C": {
+        "position": 411,
+        "variable_label": "Vocational qualifications gained: Basic skills",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -8.0 and -1.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Don't know",
+          "-1.0": "Not applicable",
+          "0.0": "No",
+          "1.0": "Yes"
+        }
+      },
+      "W8VCQU0D": {
+        "position": 412,
+        "variable_label": "Vocational qualifications gained: Entry level qualifications (Wales)",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -8.0 and -1.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Don't know",
+          "-1.0": "Not applicable",
+          "0.0": "No",
+          "1.0": "Yes"
+        }
+      },
+      "W8VCQU0E": {
+        "position": 413,
+        "variable_label": "Vocational qualifications gained: Modern apprenticeship/trade apprenticeship",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -8.0 and -1.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Don't know",
+          "-1.0": "Not applicable",
+          "0.0": "No",
+          "1.0": "Yes"
+        }
+      },
+      "W8VCQU0F": {
+        "position": 414,
+        "variable_label": "Vocational qualifications gained: RSA/OCR/Clerical and commercial qualifications",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -8.0 and -1.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Don't know",
+          "-1.0": "Not applicable",
+          "0.0": "No",
+          "1.0": "Yes"
+        }
+      },
+      "W8VCQU0G": {
+        "position": 415,
+        "variable_label": "Vocational qualifications gained: City and Guilds Certificate",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -8.0 and -1.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Don't know",
+          "-1.0": "Not applicable",
+          "0.0": "No",
+          "1.0": "Yes"
+        }
+      },
+      "W8VCQU0H": {
+        "position": 416,
+        "variable_label": "Vocational qualifications gained: GNVQ/GSVQ",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -8.0 and -1.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Don't know",
+          "-1.0": "Not applicable",
+          "0.0": "No",
+          "1.0": "Yes"
+        }
+      },
+      "W8VCQU0I": {
+        "position": 417,
+        "variable_label": "Vocational qualifications gained: NVQ/SVQ - Level 1 - 2",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -8.0 and -1.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Don't know",
+          "-1.0": "Not applicable",
+          "0.0": "No",
+          "1.0": "Yes"
+        }
+      },
+      "W8VCQU0J": {
+        "position": 418,
+        "variable_label": "Vocational qualifications gained: NVQ/SVQ - Level 3 - 5",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -8.0 and -1.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Don't know",
+          "-1.0": "Not applicable",
+          "0.0": "No",
+          "1.0": "Yes"
+        }
+      },
+      "W8VCQU0K": {
+        "position": 419,
+        "variable_label": "Vocational qualifications gained: HNC/HND",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -8.0 and -1.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Don't know",
+          "-1.0": "Not applicable",
+          "0.0": "No",
+          "1.0": "Yes"
+        }
+      },
+      "W8VCQU0L": {
+        "position": 420,
+        "variable_label": "Vocational qualifications gained: ONC/OND",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -8.0 and -1.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Don't know",
+          "-1.0": "Not applicable",
+          "0.0": "No",
+          "1.0": "Yes"
+        }
+      },
+      "W8VCQU0M": {
+        "position": 421,
+        "variable_label": "Vocational qualifications gained: BTEC/BEC/TEC/EdExcel/LQL",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -8.0 and -1.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Don't know",
+          "-1.0": "Not applicable",
+          "0.0": "No",
+          "1.0": "Yes"
+        }
+      },
+      "W8VCQU0N": {
+        "position": 422,
+        "variable_label": "Vocational qualifications gained: SCOTVEC, SCOTEC or SCOTBEC",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -8.0 and -1.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Don't know",
+          "-1.0": "Not applicable",
+          "0.0": "No",
+          "1.0": "Yes"
+        }
+      },
+      "W8VCQU0O": {
+        "position": 423,
+        "variable_label": "Vocational qualifications gained: Other vocational, technical or professional",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -8.0 and -1.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Don't know",
+          "-1.0": "Not applicable",
+          "0.0": "No",
+          "1.0": "Yes"
+        }
+      },
+      "W8VCQU0P": {
+        "position": 424,
+        "variable_label": "Vocational qualifications gained: None of the above",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -8.0 and -1.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Don't know",
+          "-1.0": "Not applicable",
+          "0.0": "No",
+          "1.0": "Yes"
+        }
+      },
+      "W8VCQU0Q": {
+        "position": 425,
+        "variable_label": "Vocational qualifications gained: Don't know",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -8.0 and -1.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Don't know",
+          "-1.0": "Not applicable",
+          "0.0": "No",
+          "1.0": "Yes"
+        }
+      },
+      "W8VCQU0R": {
+        "position": 426,
+        "variable_label": "Vocational qualifications gained: Refused",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -8.0 and -1.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Don't know",
+          "-1.0": "Not applicable",
+          "0.0": "No",
+          "1.0": "Yes"
+        }
+      }
+    }
+  },
+  "ns8_2015_derived.tab": {
+    "file_info": {
+      "number_of_variables": 53,
+      "number_of_cases": 7705
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      },
+      "W8DHANVQH": {
+        "position": 31,
+        "variable_label": "DV: Highest NVQ level from an academic qualification to 2015",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -8.0 and -1.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Insufficient information",
+          "-1.0": "Not applicable",
+          "1.0": "NVQ Level 1",
+          "2.0": "NVQ Level 2",
+          "3.0": "NVQ Level 3",
+          "4.0": "NVQ Level 4",
+          "5.0": "NVQ Level 5",
+          "95.0": "Other academic qualification",
+          "96.0": "None of these qualifications"
+        }
+      }
+    }
+  },
+  "ns9_2022_main_interview.tab": {
+    "file_info": {
+      "number_of_variables": 1805,
+      "number_of_cases": 7279
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      },
+      "W9ACQU0A": {
+        "position": 1111,
+        "variable_label": "Academic qualifications gained - Doctorate or equivalent",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W9ACQU0B": {
+        "position": 1112,
+        "variable_label": "Academic qualifications gained - Masters or equivalent",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W9ACQU0C": {
+        "position": 1113,
+        "variable_label": "Academic qualifications gained - Undergraduate or equivalent",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W9ACQU0D": {
+        "position": 1114,
+        "variable_label": "Academic qualifications gained - Post-graduate Diplomas and Certificates",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W9ACQU0E": {
+        "position": 1115,
+        "variable_label": "Academic qualifications gained - Diplomas in higher education and other higher education qualifications",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W9ACQU0F": {
+        "position": 1116,
+        "variable_label": "Academic qualifications gained - Teaching qualifications for schools or further education (below degree level)",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W9ACQU0G": {
+        "position": 1117,
+        "variable_label": "Academic qualifications gained - A/AS Levels or equivalent",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W9ACQU0H": {
+        "position": 1118,
+        "variable_label": "Academic qualifications gained - Grade A-C, Level 4-9",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W9ACQU0I": {
+        "position": 1119,
+        "variable_label": "Academic qualifications gained - Grade D-G, Level 1-3",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W9ACQU0J": {
+        "position": 1120,
+        "variable_label": "Academic qualifications gained - SCE Higher",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W9ACQU0K": {
+        "position": 1121,
+        "variable_label": "Academic qualifications gained - Scottish Certificate Sixth Year Studies",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W9ACQU0L": {
+        "position": 1122,
+        "variable_label": "Academic qualifications gained - SCE Standard",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W9ACQU0M": {
+        "position": 1123,
+        "variable_label": "Academic qualifications gained - National 4 and 5",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W9ACQU0N": {
+        "position": 1124,
+        "variable_label": "Academic qualifications gained - National 2 and 3",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W9ACQU0O": {
+        "position": 1125,
+        "variable_label": "Academic qualifications gained - Leaving Certificate",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W9ACQU0P": {
+        "position": 1126,
+        "variable_label": "Academic qualifications gained - Junior Certificate grade A-C",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W9ACQU0Q": {
+        "position": 1127,
+        "variable_label": "Academic qualifications gained - Junior Certificate grade D and below",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W9ACQU0R": {
+        "position": 1128,
+        "variable_label": "Academic qualifications gained - Other academic qualifications (including overseas)",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W9ACQU0S": {
+        "position": 1129,
+        "variable_label": "Academic qualifications gained - None of these qualifications",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W9ACQU0T": {
+        "position": 1130,
+        "variable_label": "Academic qualifications gained - Don't know",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W9ACQU0U": {
+        "position": 1131,
+        "variable_label": "Academic qualifications gained - Refused",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W9ACQU0V": {
+        "position": 1132,
+        "variable_label": "Academic qualifications gained - No answer",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W9VCQU0A": {
+        "position": 1134,
+        "variable_label": "Vocational qualifications gained - Professional qualifications at degree level e.g. graduate member of professional institute, chartered accountant or surveyor",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W9VCQU0B": {
+        "position": 1135,
+        "variable_label": "Vocational qualifications gained - Nursing or other medical qualifications (below degree level)",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W9VCQU0C": {
+        "position": 1136,
+        "variable_label": "Vocational qualifications gained - Level 4 or 5",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W9VCQU0D": {
+        "position": 1137,
+        "variable_label": "Vocational qualifications gained - Level 3",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W9VCQU0E": {
+        "position": 1138,
+        "variable_label": "Vocational qualifications gained - Level 2",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W9VCQU0F": {
+        "position": 1139,
+        "variable_label": "Vocational qualifications gained - Level 1",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W9VCQU0G": {
+        "position": 1140,
+        "variable_label": "Vocational qualifications gained - GNVQ Advanced",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W9VCQU0H": {
+        "position": 1141,
+        "variable_label": "Vocational qualifications gained - GNVQ Intermediate",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W9VCQU0I": {
+        "position": 1142,
+        "variable_label": "Vocational qualifications gained - Level 3",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W9VCQU0J": {
+        "position": 1143,
+        "variable_label": "Vocational qualifications gained - Level 2",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W9VCQU0K": {
+        "position": 1144,
+        "variable_label": "Vocational qualifications gained - Level Foundation",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W9VCQU0L": {
+        "position": 1145,
+        "variable_label": "Vocational qualifications gained - Advanced Craft, Part III",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W9VCQU0M": {
+        "position": 1146,
+        "variable_label": "Vocational qualifications gained - Craft, Part II",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W9VCQU0N": {
+        "position": 1147,
+        "variable_label": "Vocational qualifications gained - Craft, Part I",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W9VCQU0O": {
+        "position": 1148,
+        "variable_label": "Vocational qualifications gained - Level 3",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W9VCQU0P": {
+        "position": 1149,
+        "variable_label": "Vocational qualifications gained - Level 2",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W9VCQU0Q": {
+        "position": 1150,
+        "variable_label": "Vocational qualifications gained - Level 1",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W9VCQU0R": {
+        "position": 1151,
+        "variable_label": "Vocational qualifications gained - Advanced Diploma",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W9VCQU0S": {
+        "position": 1152,
+        "variable_label": "Vocational qualifications gained - Higher Diploma",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W9VCQU0T": {
+        "position": 1153,
+        "variable_label": "Vocational qualifications gained - RSA Diploma",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W9VCQU0U": {
+        "position": 1154,
+        "variable_label": "Vocational qualifications gained - RSA Stage I, II,III",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W9VCQU0V": {
+        "position": 1155,
+        "variable_label": "Vocational qualifications gained - Higher Level BTEC",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W9VCQU0W": {
+        "position": 1156,
+        "variable_label": "Vocational qualifications gained - BTEC National",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W9VCQU0X": {
+        "position": 1157,
+        "variable_label": "Vocational qualifications gained - BTEC First",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W9VCQU0Y": {
+        "position": 1158,
+        "variable_label": "Vocational qualifications gained - SCOTVEC National Certificate",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W9VCQU0Z": {
+        "position": 1159,
+        "variable_label": "Vocational qualifications gained - SCOTVEC first or general diploma",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W9VCQUAA": {
+        "position": 1160,
+        "variable_label": "Vocational qualifications gained - SCOTVEC general diploma",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W9VCQUAB": {
+        "position": 1161,
+        "variable_label": "Vocational qualifications gained - SCOTVEC modules",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W9VCQUAC": {
+        "position": 1162,
+        "variable_label": "Vocational qualifications gained - HND or  HNC",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W9VCQUAD": {
+        "position": 1163,
+        "variable_label": "Vocational qualifications gained - OND or ONCM",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W9VCQUAE": {
+        "position": 1164,
+        "variable_label": "Vocational qualifications gained - Junior certificate",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W9VCQUAF": {
+        "position": 1165,
+        "variable_label": "Vocational qualifications gained - Other vocational qualifications (including some overseas)",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W9VCQUAG": {
+        "position": 1166,
+        "variable_label": "Vocational qualifications gained - None of these qualifications",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W9VCQUAH": {
+        "position": 1167,
+        "variable_label": "Vocational qualifications gained - Don't know",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W9VCQUAI": {
+        "position": 1168,
+        "variable_label": "Vocational qualifications gained - Refused",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      }
+    }
+  },
+  "ns9_2022_derived_variables.tab": {
+    "file_info": {
+      "number_of_variables": 68,
+      "number_of_cases": 7279
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      },
+      "W9DANVQH": {
+        "position": 32,
+        "variable_label": "DV: Highest NVQ level from an academic qualification reported in Age 32 survey",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-1.0 thru -8.0 and -9.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Missing information",
+          "-1.0": "Not applicable",
+          "0.0": "NVQ Entry Level",
+          "1.0": "NVQ Level 1",
+          "2.0": "NVQ Level 2",
+          "3.0": "NVQ Level 3",
+          "4.0": "NVQ Level 4",
+          "5.0": "NVQ Level 5",
+          "95.0": "Other academic qualification",
+          "96.0": "None of these qualifications"
+        }
+      },
+      "W9DVNVQH": {
+        "position": 34,
+        "variable_label": "DV: Highest NVQ level from a vocational qualification reported in age 32 survey",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-1.0 thru -8.0 and -9.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Missing information",
+          "-1.0": "Not applicable",
+          "0.0": "NVQ Entry Level",
+          "1.0": "NVQ Level 1",
+          "2.0": "NVQ Level 2",
+          "3.0": "NVQ Level 3",
+          "4.0": "NVQ Level 4",
+          "5.0": "NVQ Level 5",
+          "95.0": "Other vocational qualification",
+          "96.0": "None of these qualifications"
+        }
+      }
+    }
+  }
+}

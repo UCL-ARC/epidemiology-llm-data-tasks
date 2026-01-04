@@ -1,0 +1,137 @@
+{
+  "wave_four_lsype_family_background_2020.tab": {
+    "file_info": {
+      "number_of_variables": 422,
+      "number_of_cases": 11791
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      },
+      "w4IncEstW": {
+        "position": 408,
+        "variable_label": "DV: Total gross weekly income for main parent (and partner)",
+        "type": "numeric",
+        "spss_measurement_level": "SCALE",
+        "spss_user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-996.0": "No parent in household",
+          "-99.0": "MP not interviewed",
+          "-92.0": "Refused",
+          "-1.0": "Don't know",
+          "1.0": "Up to £49",
+          "2.0": "£50 up to £99",
+          "3.0": "£100 up to £199",
+          "4.0": "£200 up to £299",
+          "5.0": "£300 up to £399",
+          "6.0": "£400 up to £499",
+          "7.0": "£500 up to £599",
+          "8.0": "£600 up to £699",
+          "9.0": "£700 up to £799",
+          "10.0": "£800 up to £899",
+          "11.0": "£900 up to £999",
+          "12.0": "£1,000 or more"
+        }
+      }
+    }
+  },
+  "wave_three_lsype_family_background_2020.tab": {
+    "file_info": {
+      "number_of_variables": 161,
+      "number_of_cases": 12430
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      },
+      "W3incestw": {
+        "position": 123,
+        "variable_label": "DV: Total income from work, benefits, and anything else for respondent (and partner) (Weekly)",
+        "type": "numeric",
+        "spss_measurement_level": "SCALE",
+        "spss_user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-99.0": "MP not interviewed",
+          "-92.0": "Refused",
+          "-1.0": "Don't know",
+          "1.0": "Up to £49",
+          "2.0": "£50 up to £99",
+          "3.0": "£100 up to £199",
+          "4.0": "£200 up to £299",
+          "5.0": "£300 up to £399",
+          "6.0": "£400 up to £499",
+          "7.0": "£500 up to £599",
+          "8.0": "£600 up to £699",
+          "9.0": "£700 up to £799",
+          "10.0": "£800 up to £899",
+          "11.0": "£900 up to £990",
+          "12.0": "£1,000 or more"
+        }
+      }
+    }
+  },
+  "wave_two_lsype_family_background_2020.tab": {
+    "file_info": {
+      "number_of_variables": 1030,
+      "number_of_cases": 13530
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      },
+      "W2GrsswkHH": {
+        "position": 882,
+        "variable_label": "DV: Gross weekly salary of HH (edited)",
+        "type": "numeric",
+        "spss_measurement_level": "SCALE",
+        "spss_user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-999.0": "Missing in error",
+          "-992.0": "No information - work status questions refused",
+          "-99.0": "HH not interviewed",
+          "-94.0": "insufficient information",
+          "-92.0": "Refused",
+          "-91.0": "Not applicable",
+          "-3.0": "Not yet paid",
+          "-1.0": "Don't know"
+        }
+      }
+    }
+  },
+  "wave_one_lsype_family_background_2020.tab": {
+    "file_info": {
+      "number_of_variables": 381,
+      "number_of_cases": 15760
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      },
+      "W1GrsswkHH": {
+        "position": 378,
+        "variable_label": "DV: Gross weekly salary of HH (edited)",
+        "type": "numeric",
+        "spss_measurement_level": "SCALE",
+        "spss_user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-999.0": "Missing in error",
+          "-992.0": "No information - work status questions refused",
+          "-99.0": "HH not interviewed",
+          "-94.0": "Insufficent information",
+          "-92.0": "Refused",
+          "-91.0": "Not applicable",
+          "-3.0": "Not yet paid",
+          "-1.0": "Don't know"
+        }
+      }
+    }
+  }
+}

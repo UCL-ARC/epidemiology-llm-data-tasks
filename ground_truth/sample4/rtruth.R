@@ -1,5 +1,3 @@
-# This script is used to run the Next Steps MSEU 
-# Set CRAN mirror before installing packages
 options(repos = c(CRAN = "https://cloud.r-project.org/"))
 list_of_packages <- c('haven', 'dplyr', 'purrr', 'here', 'labelled', 'readr')
 new_packages <- list_of_packages[!(list_of_packages %in% installed.packages()[,"Package"])]
@@ -13,48 +11,34 @@ suppressPackageStartupMessages({
   library(readr)  # for reading delimited files
 })
 
+# Data path
 # Set folder path (change as needed)
-DATA_PATH <- 'data/input/' # it's a constant so all caps
+data_path <- 'data/input/' 
 
 
-sweeps <- list(
-  S1youngperson = "wave_one_lsype_young_person_2020.tab",
-  S4youngperson = "wave_four_lsype_young_person_2020.tab",
-  S6youngperson = "wave_six_lsype_young_person_2020.tab",
-  S7youngperson = "wave_seven_lsype_young_person_2020.tab",
-  S8selfcompletion = "ns8_2015_self_completion.tab",
-  S9maininterview = "ns9_2022_main_interview.tab"
-)
+# Read required datasets only
+S1yp <- read_delim(file.path(data_path, "wave_one_lsype_young_person_2020.tab"), show_col_types = FALSE)
+S4yp <- read_delim(file.path(data_path, "wave_four_lsype_young_person_2020.tab"), show_col_types = FALSE)
+S6yp <- read_delim(file.path(data_path, "wave_six_lsype_young_person_2020.tab"), show_col_types = FALSE)
+S7yp <- read_delim(file.path(data_path, "wave_seven_lsype_young_person_2020.tab"), show_col_types = FALSE)
+S8sc <- read_delim(file.path(data_path, "ns8_2015_self_completion.tab"), show_col_types = FALSE)
+S9mi <- read_delim(file.path(data_path, "ns9_2022_main_interview.tab"), show_col_types = FALSE)
 
-
-#### sexual orientation ####
-# Load sexuality variables
 sexuality_vars <- list(
-  S1 = read_delim(file.path(DATA_PATH, sweeps$S1youngperson), delim = "\t", show_col_types = FALSE) %>% 
-    select(NSID),
-  S4 = read_delim(file.path(DATA_PATH, sweeps$S4youngperson), delim = "\t", show_col_types = FALSE) %>% 
-    select(NSID),
-  S6 = read_delim(file.path(DATA_PATH, sweeps$S6youngperson), delim = "\t", show_col_types = FALSE) %>% 
-    select(NSID, sori19 = W6SexualityYP),
-  S7 = read_delim(file.path(DATA_PATH, sweeps$S7youngperson), delim = "\t", show_col_types = FALSE) %>% 
-    select(NSID, sori20 = W7SexualityYP),
-  S8 = read_delim(file.path(DATA_PATH, sweeps$S8selfcompletion), delim = "\t", show_col_types = FALSE) %>% 
-    select(NSID, sori25 = W8SEXUALITY),
-  S9 = read_delim(file.path(DATA_PATH, sweeps$S9maininterview), delim = "\t", show_col_types = FALSE) %>% 
-    select(NSID, sori32 = W9SORI)
+  S1 = S1yp %>% select(NSID),
+  S4 = S4yp %>% select(NSID),
+  S6 = S6yp %>% select(NSID, sori19 = W6SexualityYP),
+  S7 = S7yp %>% select(NSID, sori20 = W7SexualityYP),
+  S8 = S8sc %>% select(NSID, sori25 = W8SEXUALITY),
+  S9 = S9mi %>% select(NSID, sori32 = W9SORI)
 )
 
-# Merge by ID
 sexuality_all <- reduce(sexuality_vars, full_join, by = "NSID")
 
-# recode missing values and response categories
 sexuality_all <- sexuality_all %>%
   mutate(
     sori19 = case_when(
-      sori19 == 1 ~ 1,
-      sori19 == 2 ~ 2,
-      sori19 == 3 ~ 3,
-      sori19 == 4 ~ 4,
+      sori19 %in% 1:4 ~ sori19,
       sori19 %in% c(-100, -97, -3) ~ -3,
       sori19 %in% c(-92, -9) ~ -9,
       sori19 %in% c(-91, -1, -8) ~ -8,
@@ -62,10 +46,7 @@ sexuality_all <- sexuality_all %>%
       TRUE ~ -3
     ),
     sori20 = case_when(
-      sori20 == 1 ~ 1,
-      sori20 == 2 ~ 2,
-      sori20 == 3 ~ 3,
-      sori20 == 4 ~ 4,
+      sori20 %in% 1:4 ~ sori20,
       sori20 %in% c(-100, -97, -3) ~ -3,
       sori20 %in% c(-92, -9) ~ -9,
       sori20 %in% c(-91, -1, -8) ~ -8,
@@ -73,20 +54,13 @@ sexuality_all <- sexuality_all %>%
       TRUE ~ -3
     ),
     sori25 = case_when(
-      sori25 == 1 ~ 1,
-      sori25 == 2 ~ 2,
-      sori25 == 3 ~ 3,
-      sori25 == 4 ~ 4,
+      sori25 %in% 1:4 ~ sori25,
       sori25 == -9 ~ -9,
-      sori25 == -8 ~ -8,
-      sori25 == -1 ~ -8,
+      sori25 %in% c(-8, -1) ~ -8,
       TRUE ~ -3
     ),
     sori32 = case_when(
-      sori32 == 1 ~ 1,
-      sori32 == 2 ~ 2,
-      sori32 == 3 ~ 3,
-      sori32 == 4 ~ 4,
+      sori32 %in% 1:4 ~ sori32,
       sori32 == 5 ~ -7,
       sori32 == -9 ~ -9,
       sori32 %in% c(-8, -1) ~ -8,
@@ -94,12 +68,29 @@ sexuality_all <- sexuality_all %>%
       TRUE ~ -3
     )
   ) %>%
+  mutate(across(
+    starts_with("sori"),
+    ~ factor(
+      .x,
+      levels = c(1, 2, 3, 4, -1, -2, -3, -7, -8, -9),
+      labels = c(
+        "Heterosexual/straight",
+        "Gay/lesbian",
+        "Bisexual",
+        "Other",
+        "Item not applicable",
+        "Script error/information lost",
+        "Not asked at the fieldwork stage/participated/interviewed",
+        "Prefer not to say",
+        "Don’t know/insufficient information",
+        "Refusal"
+      )
+    )
+  )) %>%
   select(NSID, sori19, sori20, sori25, sori32)
 
-
-
-# Create output directory if it doesn't exist
+  # Create output directory if it doesn't exist
 dir.create(file.path(getwd(), "data", "output"), recursive = TRUE, showWarnings = FALSE)
 
-output_data_path <- file.path(getwd(), "data", "output", "output.csv")
+output_data_path <- file.path(getwd(), "data", "output","output.csv")
 write.csv(sexuality_all, output_data_path, row.names = FALSE)
