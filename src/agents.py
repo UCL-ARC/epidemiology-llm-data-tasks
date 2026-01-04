@@ -199,12 +199,17 @@ if __name__ == "__main__":
     with tasks_path.open() as f:
         tasks = yaml.safe_load(f)["tasks"]
 
-    for test_dir in [
-        "./ground_truth/sample1",
-        "./ground_truth/sample2",
-        "./ground_truth/sample3",
-        "./ground_truth/sample4",
-    ]:
+    ground_truth_dir = Path("./ground_truth")
+    test_dirs = sorted(
+        [
+            p
+            for p in ground_truth_dir.iterdir()
+            if p.is_dir() and p.name.startswith("sample") and p.name[6:].isdigit()
+        ],
+        key=lambda p: int(p.name[6:]),
+    )
+
+    for test_dir in test_dirs:
         logger.info(f"\n=== Testing with context: {test_dir} ===")
 
         task_path = Path(test_dir) / "task.yml"
