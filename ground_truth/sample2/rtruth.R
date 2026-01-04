@@ -1,5 +1,3 @@
-# This script is used to run the Next Steps MSEU 
-# Set CRAN mirror before installing packages
 options(repos = c(CRAN = "https://cloud.r-project.org/"))
 list_of_packages <- c('haven', 'dplyr', 'purrr', 'here', 'labelled', 'readr')
 new_packages <- list_of_packages[!(list_of_packages %in% installed.packages()[,"Package"])]
@@ -13,56 +11,38 @@ suppressPackageStartupMessages({
   library(readr)  # for reading delimited files
 })
 
+# Data path
 # Set folder path (change as needed)
-DATA_PATH <- 'data/input/' # it's a constant so all caps
+data_path <- 'data/input/' 
 
-# Define sweep file names
-sweeps <- list(
-  S1youngperson = "wave_one_lsype_young_person_2020.tab",
-  S2youngperson = "wave_two_lsype_young_person_2020.tab",
-  S4youngperson = "wave_four_lsype_young_person_2020.tab",
-  S8derivedvariable = "ns8_2015_derived.tab",
-  S9derivedvariable = "ns9_2022_derived_variables.tab"
+S1yp <- read_delim(file.path(data_path, "wave_one_lsype_young_person_2020.tab"),show_col_types = FALSE)
+S2yp <- read_delim(file.path(data_path, "wave_two_lsype_young_person_2020.tab"), show_col_types = FALSE)
+S4yp <- read_delim(file.path(data_path, "wave_four_lsype_young_person_2020.tab"), show_col_types = FALSE)
+S8dv <- read_delim(file.path(data_path, "ns8_2015_derived.tab"), show_col_types = FALSE)
+S9dv <- read_delim(file.path(data_path, "ns9_2022_derived_variables.tab"), show_col_types = FALSE)
+
+eth_vars <- list(
+  S1 = S1yp %>% select(NSID, eth_S1 = W1ethnic2YP),
+  S2 = S2yp %>% select(NSID, eth_S2 = W2ethnicYP),
+  S4 = S4yp %>% select(NSID, eth_S4 = w4ethnic2YP),
+  S8 = S8dv %>% select(NSID, eth_S8 = W8DETHN15),
+  S9 = S9dv %>% select(NSID, eth_S9 = W9DETHN15)
 )
 
-#### ethnicity ####
-# Load ethnicity variables from relevant sweeps
-ethnicity_vars <- list(
-  S1 = read_delim(file.path(DATA_PATH, sweeps$S1youngperson), delim = "\t",show_col_types = FALSE) %>% 
-    select(NSID, eth_S1 = W1ethnic2YP),
-  S2 = read_delim(file.path(DATA_PATH, sweeps$S2youngperson), delim = "\t",show_col_types = FALSE) %>% 
-    select(NSID, eth_S2 = W2ethnicYP),
-  S4 = read_delim(file.path(DATA_PATH, sweeps$S4youngperson), delim = "\t", show_col_types = FALSE) %>% 
-    select(NSID, eth_S4 = w4ethnic2YP),
-  S8 = read_delim(file.path(DATA_PATH, sweeps$S8derivedvariable), delim = "\t", show_col_types = FALSE) %>% 
-    select(NSID, eth_S8 = W8DETHN15),
-  S9 = read_delim(file.path(DATA_PATH, sweeps$S9derivedvariable), delim = "\t", show_col_types = FALSE) %>% 
-    select(NSID, eth_S9 = W9DETHN15)
-)
+eth_all <- reduce(eth_vars, full_join, by = "NSID")
 
-# Merge into one dataset
-eth_all <- reduce(ethnicity_vars, full_join, by = "NSID")
-
-# Harmonise missing values for S1–S4
-# Create a vector of ethnicity variables
-eth_vars <- c("eth_S1", "eth_S2", "eth_S4")
-
-# Apply the recoding (recode missing values in Sweeps 1-4)
 eth_all <- eth_all %>%
-  mutate(across(all_of(eth_vars), ~ case_when(
-    .x == -999 ~ -2,
-    .x == -998 ~ -2,
-    .x == -997 ~ -2,
-    .x == -99  ~ -3,
-    .x == -94  ~ -2,
-    .x == -92  ~ -9,
-    .x == -91  ~ -1,
-    .x == -1   ~ -8,
-    TRUE ~ .x
-  )))
-
-# Derive ethnicity: use S1 if available, else later
-eth_all <- eth_all %>%
+  mutate(across(
+    c(eth_S1, eth_S2, eth_S4),
+    ~ case_when(
+      .x %in% c(-999, -998, -997, -94) ~ -2,
+      .x == -99 ~ -3,
+      .x == -92 ~ -9,
+      .x == -91 ~ -1,
+      .x == -1 ~ -8,
+      TRUE ~ .x
+    )
+  )) %>%
   mutate(
     eth = case_when(
       !is.na(eth_S1) & eth_S1 > 0 ~ eth_S1,
@@ -70,18 +50,18 @@ eth_all <- eth_all %>%
       !is.na(eth_S4) & eth_S4 > 0 ~ eth_S4,
       !is.na(eth_S8) & eth_S8 > 0 ~ eth_S8,
       !is.na(eth_S9) & eth_S9 > 0 ~ eth_S9,
-      !is.na(eth_S1) & eth_S1 < 1 ~ eth_S1,
-      !is.na(eth_S2) & eth_S2 < 1 ~ eth_S2,
-      !is.na(eth_S4) & eth_S4 < 1 ~ eth_S4,
-      !is.na(eth_S8) & eth_S8 < 1 ~ eth_S8,
-      !is.na(eth_S9) & eth_S9 < 1 ~ eth_S9,
-      TRUE ~ -3  # Not interviewed/present
+      !is.na(eth_S1) ~ eth_S1,
+      !is.na(eth_S2) ~ eth_S2,
+      !is.na(eth_S4) ~ eth_S4,
+      !is.na(eth_S8) ~ eth_S8,
+      !is.na(eth_S9) ~ eth_S9,
+      TRUE ~ -3
     )
-  )%>%
+  ) %>%
   select(NSID, eth)
 
 # Create output directory if it doesn't exist
 dir.create(file.path(getwd(), "data", "output"), recursive = TRUE, showWarnings = FALSE)
 
-output_data_path <- file.path(getwd(), "data", "output", "output.csv")
+output_data_path <- file.path(getwd(), "data", "output","output.csv")
 write.csv(eth_all, output_data_path, row.names = FALSE)

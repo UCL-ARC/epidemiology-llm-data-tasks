@@ -1,0 +1,226 @@
+{
+  "wave_one_lsype_young_person_2020.tab": {
+    "file_info": {
+      "number_of_variables": 350,
+      "number_of_cases": 15760
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      }
+    }
+  },
+  "wave_four_lsype_young_person_2020.tab": {
+    "file_info": {
+      "number_of_variables": 1049,
+      "number_of_cases": 11791
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      },
+      "W4empsYP": {
+        "position": 1001,
+        "variable_label": "DV: Employment status of young person",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-999.0": "Missing household information - lost",
+          "-94.0": "Insufficient information",
+          "-92.0": "Refused",
+          "-91.0": "Not applicable - still at school",
+          "1.0": "Doing paid work for 30 or more hours a week",
+          "2.0": "Doing paid work for fewer than 30 hours a week",
+          "3.0": "Unemployed/ Looking for a job",
+          "4.0": "On a training course or scheme",
+          "5.0": "In full-time education/ at school",
+          "6.0": "Looking after the family/ household",
+          "7.0": "Retired from work altogether",
+          "8.0": "Sick/ disabled",
+          "9.0": "Other"
+        }
+      }
+    }
+  },
+  "wave_five_lsype_young_person_2020.tab": {
+    "file_info": {
+      "number_of_variables": 730,
+      "number_of_cases": 10422
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      },
+      "W5mainactYP": {
+        "position": 702,
+        "variable_label": "DV: Current main activity of YP (detailed)",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-94.0": "Insufficient information",
+          "1.0": "Apprenticeship",
+          "2.0": "Part of week with employer, part of week at college",
+          "3.0": "In paid work",
+          "4.0": "In education",
+          "5.0": "On a training course/scheme",
+          "6.0": "On the Entry to Employment scheme",
+          "7.0": "Unemployed and looking for work",
+          "8.0": "Looking after the family and home",
+          "9.0": "Waiting for a course or job to start",
+          "10.0": "Waiting for exam results",
+          "11.0": "Waiting for the result of a job application"
+        }
+      }
+    }
+  },
+  "wave_six_lsype_young_person_2020.tab": {
+    "file_info": {
+      "number_of_variables": 760,
+      "number_of_cases": 9791
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      },
+      "W6TCurrentAct": {
+        "position": 56,
+        "variable_label": "Admin: Derived main current activity",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-91.0": "Unable to classify",
+          "1.0": "Doing a course at a university",
+          "2.0": "In education",
+          "3.0": "In paid work",
+          "4.0": "On a training course or scheme",
+          "5.0": "Doing an Apprenticeship",
+          "6.0": "Waiting for a course or job to start",
+          "7.0": "Looking after the family and home",
+          "8.0": "Unemployed and looking for work",
+          "9.0": "Waiting for exam results or result of job application",
+          "10.0": "Spending part of the week with an employer and part of the week at college",
+          "11.0": "Doing voluntary work"
+        }
+      }
+    }
+  },
+  "wave_seven_lsype_young_person_2020.tab": {
+    "file_info": {
+      "number_of_variables": 850,
+      "number_of_cases": 8675
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      },
+      "W7TCurrentAct": {
+        "position": 25,
+        "variable_label": "Admin: Derived current main activity at time of interview",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-91.0": "Not applicable",
+          "1.0": "University",
+          "2.0": "School/college education",
+          "3.0": "Paid work",
+          "4.0": "Training course/scheme",
+          "5.0": "Apprenticeship",
+          "6.0": "Waiting for a course or job to start",
+          "7.0": "Looking after home/family",
+          "8.0": "Unemployed and looking for work",
+          "9.0": "Part time job and part time college",
+          "10.0": "Voluntary work",
+          "11.0": "Government employment programme",
+          "12.0": "Travelling",
+          "13.0": "Break from work/college",
+          "14.0": "Ill or disabled",
+          "15.0": "Not defined"
+        }
+      }
+    }
+  },
+  "ns8_2015_derived.tab": {
+    "file_info": {
+      "number_of_variables": 53,
+      "number_of_cases": 7705
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      },
+      "W8DACTIVITYC": {
+        "position": 16,
+        "variable_label": "DV: Current activity of CM - backcoded",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-9.0 thru -8.0 and -1.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Insufficient information",
+          "-1.0": "Not applicable",
+          "1.0": "Employee - in paid work",
+          "2.0": "Self employed",
+          "3.0": "In unpaid/voluntary work",
+          "4.0": "Unemployed",
+          "5.0": "Education: School/college/university",
+          "6.0": "Apprenticeship",
+          "7.0": "On gov't scheme for employment training",
+          "8.0": "Sick or disabled",
+          "9.0": "Looking after home or family",
+          "10.0": "Something else"
+        }
+      }
+    }
+  },
+  "ns9_2022_derived_variables.tab": {
+    "file_info": {
+      "number_of_variables": 68,
+      "number_of_cases": 7279
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      },
+      "W9DACTIVITYC": {
+        "position": 23,
+        "variable_label": "DV: Current activity of CM - backcoded",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-1.0 thru -8.0 and -9.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Insufficient information",
+          "-1.0": "Not applicable",
+          "1.0": "Employee - in paid work",
+          "2.0": "Self employed",
+          "3.0": "In unpaid/voluntary work",
+          "4.0": "Unemployed",
+          "5.0": "Education: School/college/university",
+          "6.0": "Apprenticeship",
+          "7.0": "On gov't scheme for employment training",
+          "8.0": "Sick or disabled",
+          "9.0": "Looking after home or family",
+          "10.0": "Something else"
+        }
+      }
+    }
+  }
+}
