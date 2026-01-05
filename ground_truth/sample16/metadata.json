@@ -2,7 +2,8 @@
   "wave_four_lsype_family_background_2020.tab": {
     "file_info": {
       "number_of_variables": 422,
-      "number_of_cases": 11791
+      "number_of_cases": 11791,
+      "description": "Sweep 4 (Age 17) Family Background Data File"
     },
     "variables": {
       "NSID": {
@@ -40,7 +41,8 @@
   "wave_three_lsype_family_background_2020.tab": {
     "file_info": {
       "number_of_variables": 161,
-      "number_of_cases": 12430
+      "number_of_cases": 12430,
+      "description": "Sweep 3 (Age 16) Family Background Data File"
     },
     "variables": {
       "NSID": {
@@ -77,7 +79,8 @@
   "wave_two_lsype_family_background_2020.tab": {
     "file_info": {
       "number_of_variables": 1030,
-      "number_of_cases": 13530
+      "number_of_cases": 13530,
+      "description": "Sweep 2 (Age 15) Family Background Data File"
     },
     "variables": {
       "NSID": {
@@ -107,7 +110,8 @@
   "wave_one_lsype_family_background_2020.tab": {
     "file_info": {
       "number_of_variables": 381,
-      "number_of_cases": 15760
+      "number_of_cases": 15760,
+      "description": "Sweep 1 (Age 14) Family Background Data File"
     },
     "variables": {
       "NSID": {
