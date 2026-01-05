@@ -216,17 +216,24 @@ if __name__ == "__main__":
         with task_path.open() as f:
             task = yaml.safe_load(f)
 
-        task_type = task.get("task_type", "unknown")
-        # Get  the first item where key1 equals val
-        task_data = next(
-            (item for item in tasks if item.get("task_type") == task_type), None
-        )
+        override = task.get("override", None)
 
-        if task_data is None:
-            logger.warning(f"No task data found for type: {task_type}")
-            continue
+        # TO DO: add examples of override usage in ground_truth
+        if override:
+            prompt = override
 
-        prompt = task_data["prompt"]
+        else:
+            task_type = task.get("task_type", "unknown")
+            # Get  the first item where key1 equals val
+            task_data = next(
+                (item for item in tasks if item.get("task_type") == task_type), None
+            )
+
+            if task_data is None:
+                logger.warning(f"No task data found for type: {task_type}")
+                continue
+
+            prompt = task_data["prompt"]
 
         metadata_path = Path(test_dir) / "metadata.json"
         with metadata_path.open() as f:
