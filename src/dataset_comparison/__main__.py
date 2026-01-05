@@ -1,5 +1,6 @@
 """CLI entry point for dataset comparison."""
 
+import sys
 from pathlib import Path
 
 import pandas as pd
@@ -10,6 +11,8 @@ from . import DataComparator, print_comparison_report
 
 def main() -> None:
     """Run comparison on sample data directories."""
+    logger.remove()
+    logger.add(sys.stderr, level="INFO")
     for output_dir in Path("tmp/smolagent_context").glob("sample*/data/output"):
         gt_file = output_dir / "output.csv"
         pred_file = output_dir / "cleaned_data.csv"
