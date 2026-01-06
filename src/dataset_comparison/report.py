@@ -1,5 +1,6 @@
 """Report generation for data comparison results."""
 
+import pandas as pd
 from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
@@ -146,3 +147,214 @@ def print_comparison_report(result: DataComparisonResult) -> None:  # noqa: PLR0
         )
 
     console.rule("[bold blue]END REPORT[/bold blue]")
+
+
+def aggregate_comparison_results(  # noqa: PLR0915
+    results: list[tuple[str, DataComparisonResult]],
+) -> pd.DataFrame:
+    """
+    Aggregate comparison results across multiple samples into a summary dataframe.
+
+    Args:
+        results: List of (sample_name, DataComparisonResult) tuples.
+
+    Returns:
+        DataFrame with aggregated metrics for each sample plus an overall aggregate row.
+
+    """
+    results_summary = []
+
+    for sample_name, result in results:
+        # Count columns
+        matched_cols = sum(1 for m in result.column_matches if m.pred_column)
+        unmatched_gt_cols = len(result.unmatched_gt_columns)
+        unmatched_pred_cols = len(result.unmatched_pred_columns)
+        total_gt_cols = matched_cols + unmatched_gt_cols
+        total_pred_cols = matched_cols + unmatched_pred_cols
+
+        # Count matched column types
+        matched_numeric_cols = sum(
+            1 for comp in result.column_comparisons if comp.numeric_comparison
+        )
+        matched_categorical_cols = sum(
+            1 for comp in result.column_comparisons if comp.categorical_comparison
+        )
+
+        # Calculate average numeric metrics
+        numeric_rmse_values = [
+            comp.numeric_comparison.rmse
+            for comp in result.column_comparisons
+            if comp.numeric_comparison
+        ]
+        numeric_corr_values = [
+            comp.numeric_comparison.correlation
+            for comp in result.column_comparisons
+            if comp.numeric_comparison
+            and comp.numeric_comparison.correlation is not None
+        ]
+
+        # Calculate average categorical metrics
+        categorical_exact_match = [
+            comp.categorical_comparison.exact_match_rate
+            for comp in result.column_comparisons
+            if comp.categorical_comparison
+        ]
+        categorical_overlap = [
+            comp.categorical_comparison.category_overlap_score
+            for comp in result.column_comparisons
+            if comp.categorical_comparison
+        ]
+
+        results_summary.append(
+            {
+                "sample": sample_name,
+                "gt_rows": result.join_completeness.gt_row_count,
+                "pred_rows": result.join_completeness.pred_row_count,
+                "joined_rows": result.join_completeness.joined_row_count,
+                "row_completeness": result.join_completeness.completeness_score,
+                "gt_cols": total_gt_cols,
+                "pred_cols": total_pred_cols,
+                "matched_cols": matched_cols,
+                "matched_numeric_cols": matched_numeric_cols,
+                "matched_categorical_cols": matched_categorical_cols,
+                "unmatched_gt_cols": unmatched_gt_cols,
+                "unmatched_pred_cols": unmatched_pred_cols,
+                "col_match_rate": matched_cols / total_gt_cols
+                if total_gt_cols > 0
+                else 0,
+                "avg_numeric_rmse": sum(numeric_rmse_values) / len(numeric_rmse_values)
+                if numeric_rmse_values
+                else None,
+                "avg_numeric_corr": sum(numeric_corr_values) / len(numeric_corr_values)
+                if numeric_corr_values
+                else None,
+                "avg_categorical_exact_match": sum(categorical_exact_match)
+                / len(categorical_exact_match)
+                if categorical_exact_match
+                else None,
+                "avg_categorical_overlap": sum(categorical_overlap)
+                / len(categorical_overlap)
+                if categorical_overlap
+                else None,
+            }
+        )
+
+    # Create summary dataframe
+    summary_df = pd.DataFrame(results_summary)
+
+    # Add aggregate row
+    if len(summary_df) > 0:
+        aggregate_row = {
+            "sample": "AGGREGATE",
+            "gt_rows": summary_df["gt_rows"].sum(),
+            "pred_rows": summary_df["pred_rows"].sum(),
+            "joined_rows": summary_df["joined_rows"].sum(),
+            "row_completeness": summary_df["row_completeness"].mean(),
+            "gt_cols": summary_df["gt_cols"].sum(),
+            "pred_cols": summary_df["pred_cols"].sum(),
+            "matched_cols": summary_df["matched_cols"].sum(),
+            "matched_numeric_cols": summary_df["matched_numeric_cols"].sum(),
+            "matched_categorical_cols": summary_df["matched_categorical_cols"].sum(),
+            "unmatched_gt_cols": summary_df["unmatched_gt_cols"].sum(),
+            "unmatched_pred_cols": summary_df["unmatched_pred_cols"].sum(),
+            "col_match_rate": summary_df["col_match_rate"].mean(),
+            "avg_numeric_rmse": summary_df["avg_numeric_rmse"].mean(),
+            "avg_numeric_corr": summary_df["avg_numeric_corr"].mean(),
+            "avg_categorical_exact_match": summary_df[
+                "avg_categorical_exact_match"
+            ].mean(),
+            "avg_categorical_overlap": summary_df["avg_categorical_overlap"].mean(),
+        }
+        summary_df = pd.concat(
+            [summary_df, pd.DataFrame([aggregate_row])], ignore_index=True
+        )
+
+        # Print aggregate metrics with rich formatting
+        console = Console()
+        console.print()
+        console.rule("[bold blue]AGGREGATE EXPERIMENT METRICS[/bold blue]")
+
+        metrics_table = Table(show_header=True, header_style="bold cyan")
+        metrics_table.add_column("Metric", style="white")
+        metrics_table.add_column("Value", justify="right")
+
+        # Column counts
+        metrics_table.add_row(
+            "Total Matched Columns",
+            f"[bold]{int(aggregate_row['matched_cols'])}[/bold]",
+        )
+        metrics_table.add_row(
+            "  → Numeric Columns",
+            f"[cyan]{int(aggregate_row['matched_numeric_cols'])}[/cyan]",
+        )
+        metrics_table.add_row(
+            "  → Categorical Columns",
+            f"[cyan]{int(aggregate_row['matched_categorical_cols'])}[/cyan]",
+        )
+
+        # Column match rate
+        col_match_rate = aggregate_row["col_match_rate"]
+        match_style = (
+            "green"
+            if col_match_rate >= 0.8  # noqa: PLR2004
+            else "yellow"
+            if col_match_rate >= 0.5  # noqa: PLR2004
+            else "red"
+        )
+        metrics_table.add_row(
+            "Column Match Rate", f"[{match_style}]{col_match_rate:.1%}[/{match_style}]"
+        )
+
+        # Numeric RMSE
+        if pd.notna(aggregate_row["avg_numeric_rmse"]):
+            metrics_table.add_row(
+                "Avg Numeric RMSE", f"{aggregate_row['avg_numeric_rmse']:.4f}"
+            )
+        else:
+            metrics_table.add_row("Avg Numeric RMSE", "[dim]N/A[/dim]")
+
+        # Numeric Correlation
+        if pd.notna(aggregate_row["avg_numeric_corr"]):
+            corr = aggregate_row["avg_numeric_corr"]
+            corr_style = "green" if corr >= 0.8 else "yellow" if corr >= 0.5 else "red"  # noqa: PLR2004
+            metrics_table.add_row(
+                "Avg Numeric Correlation", f"[{corr_style}]{corr:.4f}[/{corr_style}]"
+            )
+        else:
+            metrics_table.add_row("Avg Numeric Correlation", "[dim]N/A[/dim]")
+
+        # Categorical exact match
+        if pd.notna(aggregate_row["avg_categorical_exact_match"]):
+            exact_match = aggregate_row["avg_categorical_exact_match"]
+            exact_style = (
+                "green"
+                if exact_match >= 0.9  # noqa: PLR2004
+                else "yellow"
+                if exact_match >= 0.7  # noqa: PLR2004
+                else "red"
+            )
+            metrics_table.add_row(
+                "Avg Categorical Exact Match",
+                f"[{exact_style}]{exact_match:.1%}[/{exact_style}]",
+            )
+        else:
+            metrics_table.add_row("Avg Categorical Exact Match", "[dim]N/A[/dim]")
+
+        # Categorical overlap
+        if pd.notna(aggregate_row["avg_categorical_overlap"]):
+            overlap = aggregate_row["avg_categorical_overlap"]
+            overlap_style = (
+                "green" if overlap >= 0.8 else "yellow" if overlap >= 0.5 else "red"  # noqa: PLR2004
+            )
+            metrics_table.add_row(
+                "Avg Categorical Overlap",
+                f"[{overlap_style}]{overlap:.3f}[/{overlap_style}]",
+            )
+        else:
+            metrics_table.add_row("Avg Categorical Overlap", "[dim]N/A[/dim]")
+
+        console.print(metrics_table)
+        console.rule("[bold blue]END AGGREGATE METRICS[/bold blue]")
+        console.print()
+
+    return summary_df
