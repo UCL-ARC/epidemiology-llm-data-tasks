@@ -175,7 +175,7 @@ def compare_categorical(
                 best_match = pred_cat
 
         if best_match is not None and best_score >= categorical_match_threshold:
-            logger.info(
+            logger.debug(
                 f"Mapping '{category}' to '{best_match}' with similarity "
                 f"{best_score:.2f}"
             )

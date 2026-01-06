@@ -13,7 +13,8 @@ def main() -> None:
     """Run comparison on sample data directories."""
     logger.remove()
     logger.add(sys.stderr, level="INFO")
-    for output_dir in Path("tmp/smolagent_context").glob("sample*/data/output"):
+    # TO DO: remove the hardcoding here
+    for output_dir in Path("tmp/smolagent_context").glob("sample6*/data/output"):
         gt_file = output_dir / "output.csv"
         pred_file = output_dir / "cleaned_data.csv"
 
@@ -28,11 +29,12 @@ def main() -> None:
 
         comparator = DataComparator(
             categorical_threshold=20,
-            match_threshold=0.5,
+            match_threshold=0.8,
         )
 
-        result = comparator.compare(gt_df, pred_df)
+        result, output_df = comparator.compare(gt_df, pred_df)
         print_comparison_report(result)
+        output_df.to_csv(output_dir / "comparison_output.csv")
 
 
 if __name__ == "__main__":
