@@ -19,7 +19,7 @@ from .models import (
     MatchMethod,
     NumericComparison,
 )
-from .report import print_comparison_report
+from .report import aggregate_comparison_results, print_comparison_report
 
 __all__ = [
     "CategoricalComparison",
@@ -32,6 +32,7 @@ __all__ = [
     "JoinCompleteness",
     "MatchMethod",
     "NumericComparison",
+    "aggregate_comparison_results",
     "compare_categorical",
     "compare_numeric",
     "compute_categorical_similarity",
