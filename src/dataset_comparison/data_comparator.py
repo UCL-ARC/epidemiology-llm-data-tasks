@@ -192,6 +192,7 @@ class DataComparator:
             similarity_matrix[gt_col] = {}
 
             for pred_col in unmatched_pred_columns:
+                logger.debug(f"Comparing data of GT '{gt_col}' to pred '{pred_col}'")
                 pred_series = joined_df[pred_col]
                 pred_type = infer_column_type(
                     pred_series, categorical_threshold=self.categorical_threshold
@@ -258,7 +259,7 @@ class DataComparator:
         semantic_weighting: float = 1.0,
         *,
         use_data_matching: bool = True,
-    ) -> DataComparisonResult:
+    ) -> tuple[DataComparisonResult, pd.DataFrame]:
         """
         Perform full comparison between ground truth and predicted dataframes.
 
@@ -296,14 +297,22 @@ class DataComparator:
         unmatched_pred = [c for c in pred_df.columns if c not in matched_pred_cols]
 
         if use_data_matching and unmatched_gt and unmatched_pred:
+            logger.info(
+                f"Attempting data-based matching for "
+                f"the following unmatched GT columns: {unmatched_gt}"
+            )
+
             data_matches = self._data_match_columns(
                 joined_df, unmatched_gt, unmatched_pred
             )
+
             data_matched_gt = {m.gt_column for m in data_matches if m.pred_column}
             column_matches = [
                 m for m in column_matches if m.gt_column not in data_matched_gt
             ]
-            column_matches.extend(data_matches)
+
+            # only extend with successful matches
+            column_matches.extend([m for m in data_matches if m.pred_column])
             matched_pred_cols.update(
                 m.pred_column for m in data_matches if m.pred_column
             )
@@ -313,6 +322,34 @@ class DataComparator:
             for m in column_matches
             if m.pred_column
         ]
+
+        # build output dataframe with matched and compared columns
+        output_df = pd.DataFrame(index=joined_df.index)
+
+        for match in column_matches:
+            if match.pred_column:
+                # Matched columns - place side by side
+                gt_col_name = (
+                    f"{match.gt_column}_gt"
+                    if f"{match.gt_column}_gt" in joined_df.columns
+                    else match.gt_column
+                )
+                pred_col_name = (
+                    f"{match.pred_column}_pred"
+                    if f"{match.pred_column}_pred" in joined_df.columns
+                    else match.pred_column
+                )
+
+                output_df[f"{match.gt_column}_gt"] = joined_df[gt_col_name]
+                output_df[f"{match.gt_column}_pred"] = joined_df[pred_col_name]
+            else:
+                # Unmatched GT columns - append with _unmatched suffix
+                gt_col_name = (
+                    f"{match.gt_column}_gt"
+                    if f"{match.gt_column}_gt" in joined_df.columns
+                    else match.gt_column
+                )
+                output_df[f"{match.gt_column}_unmatched"] = joined_df[gt_col_name]
 
         return DataComparisonResult(
             primary_key=primary_key,
@@ -325,4 +362,4 @@ class DataComparator:
             unmatched_pred_columns=[
                 c for c in pred_df.columns if c not in matched_pred_cols
             ],
-        )
+        ), output_df
