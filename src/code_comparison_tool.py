@@ -121,19 +121,19 @@ class CodeComparisonTool:
         with Path.open(code2_path) as f:
             code2 = f.read()
 
-        prompt = self.rubric.format_prompt(
-            language=self.language.value, code1=code1, code2=code2
+        system_msg = self.rubric.system_message(
+            language=self.language.value, code1=code1
         )
-        system_message = self.rubric.system_message(language=self.language.value)
+        user_msg = self.rubric.user_message(code2=code2)
 
         messages = [
             ChatMessage(
                 role="system",
-                content=[{"type": "text", "text": system_message}],
+                content=[{"type": "text", "text": system_msg}],
             ),
             ChatMessage(
                 role="user",
-                content=[{"type": "text", "text": prompt}],
+                content=[{"type": "text", "text": user_msg}],
             ),
         ]
         raw_response = self.model.generate(messages)
