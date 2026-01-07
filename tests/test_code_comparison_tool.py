@@ -251,8 +251,8 @@ class TestLLMComparison:
         mock_rubric = Mock()
         mock_rubric_class.return_value = mock_rubric
 
-        mock_rubric.format_prompt.return_value = "formatted prompt"
-        mock_rubric.system_message.return_value = "system message"
+        mock_rubric.system_message.return_value = "system message with rubric"
+        mock_rubric.user_message.return_value = "Code to compare:\n```\ny <- 2\n```"
 
         expected_assessment = CodeQualityAssessment(
             functional_equivalence_score=8,
@@ -279,12 +279,11 @@ class TestLLMComparison:
         result = tool.llm_comparison(file1, file2)
 
         assert result == expected_assessment
-        mock_rubric.format_prompt.assert_called_once_with(
+        mock_rubric.system_message.assert_called_once_with(
             language="R",
             code1="x <- 1",
-            code2="y <- 2",
         )
-        mock_rubric.system_message.assert_called_once_with(language="R")
+        mock_rubric.user_message.assert_called_once_with(code2="y <- 2")
         mock_model.generate.assert_called_once()
         mock_rubric.parse.assert_called_once_with(mock_response.content)
 
@@ -299,8 +298,8 @@ class TestLLMComparison:
 
         mock_rubric = Mock()
         mock_rubric_class.return_value = mock_rubric
-        mock_rubric.format_prompt.return_value = "user prompt"
         mock_rubric.system_message.return_value = "system prompt"
+        mock_rubric.user_message.return_value = "user prompt"
         mock_rubric.parse.return_value = Mock()
 
         mock_response = Mock()
