@@ -8,42 +8,66 @@ from pydantic import BaseModel, Field
 class CodeQualityAssessment(BaseModel):
     """Schema for LLM-scored code comparison."""
 
-    functional_equivalence_score: int = Field(..., ge=0, le=10)
-    readability_score: int = Field(..., ge=0, le=10)
-    style_score: int = Field(..., ge=0, le=10)
-    robustness_score: int = Field(..., ge=0, le=10)
-    overall_quality_score: int = Field(..., ge=0, le=10)
-    functionally_equivalent: bool
-    explanation: str
+    functional_equivalence_score: int = Field(
+        ...,
+        ge=0,
+        le=10,
+        description="Degree to which the candidate code produces the same resulting dataset as the reference.",
+    )
+    readability_score: int = Field(
+        ...,
+        ge=0,
+        le=10,
+        description="Clarity and ease of understanding of the candidate code.",
+    )
+    style_score: int = Field(
+        ...,
+        ge=0,
+        le=10,
+        description="Adherence to idiomatic and professional coding style.",
+    )
+    robustness_score: int = Field(
+        ...,
+        ge=0,
+        le=10,
+        description="Ability of the candidate code to handle edge cases and real-world data issues.",
+    )
+    overall_quality_score: int = Field(
+        ...,
+        ge=0,
+        le=10,
+        description="Holistic quality judgment weighting functional correctness most heavily.",
+    )
+    functionally_equivalent: bool = Field(
+        ...,
+        description="True if differences are superficial and outcomes are effectively the same.",
+    )
+    explanation: str = Field(
+        ...,
+        description="Brief justification focusing on data correctness and longitudinal logic.",
+    )
 
 
 # Keep the template string next to the model it's tied to
 _CODE_QUALITY_TEMPLATE = """
-Compare the following two {language} code snippets.
+You are an expert code reviewer evaluating a candidate {language} data preprocessing script against a reference (ground-truth) script.
 
-CODE_SNIPPET_1:
+Context and assumptions:
+- Both scripts preprocess longitudinal data.
+- The goal is semantic equivalence of the resulting dataset, not syntactic similarity.
+- Differences in variable names, column names, intermediate representations, ordering of operations, or library idioms are expected and acceptable.
+- Difference in categorical names are also acceptable as long as the underlying data transformations are equivalent.
+- Focus on whether the same information is preserved and transformed correctly.
+
+Reference (ground-truth) code:
 ```{language}
 {code1}
 ```
 
-CODE_SNIPPET_2:
-```{language}
-{code2}
-```
-
-Evaluate them according to this rubric (scores must be integers 0-10):
-
-- functional_equivalence_score
-- readability_score
-- style_score
-- robustness_score
-- overall_quality_score
-
-Also decide:
-- functionally_equivalent: true/false
-- explanation: short explanation string.
+Format instructions:
 
 {format_instructions}
+
 """
 
 
@@ -57,23 +81,20 @@ class CodeQualityRubric:
         self.parser = PydanticOutputParser(pydantic_object=self.schema)
         self.prompt = PromptTemplate(
             template=_CODE_QUALITY_TEMPLATE,
-            input_variables=["language", "code1", "code2"],
+            input_variables=["language", "code1"],
             partial_variables={
                 "format_instructions": self.parser.get_format_instructions()
             },
         )
 
-    def format_prompt(self, language: str, code1: str, code2: str) -> str:
-        """Return the fully formatted prompt string."""
-        return self.prompt.format(language=language, code1=code1, code2=code2)
+    def system_message(self, language: str, code1: str) -> str:
+        """Return the system message with the full rubric instructions."""
+        return self.prompt.format(language=language, code1=code1)
+
+    def user_message(self, code2: str) -> str:
+        """Return the user message with the code to compare."""
+        return f"Code to compare:\n```\n{code2}\n```"
 
     def parse(self, raw_text: str) -> CodeQualityAssessment:
         """Parse raw LLM output into a CodeQualityAssessment."""
         return self.parser.parse(raw_text)
-
-    def system_message(self, language: str) -> str:
-        """Return the system message for the code review assistant."""
-        return (
-            f"You are a code-review assistant reviewing {language} code snippets. "
-            "You MUST respond exactly in the format described in the user's instructions."
-        )
