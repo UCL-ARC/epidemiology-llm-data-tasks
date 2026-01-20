@@ -10,7 +10,8 @@ tasks:
       4. To support analyses across time, derive consistent response categories where possible at different ages. When identical response categories existed across ages, retained them unchanged. When categories differ,  collapsed or re-mapped them to a common scheme.  Where using the same response categories is not possible (e.g., substantially different instruments, such as parental income collected with different bands), provide multiple variables with clearly labelled, age-specific categories.
       5. Use only standard R 
       6. Your R script must output one single cleaned csv named data/output/cleaned_data.csv
-      7. You must run your R script.
+      7. Explicitly output only the derived variables that were created during the cleaning process to the csv
+      8. You must run your R script.
             
       Produce your script in R.
       Here is the appropriate metadata for the task:
