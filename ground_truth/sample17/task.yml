@@ -1,23 +1,45 @@
 task_id: 1
 task_type: data_cleaning_r
-overrride: |
-  You have access to raw survey datasets on a cohort study followed up at multiple ages. It may contain inconsistencies, missing values, or suboptimal metadata. Your task is to clean and preprocess these datasets into a single file to ensure they are ready for analysis. 
+override: |
+  You have access to raw survey datasets from a longitudinal cohort study. Your task is to clean and harmonise area deprivation score variables measured at multiple ages and output a single cleaned dataset.
+
   Follow all instructions:
 
-  1. Ensure when you load the input files you append the dir "data/input/" this is where they are stored.
-  2. Rename variables. All variable names are short, descriptive, and lowercase (e.g., eth = ethnicity). Age at measurement is appended as a numeric suffix (e.g., eth14 = ethnicity at age 14). 
-  3. Use standard missing-value codes (minus values) for all variables e.g., -9 = Refusal  -8 = Don't know/insufficient information -1 = Item not applicable
-  4. To support analyses across time, derive consistent response categories where possible at different ages. When identical response categories existed across ages, retained them unchanged. When categories differ, collapsed or re-mapped them to a common scheme. Where using the same response categories is not possible (e.g., substantially different instruments, such as parental income collected with different bands), provide multiple variables with clearly labelled, age-specific categories.
-  5. For time-invariant characteristics (e.g., sex, ethnicity) measured across multiple waves, first standardize missing value codes across all waves, then create a single derived variable by prioritizing the most recent or most complete valid response. When appropriate, recode values to standard formats (e.g., binary 0/1) and convert to labeled factors that include both substantive categories and standardized missing value labels.
-  6. When retaining age-specific variables that cannot be harmonized across waves (e.g., income bands that differ substantially between measurement occasions), recode any NAs or wave-specific missing codes to standardized missing values, then convert each variable to a labeled factor with consistent missing value labels across all waves, even if the substantive categories differ.
-  7. When continuous variables (e.g., weekly income) are measured at some waves but categorical bands at others, convert continuous measures to categorical bands matching a common banding scheme where possible. Preserve both the original continuous version (with standardized missing codes and value labels) and the derived categorical version to support different analytical approaches.
-  8. For continuous variables measured consistently across waves (e.g., deprivation scores, test scores), retain them as continuous numeric variables. Standardize wave-specific missing codes to common missing values, then apply value labels to the continuous variables using the labelled() function to document missing value meanings while preserving the numeric scale for analysis.
-  9. Use only standard R 
-  10. Your R script must output one single cleaned csv named data/output/cleaned_data.csv
-  11. Explicitly output only the derived variables that were created during the cleaning process to the csv
-  12. You must run your R script.
-        
-  Produce your script in R.
+  1. When loading input files, always prepend the directory data/input/.
+
+  2. Use short, descriptive, lowercase variable names with age suffixes:
+    imd15, imd16, imd32.
+
+  3. Use standard missing-value codes:
+    -9 Refusal, -8 Don’t know/insufficient information, -3 Not asked/interviewed, -2 Script error/lost, -1 Not applicable.
+
+  4. Load and merge the following files by NSID using full joins:
+    wave_one_lsype_young_person_2020.tab
+    wave_two_lsype_family_background_2020.tab
+    wave_three_lsype_family_background_2020.tab
+    wave_four_lsype_young_person_2020.tab
+    ns9_2022_derived_variables.tab
+
+  5. Retain only the deprivation score variables and rename them to imd15, imd16, and imd32.
+
+  6. Recode all NA values and wave-specific missing codes to the standard missing scheme:
+    -94 to -8 and NA to -3.
+
+  7. Because deprivation scores are continuous and measured on the same scale, retain them as numeric continuous variables and do not create categorical bands or consolidated measures.
+
+  8. Convert each deprivation variable to a labelled numeric variable using labelled(), with explicit labels for all standard missing codes.
+
+  9. Do not collapse across ages and do not create a single combined deprivation variable.
+
+  10. Output only the following variables:
+      NSID, imd15, imd16, imd32.
+
+  11. Use only standard R packages: haven, dplyr, purrr, here, labelled, readr.
+
+  12. Write exactly one CSV file named data/output/cleaned_data.csv.
+
+  13. Produce a complete runnable R script and run it.
+
   Here is the appropriate metadata for the task:
-  
+
   {metadata}
