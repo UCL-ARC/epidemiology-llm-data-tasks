@@ -1,27 +1,34 @@
 task_id: 1
 task_type: data_cleaning_r
 override: |
-  You have access to raw survey datasets on a cohort study followed up at multiple ages. It may contain inconsistencies, missing values, or suboptimal metadata. Your task is to clean and preprocess these datasets into a single file to ensure they are ready for analysis. 
+  You have access to raw survey datasets from a longitudinal cohort study followed up at multiple ages. Your task is to clean and harmonise NS-SEC occupational class variables only and produce a single cleaned file ready for analysis.
+
   Follow all instructions:
 
-  1. Ensure when you load the input files you append the dir "data/input/" this is where they are stored.
-  2. Rename variables. All variable names are short, descriptive, and lowercase (e.g., eth = ethnicity, lang = language, sori = sexual orientation, partnr = partnership/marital status, reg = region, educaim = educational aims/qualifications being studied, educ = educational qualifications attained, ecoact = economic activity). Age at measurement is appended as a numeric suffix (e.g., ecoact17 = economic activity at age 17). For socio-economic classification, use nssec plus age suffix (e.g., nssec17 = NS-SEC at age 17).
-  3. Use standard missing-value codes (minus values) for all variables e.g., -9 = Refusal, -8 = Don't know/insufficient information, -1 = Item not applicable, -3 = Not asked at the fieldwork stage/participated/interviewed, -2 = Schedule not applicable/Script error/information lost, -7 = Prefer not to say
-  4. To support analyses across time, derive consistent response categories where possible at different ages. When identical response categories existed across ages, retain them unchanged. When categories differ, collapse or re-map them to a common scheme. Where using the same response categories is not possible (e.g., substantially different instruments, such as parental income collected with different bands), provide multiple variables with clearly labelled, age-specific categories.
-  5. For variables where later waves have more detailed categories than earlier waves (e.g., marital status or adult economic activity), create both: (a) collapsed harmonised variables with consistent categories across all ages to enable temporal comparisons, and (b) detailed age-specific adult variables that preserve the full granularity of later measurements.
-  6. When measurement approaches differ substantially across waves (e.g., different employment/activity classifications or occupational class coding), explicitly recode each wave into a shared mutually exclusive classification scheme using clear logical mappings (e.g., NS-SEC 17-category classification with explicit student category).
-  7. For time-varying characteristics that may legitimately change over the life course (e.g., economic activity, employment status, education, occupational class, geographical location), retain age-specific variables rather than creating a single consolidated measure, to preserve the temporal variation for longitudinal analysis.
-  8. When creating derived categorical variables from more detailed measures (e.g., deriving “full-time student” in NS-SEC using concurrent economic activity), apply the transformation consistently and document the logical dependency between variables.
-  9. When harmonising missing value codes across waves, convert wave-specific negative codes (e.g., -100, -97, -999, -998, -997, -995, -94, -92, -91, -99, -98, -996) to the standard missing-value codes defined in instruction 3. Multiple wave-specific codes may map to the same standard code.
-  10. For time-invariant or stable characteristics (e.g., sex, ethnicity, language spoken at home, parental education), create a single consolidated variable. The prioritisation strategy depends on the variable: for characteristics expected to be stable and established early (e.g., ethnicity, language), prioritise the earliest valid response; for characteristics that may be corrected or updated over time (e.g., sex), prioritise the most recent valid response. Only use positive values in the prioritisation logic; include missing codes as fallback values when no positive values exist.
-  11. When recoding categorical variables, use factor variables with explicit labels for both valid categories and all missing value codes to preserve metadata.
-  12. Use only standard R packages (haven, dplyr, purrr, here, labelled, readr are acceptable).
-  13. Your R script must output one single cleaned csv named data/output/cleaned_data.csv
-  14. Explicitly output only the derived variables that were created during the cleaning process to the csv (do not include intermediate wave-specific variables unless they are the final output).
-  15. You must run your R script.
-  16. For NS-SEC, retain detailed age-specific occupational class variables at each sweep (nssec17, nssec18, nssec19, nssec20, nssec25, nssec32) with harmonised 17-category classifications and explicit student category when applicable.
-
-  Produce your script in R.
+  1. When loading input files, always prepend the directory data/input/.
+  2. Use only standard R packages: haven, dplyr, purrr, here, labelled, readr.
+  3. Load the datasets and merge all files using full_join by NSID
+  4. Rename and retain only the following age-specific occupational class variables:
+    - nssec17, nssec18, nssec19, nssec20, nssec25, nssec32 using the convention nssec + age suffix.
+  5. Harmonise all wave-specific negative missing codes to the standard scheme (-9, -8, -7, -3, -2, -1) and retain missing codes as explicit factor levels.
+  6. For each age-specific NS-SEC variable:
+    - Accept only valid categories 1–17 as occupational classes.
+    - Recode invalid or fractional values to missing.
+    - Recode NA to -3 (not asked/interviewed).
+    - Map wave-specific negatives (e.g. -100, -97, -999, -998, -997, -995, -94, -92, -91, -99, -98, -996) to the standard missing scheme.
+  7. At age 25, explicitly derive the full-time student category (15) using concurrent economic activity information.
+  8. Retain detailed 17-category NS-SEC classifications at every age.
+     Do not collapse, summarise, or harmonise across ages.
+  9. Convert all NS-SEC variables to labelled factor variables with explicit labels for:
+    - Categories 1–17
+    - All standard missing codes
+  10. Do not create any additional variables, harmonised summaries, or consolidated measures.
+  11. Explicitly output only:
+    - NSID
+    - nssec17, nssec18, nssec19, nssec20, nssec25, nssec32
+  12. Write exactly one CSV file named data/output/cleaned_data.csv.
+  13. Produce a complete, runnable R script that follows these instructions using the provided metadata.
+  
   Here is the appropriate metadata for the task:
 
   {metadata}
