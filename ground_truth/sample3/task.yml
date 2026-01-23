@@ -5,16 +5,63 @@ override: |
   Follow all instructions:
 
   1. Ensure when you load the input files you append the dir "data/input/" this is where they are stored.
-  2. Rename variables. All variable names are short, descriptive, and lowercase (e.g., eth = ethnicity, lang = language). Age at measurement is appended as a numeric suffix (e.g., eth14 = ethnicity at age 14). 
-  3. Use standard missing-value codes (minus values) for all variables e.g., -9 = Refusal, -8 = Don't know/insufficient information, -1 = Item not applicable, -3 = Not asked at the fieldwork stage/participated/interviewed, -2 = Schedule not applicable
+  
+  2. Variable naming conventions:
+     - Use the exact ID variable name that exists in the source data (e.g., NSID) - do NOT create or rename to a generic "id"
+     - For wave-specific variables, use the format: variablename_SX where X is the wave number (e.g., lang_S1, lang_S2, lang_S3, lang_S4)
+     - For consolidated variables, use only the variable name without any suffix (e.g., lang, not lang_hh)
+     - All variable names must be lowercase
+  
+  3. Use standard missing-value codes (minus values) for all variables:
+     - -9 = Refusal
+     - -8 = Don't know/insufficient information
+     - -1 = Item not applicable
+     - -3 = Not asked at the fieldwork stage/participated/interviewed
+     - -2 = Schedule not applicable
+  
   4. To support analyses across time, derive consistent response categories where possible at different ages. When identical response categories existed across ages, retain them unchanged. When categories differ, collapse or re-map them to a common scheme. Where using the same response categories is not possible (e.g., substantially different instruments, such as parental income collected with different bands), provide multiple variables with clearly labelled, age-specific categories.
-  5. When harmonising missing value codes across waves, convert wave-specific negative codes (e.g., -999, -998, -997, -995, -94, -92, -91, -99) to the standard missing-value codes defined in instruction 3. Multiple wave-specific codes may map to the same standard code (e.g., -999, -998, -997, -995, -94 all map to -2).
-  6. For time-invariant or stable characteristics (e.g., sex, ethnicity, language spoken at home), create a single consolidated variable. The prioritisation strategy depends on the variable: for characteristics expected to be stable and established early (e.g., ethnicity, language), prioritise the earliest valid response; for characteristics that may be corrected or updated over time (e.g., sex), prioritise the most recent valid response. Only use positive values in the prioritisation logic; include missing codes as fallback values when no positive values exist.
-  7. When recoding categorical variables, use factor variables with explicit labels for both valid categories and all missing value codes to preserve metadata.
-  8. Use only standard R packages (haven, dplyr, purrr, here, labelled, readr are acceptable).
-  9. Your R script must output one single cleaned csv named data/output/cleaned_data.csv
-  10. Explicitly output only the derived variables that were created during the cleaning process to the csv (do not include intermediate wave-specific variables unless they are the final output).
-  11. You must run your R script.
+  
+  5. When harmonising missing value codes across waves, convert wave-specific negative codes to the standard missing-value codes defined in instruction 3. Multiple wave-specific codes may map to the same standard code. Example mappings:
+     - -999, -998, -997, -995, -94 → -2 (Schedule not applicable)
+     - -99 → -3 (Not asked/interview not conducted)
+     - -92 → -9 (Refusal)
+     - -91 → -1 (Item not applicable)
+     - -1 → -8 (Don't know/insufficient information)
+  
+  6. For time-invariant or stable characteristics (e.g., sex, ethnicity, language spoken at home), create a single consolidated variable using this two-step prioritization:
+     a. First, prioritize the earliest valid POSITIVE value (values > 0) across waves
+     b. If no positive values exist, then use the earliest available missing code as a fallback
+     Example for a variable collected at 4 waves (S1, S2, S3, S4):
+  ```r
+     consolidated_var = case_when(
+       !is.na(var_S1) & var_S1 > 0 ~ var_S1,
+       !is.na(var_S2) & var_S2 > 0 ~ var_S2,
+       !is.na(var_S3) & var_S3 > 0 ~ var_S3,
+       !is.na(var_S4) & var_S4 > 0 ~ var_S4,
+       !is.na(var_S1) ~ var_S1,
+       !is.na(var_S2) ~ var_S2,
+       !is.na(var_S3) ~ var_S3,
+       !is.na(var_S4) ~ var_S4,
+       TRUE ~ -3
+     )
+  ```
+  
+  7. When recoding categorical variables, use factor variables with explicit labels for both valid categories and all missing value codes to preserve metadata. However, do NOT apply labelled() to the final consolidated variables unless specifically instructed.
+  
+  8. Package requirements:
+     - Include code to install missing packages at the start of your script
+     - Use only standard R packages: haven, dplyr, purrr, here, labelled, readr
+     - Suppress package startup messages
+  
+  9. Output requirements:
+     - Your R script must output one single cleaned csv named "data/output/cleaned_data.csv"
+  
+  10. Explicitly output only the derived consolidated variables that were created during the cleaning process to the csv:
+      - Include the ID variable from the source data
+      - Include ONLY the final consolidated variables (e.g., lang, sex, eth)
+      - Do NOT include intermediate wave-specific variables (e.g., lang_S1, lang_S2, etc.)
+  
+  11. You must run your R script after generating it.
         
   Produce your script in R.
   Here is the appropriate metadata for the task:
