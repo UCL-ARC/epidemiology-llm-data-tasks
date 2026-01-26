@@ -125,9 +125,7 @@ override: |
   
   
   12. **Output Requirements**:
-      - Create output directory: `dir.create(file.path(getwd(), "data", "output"), recursive = TRUE, showWarnings = FALSE)`
-      - Output file path: `output_data_path <- file.path(getwd(), "data", "output", "output.csv")`
-      - Write using: `write.csv(data, output_data_path, row.names = FALSE)` (NOT write_csv)
+      - Your R script must output one single cleaned csv named data/output/cleaned_data.csv
   
   13. **Variables to Include in Output**:
       - Use select() at the end to keep: NSID + all harmonized age-specific variables + all detailed adult variables
