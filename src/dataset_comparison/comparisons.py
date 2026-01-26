@@ -139,11 +139,14 @@ def compare_categorical(
     categorical_match_threshold: float = 0.8,
 ) -> CategoricalComparison:
     """Compare two categorical columns with automatic category mapping."""
-    gt_str = gt_series.astype(str).fillna("__NA__")
-    pred_str = pred_series.astype(str).fillna("__NA__").copy()
+    gt_str = gt_series.fillna("__NA__").astype(str)
+    pred_str = pred_series.fillna("__NA__").astype(str).copy()
 
     gt_categories = set(gt_str.unique())
     pred_categories = set(pred_str.unique())
+
+    # Get ground truth category counts
+    gt_counts = gt_str.value_counts().to_dict()
 
     # Build category mapping based on co-occurrence
     category_mapping = {}
@@ -153,18 +156,23 @@ def compare_categorical(
         category_mapping[category] = value_counts
 
     # Greedy matching for categories
+    # Sort by best score (descending), then by ground truth count (descending)
     categories_with_best_scores = [
-        (category, max(mapping.values()) if mapping else 0.0)
+        (
+            category,
+            max(mapping.values()) if mapping else 0.0,
+            gt_counts.get(category, 0),
+        )
         for category, mapping in category_mapping.items()
     ]
     categories_sorted = sorted(
-        categories_with_best_scores, key=lambda x: x[1], reverse=True
+        categories_with_best_scores, key=lambda x: (x[1], x[2]), reverse=True
     )
 
     available_pred_categories = set(pred_categories)
     final_mapping: dict[str, str] = {}
 
-    for category, _ in categories_sorted:
+    for category, _, _ in categories_sorted:
         mapping = category_mapping[category]
         best_match = None
         best_score = 0.0
