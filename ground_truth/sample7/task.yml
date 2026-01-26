@@ -18,7 +18,6 @@ override: |
      - Keep variable names short and descriptive
   
   3. **Standard Missing-Value Codes**:
-     Use these codes for ALL variables:
      - -9 = Refusal
      - -8 = Don't know/insufficient information
      - -1 = Item not applicable
@@ -31,14 +30,12 @@ override: |
      - Each wave requires its own case_when() recoding logic to map original categories to the harmonized scheme
      - Include ALL waves that measure the construct, even if later waves (e.g., 8, 9) use very different source variables
   
-  5. **Wave-Specific Missing Value Code Harmonization**:
-     - Convert wave-specific negative codes to standard codes within the same case_when() that does category harmonization
-     - Use the EXACT mappings provided in metadata for each wave
-     - Common patterns (always verify in metadata):
-       - -94 often → -2
-       - -92 often → -9
-       - -91 varies by wave and variable (could be -1, -8, or even map to a valid category like 5)
-       - -99 often → -3
+    5. **Recoding Logic**:
+
+     - Follow the EXACT value label mappings from metadata - DO NOT use generic patterns
+     - Map each original value code to its harmonized category based on metadata labels
+     - Convert wave-specific missing codes using metadata mappings (e.g., -94 → -2, -91 varies by wave)
+     - For multi-variable derivation, use OR logic (|) checking multiple source variables
   
   6. **Complex Multi-Variable Derivation**:
      - Some waves (especially later adult waves) may derive variables from MULTIPLE source variables
