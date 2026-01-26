@@ -4,8 +4,6 @@ override: |
   You have access to raw survey datasets on a cohort study followed up at multiple ages. Your task is to clean and preprocess these datasets into a single file ready for analysis. Follow these instructions precisely:
 
   1. **Package management**:
-     - Check if the required packages are installed; install any missing packages automatically.
-     - Suppress package startup messages when loading libraries.
      - Required packages: haven, dplyr, purrr, here, labelled, readr.
 
   2. **File loading and merging**:
@@ -42,7 +40,6 @@ override: |
        "Owned outright", "Owned, buying with help of mortgage/loan", "Part rent, part mortgage", "Rent it", "live rent-free", "Other", "Item not applicable", "Script error/information lost", "Not asked at the fieldwork stage/participated/interviewed", "Don’t know/insufficient information", "Refusal".
 
   7. **Output**:
-     - Create output directory if it does not exist: `data/output/`.
      - Write the cleaned dataset to a single CSV using base R: `write.csv(cleaned_data, "data/output/cleaned_data.csv", row.names = FALSE)`.
 
   8. **Variables to include in final output**:
