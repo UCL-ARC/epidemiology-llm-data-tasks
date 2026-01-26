@@ -50,7 +50,7 @@ override: |
   
   8. Package requirements:
      - Include code to install missing packages at the start of your script
-     - Use only standard R packages: haven, dplyr, purrr, here, labelled, readr
+     - Use only standard R packages: haven, dplyr, purrr, labelled, readr
      - Suppress package startup messages
   
   9. Output requirements:

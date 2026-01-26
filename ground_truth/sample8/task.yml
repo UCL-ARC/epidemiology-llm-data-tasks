@@ -6,7 +6,7 @@ override: |
   Follow all instructions:
 
   1. When loading input files, always prepend the directory data/input/.
-  2. Use only standard R packages: haven, dplyr, purrr, here, labelled, readr.
+  2. Use only standard R packages: haven, dplyr, purrr, labelled, readr.
   3. Load the specified wave files and merge all datasets using full_join by NSID.
   4. Select only the variables required to derive education measures plus NSID. Do not retain or derive any non-education variables.
   5. Derive exactly four variables and no others:
