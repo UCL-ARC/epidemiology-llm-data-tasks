@@ -208,7 +208,7 @@ if __name__ == "__main__":
         ],
         key=lambda p: int(p.name[6:]),
     )
-    test_dirs = [Path(f"./ground_truth/sample{x}") for x in [7, 10]]
+    test_dirs = [Path(f"./ground_truth/sample{x}") for x in [4, 7, 10, 14]]
 
     for test_dir in test_dirs:
         logger.info(f"\n=== Testing with context: {test_dir} ===")

@@ -5,13 +5,15 @@ override: |
   Follow all instructions precisely:
 
   1. **File Loading**:
-     - Load input files from "data/input/" directory using file.path(data_path, "filename")
-     - Use read_delim() with show_col_types = FALSE
+     - Load input files from "data/input/" directory using: file.path(data_path, "filename")
+     - Set data_path variable: `data_path <- 'data/input/'`
+     - Use read_delim() with show_col_types = FALSE parameter
+     - Load ALL datasets mentioned in the metadata, even if some waves don't contribute to early age measurements
   
   2. **Variable Naming Conventions**:
      - Use the exact ID variable name from source data (e.g., NSID) - NEVER create or rename to generic "id"
-     - For wave-specific variables during intermediate processing, use format: variablename_SX where X is wave number (e.g., lang_S1, lang_S2)
-     - For age-specific OUTPUT variables, append the age as numeric suffix (e.g., educaim17 = education aim at age 17, educaim19 = at age 19)
+     - For intermediate wave-specific raw variables, use suffix _raw (e.g., educaim17_raw, educaim19_raw)
+     - For final age-specific OUTPUT variables, append only the age as numeric suffix (e.g., educaim17, educaim19, educaim20, educaim25, educaim32)
      - All variable names must be lowercase
      - Keep variable names short and descriptive
   
@@ -24,55 +26,105 @@ override: |
      - -2 = Schedule not applicable / Script error / Information lost
   
   4. **Response Category Harmonization**:
-     - When the SAME construct is measured across ages with DIFFERENT response categories, you must harmonize them into a common coding scheme
-     - Create age-specific variables (e.g., educaim17, educaim19, educaim20) that use the SAME response categories
-     - This requires recoding the original responses to align to a common scheme
-     - Example: If wave 4 uses categories 1-14, wave 6 uses 1-16, and wave 7 uses 1-14, you must map them to common categories (e.g., 0=NVQ 4-5, 1=NVQ 1-3, 2=None/entry, 3=Other, 4=None of these, 5=Not studying)
+     - When the SAME construct is measured across ages with DIFFERENT response categories, harmonize them into a common coding scheme
+     - Create age-specific variables (e.g., educaim17, educaim19, educaim20, educaim25, educaim32) that ALL use the SAME response categories
+     - Each wave requires its own case_when() recoding logic to map original categories to the harmonized scheme
+     - Include ALL waves that measure the construct, even if later waves (e.g., 8, 9) use very different source variables
   
   5. **Wave-Specific Missing Value Code Harmonization**:
-     Convert wave-specific negative codes to standard codes. Use the EXACT mappings provided in the metadata.
-     Common patterns (but always check metadata for specific mappings):
-     - -94, -999, -998, -997, -995 often → -2
-     - -99 often → -3
-     - -92 often → -9
-     - -91 might → -1 or -8 (check metadata)
+     - Convert wave-specific negative codes to standard codes within the same case_when() that does category harmonization
+     - Use the EXACT mappings provided in metadata for each wave
+     - Common patterns (always verify in metadata):
+       - -94 often → -2
+       - -92 often → -9
+       - -91 varies by wave and variable (could be -1, -8, or even map to a valid category like 5)
+       - -99 often → -3
   
-  6. **Complex Variable Derivation**:
-     - Some variables may require complex logic using multiple source variables (e.g., combining activity status with qualification variables)
-     - Follow the exact derivation logic specified in the metadata
-     - Use case_when() for conditional recoding
-     - Handle each wave's logic separately before combining into the output dataset
+  6. **Complex Multi-Variable Derivation**:
+     - Some waves (especially later adult waves) may derive variables from MULTIPLE source variables
+     - Example: Educational aims at age 25 might combine an activity status variable (W8ACTIVITY05) with many qualification variables (W8ACQUC0A, W8ACQUC0B, etc.)
+     - Use complex case_when() logic with OR conditions (|) to check multiple variables
+     - Structure: Check activity status first, then check combinations of qualification variables
+     - Follow the exact logical conditions specified in the metadata
   
-  7. **Factor Variables and Labels**:
-     - After recoding, convert harmonized categorical variables to factors using factor()
-     - Include explicit labels for BOTH valid response categories AND all missing value codes
-     - Apply the same factor levels and labels to all age-specific versions of the same variable
-     - Do NOT use haven::labelled() unless specifically instructed
+  7. **Data Structure**:
+     - Select needed variables from each wave dataset into separate list elements
+     - Use list() to create educaim_vars or similar structure with named elements (S1, S4, S6, S7, S8, S9)
+     - For waves with simple variables: `S4 = dataset %>% select(NSID, educaim17_raw = w4saim)`
+     - For waves with complex derivations: `S8 = dataset %>% select(NSID, W8ACTIVITY05, starts_with("W8ACQUC"), starts_with("W8VCQUC"))`
+     - Merge all list elements using: `reduce(variable_vars, full_join, by = "NSID")`
   
-  8. **Package Requirements**:
-     - Use only standard R packages (haven, dplyr, purrr, here, labelled, readr are acceptable).
+  8. **Recoding Logic Structure**:
+     - Perform ALL recoding in a single mutate() call with separate case_when() for each age-specific variable
+     - Use inline case_when() within mutate(), NOT separate helper functions
+     - Structure for simple waves:
+   ```r
+       educaim17 = case_when(
+         educaim17_raw %in% c(1:9, 10, 11) ~ 1,
+         educaim17_raw == 14 ~ 5,
+         educaim17_raw == -94 ~ -2,
+         educaim17_raw == -91 ~ -1,
+         TRUE ~ -3
+       )
+   ```
+     - Structure for complex multi-variable waves:
+   ```r
+       educaim25 = case_when(
+         W8ACTIVITY05 == 0 ~ 5,
+         W8ACQUC0A == 1 | W8ACQUC0B == 1 | W8ACQUC0C == 1 ~ 0,
+         W8ACQUC0F == 1 | W8ACQUC0G == 1 ~ 1,
+         TRUE ~ -3
+       )
+   ```
   
-  9. **Output Requirements**:
-     - Output file MUST be named: `data/output/cleaned_data.csv` (NOT cleaned_data.csv)
-
-  10. **Variables to Include in Output**:
-      - ALWAYS include the ID variable (e.g., NSID)
-      - Include age-specific harmonized variables (e.g., educaim17, educaim19, educaim20, educaim25, educaim32)
-      - Do NOT include raw/original variables from source data
-      - Do NOT include intermediate processing variables (those ending in _raw, _S1, _S2, etc.)
-      - Only output the final cleaned, harmonized, age-specific variables specified in the metadata
+  9. **Factor Variables and Labels**:
+     - After recoding, convert ALL harmonized variables to factors using factor()
+     - Use mutate(across()) to apply factor conversion to all age-specific variables at once
+     - Specify numeric levels and character labels separately:
+   ```r
+       mutate(across(
+         c(educaim17, educaim19, educaim20, educaim25, educaim32),
+         ~ factor(
+           .x,
+           levels = c(0, 1, 2, 3, 4, 5, -1, -2, -3, -8, -9),
+           labels = c("NVQ 4-5", "NVQ 1-3", "None/entry", "Other", 
+                     "None of these qualifications", "Not studying",
+                     "Item not applicable", "Script error/information lost",
+                     "Not asked at the fieldwork stage/participated/interviewed",
+                     "Don't know/insufficient information", "Refusal")
+         )
+       ))
+   ```
+     - Apply the SAME factor levels and labels to all age-specific versions
+     - Do NOT use haven::labelled()
   
-  11. **Data Merging**:
-      - Use purrr::reduce() with full_join() when combining multiple datasets
-      - Always join on the ID variable (e.g., NSID)
-      - Example: `reduce(list_of_dataframes, full_join, by = "NSID")`
+  10. **Package Requirements**:
+      - Use ONLY standard R packages: haven, dplyr, purrr, here, labelled, readr
+      - Load packages at the start of the script using library()
   
-  12. **Critical Distinctions**:
-      - CONSOLIDATION (e.g., lang): Create ONE variable from multiple waves using earliest valid value
-      - HARMONIZATION (e.g., educaim): Create MULTIPLE age-specific variables with aligned response categories
-      - The task type should be clear from the metadata - read carefully to determine which approach is needed
+  11. **Output Requirements**:
+      - Create output directory: `dir.create(file.path(getwd(), "data", "output"), recursive = TRUE, showWarnings = FALSE)`
+      - Output file path: `output_data_path <- file.path(getwd(), "data", "output", "output.csv")`
+      - Write using: `write.csv(data, output_data_path, row.names = FALSE)` (NOT write_csv)
   
-  13. You must run your R script after generating it.
+  12. **Variables to Include in Output**:
+      - Use select() at the end to keep only: ID variable + all final age-specific harmonized variables
+      - Example: `select(NSID, educaim17, educaim19, educaim20, educaim25, educaim32)`
+      - Do NOT include raw variables (educaim17_raw, educaim19_raw, etc.)
+      - Do NOT include source variables from datasets (W8ACTIVITY05, W8ACQUC0A, etc.)
+      - Only output the final cleaned, harmonized, age-specific variables
+  
+  13. **Critical Distinctions**:
+      - CONSOLIDATION tasks (e.g., lang): Create ONE variable from multiple waves using earliest valid value
+      - HARMONIZATION tasks (e.g., educaim, ecoact): Create MULTIPLE age-specific variables with aligned response categories
+      - This prompt is for HARMONIZATION tasks - you must create separate age-specific variables, not consolidate into one
+  
+  14. **Handling ALL Waves**:
+      - Process ALL waves mentioned in the metadata, even if later waves seem very different
+      - Later adult waves (e.g., waves 8, 9 at ages 25, 32) may use completely different source variables but must be harmonized to the same output categories
+      - Don't skip waves just because they use different measurement approaches
+  
+  15. You must run your R script after generating it.
         
   Produce your script in R.
   

@@ -2,28 +2,158 @@ task_id: 1
 task_type: data_cleaning_r
 override: |
   You have access to raw survey datasets on a cohort study followed up at multiple ages. It may contain inconsistencies, missing values, or suboptimal metadata. Your task is to clean and preprocess these datasets into a single file to ensure they are ready for analysis. 
-  Follow all instructions:
+  Follow all instructions precisely:
 
-  1. Ensure when you load the input files you append the dir "data/input/" this is where they are stored.
-  2. Rename variables. All variable names are short, descriptive, and lowercase (e.g., eth = ethnicity, lang = language, sori = sexual orientation, partnr = partnership/marital status, reg = region, educaim = educational aims/qualifications being studied, educ = educational qualifications attained, hown = housing tenure/homeownership). Age at measurement is appended as a numeric suffix (e.g., hown25 = housing tenure at age 25). For detailed versions of collapsed variables, append "dtl" after the variable name (e.g., educdtlma = detailed maternal educational qualifications, educadtl32 = detailed academic qualifications at age 32). For measures during adolescence/teenage years that have both detailed and collapsed versions, append "teen" before the age suffix for detailed versions (e.g., hownteen14 = detailed housing tenure at age 14). Use suffixes to distinguish characteristics of different family members (e.g., ma = mother, pa = father). Use prefixes to distinguish different aspects of the same concept (e.g., regub = urban/rural classification, regov = government office region, educa = academic qualifications, educv = vocational qualifications).
-  3. Use standard missing-value codes (minus values) for all variables e.g., -9 = Refusal, -8 = Don't know/insufficient information, -1 = Item not applicable, -3 = Not asked at the fieldwork stage/participated/interviewed, -2 = Schedule not applicable/Script error/information lost, -7 = Prefer not to say
-  4. To support analyses across time, derive consistent response categories where possible at different ages. When identical response categories existed across ages, retain them unchanged. When categories differ, collapse or re-map them to a common scheme. Where using the same response categories is not possible (e.g., substantially different instruments, such as parental income collected with different bands), provide multiple variables with clearly labelled, age-specific categories.
-  5. For variables where later waves have more detailed categories than earlier waves (e.g., marital status that distinguishes civil partnerships in later waves but not earlier ones, or educational qualifications with granular categories at later ages), OR where earlier waves have more detailed categories than later waves (e.g., housing tenure with detailed rental subcategories in adolescence but broader categories in adulthood), create both: (a) collapsed harmonised variables with consistent categories across all ages to enable temporal comparisons, and (b) detailed age-specific variables that preserve the full granularity where available for nuanced analysis.
-  6. When measurement approaches differ substantially across waves (e.g., a single categorical variable in early waves vs. multiple binary indicators in later waves, or pre-computed derived variables vs. raw indicators, or multiple separate variables capturing different dimensions vs. a single combined variable), derive consistent categories by: (a) directly recoding single categorical variables and derived variables, (b) applying logical rules to multiple binary indicators to assign participants to mutually exclusive categories, (c) combining information from multiple related variables using conditional logic. When both derived variables and binary indicators are available, use both sources to maximise coverage and accuracy.
-  7. When creating detailed categorical variables from sets of mutually exclusive binary indicators (e.g., specific qualification types), identify which single category applies to each participant by checking which indicator equals 1, and handle cases where all indicators are 0, 2 (not selected), -1, or missing appropriately.
-  8. For characteristics of family members or household context measured at multiple points during adolescence (e.g., parental education, parental occupation, housing tenure during teenage years), create single consolidated variables rather than retaining age-specific measures when the characteristic is relatively stable, OR retain age-specific measures when the characteristic may change over time (e.g., housing tenure can change year-to-year). The prioritisation strategy for consolidated variables may differ by variable and family member based on data quality and measurement timing.
-  9. For variables measuring related but distinct geographical concepts (e.g., urban/rural classification, government office region, country of residence), retain all age-specific measures rather than attempting to harmonise across different geographical dimensions.
-  10. When creating derived categorical variables from more detailed measures (e.g., collapsing multiple location categories into a binary UK/abroad indicator, or deriving qualification levels from binary indicators or detailed categories, or combining rental subtypes into a broader "rent" category), apply the transformation consistently and convert the result to a labeled factor.
-  11. When harmonising missing value codes across waves, convert wave-specific negative codes (e.g., -100, -97, -999, -998, -997, -995, -94, -92, -91, -99) to the standard missing-value codes defined in instruction 3. Multiple wave-specific codes may map to the same standard code (e.g., -100 and -97 may both map to -3).
-  12. For time-invariant or stable characteristics (e.g., sex, ethnicity, language spoken at home, parental education), create a single consolidated variable. The prioritisation strategy depends on the variable: for characteristics expected to be stable and established early (e.g., ethnicity, language), prioritise the earliest valid response; for characteristics that may be corrected or updated over time (e.g., sex), prioritise the most recent valid response. Only use positive values in the prioritisation logic; include missing codes as fallback values when no positive values exist.
-  13. For time-varying characteristics that may legitimately change over the life course (e.g., sexual orientation, relationship status, employment, geographical location, educational activities, qualifications attained, housing tenure), retain age-specific variables rather than creating a single consolidated measure, to preserve the temporal variation for longitudinal analysis.
-  14. When recoding categorical variables, use factor variables with explicit labels for both valid categories and all missing value codes to preserve metadata.
-  15. Use only standard R packages (haven, dplyr, purrr, here, labelled, readr are acceptable).
-  16. Your R script must output one single cleaned csv named data/output/cleaned_data.csv
-  17. Explicitly output only the derived variables that were created during the cleaning process to the csv (do not include intermediate wave-specific variables unless they are the final output).
-  18. You must run your R script.
+  1. **File Loading**:
+     - Set data_path variable: `data_path <- 'data/input/'`
+     - Load input files using: `read_delim(file.path(data_path, "filename"), show_col_types = FALSE)`
+     - Do NOT create helper functions - use read_delim() directly for each dataset
+     - Load each dataset into separate variables (S1, S2, S3, S4, S5, S6, S7, S8, S9)
+  
+  2. **Variable Naming Conventions**:
+     - Use the exact ID variable name from source data (e.g., NSID) - NEVER create or rename to generic "id"
+     - All variable names must be short, descriptive, and lowercase
+     - Common abbreviations: eth = ethnicity, lang = language, sori = sexual orientation, partnr = partnership/marital status, reg = region, educaim = educational aims, educ = educational qualifications, hown = housing tenure/homeownership
+     - Age at measurement is appended as numeric suffix (e.g., hown25 = housing tenure at age 25)
+     - For DETAILED versions of COLLAPSED variables:
+       * For adolescent/teenage years (ages 14-20): append "teen" BEFORE the age suffix (e.g., hownteen14, hownteen18)
+       * For adult years: append "dtl" AFTER the variable name but before age (e.g., educdtlma = detailed maternal education, educadtl32 = detailed academic quals at age 32)
+     - Use suffixes for family members: ma = mother, pa = father
+     - Use prefixes for concept aspects: regub = urban/rural, regov = government region, educa = academic, educv = vocational
+  
+  3. **Standard Missing-Value Codes**:
+     Use these codes for ALL variables (do NOT include -7 unless specified in metadata):
+     - -9 = Refusal
+     - -8 = Don't know/insufficient information  
+     - -1 = Item not applicable
+     - -3 = Not asked at the fieldwork stage/participated/interviewed
+     - -2 = Schedule not applicable / Script error / Information lost
+  
+  4. **Data Structure - Select Variables First**:
+     - For EACH dataset, select only NSID and needed variables
+     - For simple single-variable waves: `S1 <- read_delim(...) %>% select(NSID, hown14 = W1hous12HH)`
+     - For multi-variable waves (binary indicators): `S5 <- read_delim(...) %>% select(NSID, W5Hous12HH, W5Hous12BHH, W5Hous12CHH)`
+     - Then merge using: `hown_all <- reduce(list(S1, S2, S3, S4, S5, S6, S7, S8, S9), full_join, by = "NSID")`
+  
+  5. **Dual-Level Variables** (collapsed + detailed):
+     - When early waves have MORE detail than later waves (e.g., housing tenure with detailed rental subcategories in adolescence):
+       * Create DETAILED age-specific variables preserving full granularity (e.g., hownteen14-20 with 8 categories)
+       * ALSO create COLLAPSED age-specific variables with consistent categories across all ages (e.g., hown14-32 with 6 categories)
+     - When later waves have MORE detail than earlier waves:
+       * Create COLLAPSED harmonized variables for all ages
+       * Create DETAILED variables only where detailed data exists
+     - Include BOTH collapsed and detailed versions in final output
+  
+  6. **Combining Multiple Binary Indicators**:
+     - Some waves use multiple binary variables instead of a single categorical variable
+     - Example: Wave 5 uses W5Hous12BHH (ownership type) and W5Hous12CHH (rental type)
+     - Derive categories by checking which indicator equals 1:
+  ```r
+       hownteen18 = case_when(
+         W5Hous12BHH == 1 ~ 1,  # Owned outright
+         W5Hous12BHH == 2 ~ 2,  # Mortgage
+         W5Hous12BHH == 3 ~ 3,  # Shared ownership
+         W5Hous12CHH == 1 ~ 4,  # Council rent
+         W5Hous12CHH == 2 ~ 5,  # Housing assoc
+         W5Hous12CHH == 3 ~ 6,  # Private rent
+         W5Hous12CHH == 4 ~ 7,  # Rent free
+         W5Hous12HH == 3 | W5Hous12BHH == 4 | W5Hous12CHH == 5 ~ 8,  # Other
+         W5Hous12BHH == -92 | W5Hous12CHH == -92 ~ -9,
+         W5Hous12BHH == -91 | W5Hous12CHH == -91 ~ -1,
+         is.na(W5Hous12BHH) & is.na(W5Hous12CHH) ~ -3
+       )
+  ```
+  
+  7. **Wave-Specific Missing Value Harmonization**:
+     - Convert wave-specific codes to standard codes within the same case_when()
+     - Use EXACT mappings from metadata for each wave
+     - Common patterns (always verify):
+       - -999, -998, -997, -995, -99 → -2
+       - -92 → -9
+       - -91 → -1
+       - -1 (as original code) → -8
+     - Each wave may have different mappings - don't use a generic helper function
+  
+  8. **Recoding Logic Structure**:
+     - Create ALL derived variables in a single mutate() with separate case_when() for each
+     - Do NOT use helper functions for recoding
+     - First create detailed variables (if applicable), then create collapsed variables
+     - For collapsed versions, reference the original source variables (not the detailed derived variables)
+     - Example structure:
+  ```r
+       mutate(
+         # Detailed version
+         hownteen14 = case_when(
+           hown14 > 0 ~ hown14,
+           hown14 == -999 ~ -2,
+           hown14 == -92 ~ -9,
+           is.na(hown14) ~ -3
+         ),
+         # Collapsed version  
+         hown14 = case_when(
+           hown14 == 1 ~ 1,
+           hown14 == 2 ~ 2,
+           hown14 == 3 ~ 3,
+           hown14 %in% 4:6 ~ 4,
+           hown14 == -999 ~ -2,
+           is.na(hown14) ~ -3
+         )
+       )
+  ```
+  
+  9. **Factor Variables and Labels**:
+     - Convert ALL derived variables to factors using mutate(across())
+     - Use separate across() calls for detailed vs collapsed variables (different levels/labels)
+     - Example:
+  ```r
+       mutate(
+         across(
+           c(hownteen14, hownteen15, hownteen16, hownteen17, hownteen18, hownteen19, hownteen20),
+           ~ factor(.x, levels = c(1,2,3,4,5,6,7,8,-1,-2,-3,-8,-9),
+                   labels = c("Owned outright", "Mortgage", "Shared", 
+                             "Council rent", "Housing assoc", "Private rent", 
+                             "Rent free", "Other", "Not applicable", 
+                             "Script error", "Not asked", "Don't know", "Refusal"))
+         ),
+         across(
+           c(hown14, hown15, hown16, hown17, hown18, hown19, hown20, hown25, hown32),
+           ~ factor(.x, levels = c(1,2,3,4,5,6,-1,-2,-3,-8,-9),
+                   labels = c("Owned outright", "Owned mortgage", "Shared", 
+                             "Rent", "Rent free", "Other", ...))
+         )
+       )
+  ```
+     - Do NOT use haven::labelled()
+  
+  10. **Package Requirements**:
+      - Use ONLY standard R packages: haven, dplyr, purrr, here, labelled, readr
+      - Load packages at the start of the script using library()
+  
+  11. **Output Requirements**:
+      - Create output directory: `dir.create(file.path(getwd(), "data", "output"), recursive = TRUE, showWarnings = FALSE)`
+      - Output file path: `output_data_path <- file.path(getwd(), "data", "output", "output.csv")`
+      - Write using: `write.csv(data, output_data_path, row.names = FALSE)` (NOT write_csv)
+  
+  12. **Variables to Include in Output**:
+      - Use select() to keep: NSID + all collapsed age-specific variables + all detailed age-specific variables
+      - Example: `select(NSID, hown14, hown15, ..., hown32, hownteen14, hownteen15, ..., hownteen20)`
+      - Include ALL ages mentioned in metadata (don't skip ages)
+      - Do NOT include raw source variables (W5Hous12BHH, etc.)
+  
+  13. **Time-Varying vs Time-Invariant**:
+      - For time-VARYING characteristics (housing tenure, employment, education, relationship, location): Create SEPARATE age-specific variables
+      - For time-INVARIANT characteristics (sex, ethnicity, parental education): Create ONE consolidated variable with prioritization logic
+      - For STABLE but time-varying household characteristics during adolescence: May consolidate OR keep age-specific depending on metadata guidance
+  
+  14. **Processing All Ages**:
+      - Process ALL waves mentioned in metadata
+      - Don't skip intermediate ages (e.g., if metadata mentions ages 14-20, 25, 32, include all of them)
+      - Some ages may be missing from the data - that's fine, but don't skip ages that exist
+  
+  15. You must run your R script after generating it.
         
   Produce your script in R.
+  
   Here is the appropriate metadata for the task:
 
   {metadata}
