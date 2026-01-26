@@ -15,7 +15,7 @@ override: |
   9. When harmonising missing value codes across waves, convert wave-specific negative codes (e.g., -100, -97, -999, -998, -997, -995, -94, -92, -91, -99, -98, -996) to the standard missing-value codes defined in instruction 3. Multiple wave-specific codes may map to the same standard code.
   10. For time-invariant or stable characteristics (e.g., sex, ethnicity, language spoken at home, parental education), create a single consolidated variable. The prioritisation strategy depends on the variable: for characteristics expected to be stable and established early (e.g., ethnicity, language), prioritise the earliest valid response; for characteristics that may be corrected or updated over time (e.g., sex), prioritise the most recent valid response. Only use positive values in the prioritisation logic; include missing codes as fallback values when no positive values exist.
   11. When recoding categorical variables, use factor variables with explicit labels for both valid categories and all missing value codes to preserve metadata.
-  12. Use only standard R packages (haven, dplyr, purrr, here, labelled, readr are acceptable).
+  12. Use only standard R packages (haven, dplyr, purrr, labelled, readr are acceptable).
   13. Your R script must output one single cleaned csv named data/output/cleaned_data.csv
   14. Explicitly output only the derived variables that were created during the cleaning process to the csv (do not include intermediate wave-specific variables unless they are the final output).
   15. You must run your R script.

@@ -15,7 +15,7 @@ override: |
   9. For time-invariant or stable characteristics (e.g., sex, ethnicity, language spoken at home), create a single consolidated variable. The prioritisation strategy depends on the variable: for characteristics expected to be stable and established early (e.g., ethnicity, language), prioritise the earliest valid response; for characteristics that may be corrected or updated over time (e.g., sex), prioritise the most recent valid response. Only use positive values in the prioritisation logic; include missing codes as fallback values when no positive values exist.
   10. For time-varying characteristics that may legitimately change over the life course (e.g., sexual orientation, relationship status, employment, geographical location), retain age-specific variables rather than creating a single consolidated measure, to preserve the temporal variation for longitudinal analysis.
   11. When recoding categorical variables, use factor variables with explicit labels for both valid categories and all missing value codes to preserve metadata.
-  12. Use only standard R packages (haven, dplyr, purrr, here, labelled, readr are acceptable).
+  12. Use only standard R packages (haven, dplyr, purrr, labelled, readr are acceptable).
   13. Your R script must output one single cleaned csv named data/output/cleaned_data.csv
   14. Explicitly output only the derived variables that were created during the cleaning process to the csv (do not include intermediate wave-specific variables unless they are the final output).
   15. You must run your R script.

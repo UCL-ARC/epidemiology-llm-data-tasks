@@ -120,7 +120,7 @@ override: |
       - Do NOT use haven::labelled()
   
   11. **Package Requirements**:
-      - Use ONLY standard R packages: haven, dplyr, purrr, here, labelled, readr
+      - Use ONLY standard R packages: haven, dplyr, purrr, labelled, readr
       - Load packages at the start of the script using library()
   
   
