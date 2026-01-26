@@ -54,3 +54,10 @@ override: |
      - Merge first, recode later.
      - Process all waves and ages present in the metadata.
      - Follow metadata precisely for mappings, variable names, and missing value codes.
+
+  10. Produce a complete runnable R script and run it.
+
+  Here is the appropriate metadata for the task:
+
+  {metadata}
+
