@@ -4,24 +4,19 @@ override: |
   You have access to raw survey datasets on a cohort study followed up at multiple ages. Your task is to clean and preprocess these datasets into a single file ready for analysis. Follow these instructions precisely:
 
   1. **Package management**:
-     - Required packages: haven, dplyr, purrr, here, labelled, readr.
+     - Required packages: haven, dplyr, purrr, labelled, readr.
 
-  2. **File loading and merging**:
-     - Set `data_path <- 'data/input/'`.
-     - Load all input files using `read_delim(file.path(data_path, "filename"), show_col_types = FALSE)`.
-     - Load each wave into separate variables: S1, S2, S3, S4, S5, S6, S7, S8, S9.
-     - Select only NSID and the relevant variables from each wave.
-     - **Do not derive or recode variables yet**.
-     - After loading all waves, merge them using `reduce(list(S1,S2,S3,S4,S5,S6,S7,S8,S9), full_join, by="NSID")`.
+  2. **File Loading**:
+     - Ensure when you load the input files you append the dir "data/input/" this is where they are stored.
 
   3. **Variable derivation**:
-     - After merging, create **all derived variables in a single mutate() call**.
+     - After merging, create **all derived variables**.
      - Create first the detailed adolescent variables (`hownteen14-20`), preserving full granularity where available.
      - Then create collapsed, harmonized variables for all ages (`hown14-20, hown25, hown32`), using consistent categories.
      - Do not create additional adult detailed variables (no `hownadtl25` or `hownadtl32`).
 
   4. **Handling multiple indicators**:
-     - For waves with multiple binary indicators (e.g., W5Hous12BHH, W5Hous12CHH), combine them into single categorical variables using case_when().
+     - For waves with multiple binary indicators (e.g., W5Hous12BHH, W5Hous12CHH), combine them into single categorical variables.
      - Follow exact mappings from metadata; do not use catch-all TRUE clauses.
 
   5. **Missing values**:
@@ -47,7 +42,6 @@ override: |
      - Do not include raw source variables (e.g., W5Hous12BHH).
 
   9. **General rules**:
-     - Do not create helper functions for recoding.
      - Merge first, recode later.
      - Process all waves and ages present in the metadata.
      - Follow metadata precisely for mappings, variable names, and missing value codes.
