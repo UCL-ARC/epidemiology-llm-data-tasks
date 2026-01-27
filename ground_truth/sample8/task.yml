@@ -30,6 +30,7 @@ override: |
         * Level 3: Other qualifications not mappable to NVQ framework
         * Level 4: None of these qualifications
       - Preserve standard missing codes (-9, -8, -3, -2, -1) as factor levels
+      - When multiple indicators are present, always prioritise the highest valid qualification observed across all sources
   
   6. Requirements for educ32 (Age 32 NVQ Level):
       - Source: Combine both derived NVQ variables from wave 9: academic (W9DANVQH) AND vocational (W9DVNVQH)
@@ -37,6 +38,7 @@ override: |
       - Output: Use the same 5-level collapsed scheme as educ25 (levels 0-4 with identical category labels)
       - Logic: If either academic or vocational route shows a qualification, capture it (use inclusive OR logic)
       - Preserve standard missing codes as factor levels
+      - When both routes are present, retain the higher of the two qualification levels
   
   7. Requirements for educadtl32 (Academic Qualification Detail):
       - Source: W9ACQU* variables (mutually exclusive binary indicators for specific academic qualifications)
@@ -49,6 +51,7 @@ override: |
         * Preserve responses for "Don't know", "Refused", and "No answer" options as missing codes
         * Handle "Not applicable" and "Not asked" cases appropriately
       - Use the full descriptive labels from metadata
+      - Implement this by scanning across all W9ACQU* variables and selecting the first valid positive response in priority order
   
   8. Requirements for educvdtl32 (Vocational Qualification Detail):
       - Source: W9VCQU* variables (mutually exclusive binary indicators for specific vocational qualifications)
@@ -59,12 +62,14 @@ override: |
         * Handle "all No", "Don't know", "Refused" cases
         * Preserve missing codes
       - Use the full descriptive labels from metadata
+      - Implement this by scanning across all W9VCQU* variables and selecting the first valid positive response in priority order
   
   9. General data quality requirements:
       - For collapsed NVQ variables (educ25, educ32): When multiple data sources indicate different qualification levels, always capture the highest level indicated
       - For all variables: Preserve the full range of missing data codes to maintain data provenance
       - Maintain consistency: educ25 and educ32 must have identical factor level structures and labels (same categories 0-4 with same descriptive text)
-  
+      - Final variables should be returned as labelled factors with explicit level ordering
+
   10. Final output requirements:
       - Output dataset must contain exactly 5 variables: NSID, educ25, educ32, educadtl32, educvdtl32
       - Write to: data/output/cleaned_data.csv
