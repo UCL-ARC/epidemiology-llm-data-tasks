@@ -11,8 +11,10 @@ override: |
     incwhh14, incwhh15, incwhh16, incwhh17 for banded income and
     incwhhcnt14, incwhhcnt15 for continuous income.
 
-  3. Use standard missing-value codes:
-    -9 Refusal, -8 Don’t know/insufficient information, -3 Not asked/interviewed, -2 Script error/lost, -1 Not applicable.
+  3. Use standard missing-value codes: -9 Refusal, -8 Don't know/insufficient 
+   information, -3 Not asked/interviewed, -2 Script error/lost, -1 Not applicable.
+   Map all wave-specific missing codes to these standards. Be careful to handle 
+   missing values separately from valid data when deriving new variables.
 
   4. Load and merge the following files by NSID using full joins:
     wave_one_lsype_family_background_2020.tab
@@ -21,19 +23,28 @@ override: |
     wave_four_lsype_family_background_2020.tab
 
   5. Recode all wave-specific negative codes and NAs to the standard missing scheme.
+    When deriving banded variables from continuous income, handle missing values 
+    first (preserving their codes), then apply banding logic only to valid positive 
+    values.
 
-  6. For waves with continuous income (ages 14 and 15), derive categorical income 
-    bands using meaningful income thresholds that reflect realistic household income 
-    ranges. Retain both the banded version (as factors with substantive labels) and 
-    the continuous version (as labelled numeric with missing codes only).
+  6. For waves with continuous income (ages 14 and 15):
+    - Derive categorical income bands based on realistic weekly household income 
+      thresholds
+    - Banded variables should include both valid income categories AND missing 
+      value categories as factor levels
+    - Retain both versions: banded (as factor) and continuous (original values 
+      with missing codes labeled)
+    - The banding scheme for ages 14-15 may differ from the scheme used at ages 16-17
 
   7. For waves already collected as categorical bands (ages 16 and 17), retain as 
     factors with the original survey category labels. Note that these use different 
     banding schemes than ages 14-15.
 
-  8. Convert banded income variables to factors with explicit category labels that 
-    describe the income ranges. Convert continuous variables to labelled numeric 
-    variables with only missing value labels.
+  8. Convert income variables appropriately:
+    - Banded variables: factors with levels covering both income categories (1, 2, 3...) 
+      AND missing codes (-9, -8, -3, -2, -1), with descriptive labels for all levels
+    - Continuous variables: labelled numeric preserving original continuous values, 
+      with labels only for missing codes
 
   9. Do not create a consolidated income measure across waves.
 
