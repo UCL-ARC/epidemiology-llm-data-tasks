@@ -22,15 +22,18 @@ override: |
 
   5. Recode all wave-specific negative codes and NAs to the standard missing scheme.
 
-  6. For waves with continuous income (ages 14 and 15), derive categorical income bands using a common 16-category banding scheme and retain both:
-    the banded version (incwhh14, incwhh15) and
-    the continuous version (incwhhcnt14, incwhhcnt15).
+  6. For waves with continuous income (ages 14 and 15), derive categorical income 
+    bands using meaningful income thresholds that reflect realistic household income 
+    ranges. Retain both the banded version (as factors with substantive labels) and 
+    the continuous version (as labelled numeric with missing codes only).
 
-  7. For waves already collected as categorical bands (ages 16 and 17), retain age-specific categorical variables and do not attempt to harmonise across ages.
+  7. For waves already collected as categorical bands (ages 16 and 17), retain as 
+    factors with the original survey category labels. Note that these use different 
+    banding schemes than ages 14-15.
 
-  8. Convert all income variables to labelled variables:
-    banded variables as labelled factors with explicit category labels and missing labels,
-    continuous variables as labelled numeric variables with missing labels.
+  8. Convert banded income variables to factors with explicit category labels that 
+    describe the income ranges. Convert continuous variables to labelled numeric 
+    variables with only missing value labels.
 
   9. Do not create a consolidated income measure across waves.
 
