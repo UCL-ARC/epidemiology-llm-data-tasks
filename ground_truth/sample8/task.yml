@@ -1,69 +1,82 @@
 task_id: 1
 task_type: data_cleaning_r
 override: |
-  You have access to raw survey datasets from a longitudinal cohort study. Clean and harmonise educational qualification variables only.
+  You have access to raw survey datasets from a longitudinal cohort study followed across multiple waves. Your task is to clean and harmonise educational qualification variables only and produce a single cleaned file ready for analysis.
 
-  Requirements:
+  Follow all instructions:
 
-  1. Setup:
-      - Use only: haven, dplyr, purrr, labelled, readr
-      - Prepend data/input/ to all file paths
-      - Load all six data files from metadata, selecting NSID plus all education variables
-      - Merge all datasets by NSID using full_join
+  1. When loading input files, always prepend the directory data/input/.
+  2. Use only standard R packages: haven, dplyr, purrr, labelled, readr.
   
-  2. Derive exactly four variables:
-      - educ25: Collapsed NVQ level at age 25 (wave 8)
-      - educ32: Collapsed NVQ level at age 32 (wave 9)
-      - educadtl32: Detailed academic qualification at age 32
-      - educvdtl32: Detailed vocational qualification at age 32
+  3. Load and merge data files:
+      - Load all six data files listed in the metadata
+      - For each file, select NSID plus all education-related variables shown in the metadata
+      - Merge all datasets using full_join by NSID to create a single analytical dataset
   
-  3. educ25 (Age 25 NVQ Level):
-      - Sources: W8DHANVQH (derived academic NVQ) + W8VCQU* variables (individual vocational qualifications)
-      - Challenge: W8DHANVQH captures academic qualifications but NOT vocational ones from W8VCQU* series
-      - Task: Examine each W8VCQU* variable label in metadata to determine what qualification it represents
-      - Map each vocational qualification to its appropriate NVQ equivalent level based on educational content
-      - CRITICAL: Different W8VCQU* variables map to different NVQ levels - do not treat them uniformly
-      - Combine W8DHANVQH and mapped W8VCQU* responses, taking the highest qualification indicated
-      - Output: 5-level factor (0-4) with levels:
-        * 0 = NVQ 4-5 equivalent qualifications
-        * 1 = NVQ 1-3 equivalent qualifications
-        * 2 = Entry level or no qualifications
-        * 3 = Other qualifications not mappable to NVQ
-        * 4 = None of these qualifications
-      - Preserve missing codes (-9, -8, -3, -2, -1) as factor levels
+  4. Derive exactly four variables and no others:
+      - educ25: Collapsed NVQ level at age ~25 (wave 8)
+      - educ32: Collapsed NVQ level at age ~32 (wave 9)  
+      - educadtl32: Detailed academic qualifications at age 32 (wave 9)
+      - educvdtl32: Detailed vocational qualifications at age 32 (wave 9)
   
-  4. educ32 (Age 32 NVQ Level):
+  5. Requirements for educ25 (Age 25 NVQ Level):
+      - Source: Combine both the derived academic NVQ variable (W8DHANVQH) AND individual vocational qualification responses (W8VCQU* variables) from wave 8
+      - Purpose: Create a single comprehensive measure that captures the highest qualification level from either academic or vocational routes
+      - Output: 5-level collapsed categorical variable (0-4) representing qualification bands:
+        * Level 0: NVQ 4-5 equivalent qualifications
+        * Level 1: NVQ 1-3 equivalent qualifications  
+        * Level 2: Entry level or no qualifications
+        * Level 3: Other qualifications not mappable to NVQ framework
+        * Level 4: None of these qualifications
+      - Preserve standard missing codes (-9, -8, -3, -2, -1) as factor levels
+      - Convert to labelled factor with descriptive category names
+  
+  6. Requirements for educ32 (Age 32 NVQ Level):
       - Sources: W9DANVQH (derived academic NVQ) + W9DVNVQH (derived vocational NVQ)
       - Both sources are already at NVQ level - no individual qualification mapping needed
       - Combine both, taking highest level indicated
       - Output: Same 5-level factor structure as educ25 with identical labels
       - Preserve missing codes as factor levels
   
-  5. educadtl32 (Academic Qualification Detail):
-      - Source: W9ACQU* variables (mutually exclusive binary indicators)
-      - Find the single "Yes" (=1) response and return its qualification label
-      - If all "No" (=2), return "None of these qualifications"
-      - Handle "Don't know" (W9ACQU0T), "Refused" (W9ACQU0U), "No answer" (W9ACQU0V) as missing codes
-      - Output: Labelled factor with all qualification types from metadata plus missing codes
+  7. Requirements for educadtl32 (Academic Qualification Detail):
+      - Source: W9ACQU* variables (mutually exclusive binary indicators for specific academic qualifications)
+      - Purpose: Identify the single academic qualification type held by respondent
+      - Output: Single categorical variable capturing the specific qualification type
+      - Logic:
+        * Each respondent should have at most one "Yes" (=1) response across all W9ACQU* variables
+        * Map that "Yes" response to its corresponding qualification category
+        * If all responses are "No" (=2), code as "None of these qualifications"
+        * Preserve responses for "Don't know", "Refused", and "No answer" options as missing codes
+        * Handle "Not applicable" and "Not asked" cases appropriately
+      - Use the full descriptive labels from metadata
+      - Convert to labelled factor preserving all qualification types and missing codes
   
-  6. educvdtl32 (Vocational Qualification Detail):
-      - Source: W9VCQU* variables (mutually exclusive binary indicators)
-      - Same logic as educadtl32 but for vocational qualifications
-      - Handle "Don't know" (W9VCQUAH), "Refused" (W9VCQUAI) as missing codes
-      - Output: Labelled factor with all qualification types from metadata plus missing codes
+  8. Requirements for educvdtl32 (Vocational Qualification Detail):
+      - Source: W9VCQU* variables (mutually exclusive binary indicators for specific vocational qualifications)
+      - Purpose: Identify the single vocational qualification type held by respondent
+      - Output: Single categorical variable capturing the specific qualification type
+      - Logic: Same approach as educadtl32 but for vocational qualifications
+        * Map "Yes" responses to qualification categories
+        * Handle "all No", "Don't know", "Refused" cases
+        * Preserve missing codes
+      - Use the full descriptive labels from metadata
+      - Convert to labelled factor preserving all qualification types and missing codes
   
-  7. Data quality rules:
-      - When multiple sources show different levels, always take the HIGHEST qualification
-      - For educ25: Must map each W8VCQU* to appropriate NVQ level using metadata labels
-      - Preserve all missing codes (-9, -8, -3, -2, -1) as explicit factor levels (not NA)
-      - educ25 and educ32 must have identical factor structures and labels
+  9. General data quality requirements:
+      - For collapsed NVQ variables (educ25, educ32): When multiple data sources indicate different qualification levels, always capture the highest level indicated
+      - For all variables: Preserve the full range of missing data codes to maintain data provenance
+      - For all variables: Ensure negative codes (missing data indicators) are included as explicit factor levels, not treated as NA
+      - Maintain consistency: educ25 and educ32 must have identical factor level structures and labels (same categories 0-4 with same descriptive text)
   
-  8. Output:
-      - Select only: NSID, educ25, educ32, educadtl32, educvdtl32
-      - All derived variables must be labelled factors
-      - Write to: data/output/cleaned.csv (row.names = FALSE)
-      - Run the script to verify execution
+  10. Final output requirements:
+      - Output dataset must contain exactly 5 variables: NSID, educ25, educ32, educadtl32, educvdtl32
+      - All derived variables must be labelled factors (not numeric or character)
+      - Write to: data/output/cleaned_data.csv
+      - Use write.csv() with row.names = FALSE
+  
+  11. You must run your R script after creating it to verify it executes successfully.
         
-  Produce your script in R using the metadata below:
+  Produce your script in R.
+  Here is the appropriate metadata for the task:
 
   {metadata}
