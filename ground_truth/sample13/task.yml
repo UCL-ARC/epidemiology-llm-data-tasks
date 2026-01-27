@@ -11,7 +11,7 @@ override: |
     nssecma14–nssecma18 for mothers and
     nssecpa14–nssecpa18 for fathers.
 
-  3. Load and merge all waves by NSID using full joins
+  3. First load and merge all waves by NSID using full joins
 
   4. Retain only parental NS-SEC variables and rename them to nssecma14–nssecma18 and nssecpa14–nssecpa18.
 
@@ -24,13 +24,13 @@ override: |
    - -999 and -94 → -2 (Script error / information lost)
    - -99, -98, and NA → -3 (Not asked / not interviewed)
    Preserve standard missing codes:
-   -9 Refusal, -8 Don’t know, -7 Prefer not to say, -3 Not asked/interviewed, -2 Script error/lost, -1 Not applicable.
+   -9 Refusal, -8 Don’t know, -7 Prefer not to say, -3 Not asked / not interviewed, -2 Script error / information lost, -1 Not applicable.
 
   7. Retain separate detailed age-specific variables for mothers and fathers.
     Do not collapse across ages and do not create consolidated measures.
 
   8. Convert all NS-SEC variables to labelled factor variables with explicit labels for:
-    categories 1–17 and all standard missing codes.
+     Each category and all standard missing codes.
 
   9. Output only the following variables:
       NSID,
