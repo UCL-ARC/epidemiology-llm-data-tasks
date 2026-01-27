@@ -28,6 +28,7 @@ override: |
     - nssec17, nssec18, nssec19, nssec20, nssec25, nssec32
   12. Write exactly one CSV file named data/output/cleaned_data.csv.
   13. Produce a complete, runnable R script that follows these instructions using the provided metadata.
+  14. You must run your R script.
   
   Here is the appropriate metadata for the task:
 
