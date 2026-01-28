@@ -1,2 +1,90 @@
 task_id: 1
 task_type: data_cleaning_r
+override: |
+  You have access to raw survey datasets on a cohort study followed up at multiple ages. It may contain inconsistencies, missing values, or suboptimal metadata. Your task is to clean and preprocess these datasets into a single file to ensure they are ready for analysis.
+  
+  Follow all instructions precisely:
+
+  1. **File Loading**:
+     - Ensure when you load the input files you append the dir "data/input/" this is where they are stored.
+     - Load each dataset into a separate object and merge using full_join by the ID variable.
+
+  2. **Variable Naming Conventions**:
+     - Use the exact ID variable name from source data (e.g., NSID) - NEVER create or rename to generic "id".
+     - All variable names must be short, descriptive, and lowercase.
+     - Common abbreviations: eth = ethnicity, lang = language, sori = sexual orientation, partnr = partnership/marital status, reg = region, educaim = educational aims, educ = educational qualifications, ecoact = economic activity.
+     - Age at measurement is appended as numeric suffix (e.g., ecoact17 = age 17, ecoact32 = age 32).
+     - For detailed adult versions: append "adu" BEFORE the age suffix (e.g., ecoactadu25 = age 25, ecoactadu32 = age 32).
+
+  3. **Standard Missing-Value Codes**:
+     Use these codes for ALL variables (do NOT include -7 unless specified in metadata):
+     - -9 = Refusal
+     - -8 = Don't know/insufficient information
+     - -1 = Item not applicable
+     - -3 = Not asked at the fieldwork stage/participated/interviewed
+     - -2 = Schedule not applicable/Script error/information lost
+
+  4. **Response Category Harmonization**:
+     - When the SAME construct is measured across ages with DIFFERENT response categories, harmonize them into a common coding scheme.
+     - Create age-specific harmonized variables (e.g., ecoact17, ecoact18, ecoact19, ecoact20, ecoact25, ecoact32) that ALL use the SAME response categories.
+     - Follow the EXACT category scheme specified in the metadata.
+     - Each wave requires its own case_when() logic to map original categories to harmonized categories.
+     - Do NOT simplify or reduce the number of categories - use the exact scheme from metadata.
+
+  5. **Dual-Level Variables** (collapsed + detailed):
+     - For variables with detailed adult measurements:
+       a. Create harmonized/collapsed versions for ALL ages using the common category scheme.
+       b. ALSO preserve detailed adult versions ONLY for ages where detailed data exists.
+     - Both versions should be included in final output.
+     - Example: If wave 8 (age 25) and wave 9 (age 32) have detailed categories:
+       * Create: ecoact25, ecoact32 (harmonized 6-category)
+       * AND: ecoactadu25, ecoactadu32 (detailed 10-category)
+
+  6. **Wave-Specific Recoding Logic**:
+     - Each wave needs its OWN case_when() to map from original to harmonized categories.
+     - For collapsed versions derived from detailed variables, reference the detailed variable name.
+     - Follow exact recoding mappings from metadata.
+
+  8. **Wave-Specific Missing Value Code Harmonization**:
+     - Convert wave-specific negative codes to standard codes.
+     - Common patterns (always verify in metadata):
+       * -999, -998, -997, -995 → -2
+       * -94 → -8
+       * -92 → -9
+       * -91 → -1 or -8 (varies by wave)
+       * -99 → -3
+
+  9. **Handling NA in Detailed Variables**:
+     - For detailed adult variables (e.g., ecoactadu25, ecoactadu32), handle NA values separately.
+     - After creating the collapsed version, recode the detailed version.
+
+  10. **Factor Variables and Labels**:
+      - Convert ALL harmonized variables to factors.
+      - Harmonized vs detailed variables have different levels/labels.
+
+  11. **Package Requirements**:
+      - Use ONLY standard R packages: haven, dplyr, purrr, labelled, readr.
+      - Load packages at the start of the script using library().
+
+  12. **Output Requirements**:
+      - Your R script must output one single cleaned csv named data/output/cleaned_data.csv.
+
+  13. **Variables to Include in Output**:
+      - Use select() at the end to keep: NSID + all harmonized age-specific variables + all detailed adult variables.
+      - Example: `select(NSID, ecoact17, ecoact18, ecoact19, ecoact20, ecoact25, ecoact32, ecoactadu25, ecoactadu32)`
+      - Do NOT include raw source variables.
+      - Include ALL ages mentioned in metadata (don't skip ages like 25).
+
+  14. **Time-Varying vs Time-Invariant**:
+      - For time-VARYING characteristics (e.g., economic activity, employment, education, relationship status): create SEPARATE age-specific variables.
+      - For time-INVARIANT characteristics (e.g., sex, ethnicity, language): create ONE consolidated variable.
+      - This prompt is for time-varying characteristics - create multiple age-specific variables.
+
+  15. **Execution**:
+      - You must run your R script after generating it.
+
+  Produce your script in R.
+  
+  Here is the appropriate metadata for the task:
+
+  {metadata}
