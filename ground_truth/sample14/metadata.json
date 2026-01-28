@@ -180,7 +180,8 @@
     "ns8_2015_main_interview.tab": {
     "file_info": {
       "number_of_variables": 740,
-      "number_of_cases": 7705
+      "number_of_cases": 7705,
+      "description": "Wave Eight Main Interview Data File"
     },
     "variables": {
       "NSID": {
