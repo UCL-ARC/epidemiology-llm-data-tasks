@@ -5,48 +5,69 @@ override: |
 
   Follow all instructions:
 
-  1. When loading input files, always prepend the directory data/input/.
+  1. **File Loading**:
+     - When loading input files, always prepend the directory data/input/.
+     - Load all waves listed in the metadata.
+     - Merge all waves by NSID using full joins.
 
-  2. Use short, descriptive, lowercase variable names. For parental occupational class use:
-    nssecma14–nssecma18 for mothers and
-    nssecpa14–nssecpa18 for fathers.
+  2. **Variable Naming Conventions**:
+     - Use the exact ID variable name from source data (NSID).
+     - Use short, descriptive, lowercase variable names.
+     - For parental occupational class use:
+       * nssecma14–nssecma18 for mothers
+       * nssecpa14–nssecpa18 for fathers
 
-  3. First load and merge all waves by NSID using full joins
+  3. **Variable Selection and Renaming**:
+     - Retain only parental NS-SEC variables.
+     - Rename them to nssecma14–nssecma18 and nssecpa14–nssecpa18.
 
-  4. Retain only parental NS-SEC variables and rename them to nssecma14–nssecma18 and nssecpa14–nssecpa18.
+  4. **NS-SEC Classification Harmonization**:
+     - Recode each wave into the harmonised 17-category NS-SEC classification.
+     - Collapse detailed subcategories by taking the integer part.
+     - Accept only categories 1–17 as valid occupational classes.
+     - Recode fractional or invalid values to missing.
 
-  5. Recode each wave into the harmonised 17-category NS-SEC classification.
-   - Collapse detailed subcategories by taking the integer part.
-   - Accept only categories 1–17 as valid occupational classes.
-   - Recode fractional or invalid values to missing.
+  5. **Missing Value Code Harmonization**:
+     - Harmonise all wave-specific negative codes:
+       * -999 and -94 → -2 (Script error/information lost)
+       * -99, -98, and NA → -3 (Not asked/not interviewed)
+     - Preserve standard missing codes:
+       * -9 = Refusal
+       * -8 = Don't know
+       * -7 = Prefer not to say
+       * -3 = Not asked/not interviewed
+       * -2 = Script error/information lost
+       * -1 = Not applicable
 
-  6. Harmonise all wave-specific negative codes
-   - -999 and -94 → -2 (Script error / information lost)
-   - -99, -98, and NA → -3 (Not asked / not interviewed)
-   Preserve standard missing codes:
-   -9 Refusal, -8 Don’t know, -7 Prefer not to say, -3 Not asked / not interviewed, -2 Script error / information lost, -1 Not applicable.
+  6. **Time-Varying Characteristics**:
+     - Retain separate detailed age-specific variables for mothers and fathers.
+     - Do not collapse across ages and do not create consolidated measures.
 
-  7. Retain separate detailed age-specific variables for mothers and fathers.
-    Do not collapse across ages and do not create consolidated measures.
+  7. **Factor Variables and Labels**:
+     - Convert all NS-SEC variables to labelled factor variables with explicit labels for:
+       * Each category (1–17)
+       * All standard missing codes
 
-  8. Convert all NS-SEC variables to labelled factor variables with explicit labels for:
-     Each category and all standard missing codes.
+  8. **Package Requirements**:
+     - Use ONLY standard R packages: haven, dplyr, purrr, labelled, readr.
+     - Load packages at the start of the script using library().
 
-  9. Output only the following variables:
-      NSID,
-      nssecma14, nssecpa14,
-      nssecma15, nssecpa15,
-      nssecma16, nssecpa16,
-      nssecma17, nssecpa17,
-      nssecma18, nssecpa18.
+  9. **Output Requirements**:
+     - Output only the following variables:
+       * NSID
+       * nssecma14, nssecpa14
+       * nssecma15, nssecpa15
+       * nssecma16, nssecpa16
+       * nssecma17, nssecpa17
+       * nssecma18, nssecpa18
+     - Write exactly one CSV file named data/output/cleaned_data.csv.
 
-  10. Use only standard R packages: haven, dplyr, purrr, labelled, readr.
+  10. **Execution**:
+      - Produce a complete runnable R script.
+      - You must run your R script after generating it.
 
-  11. Write exactly one CSV file named data/output/cleaned_data.csv.
-
-  12. Produce a complete runnable R script and run it.
+  Produce your script in R.
   
   Here is the appropriate metadata for the task:
 
   {metadata}
-
