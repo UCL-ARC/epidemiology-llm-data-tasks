@@ -6,10 +6,8 @@ override: |
   Follow all instructions precisely:
 
   1. **File Loading**:
-     - Set data_path variable: `data_path <- 'data/input/'`
-     - Load input files using: `read_delim(file.path(data_path, "filename"), show_col_types = FALSE)`
-     - Do NOT create helper functions for reading files - use read_delim() directly.
-     - Load each dataset into a separate variable (S1, S2, S4, S5, S6, S7, S8, S9, etc.).
+     - Ensure when you load the input files you append the dir "data/input/" this is where they are stored.
+     - Load each dataset into a separate object and merge using full_join by the ID variable.
 
   2. **Variable Naming Conventions**:
      - Use the exact ID variable name from source data (e.g., NSID) - NEVER create or rename to generic "id".
@@ -26,27 +24,14 @@ override: |
      - -3 = Not asked at the fieldwork stage/participated/interviewed
      - -2 = Schedule not applicable/Script error/information lost
 
-  4. **Data Structure - Select and Rename First**:
-     - For EACH dataset, select only NSID and needed variables, renaming them in the select() statement.
-     - Example structure:
-  ```r
-       S4 <- read_delim(file.path(data_path, "wave_four_lsype_young_person_2020.tab"), show_col_types = FALSE) %>%
-         select(NSID, ecoact17 = W4empsYP)
-       
-       S8 <- read_delim(file.path(data_path, "ns8_2015_derived.tab"), show_col_types = FALSE) %>%
-         select(NSID, ecoactadu25 = W8DACTIVITYC)
-  ```
-     - Then merge using: `ecoact_all <- reduce(list(S1, S4, S5, S6, S7, S8, S9), full_join, by = "NSID")`
-     - This keeps the data structure clean and variable names consistent.
-
-  5. **Response Category Harmonization**:
+  4. **Response Category Harmonization**:
      - When the SAME construct is measured across ages with DIFFERENT response categories, harmonize them into a common coding scheme.
      - Create age-specific harmonized variables (e.g., ecoact17, ecoact18, ecoact19, ecoact20, ecoact25, ecoact32) that ALL use the SAME response categories.
      - Follow the EXACT category scheme specified in the metadata.
      - Each wave requires its own case_when() logic to map original categories to harmonized categories.
      - Do NOT simplify or reduce the number of categories - use the exact scheme from metadata.
 
-  6. **Dual-Level Variables** (collapsed + detailed):
+  5. **Dual-Level Variables** (collapsed + detailed):
      - For variables with detailed adult measurements:
        a. Create harmonized/collapsed versions for ALL ages using the common category scheme.
        b. ALSO preserve detailed adult versions ONLY for ages where detailed data exists.
@@ -55,28 +40,13 @@ override: |
        * Create: ecoact25, ecoact32 (harmonized 6-category)
        * AND: ecoactadu25, ecoactadu32 (detailed 10-category)
 
-  7. **Wave-Specific Recoding Logic**:
+  6. **Wave-Specific Recoding Logic**:
      - Each wave needs its OWN case_when() to map from original to harmonized categories.
      - For collapsed versions derived from detailed variables, reference the detailed variable name.
-     - Example:
-  ```r
-       ecoact25 = case_when(
-         ecoactadu25 %in% c(1, 2) ~ 1,
-         ecoactadu25 %in% c(6, 7) ~ 2,
-         ecoactadu25 == 5 ~ 3,
-         ecoactadu25 == 4 ~ 4,
-         ecoactadu25 == 9 ~ 5,
-         ecoactadu25 %in% c(3, 8, 10) ~ 6,
-         ecoactadu25 == -9 ~ -9,
-         ecoactadu25 == -8 ~ -8,
-         ecoactadu25 == -1 ~ -1,
-         TRUE ~ -3
-       )
-  ```
      - Follow exact recoding mappings from metadata.
 
   8. **Wave-Specific Missing Value Code Harmonization**:
-     - Convert wave-specific negative codes to standard codes within the same case_when().
+     - Convert wave-specific negative codes to standard codes.
      - Common patterns (always verify in metadata):
        * -999, -998, -997, -995 → -2
        * -94 → -8
@@ -86,39 +56,11 @@ override: |
 
   9. **Handling NA in Detailed Variables**:
      - For detailed adult variables (e.g., ecoactadu25, ecoactadu32), handle NA values separately.
-     - After creating the collapsed version, recode the detailed version:
-  ```r
-       ecoactadu25 = case_when(
-         !is.na(ecoactadu25) ~ ecoactadu25,
-         is.na(ecoactadu25) ~ -3
-       )
-  ```
+     - After creating the collapsed version, recode the detailed version.
 
   10. **Factor Variables and Labels**:
-      - Convert ALL harmonized variables to factors using mutate(across()).
-      - Use separate across() calls for harmonized vs detailed variables (they have different levels/labels).
-      - Example:
-  ```r
-        mutate(
-          across(
-            c(ecoact17, ecoact18, ecoact19, ecoact20, ecoact25, ecoact32),
-            ~ factor(
-              .x,
-              levels = c(1, 2, 3, 4, 5, 6, -1, -2, -3, -8, -9),
-              labels = c("In paid work", "Apprenticeship/training", "Education",
-                        "Unemployed", "Looking after home", "Other",
-                        "Item not applicable", "Script error/information lost",
-                        "Not asked", "Don't know", "Refusal")
-            )
-          ),
-          across(
-            c(ecoactadu25, ecoactadu32),
-            ~ factor(.x, levels = c(1,2,3,4,5,6,7,8,9,10,-1,-2,-3,-8,-9),
-                    labels = c("employee – in paid work", "self employed", ...))
-          )
-        )
-  ```
-      - Do NOT use haven::labelled().
+      - Convert ALL harmonized variables to factors.
+      - Harmonized vs detailed variables have different levels/labels.
 
   11. **Package Requirements**:
       - Use ONLY standard R packages: haven, dplyr, purrr, labelled, readr.
