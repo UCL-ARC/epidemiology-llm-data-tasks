@@ -55,11 +55,14 @@ class NumericComparison:
 
     rmse: float
     mae: float
+    nrmse: float
+    nmae: float
     correlation: float | None
     gt_mean: float
     pred_mean: float
     gt_std: float
     pred_std: float
+    data_match: bool | None
 
 
 @dataclass
@@ -73,6 +76,7 @@ class CategoricalComparison:
     extra_categories: set[str]
     category_overlap_score: float
     distribution_similarity: float
+    data_match: bool | None
 
 
 @dataclass

@@ -33,6 +33,10 @@ def main() -> None:
         comparator = DataComparator(
             categorical_threshold=20,
             match_threshold=0.8,
+            data_match_threshold=0.7,
+            categorical_data_match_threshold=1.0,
+            numerical_data_match_threshold=0.0,
+            categorical_match_threshold=0.8,
         )
 
         result, output_df = comparator.compare(gt_df, pred_df)
