@@ -167,7 +167,7 @@ def print_comparison_report(result: DataComparisonResult) -> None:  # noqa: PLR0
     console.rule("[bold blue]END REPORT[/bold blue]")
 
 
-def aggregate_comparison_results(  # noqa: PLR0915
+def aggregate_comparison_results(  # noqa: PLR0915, PLR0912
     results: list[tuple[str, DataComparisonResult]],
 ) -> pd.DataFrame:
     """
@@ -196,6 +196,43 @@ def aggregate_comparison_results(  # noqa: PLR0915
         )
         matched_categorical_cols = sum(
             1 for comp in result.column_comparisons if comp.categorical_comparison
+        )
+
+        # Count data matches for precision/recall/F1
+        # TP: matched column with data_match = True
+        # FP: matched column with data_match = False
+        # FN: unmatched GT columns
+        true_positives = 0
+        false_positives = 0
+        for comp in result.column_comparisons:
+            if comp.numeric_comparison:
+                if comp.numeric_comparison.data_match is True:
+                    true_positives += 1
+                elif comp.numeric_comparison.data_match is False:
+                    false_positives += 1
+            elif comp.categorical_comparison:
+                if comp.categorical_comparison.data_match is True:
+                    true_positives += 1
+                elif comp.categorical_comparison.data_match is False:
+                    false_positives += 1
+
+        false_negatives = unmatched_gt_cols
+
+        # Calculate precision, recall, F1
+        precision = (
+            true_positives / (true_positives + false_positives)
+            if (true_positives + false_positives) > 0
+            else None
+        )
+        recall = (
+            true_positives / (true_positives + false_negatives)
+            if (true_positives + false_negatives) > 0
+            else None
+        )
+        f1_score = (
+            2 * precision * recall / (precision + recall)
+            if precision is not None and recall is not None and (precision + recall) > 0
+            else None
         )
 
         # Calculate average numeric metrics
@@ -240,6 +277,12 @@ def aggregate_comparison_results(  # noqa: PLR0915
                 "col_match_rate": matched_cols / total_gt_cols
                 if total_gt_cols > 0
                 else 0,
+                "true_positives": true_positives,
+                "false_positives": false_positives,
+                "false_negatives": false_negatives,
+                "precision": precision,
+                "recall": recall,
+                "f1_score": f1_score,
                 "avg_numeric_rmse": sum(numeric_rmse_values) / len(numeric_rmse_values)
                 if numeric_rmse_values
                 else None,
@@ -262,6 +305,25 @@ def aggregate_comparison_results(  # noqa: PLR0915
 
     # Add aggregate row
     if len(summary_df) > 0:
+        # Calculate aggregate precision/recall/F1 from totals (micro-averaging)
+        total_tp = summary_df["true_positives"].sum()
+        total_fp = summary_df["false_positives"].sum()
+        total_fn = summary_df["false_negatives"].sum()
+
+        agg_precision = (
+            total_tp / (total_tp + total_fp) if (total_tp + total_fp) > 0 else None
+        )
+        agg_recall = (
+            total_tp / (total_tp + total_fn) if (total_tp + total_fn) > 0 else None
+        )
+        agg_f1 = (
+            2 * agg_precision * agg_recall / (agg_precision + agg_recall)
+            if agg_precision is not None
+            and agg_recall is not None
+            and (agg_precision + agg_recall) > 0
+            else None
+        )
+
         aggregate_row = {
             "sample": "AGGREGATE",
             "gt_rows": summary_df["gt_rows"].sum(),
@@ -276,6 +338,12 @@ def aggregate_comparison_results(  # noqa: PLR0915
             "unmatched_gt_cols": summary_df["unmatched_gt_cols"].sum(),
             "unmatched_pred_cols": summary_df["unmatched_pred_cols"].sum(),
             "col_match_rate": summary_df["col_match_rate"].mean(),
+            "true_positives": total_tp,
+            "false_positives": total_fp,
+            "false_negatives": total_fn,
+            "precision": agg_precision,
+            "recall": agg_recall,
+            "f1_score": agg_f1,
             "avg_numeric_rmse": summary_df["avg_numeric_rmse"].mean(),
             "avg_numeric_corr": summary_df["avg_numeric_corr"].mean(),
             "avg_categorical_exact_match": summary_df[
@@ -322,6 +390,55 @@ def aggregate_comparison_results(  # noqa: PLR0915
         metrics_table.add_row(
             "Column Match Rate", f"[{match_style}]{col_match_rate:.1%}[/{match_style}]"
         )
+
+        # Precision/Recall/F1 section
+        metrics_table.add_row("", "")  # Spacer row
+        metrics_table.add_row(
+            "[bold]Data Match Metrics[/bold]", "[dim](TP/FP/FN based)[/dim]"
+        )
+        metrics_table.add_row("  True Positives", f"[green]{int(total_tp)}[/green]")
+        metrics_table.add_row("  False Positives", f"[red]{int(total_fp)}[/red]")
+        metrics_table.add_row("  False Negatives", f"[yellow]{int(total_fn)}[/yellow]")
+
+        if agg_precision is not None:
+            prec_style = (
+                "green"
+                if agg_precision >= 0.8  # noqa: PLR2004
+                else "yellow"
+                if agg_precision >= 0.5  # noqa: PLR2004
+                else "red"
+            )
+            metrics_table.add_row(
+                "  Precision", f"[{prec_style}]{agg_precision:.3f}[/{prec_style}]"
+            )
+        else:
+            metrics_table.add_row("  Precision", "[dim]N/A[/dim]")
+
+        if agg_recall is not None:
+            recall_style = (
+                "green"
+                if agg_recall >= 0.8  # noqa: PLR2004
+                else "yellow"
+                if agg_recall >= 0.5  # noqa: PLR2004
+                else "red"
+            )
+            metrics_table.add_row(
+                "  Recall", f"[{recall_style}]{agg_recall:.3f}[/{recall_style}]"
+            )
+        else:
+            metrics_table.add_row("  Recall", "[dim]N/A[/dim]")
+
+        if agg_f1 is not None:
+            f1_style = (
+                "green" if agg_f1 >= 0.8 else "yellow" if agg_f1 >= 0.5 else "red"  # noqa: PLR2004
+            )
+            metrics_table.add_row(
+                "  F1 Score", f"[{f1_style}]{agg_f1:.3f}[/{f1_style}]"
+            )
+        else:
+            metrics_table.add_row("  F1 Score", "[dim]N/A[/dim]")
+
+        metrics_table.add_row("", "")  # Spacer row
 
         # Numeric RMSE
         if pd.notna(aggregate_row["avg_numeric_rmse"]):
