@@ -48,6 +48,7 @@ def infer_column_type(
 def compare_numeric(
     gt_series: pd.Series,
     pred_series: pd.Series,
+    data_match_threshold: float = 0,
 ) -> NumericComparison:
     """Compare two numeric columns using RMSE, MAE, and correlation."""
     mask = gt_series.notna() & pred_series.notna()
@@ -58,16 +59,29 @@ def compare_numeric(
         return NumericComparison(
             rmse=float("nan"),
             mae=float("nan"),
+            nrmse=float("nan"),
+            nmae=float("nan"),
             correlation=None,
             gt_mean=float("nan"),
             pred_mean=float("nan"),
             gt_std=float("nan"),
             pred_std=float("nan"),
+            data_match=None,
         )
 
     diff = gt_clean - pred_clean
     rmse = float(np.sqrt((diff**2).mean()))
     mae = float(diff.abs().mean())
+    gt_std = float(gt_clean.std())
+
+    # Normalize by 4 * gt_std (covers ~95% of normal distribution range)
+    gt_range = abs(gt_std * 4)
+    if gt_range == 0:
+        nrmse = 0.0 if rmse == 0 else float("inf")
+        nmae = 0.0 if mae == 0 else float("inf")
+    else:
+        nrmse = rmse / gt_range
+        nmae = mae / gt_range
 
     try:
         if gt_clean.std() > 0 and pred_clean.std() > 0:
@@ -81,11 +95,14 @@ def compare_numeric(
     return NumericComparison(
         rmse=rmse,
         mae=mae,
+        nrmse=nrmse,
+        nmae=nmae,
         correlation=correlation,
         gt_mean=float(gt_clean.mean()),
         pred_mean=float(pred_clean.mean()),
         gt_std=float(gt_clean.std()),
         pred_std=float(pred_clean.std()),
+        data_match=nrmse <= data_match_threshold,
     )
 
 
@@ -137,6 +154,7 @@ def compare_categorical(
     gt_series: pd.Series,
     pred_series: pd.Series,
     categorical_match_threshold: float = 0.8,
+    data_match_threshold: float = 1.0,
 ) -> CategoricalComparison:
     """Compare two categorical columns with automatic category mapping."""
     gt_str = gt_series.fillna("__NA__").astype(str)
@@ -218,6 +236,7 @@ def compare_categorical(
         extra_categories=extra_categories,
         category_overlap_score=category_overlap_score,
         distribution_similarity=distribution_similarity,
+        data_match=exact_match_rate >= data_match_threshold,
     )
 
 

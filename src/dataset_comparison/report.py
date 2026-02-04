@@ -99,12 +99,22 @@ def print_comparison_report(result: DataComparisonResult) -> None:  # noqa: PLR0
             nc = comp.numeric_comparison
             comp_table.add_row("RMSE", f"{nc.rmse:.4f}")
             comp_table.add_row("MAE", f"{nc.mae:.4f}")
+            comp_table.add_row("NRMSE", f"{nc.nrmse:.4f}")
+            comp_table.add_row("NMAE", f"{nc.nmae:.4f}")
             comp_table.add_row(
                 "Correlation", f"{nc.correlation:.4f}" if nc.correlation else "N/A"
             )
             comp_table.add_row("GT mean / std", f"{nc.gt_mean:.4f} / {nc.gt_std:.4f}")
             comp_table.add_row(
                 "Pred mean / std", f"{nc.pred_mean:.4f} / {nc.pred_std:.4f}"
+            )
+            comp_table.add_row(
+                "Data Match",
+                "[green]True[/green]"
+                if nc.data_match
+                else "[red]False[/red]"
+                if nc.data_match is not None
+                else "N/A",
             )
 
         if comp.categorical_comparison:
@@ -123,6 +133,14 @@ def print_comparison_report(result: DataComparisonResult) -> None:  # noqa: PLR0
             comp_table.add_row("Category overlap", f"{cc.category_overlap_score:.3f}")
             comp_table.add_row(
                 "Distribution similarity", f"{cc.distribution_similarity:.3f}"
+            )
+            comp_table.add_row(
+                "Data Match",
+                "[green]True[/green]"
+                if cc.data_match
+                else "[red]False[/red]"
+                if cc.data_match is not None
+                else "N/A",
             )
 
         console.print(comp_table)

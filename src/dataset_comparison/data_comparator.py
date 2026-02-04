@@ -28,12 +28,14 @@ class DataComparator:
     Handles join completeness checking and per-column distribution comparison.
     """
 
-    def __init__(
+    def __init__(  # NOQA: PLR0913
         self,
         categorical_threshold: int = 20,
         cross_encoder_model_name: str = "cross-encoder/stsb-roberta-base",
         match_threshold: float = 0.5,
         data_match_threshold: float = 0.7,
+        categorical_data_match_threshold: float = 1.0,
+        numerical_data_match_threshold: float = 0.0,
         categorical_match_threshold: float = 0.8,
     ) -> None:
         """
@@ -43,13 +45,21 @@ class DataComparator:
             categorical_threshold: Max unique values for categorical treatment.
             cross_encoder_model_name: Model for semantic column matching.
             match_threshold: Minimum score for column name matching.
-            data_match_threshold: Minimum score for data-based matching.
+            data_match_threshold: Minimum score for data-based matching
+            i.e. these two columns can be considered for comparison.
+            categorical_data_match_threshold: Minimum score for categorical data match,
+            i.e. will we report a match 1 implies every row matches.
+            numerical_data_match_threshold: Minimum score for numeric data match,
+            i.e. will we report a match 0 implies every row matches.
             categorical_match_threshold: Minimum score for category mapping.
 
         """
         self.categorical_threshold = categorical_threshold
         self.categorical_match_threshold = categorical_match_threshold
+        # TO DO: rename as this data match threshold differes from the other
         self.data_match_threshold = data_match_threshold
+        self.categorical_data_match_threshold = categorical_data_match_threshold
+        self.numerical_data_match_threshold = numerical_data_match_threshold
         self.column_matcher = ColumnMatcher(
             cross_encoder_model_name=cross_encoder_model_name,
             match_threshold=match_threshold,
@@ -140,7 +150,9 @@ class DataComparator:
         col_type = infer_column_type(gt_series, pred_series, self.categorical_threshold)
 
         if col_type == ColumnType.NUMERIC:
-            numeric_comparison = compare_numeric(gt_series, pred_series)
+            numeric_comparison = compare_numeric(
+                gt_series, pred_series, self.numerical_data_match_threshold
+            )
             logger.info(
                 f"Numeric comparison '{gt_column}': "
                 f"RMSE={numeric_comparison.rmse:.4f}, "
@@ -154,7 +166,10 @@ class DataComparator:
             )
         else:
             categorical_comparison = compare_categorical(
-                gt_series, pred_series, self.categorical_match_threshold
+                gt_series,
+                pred_series,
+                self.categorical_match_threshold,
+                self.categorical_data_match_threshold,
             )
             logger.info(
                 f"Categorical comparison '{gt_column}': "
