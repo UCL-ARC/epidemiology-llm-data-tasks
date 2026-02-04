@@ -1,4 +1,5 @@
 """Statistical comparison functions for numeric and categorical data."""
+# TO DO: CHECK NUMERIC METRICS
 
 import numpy as np
 import pandas as pd
@@ -72,10 +73,9 @@ def compare_numeric(
     diff = gt_clean - pred_clean
     rmse = float(np.sqrt((diff**2).mean()))
     mae = float(diff.abs().mean())
-    gt_std = float(gt_clean.std())
 
-    # Normalize by 4 * gt_std (covers ~95% of normal distribution range)
-    gt_range = abs(gt_std * 4)
+    # Normalize by min max
+    gt_range = abs(float(gt_clean.max()) - float(gt_clean.min()))
     if gt_range == 0:
         nrmse = 0.0 if rmse == 0 else float("inf")
         nmae = 0.0 if mae == 0 else float("inf")
@@ -116,7 +116,8 @@ def compute_numeric_similarity(
     if np.isnan(comparison.rmse):
         return 0.0
 
-    gt_range = comparison.gt_std * 4
+    # Normalize by min max
+    gt_range = abs(float(gt_series.max()) - float(gt_series.min()))
     if gt_range == 0:
         return 1.0 if comparison.rmse == 0 else 0.0
 
