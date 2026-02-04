@@ -163,6 +163,7 @@ class DataComparator:
                 pred_column=pred_column,
                 column_type=col_type,
                 numeric_comparison=numeric_comparison,
+                data_match=numeric_comparison.data_match,
             )
         else:
             categorical_comparison = compare_categorical(
@@ -180,6 +181,7 @@ class DataComparator:
                 pred_column=pred_column,
                 column_type=col_type,
                 categorical_comparison=categorical_comparison,
+                data_match=categorical_comparison.data_match,
             )
 
     def _data_match_columns(
@@ -366,9 +368,24 @@ class DataComparator:
                 )
                 output_df[f"{match.gt_column}_unmatched"] = joined_df[gt_col_name]
 
+        task_completion_percentage = (
+            (
+                [
+                    m.data_match
+                    for m in column_comparisons
+                    if m.numeric_comparison or m.categorical_comparison
+                ].count(True)
+                / len(gt_df.columns)
+                * 100
+            )
+            if column_comparisons
+            else 0.0
+        )
+
         return DataComparisonResult(
             primary_key=primary_key,
             join_completeness=completeness,
+            task_completion_percentage=task_completion_percentage,
             column_matches=column_matches,
             column_comparisons=column_comparisons,
             unmatched_gt_columns=[

@@ -17,6 +17,11 @@ def print_comparison_report(result: DataComparisonResult) -> None:  # noqa: PLR0
     console.rule("[bold blue]DATA COMPARISON REPORT[/bold blue]")
     console.print(f"[bold]Primary Key Join:[/bold] {result.primary_key}\n")
 
+    console.print(
+        f"[bold]Task Completion Percentage:[/bold] \
+            {result.task_completion_percentage:.1f}%\n"
+    )
+
     # Join Completeness Panel
     jc = result.join_completeness
     completeness_text = Text()
@@ -56,8 +61,12 @@ def print_comparison_report(result: DataComparisonResult) -> None:  # noqa: PLR0
     )
     match_table.add_column("GT Column", style="white")
     match_table.add_column("Pred Column", style="white")
-    match_table.add_column("Score", justify="right")
+    match_table.add_column("Column Match Score", justify="right")
+    match_table.add_column("Data Match", justify="right")
     match_table.add_column("Method", style="dim")
+
+    # Build a lookup from gt_column to comparison for data_match
+    comparison_lookup = {comp.gt_column: comp for comp in result.column_comparisons}
 
     for match in result.column_matches:
         if match.pred_column:
@@ -68,10 +77,30 @@ def print_comparison_report(result: DataComparisonResult) -> None:  # noqa: PLR0
                 if match.score >= 0.5  # noqa: PLR2004
                 else "red"
             )
+
+            # TO DO: THIS COULD ALL BE SIMPLIFIED FOR SURE!
+            # Look up data_match from the corresponding comparison
+            comp = comparison_lookup.get(match.gt_column)
+            data_match = None
+            if comp:
+                if comp.numeric_comparison:
+                    data_match = comp.numeric_comparison.data_match
+                elif comp.categorical_comparison:
+                    data_match = comp.categorical_comparison.data_match
+
+            data_match_score_style = (
+                "green"
+                if data_match is True
+                else "red"
+                if data_match is False
+                else "dim"
+            )
             match_table.add_row(
                 match.gt_column,
                 match.pred_column,
                 f"[{score_style}]{match.score:.3f}[/{score_style}]",
+                f"[{data_match_score_style}]{data_match if data_match is not None \
+                                             else '-'}[/{data_match_score_style}]",
                 match.method.value if match.method else "-",
             )
         else:
@@ -79,6 +108,7 @@ def print_comparison_report(result: DataComparisonResult) -> None:  # noqa: PLR0
                 match.gt_column,
                 "[red](unmatched)[/red]",
                 f"[red]{match.score:.3f}[/red]",
+                "-",
                 "-",
             )
 
@@ -297,6 +327,10 @@ def aggregate_comparison_results(  # noqa: PLR0915, PLR0912
                 / len(categorical_overlap)
                 if categorical_overlap
                 else None,
+                "task_completion_percentage": result.task_completion_percentage,
+                "task_complete": result.task_completion_percentage == 100.0  # noqa: PLR2004
+                if result.task_completion_percentage is not None
+                else None,
             }
         )
 
@@ -350,6 +384,10 @@ def aggregate_comparison_results(  # noqa: PLR0915, PLR0912
                 "avg_categorical_exact_match"
             ].mean(),
             "avg_categorical_overlap": summary_df["avg_categorical_overlap"].mean(),
+            "avg_task_completion_percentage": summary_df[
+                "task_completion_percentage"
+            ].mean(),
+            "number_task_complete": summary_df["task_complete"].sum(),
         }
         summary_df = pd.concat(
             [summary_df, pd.DataFrame([aggregate_row])], ignore_index=True
@@ -487,6 +525,23 @@ def aggregate_comparison_results(  # noqa: PLR0915, PLR0912
             )
         else:
             metrics_table.add_row("Avg Categorical Overlap", "[dim]N/A[/dim]")
+
+        metrics_table.add_row("", "")  # Spacer row
+        completion_style = (
+            "green"
+            if aggregate_row["avg_task_completion_percentage"] >= 90.0  # noqa: PLR2004
+            else "yellow"
+            if aggregate_row["avg_task_completion_percentage"] >= 60.0  # noqa: PLR2004
+            else "red"
+        )
+        metrics_table.add_row(
+            "Avg task completion percentage",
+            f"[{completion_style}]{aggregate_row['avg_task_completion_percentage']:.1f}%[/{completion_style}]",
+        )
+        metrics_table.add_row(
+            "Number of fully complete tasks",
+            f"{int(aggregate_row['number_task_complete'])}",
+        )
 
         console.print(metrics_table)
         console.rule("[bold blue]END AGGREGATE METRICS[/bold blue]")

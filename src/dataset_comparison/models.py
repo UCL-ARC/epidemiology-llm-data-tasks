@@ -88,6 +88,7 @@ class ColumnComparison:
     column_type: ColumnType
     numeric_comparison: NumericComparison | None = None
     categorical_comparison: CategoricalComparison | None = None
+    data_match: bool | None = None
 
 
 @dataclass
@@ -100,3 +101,4 @@ class DataComparisonResult:
     column_comparisons: list[ColumnComparison]
     unmatched_gt_columns: list[str] = field(default_factory=list)
     unmatched_pred_columns: list[str] = field(default_factory=list)
+    task_completion_percentage: float | None = None
