@@ -34,7 +34,7 @@ def main() -> None:
             categorical_threshold=20,
             match_threshold=0.8,
             data_match_threshold=0.7,
-            categorical_data_match_threshold=1.0,
+            categorical_data_match_threshold=0.9,
             numerical_data_match_threshold=0.0,
             categorical_match_threshold=0.8,
         )
