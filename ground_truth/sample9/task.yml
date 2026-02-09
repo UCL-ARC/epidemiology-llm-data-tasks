@@ -28,22 +28,27 @@ override: |
      - Fall back to negative codes when no positive values exist.
 
   5. **Derived Collapsed Variables**:
-     - From each consolidated detailed variable, derive a collapsed parental education variable.
-     - Map detailed categories to a common NVQ-style scheme.
-     - Retain negative missing codes unchanged.
+     - From each consolidated detailed variable, derive a collapsed parental education variable that maps the 20 detailed qualification categories to a 5-level NVQ-equivalent scheme:
+       * 0 = NVQ 4–5: degree-level qualifications and above (e.g., Higher Degree, First Degree, HE Diploma, HNC/HND/NVQ4)
+       * 1 = NVQ 1–3: sub-degree qualifications from teaching/nursing through to City & Guilds Part I/NVQ1
+       * 2 = None/entry: training programmes below NVQ level (e.g., youth training)
+       * 3 = Other: qualifications where the level is unspecified or cannot be determined
+       * 4 = No qualifications mentioned
+     - Retain negative missing codes unchanged in the collapsed variable.
+     - The collapsed variable must have a DIFFERENT distribution from the detailed variable — it is NOT a copy.
 
   6. **Missing Value Code Harmonization**:
-     - Harmonise all wave-specific negative missing codes to the standard scheme:
+     - Harmonise all wave-specific negative missing codes to the standard scheme using the value_labels in the metadata to determine meaning:
        * -9 = Refusal
        * -8 = Don't know/insufficient information
-       * -7 = Prefer not to say
        * -3 = Not asked at the fieldwork stage/participated/interviewed
        * -2 = Schedule not applicable/Script error/information lost
        * -1 = Item not applicable
+     - Note: the same numeric code may have different meanings across waves and variables — always check the per-variable value_labels.
      - Preserve missing codes as explicit factor levels.
 
   7. **Factor Variables and Labels**:
-     - Convert both collapsed and detailed parental education variables to labelled factor variables.
+     - Convert both collapsed and detailed parental education variables to labelled factor variables with human-readable labels.
      - Include explicit labels for all valid categories and missing codes.
 
   8. **Scope Restrictions**:

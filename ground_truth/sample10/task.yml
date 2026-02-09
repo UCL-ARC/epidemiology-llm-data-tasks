@@ -26,19 +26,21 @@ override: |
 
   4. **Response Category Harmonization**:
      - When the SAME construct is measured across ages with DIFFERENT response categories, harmonize them into a common coding scheme.
-     - Create age-specific harmonized variables (e.g., ecoact17, ecoact18, ecoact19, ecoact20, ecoact25, ecoact32) that ALL use the SAME response categories.
-     - Follow the EXACT category scheme specified in the metadata.
-     - Each wave requires its own case_when() logic to map original categories to harmonized categories.
-     - Do NOT simplify or reduce the number of categories - use the exact scheme from metadata.
+     - Map raw wave-specific categories to harmonized categories by LABEL MEANING, not by matching numeric codes — the same integer can mean different things in different waves.
+     - Each wave requires its own case_when() logic because raw code numbers differ between waves.
+     - Simply remapping missing codes and passing raw values through is NOT harmonization.
 
   5. **Dual-Level Variables** (collapsed + detailed):
      - For variables with detailed adult measurements:
        a. Create harmonized/collapsed versions for ALL ages using the common category scheme.
        b. ALSO preserve detailed adult versions ONLY for ages where detailed data exists.
+     - Collapsed variables must have FEWER categories than detailed versions — they cannot be identical copies.
+     - For the collapsed versions, group related detailed categories into broader categories (e.g., "employee" + "self-employed" → "In paid work").
      - Both versions should be included in final output.
      - Example: If wave 8 (age 25) and wave 9 (age 32) have detailed categories:
        * Create: ecoact25, ecoact32 (harmonized 6-category)
        * AND: ecoactadu25, ecoactadu32 (detailed 10-category)
+
 
   6. **Wave-Specific Recoding Logic**:
      - Each wave needs its OWN case_when() to map from original to harmonized categories.

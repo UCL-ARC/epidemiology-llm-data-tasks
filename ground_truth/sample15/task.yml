@@ -28,7 +28,8 @@ override: |
      - -2 = Script error/lost
 
   5. **Missing Value Code Harmonization**:
-     - Recode all NA values and wave-specific negative codes to the standard missing scheme.
+     - Recode wave-specific negative codes to the standard missing scheme.
+     - NA values arising from respondents absent from a wave should be recoded to -3 (not asked/interviewed), not -1 (not applicable).
      - Follow exact mappings provided in metadata.
 
   6. **Non-Harmonization Across Ages**:

@@ -19,6 +19,7 @@ override: |
      Use these codes for ALL variables:
      - -9 = Refusal
      - -8 = Don't know/insufficient information
+     - -7 = Prefer not to say
      - -1 = Item not applicable
      - -3 = Not asked at the fieldwork stage/participated/interviewed
      - -2 = Schedule not applicable
@@ -28,6 +29,7 @@ override: |
      - Create age-specific variables that ALL use the SAME conceptual categories where possible.
      - Where harmonization is not possible (e.g., substantially different instruments like income bands), provide multiple variables with clearly labelled, age-specific categories.
      - Preserve as much conceptual detail as possible while maintaining comparability across ages.
+     - Response options that indicate non-substantive answers (e.g., "Prefer not to say", "Don't want to answer") should be treated as non-response and mapped to the appropriate standard missing-value code, NOT as substantive categories.
 
   5. **Missing Value Code Harmonization**:
      - Convert wave-specific negative codes (e.g., -999, -998, -997, -94, -92, -91, -99) to the standard missing-value codes defined in instruction 3.

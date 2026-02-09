@@ -30,6 +30,8 @@ override: |
      - Create age-specific variables that ALL use the SAME conceptual categories where possible.
      - Where harmonization is not possible (e.g., substantially different instruments like income bands), provide multiple variables with clearly labelled, age-specific categories.
      - Preserve as much conceptual detail as possible while maintaining comparability across ages.
+     - **IMPORTANT**: The same numeric code may represent DIFFERENT categories in different waves (e.g., code 3 may mean "Separated" in one wave but "Divorced" in another). Always use the value_labels from the metadata to determine meaning — do NOT assume a numeric code has the same substantive meaning across waves.
+     - Response options that indicate non-substantive answers (e.g., "Prefer not to say", "Don't want to answer") should be treated as non-response and mapped to the appropriate standard missing-value code, NOT as substantive categories.
 
   5. **Dual-Level Variables** (collapsed + detailed):
      - For variables where later waves have more detailed categories than earlier waves (e.g., marital status that distinguishes civil partnerships in later waves but not earlier ones), create both:

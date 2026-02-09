@@ -55,9 +55,10 @@ override: |
      - When creating derived categorical variables from more detailed measures (e.g., collapsing many activity states into a 6-category scheme), apply the transformation consistently across all ages and convert the result to a labeled factor.
 
   9. **Missing Value Code Harmonization**:
-     - Convert wave-specific negative codes (e.g., -100, -97, -999, -998, -997, -995, -94, -92, -91, -99, -98, -996) to the standard missing-value codes defined in instruction 3.
+     - Convert wave-specific negative codes to the standard missing-value codes defined in instruction 3.
      - Multiple wave-specific codes may map to the same standard code.
      - Follow exact mappings provided in metadata.
+     - Do NOT blanket-remap all negative codes to a single value (e.g., all to -9). Each wave-specific code has a distinct meaning — map it to the standard code that best matches that meaning.
 
   10. **Factor Variables and Labels**:
       - When recoding categorical variables, use factor variables with explicit labels for both valid categories and all missing value codes to preserve metadata.
