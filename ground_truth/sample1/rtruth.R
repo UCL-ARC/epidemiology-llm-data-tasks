@@ -38,54 +38,71 @@ sex_vars <- list(
   S9 = S9mi %>% select(NSID, sex_S9 = W9DSEX)
 )
 
+# Merge all sweeps by NSID
 sex_all <- reduce(sex_vars, full_join, by = "NSID")
 
+# Harmonise the missing values for S1-7
+# Vector of S1–S7 variable names
+sex_vars_s1_s7 <- paste0("sex_S", 1:7)
+
+# Apply custom recode to S1–S7
 sex_all <- sex_all %>%
-  mutate(across(
-    paste0("sex_S", 1:7),
-    ~ case_when(
-      .x == -92 ~ -9,
-      .x == -91 ~ -1,
-      .x == -99 ~ -3,
-      TRUE ~ .x
-    )
-  )) %>%
   mutate(
+    across(
+      all_of(sex_vars_s1_s7),
+      ~ case_when(
+        .x == -92 ~ -9,
+        .x == -91 ~ -1,
+        .x == -99 ~ -3,
+        .default = .x
+      )
+    )
+  )
+
+# Harmonise sex: prefer self-report at S9, else taken from other sweeps in order S1 -> S9.
+sex_all <- sex_all %>%
+  mutate(
+    # First pass: positive values only
     sex_final_main = case_when(
-      !is.na(sex_S9) & sex_S9 > 0 ~ sex_S9,
-      !is.na(sex_S1) & sex_S1 > 0 ~ sex_S1,
-      !is.na(sex_S2) & sex_S2 > 0 ~ sex_S2,
-      !is.na(sex_S3) & sex_S3 > 0 ~ sex_S3,
-      !is.na(sex_S4) & sex_S4 > 0 ~ sex_S4,
-      !is.na(sex_S5) & sex_S5 > 0 ~ sex_S5,
-      !is.na(sex_S6) & sex_S6 > 0 ~ sex_S6,
-      !is.na(sex_S7) & sex_S7 > 0 ~ sex_S7,
-      !is.na(sex_S8) & sex_S8 > 0 ~ sex_S8,
-      TRUE ~ NA_real_
+      sex_S9 > 0 ~ sex_S9,
+      sex_S1 > 0 ~ sex_S1,
+      sex_S2 > 0 ~ sex_S2,
+      sex_S3 > 0 ~ sex_S3,
+      sex_S4 > 0 ~ sex_S4,
+      sex_S5 > 0 ~ sex_S5,
+      sex_S6 > 0 ~ sex_S6,
+      sex_S7 > 0 ~ sex_S7,
+      sex_S8 > 0 ~ sex_S8,
+      .default = NA
     ),
+    # Otherwise first non‑substantive (<1) from S1–S8
     sex_final = case_when(
       !is.na(sex_final_main) ~ sex_final_main,
-      !is.na(sex_S1) ~ sex_S1,
-      !is.na(sex_S2) ~ sex_S2,
-      !is.na(sex_S3) ~ sex_S3,
-      !is.na(sex_S4) ~ sex_S4,
-      !is.na(sex_S5) ~ sex_S5,
-      !is.na(sex_S6) ~ sex_S6,
-      !is.na(sex_S7) ~ sex_S7,
-      !is.na(sex_S8) ~ sex_S8,
-      TRUE ~ NA_real_
-    ),
+      sex_S1 < 1 ~ sex_S1,
+      sex_S2 < 1 ~ sex_S2,
+      sex_S3 < 1 ~ sex_S3,
+      sex_S4 < 1 ~ sex_S4,
+      sex_S5 < 1 ~ sex_S5,
+      sex_S6 < 1 ~ sex_S6,
+      sex_S7 < 1 ~ sex_S7,
+      sex_S8 < 1 ~ sex_S8,
+      .default = NA
+    )
+  )
+
+sex_all <- sex_all %>%
+  mutate(
     sex = case_when(
-      sex_final == 1 ~ 0,
-      sex_final == 2 ~ 1,
+      sex_final == 1 ~ 0, # 1 = male → 0
+      sex_final == 2 ~ 1, # 2 = female → 1
       TRUE ~ sex_final
     ),
     sex = factor(
       sex,
       levels = c(0, 1, -1, -3, -9),
       labels = c(
-        "male",
-        "female",
+        "Male",
+        "Female",
         "Item not applicable",
         "Not asked at the fieldwork stage/participated/interviewed",
         "Refusal"
@@ -93,7 +110,7 @@ sex_all <- sex_all %>%
     )
   ) %>%
   select(NSID, sex)
-
+  
 # Create output directory if it doesn't exist
 dir.create(file.path(getwd(), "data", "output"), recursive = TRUE, showWarnings = FALSE)
 

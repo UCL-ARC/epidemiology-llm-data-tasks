@@ -22,50 +22,62 @@ S4 <- read_delim(file.path(data_path, "wave_four_lsype_young_person_2020.tab"), 
   select(NSID)
 
 S2 <- read_delim(file.path(data_path, "wave_two_lsype_family_background_2020.tab"), show_col_types = FALSE) %>%
-  select(NSID, imd15 = IMDRSCORE)
+  select(NSID, imd15_raw = IMDRSCORE)
 
 S3 <- read_delim(file.path(data_path, "wave_three_lsype_family_background_2020.tab"), show_col_types = FALSE) %>%
-  select(NSID, imd16 = IMDRSCORE)
+  select(NSID, imd16_raw = IMDRSCORE)
 
 S9 <- read_delim(file.path(data_path, "ns9_2022_derived_variables.tab"), show_col_types = FALSE) %>%
-  select(NSID, imd32 = W9DIMDD)
+  select(NSID, imd32_raw = W9DIMDD)
 
 imd_all <- reduce(list(S1, S4, S2, S3, S9), full_join, by = "NSID")
 
+
 # Recode derived variables
-imd_all <- imd_all %>%
+imd_rec <- imd_all %>%
   mutate(
     imd15 = case_when(
-      is.na(imd15) ~ -3,
-      imd15 == -94 ~ -8,
-      TRUE ~ imd15
+      is.na(imd15_raw) ~ -3,
+      imd15_raw == -94 ~ -8,
+      TRUE ~ imd15_raw
     ),
 
     imd16 = case_when(
-      is.na(imd16) ~ -3,
-      imd16 == -94 ~ -8,
-      TRUE ~ imd16
+      is.na(imd16_raw) ~ -3,
+      imd16_raw == -94 ~ -8,
+      TRUE ~ imd16_raw
     ),
 
     imd32 = case_when(
-      is.na(imd32) ~ -3,
-      imd32 == -8 ~ -8,
-      TRUE ~ imd32
+      is.na(imd32_raw) ~ -3,
+      imd32_raw == -8 ~ -8,
+      TRUE ~ imd32_raw
     )
   ) %>%
-  mutate(across(
-    c(imd15, imd16, imd32),
-    ~ labelled(
-      .x,
-      labels = c(
-        "Item not applicable" = -1,
-        "Script error/information lost" = -2,
-        "Not asked at the fieldwork stage/participated/interviewed" = -3,
-        "Don’t know/insufficient information" = -8
+  mutate(
+    across(
+      c(imd15, imd16, imd32),
+      ~ labelled(
+        .x,
+        labels = c(
+          "Item not applicable" = -1,
+          "Script error/information lost" = -2,
+          "Not asked at the fieldwork stage/participated/interviewed" = -3,
+          "Don’t know/insufficient information" = -8
+        )
       )
     )
-  )) %>%
-  select(NSID, imd15, imd16, imd32)
+  )
+
+
+imd_all <- imd_rec %>%
+  select(NSID, imd15, imd16, imd32) %>%
+  mutate(
+    across(
+      -NSID,
+      ~ labelled::to_factor(.x, levels = "labels")
+    )
+  )
 
 # Create output directory if it doesn't exist
 dir.create(file.path(getwd(), "data", "output"), recursive = TRUE, showWarnings = FALSE)

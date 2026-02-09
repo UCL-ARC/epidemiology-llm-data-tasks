@@ -22,78 +22,76 @@ S4 <- read_delim(file.path(data_path, "wave_four_lsype_young_person_2020.tab"), 
   select(NSID)
 
 S8 <- read_delim(file.path(data_path, "ns8_2015_derived.tab"), show_col_types = FALSE) %>%
-  select(NSID, inc25 = W8DINCB)
+  select(NSID, inc25_raw = W8DINCB)
 
 S9 <- read_delim(file.path(data_path, "ns9_2022_derived_variables.tab"), show_col_types = FALSE) %>%
-  select(NSID, inc32 = W9DINCB)
+  select(NSID, inc32_raw = W9DINCB)
 
+
+# Merge all income variables by NSID
 income_all <- reduce(list(S1, S4, S8, S9), full_join, by = "NSID")
 
 # Recode
-income_all <- income_all %>%
+
+common_missing_labels <- c(
+  "Item not applicable" = -1L,
+  "Script error/information lost" = -2L,
+  "Not asked at the fieldwork stage/did not participate at specific wave/was not surveyed" = -3L,
+  "Data not available" = -5L,
+  "Prefer not to say" = -7L,
+  "Don’t know/insufficient information" = -8L,
+  "Refusal" = -9L
+)
+
+income_rec <- income_all %>%
   mutate(
     inc25 = case_when(
-      is.na(inc25) ~ -3,
-      TRUE ~ inc25
+      is.na(inc25_raw) ~ -3,
+      TRUE ~ inc25_raw
     ),
     inc32 = case_when(
-      is.na(inc32) ~ -3,
-      TRUE ~ inc32
+      is.na(inc32_raw) ~ -3,
+      TRUE ~ inc32_raw
     )
   ) %>%
-  mutate(across(
-    c(inc25, inc32),
-    ~ factor(
-      .x,
-      levels = c(
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12,
-        13,
-        14,
-        15,
-        16,
-        -1,
-        -2,
-        -3,
-        -8,
-        -9
-      ),
-      labels = c(
-        "less than £25 per week",
-        "25-50",
-        "50-90",
-        "90-140",
-        "140-240",
-        "240-300",
-        "300-350",
-        "350-400",
-        "400-500",
-        "500-600",
-        "600-700",
-        "700-800",
-        "800-900",
-        "900-1200",
-        "1200-1400",
-        "more than 1400",
-        "Item not applicable",
-        "Script error/information lost",
-        "Not asked at the fieldwork stage/participated/interviewed",
-        "Don’t know/insufficient information",
-        "Refusal"
+  mutate(
+    across(
+      c(inc25, inc32),
+      ~ labelled(
+        .x,
+        labels = c(
+          "less than £25 per week" = 1,
+          "25-50" = 2,
+          "50-90" = 3,
+          "90-140" = 4,
+          "140-240" = 5,
+          "240-300" = 6,
+          "300-350" = 7,
+          "350-400" = 8,
+          "400-500" = 9,
+          "500-600" = 10,
+          "600-700" = 11,
+          "700-800" = 12,
+          "800-900" = 13,
+          "900-1200" = 14,
+          "1200-1400" = 15,
+          "more than 1400" = 16,
+          common_missing_labels
+        )
       )
     )
-  )) %>%
-  select(NSID, inc25, inc32)
+  )
+
+
+# Extract derived variables
+income_all <- income_rec %>%
+  select(NSID, inc25, inc32) %>%
+  mutate(
+    across(
+      -NSID,
+      ~ labelled::to_factor(.x, levels = "labels")
+    )
+  )
 
 # Create output directory if it doesn't exist
 dir.create(file.path(getwd(), "data", "output"), recursive = TRUE, showWarnings = FALSE)

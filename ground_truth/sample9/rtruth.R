@@ -26,106 +26,132 @@ parent_edu_vars <- list(
   S4 = S4family %>% select(NSID, educma_S4 = w4hiqualmum, educpa_S4 = w4hiqualdad)
 )
 
+#  Merge all sweeps by NSID
 parent_edu_all <- reduce(parent_edu_vars, full_join, by = "NSID")
 
-# Step 4: Derive full education and transform to simple education
+# Recode missing values and response categories
 parent_edu_all <- parent_edu_all %>%
   mutate(
-    #mother full education (aggregate the information from sweeps 1-4)
+    across(
+      matches("educ(ma|pa)_S[1-4]"),
+      ~ case_when(
+        .x == -92 ~ -9,
+        .x == -91 ~ -1,
+        .x %in% c(-98) ~ -3,
+        .x %in% c(-999, -99, -94) ~ -2,
+        TRUE ~ .x
+      )
+    )
+  )
+
+parent_edu_detailed_labels <- c(
+  "Higher Degree" = 1L,
+  "First degree" = 2L,
+  "HE Diploma" = 3L,
+  "HNC/HND/NVQ4" = 4L,
+  "Teaching qualification, non-degree" = 5L,
+  "Nursing qualification, non-degree" = 6L,
+  "A Levels" = 7L,
+  "OND/ONC" = 8L,
+  "City and guilds part III, NVQ3" = 9L,
+  "CSYS" = 10L,
+  "Scottish Higher Grade" = 11L,
+  "AS Level" = 12L,
+  "Trade apprenticeship" = 13L,
+  "City and guilds part II, NVQ2" = 14L,
+  "GCSE grade A-C and equivalent" = 15L,
+  "GCSE grade D-E and equivalent" = 16L,
+  "City and guilds part I, NVQ1" = 17L,
+  "Youth training, skill seekers" = 18L,
+  "Qualification, level unspecified" = 19L,
+  "No qualification mentioned" = 20L,
+  "Item not applicable" = -1L,
+  "Script error/information lost" = -2L,
+  "Not asked at the fieldwork stage/participated/interviewed" = -3L,
+  "Don't know/insufficient information" = -8L,
+  "Refusal" = -9L
+)
+
+parent_edu_simple_labels <- c(
+  "NVQ 4-5" = 0L,
+  "NVQ 1-3" = 1L,
+  "None/entry" = 2L,
+  "Other" = 3L,
+  "None of these qualifications" = 4L,
+  "Item not applicable" = -1L,
+  "Script error/information lost" = -2L,
+  "Not asked at the fieldwork stage/participated/interviewed" = -3L,
+  "Don't know/insufficient information" = -8L,
+  "Refusal" = -9L
+)
+
+# Derive full education and transform to simple education
+parent_edu_rec <- parent_edu_all %>%
+  mutate(
+    # mother full education (aggregate the information from sweeps 1-4)
     educdtlma = case_when(
-      !is.na(educma_S4) & educma_S4 > 0 ~ educma_S4,
-      !is.na(educma_S2) & educma_S2 > 0 ~ educma_S2,
-      !is.na(educma_S1) & educma_S1 > 0 ~ educma_S1,
-      !is.na(educma_S4) & educma_S4 < 0 ~ educma_S4,
-      !is.na(educma_S2) & educma_S2 < 0 ~ educma_S2,
-      !is.na(educma_S1) & educma_S1 < 0 ~ educma_S1,
-      TRUE ~ -3 # Not interviewed / present
+      educma_S1 > 0 ~ educma_S1,
+      educma_S2 > 0 ~ educma_S2,
+      educma_S4 > 0 ~ educma_S4,
+      educma_S1 < 0 ~ educma_S1,
+      educma_S2 < 0 ~ educma_S2,
+      educma_S4 < 0 ~ educma_S4,
+      .default = -3 # Not interviewed / present
     ),
-    #transform to 3-level education (mother)
+    # transform to 3-level education (mother)
     educma = case_when(
       educdtlma %in% 1:4 ~ 0,
       educdtlma %in% 5:17 ~ 1,
       educdtlma == 18 ~ 2,
       educdtlma == 19 ~ 3, # other
       educdtlma == 20 ~ 4, # none of these qualifications
-      TRUE ~ educdtlma # keep negatives as-is
+      .default = educdtlma # keep negatives as-is
     ),
-    #father full education (aggregate the information from sweeps 1-4)
+    # father full education (aggregate the information from sweeps 1-4)
     educdtlpa = case_when(
-      !is.na(educpa_S1) & educpa_S1 > 0 ~ educpa_S1,
-      !is.na(educpa_S2) & educpa_S2 > 0 ~ educpa_S2,
-      !is.na(educpa_S4) & educpa_S4 > 0 ~ educpa_S4,
-      !is.na(educpa_S1) & educpa_S1 < 0 ~ educpa_S1,
-      !is.na(educpa_S2) & educpa_S2 < 0 ~ educpa_S2,
-      !is.na(educpa_S4) & educpa_S4 < 0 ~ educpa_S4,
-      TRUE ~ -3
+      educpa_S1 > 0 ~ educpa_S1,
+      educpa_S2 > 0 ~ educpa_S2,
+      educpa_S4 > 0 ~ educpa_S4,
+      educpa_S1 < 0 ~ educpa_S1,
+      educpa_S2 < 0 ~ educpa_S2,
+      educpa_S4 < 0 ~ educpa_S4,
+      .default = -3
     ),
-    #transform to 3-level education (father)
+    # transform to 3-level education (father)
     educpa = case_when(
       educdtlpa %in% 1:4 ~ 0,
       educdtlpa %in% 5:17 ~ 1,
       educdtlpa == 18 ~ 2,
       educdtlpa == 19 ~ 3,
       educdtlpa == 20 ~ 4,
-      TRUE ~ educdtlpa # keep negatives as-is
+      .default = educdtlpa # keep negatives as-is
     )
   ) %>%
   mutate(
     across(
       c(educma, educpa),
-      ~ factor(
+      ~ labelled(
         .x,
-        levels = c(0, 1, 2, 3, 4, -1, -2, -3, -8, -9),
-        labels = c(
-          "NVQ 4-5",
-          "NVQ 1-3",
-          "None/entry",
-          "Other",
-          "None of these qualifications",
-          "Item not applicable",
-          "Script error/information lost",
-          "Not asked at the fieldwork stage/participated/interviewed",
-          "Don’t know/insufficient information",
-          "Refusal"
-        )
+        labels = parent_edu_simple_labels
       )
     ),
     across(
       c(educdtlma, educdtlpa),
-      ~ factor(
+      ~ labelled(
         .x,
-        levels = c(1:20, -1, -2, -3, -8, -9),
-        labels = c(
-          "Higher Degree",
-          "First degree",
-          "HE Diploma",
-          "HNC/HND/NVQ4",
-          "Teaching qualification, non-degree",
-          "Nursing qualification, non-degree",
-          "A Levels",
-          "OND/ONC",
-          "City and guilds part III, NVQ3",
-          "CSYS",
-          "Scottish Higher Grade",
-          "AS Level",
-          "Trade apprenticeship",
-          "City and guilds part II, NVQ2",
-          "GCSE grade A-C and equivalent",
-          "GCSE grade D-E and equivalent",
-          "City and guilds part I, NVQ1",
-          "Youth training, skill seekers",
-          "Qualification, level unspecified",
-          "No qualification mentioned",
-          "Item not applicable",
-          "Script error/information lost",
-          "Not asked at the fieldwork stage/participated/interviewed",
-          "Don’t know/insufficient information",
-          "Refusal"
-        )
+        labels = parent_edu_detailed_labels
       )
     )
-  ) %>%
-  select(NSID, educma, educpa, educdtlma, educdtlpa)
+  )
+
+parent_edu_all <- parent_edu_rec %>%
+  select(NSID, educma, educpa, educdtlma, educdtlpa) %>%
+  mutate(
+    across(
+      c(educma, educpa, educdtlma, educdtlpa),
+      ~ labelled::to_factor(.x, levels = "labels")
+    )
+  )
 
 # Create output directory if it doesn't exist
 dir.create(file.path(getwd(), "data", "output"), recursive = TRUE, showWarnings = FALSE)

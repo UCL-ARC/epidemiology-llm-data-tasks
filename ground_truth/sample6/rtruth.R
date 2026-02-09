@@ -35,32 +35,144 @@ region_vars <- list(
   S9_2 = S9mi %>% select(NSID, regint32 = W9NATIONRES)
 )
 
+# Merge all region variables by NSID
 region_all <- reduce(region_vars, full_join, by = "NSID")
 
+# Recode missing valuse and response categories
 region_all <- region_all %>%
-  mutate(
-    regint32 = case_when(
-      regint32 %in% 1:4 ~ 1,
-      regint32 == 5 ~ 2,
-      regint32 == -9 ~ -9,
-      regint32 == -8 ~ -8,
-      regint32 == -1 ~ -1,
+  mutate(across(
+    c(regub15, regub16),
+    ~ case_when(
+      .x %in% 1:8 ~ .x,
+      .x == -94 ~ -2,
       TRUE ~ -3
-    ),
-    regint32 = factor(
-      regint32,
-      levels = c(1, 2, -1, -3, -8, -9),
-      labels = c(
-        "In the UK",
-        "Abroad",
-        "Item not applicable",
-        "Not asked at the fieldwork stage/participated/interviewed",
-        "Don’t know/insufficient information",
-        "Refusal"
+    )
+  )) %>%
+
+  mutate(across(
+    c(regov15, regov16),
+    ~ case_when(
+      .x %in% 1:9 ~ .x,
+      .x == -94 ~ -2,
+      TRUE ~ -3
+    )
+  )) %>%
+
+  mutate(
+    across(
+      c(regor25, regor32),
+      ~ case_when(
+        .x %in% 1:12 ~ .x,
+        .x == 13 ~ -2, # faulty location
+        .x == -9 ~ -9, # refused
+        .x == -8 ~ -8, # don't know
+        .x == -1 ~ -1, # not applicable
+        TRUE ~ -3 # not participated
       )
     )
   ) %>%
-  select(NSID, regub15, regov15, regub16, regov16, regor25, regor32, regint32)
+
+  mutate(
+    regint32 = case_when(
+      regint32 %in% 1:4 ~ 1, # in the UK
+      regint32 == 5 ~ 2, # abroad
+      regint32 == -9 ~ -9,
+      regint32 == -8 ~ -8,
+      regint32 == -3 ~ -3,
+      regint32 == -1 ~ -1,
+      TRUE ~ -3
+    )
+  ) %>%
+  mutate(
+    across(
+      c(regub15, regub16),
+      ~ labelled(
+        x = .x,
+        labels = c(
+          "Urban >=10k – sparse" = 1,
+          "Town & Fringe – sparse" = 2,
+          "Village – sparse" = 3,
+          "Hamlet and Isolated Dwelling – sparse" = 4,
+          "Urban >= 10k - less sparse" = 5,
+          "Town & Fringe - less sparse" = 6,
+          "Village - less sparse" = 7,
+          "Hamlet and Isolated Dwelling - less sparse" = 8,
+          "Item not applicable" = -1,
+          "Script error/information lost" = -2,
+          "Not asked at the fieldwork stage/participated/interviewed" = -3,
+          "Prefer not to say" = -7,
+          "Don’t know/insufficient information" = -8,
+          "Refusal" = -9
+        )
+      )
+    ),
+    across(
+      c(regov15, regov16),
+      ~ labelled(
+        x = .x,
+        labels = c(
+          "North East" = 1,
+          "North West" = 2,
+          "Yorkshire and The Humber" = 3,
+          "East Midlands" = 4,
+          "West Midlands" = 5,
+          "East of England" = 6,
+          "London" = 7,
+          "South East" = 8,
+          "South West" = 9,
+          "Item not applicable" = -1,
+          "Script error/information lost" = -2,
+          "Not asked at the fieldwork stage/participated/interviewed" = -3,
+          "Prefer not to say" = -7,
+          "Don’t know/insufficient information" = -8,
+          "Refusal" = -9
+        )
+      )
+    ),
+    across(
+      c(regor25, regor32),
+      ~ labelled(
+        x = .x,
+        labels = c(
+          "North East" = 1,
+          "North West" = 2,
+          "Yorkshire and The Humber" = 3,
+          "East Midlands" = 4,
+          "West Midlands" = 5,
+          "East of England" = 6,
+          "London" = 7,
+          "South East" = 8,
+          "South West" = 9,
+          "Wales" = 10,
+          "Scotland" = 11,
+          "Northern Ireland" = 12,
+          "Item not applicable" = -1,
+          "Script error/information lost" = -2,
+          "Not asked at the fieldwork stage/participated/interviewed" = -3,
+          "Don’t know/insufficient information" = -8,
+          "Refusal" = -9
+        )
+      )
+    ),
+    regint32 = labelled(
+      x = regint32,
+      labels = c(
+        "In the UK" = 1,
+        "Abroad" = 2,
+        "Item not applicable" = -1,
+        "Not asked at the fieldwork stage/participated/interviewed" = -3,
+        "Don’t know/insufficient information" = -8,
+        "Refusal" = -9
+      )
+    )
+  ) %>%
+  select(NSID, regub15, regov15, regub16, regov16, regor25, regor32, regint32) %>%
+  mutate(
+    across(
+      -NSID,
+      ~ labelled::to_factor(.x, levels = "labels")
+    )
+  )
 
 
 # Create output directory if it doesn't exist

@@ -33,60 +33,90 @@ sexuality_vars <- list(
   S9 = S9mi %>% select(NSID, sori32 = W9SORI)
 )
 
+# Merge by ID
 sexuality_all <- reduce(sexuality_vars, full_join, by = "NSID")
 
+# Labels
+sexuality_labels_substantive <- c(
+  "Heterosexual/straight" = 1L,
+  "Gay/lesbian" = 2L,
+  "Bisexual" = 3L,
+  "Other" = 4L
+)
+
+common_missing_labels <- c(
+  "Item not applicable" = -1L,
+  "Script error/information lost" = -2L,
+  "Not asked at the fieldwork stage/did not participate at specific wave/was not surveyed" = -3L,
+  "Data not available" = -5L,
+  "Prefer not to say" = -7L,
+  "Don’t know/insufficient information" = -8L,
+  "Refusal" = -9L
+)
+
+# recode missing values and response categories
 sexuality_all <- sexuality_all %>%
   mutate(
     sori19 = case_when(
-      sori19 %in% 1:4 ~ sori19,
-      sori19 %in% c(-100, -97, -3) ~ -3,
-      sori19 %in% c(-92, -9) ~ -9,
-      sori19 %in% c(-91, -1, -8) ~ -8,
+      sori19 == 1 ~ 1,
+      sori19 == 2 ~ 2,
+      sori19 == 3 ~ 3,
+      sori19 == 4 ~ 4,
+      sori19 == -3 ~ -3,
+      sori19 %in% c(-92, -9, -100, -97) ~ -9,
+      sori19 %in% c(-1, -8) ~ -8,
+      sori19 == -91 ~ -1, # Not applicable
       sori19 %in% c(-999, -998, -997, -94) ~ -2,
       TRUE ~ -3
     ),
     sori20 = case_when(
-      sori20 %in% 1:4 ~ sori20,
-      sori20 %in% c(-100, -97, -3) ~ -3,
-      sori20 %in% c(-92, -9) ~ -9,
-      sori20 %in% c(-91, -1, -8) ~ -8,
+      sori20 == 1 ~ 1,
+      sori20 == 2 ~ 2,
+      sori20 == 3 ~ 3,
+      sori20 == 4 ~ 4,
+      sori20 == -3 ~ -3,
+      sori20 %in% c(-92, -9, -100, -97) ~ -9,
+      sori20 %in% c(-1, -8) ~ -8,
+      sori20 == -91 ~ -1, # Not applicable
       sori20 %in% c(-999, -998, -997, -94) ~ -2,
       TRUE ~ -3
     ),
     sori25 = case_when(
-      sori25 %in% 1:4 ~ sori25,
+      sori25 == 1 ~ 1,
+      sori25 == 2 ~ 2,
+      sori25 == 3 ~ 3,
+      sori25 == 4 ~ 4,
       sori25 == -9 ~ -9,
-      sori25 %in% c(-8, -1) ~ -8,
+      sori25 == -8 ~ -8,
+      sori25 == -1 ~ -1, # Not applicable
       TRUE ~ -3
     ),
     sori32 = case_when(
-      sori32 %in% 1:4 ~ sori32,
+      sori32 == 1 ~ 1,
+      sori32 == 2 ~ 2,
+      sori32 == 3 ~ 3,
+      sori32 == 4 ~ 4,
       sori32 == 5 ~ -7,
       sori32 == -9 ~ -9,
-      sori32 %in% c(-8, -1) ~ -8,
+      sori32 %in% c(-8) ~ -8,
       sori32 == -3 ~ -3,
+      sori32 == -1 ~ -1, # Not applicable
       TRUE ~ -3
     )
   ) %>%
-  mutate(across(
-    starts_with("sori"),
-    ~ factor(
-      .x,
-      levels = c(1, 2, 3, 4, -1, -2, -3, -7, -8, -9),
-      labels = c(
-        "Heterosexual/straight",
-        "Gay/lesbian",
-        "Bisexual",
-        "Other",
-        "Item not applicable",
-        "Script error/information lost",
-        "Not asked at the fieldwork stage/participated/interviewed",
-        "Prefer not to say",
-        "Don’t know/insufficient information",
-        "Refusal"
-      )
+  mutate(
+    across(
+      starts_with("sori"),
+      ~ {
+        lvl <- c(sexuality_labels_substantive, common_missing_labels)
+        factor(
+          as.integer(.x),
+          levels = unname(lvl),
+          labels = names(lvl)
+        )
+      }
     )
-  )) %>%
+  ) %>%
   select(NSID, sori19, sori20, sori25, sori32)
 
   # Create output directory if it doesn't exist
