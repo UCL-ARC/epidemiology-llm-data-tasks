@@ -37,7 +37,7 @@ educ_vars <- list(
 educ_all <- reduce(educ_vars, full_join, by = "NSID")
 
 # recode missing valuse and response categories
-educ_all <- educ_all %>%
+educ_all_rec <- educ_all %>%
   # Sweep 8
   mutate(
     educ25 = case_when(
@@ -238,8 +238,13 @@ educ_all <- educ_all %>%
         "Refusal"
       )
     )
-  ) %>%
+  )
+
+# Select
+
+educ_all <- educ_all_rec %>%
   select(NSID, educ25, educ32, educadtl32, educvdtl32)
+
 
 
 # Create output directory if it doesn't exist

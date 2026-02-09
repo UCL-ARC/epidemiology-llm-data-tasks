@@ -27,8 +27,24 @@ S3 <- read_delim(file.path(data_path, "wave_three_lsype_family_background_2020.t
 S4 <- read_delim(file.path(data_path, "wave_four_lsype_family_background_2020.tab"), show_col_types = FALSE) %>%
   select(NSID, incwhh17 = w4IncEstW)
 
-hh_income_all <- reduce(list(S1, S2, S3, S4), full_join, by = "NSID")
 
+# Merge all household income variables by NSID
+hh_income_all <- reduce(list(S1, S2, S3, S4), full_join, by = "NSID") %>%
+  # Add '_raw' suffix to all 'incwhh*' variable names for simpler re-coding & cross-checks
+  rename_with(
+    ~ paste0(.x, "_raw"),
+    contains("incwhh")
+  )
+
+common_missing_labels <- c(
+  "Item not applicable" = -1L,
+  "Script error/information lost" = -2L,
+  "Not asked at the fieldwork stage/did not participate at specific wave/was not surveyed" = -3L,
+  "Data not available" = -5L,
+  "Prefer not to say" = -7L,
+  "Don’t know/insufficient information" = -8L,
+  "Refusal" = -9L
+)
 
 # Derive banded income for continuous measures (S1–S2)
 convert_to_band <- function(x) {
@@ -53,120 +69,93 @@ convert_to_band <- function(x) {
   )
 }
 
-hh_income_all <- hh_income_all %>%
+hh_income_rec <- hh_income_all %>%
   mutate(
     # Sweep 1
     incwhh14 = case_when(
-      is.na(incwhh14) ~ -3,
-      incwhh14 == -92 ~ -9,
-      incwhh14 %in% c(-999, -992, -94) ~ -2,
-      incwhh14 == -99 ~ -3,
-      incwhh14 == -91 ~ -1,
-      incwhh14 == -1 ~ -8,
-      incwhh14 == -3 ~ -3,
-      TRUE ~ convert_to_band(incwhh14)
+      is.na(incwhh14_raw) ~ -3,
+      incwhh14_raw %in% c(-92, -992) ~ -9,
+      incwhh14_raw %in% c(-999, -94) ~ -2,
+      incwhh14_raw == -99 ~ -3,
+      incwhh14_raw == -91 ~ -1,
+      incwhh14_raw == -1 ~ -8,
+      incwhh14_raw == -3 ~ -1,
+      TRUE ~ convert_to_band(incwhh14_raw)
     ),
     incwhhcnt14 = case_when(
-      is.na(incwhh14) ~ -3,
-      incwhh14 == -92 ~ -9,
-      incwhh14 %in% c(-999, -992, -94) ~ -2,
-      incwhh14 == -99 ~ -3,
-      incwhh14 == -91 ~ -1,
-      incwhh14 == -1 ~ -8,
-      incwhh14 == -3 ~ -3,
-      TRUE ~ incwhh14
+      is.na(incwhh14_raw) ~ -3,
+      incwhh14_raw %in% c(-92, -992) ~ -9,
+      incwhh14_raw %in% c(-999, -94) ~ -2,
+      incwhh14_raw == -99 ~ -3,
+      incwhh14_raw == -91 ~ -1,
+      incwhh14_raw == -1 ~ -8,
+      incwhh14_raw == -3 ~ -1,
+      TRUE ~ incwhh14_raw
     ),
 
     # Sweep 2
     incwhh15 = case_when(
-      is.na(incwhh15) ~ -3,
-      incwhh15 == -92 ~ -9,
-      incwhh15 %in% c(-999, -992, -94) ~ -2,
-      incwhh15 == -99 ~ -3,
-      incwhh15 == -91 ~ -1,
-      incwhh15 == -1 ~ -8,
-      incwhh15 == -3 ~ -3,
-      TRUE ~ convert_to_band(incwhh15)
+      is.na(incwhh15_raw) ~ -3,
+      incwhh15_raw %in% c(-92, -992) ~ -9,
+      incwhh15_raw == -999 ~ -2,
+      incwhh15_raw == -99 ~ -3,
+      incwhh15_raw == -91 ~ -1,
+      incwhh15_raw %in% c(-1, -94) ~ -8,
+      incwhh15_raw == -3 ~ -1,
+      TRUE ~ convert_to_band(incwhh15_raw)
     ),
     incwhhcnt15 = case_when(
-      is.na(incwhh15) ~ -3,
-      incwhh15 == -92 ~ -9,
-      incwhh15 %in% c(-999, -992, -94) ~ -2,
-      incwhh15 == -99 ~ -3,
-      incwhh15 == -91 ~ -1,
-      incwhh15 == -1 ~ -8,
-      incwhh15 == -3 ~ -3,
-      TRUE ~ incwhh15
+      is.na(incwhh15_raw) ~ -3,
+      incwhh15_raw %in% c(-92, -992) ~ -9,
+      incwhh15_raw == -999 ~ -2,
+      incwhh15_raw == -99 ~ -3,
+      incwhh15_raw == -91 ~ -1,
+      incwhh15_raw %in% c(-1, -94) ~ -8,
+      incwhh15_raw == -3 ~ -1,
+      TRUE ~ incwhh15_raw
     ),
 
     # Sweep 3
     incwhh16 = case_when(
-      is.na(incwhh16) ~ -3,
-      incwhh16 == -99 ~ -3,
-      incwhh16 == -92 ~ -9,
-      incwhh16 == -1 ~ -8,
-      incwhh16 >= 1 & incwhh16 <= 12 ~ incwhh16
+      is.na(incwhh16_raw) ~ -3,
+      incwhh16_raw == -99 ~ -3,
+      incwhh16_raw == -92 ~ -9,
+      incwhh16_raw == -1 ~ -8,
+      incwhh16_raw >= 1 & incwhh16_raw <= 12 ~ incwhh16_raw
     ),
 
     # Sweep 4
     incwhh17 = case_when(
-      is.na(incwhh17) ~ -3,
-      incwhh17 %in% c(-996, -99) ~ -3,
-      incwhh17 == -92 ~ -9,
-      incwhh17 == -1 ~ -8,
-      incwhh17 >= 1 & incwhh17 <= 12 ~ incwhh17
+      is.na(incwhh17_raw) ~ -3,
+      incwhh17_raw %in% c(-996, -99) ~ -3,
+      incwhh17_raw == -92 ~ -9,
+      incwhh17_raw == -1 ~ -8,
+      incwhh17_raw >= 1 & incwhh17_raw <= 12 ~ incwhh17_raw
     )
   ) %>%
   mutate(
     across(
       c(incwhh14, incwhh15),
-      ~ factor(
+      ~ labelled(
         .x,
-        levels = c(
-          1,
-          2,
-          3,
-          4,
-          5,
-          6,
-          7,
-          8,
-          9,
-          10,
-          11,
-          12,
-          13,
-          14,
-          15,
-          16,
-          -1,
-          -2,
-          -3,
-          -8,
-          -9
-        ),
         labels = c(
-          "less than £25 per week",
-          "25-50",
-          "50-90",
-          "90-140",
-          "140-240",
-          "240-300",
-          "300-350",
-          "350-400",
-          "400-500",
-          "500-600",
-          "600-700",
-          "700-800",
-          "800-900",
-          "900-1200",
-          "1200-1400",
-          "more than 1400",
-          "Item not applicable",
-          "Script error/information lost",
-          "Not asked at the fieldwork stage/participated/interviewed",
-          "Don’t know/insufficient information",
-          "Refusal"
+          "less than £25 per week" = 1,
+          "25-50" = 2,
+          "50-90" = 3,
+          "90-140" = 4,
+          "140-240" = 5,
+          "240-300" = 6,
+          "300-350" = 7,
+          "350-400" = 8,
+          "400-500" = 9,
+          "500-600" = 10,
+          "600-700" = 11,
+          "700-800" = 12,
+          "800-900" = 13,
+          "900-1200" = 14,
+          "1200-1400" = 15,
+          "more than 1400" = 16,
+          common_missing_labels
         )
       )
     ),
@@ -185,32 +174,35 @@ hh_income_all <- hh_income_all %>%
     ),
     across(
       c(incwhh16, incwhh17),
-      ~ factor(
+      ~ labelled(
         .x,
-        levels = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, -1, -2, -3, -8, -9),
         labels = c(
-          "up to 49",
-          "50-99",
-          "100-199",
-          "200-299",
-          "300-399",
-          "400-499",
-          "500-599",
-          "600-699",
-          "700-799",
-          "800-899",
-          "900-999",
-          "1000 or more",
-          "Item not applicable",
-          "Script error/information lost",
-          "Not asked at the fieldwork stage/participated/interviewed",
-          "Don’t know/insufficient information",
-          "Refusal"
+          "up to 49" = 1,
+          "50-99" = 2,
+          "100-199" = 3,
+          "200-299" = 4,
+          "300-399" = 5,
+          "400-499" = 6,
+          "500-599" = 7,
+          "600-699" = 8,
+          "700-799" = 9,
+          "800-899" = 10,
+          "900-999" = 11,
+          "1000 or more" = 12,
+          common_missing_labels
         )
       )
     )
-  ) %>%
-  select(NSID, incwhh14, incwhh15, incwhhcnt14, incwhhcnt15, incwhh16, incwhh17)
+  )
+
+hh_income_all <- hh_income_rec %>%
+  select(NSID, incwhh14, incwhh15, incwhhcnt14, incwhhcnt15, incwhh16, incwhh17) %>%
+  mutate(
+    across(
+      c(incwhh14, incwhh15, incwhh16, incwhh17),
+      ~ labelled::to_factor(.x, levels = "labels")
+    )
+  )
 
 # Create output directory if it doesn't exist
 dir.create(file.path(getwd(), "data", "output"), recursive = TRUE, showWarnings = FALSE)
