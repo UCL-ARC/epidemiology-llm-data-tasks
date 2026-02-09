@@ -29,7 +29,8 @@ override: |
 
   5. **Missing Value Code Harmonization**:
      - Harmonise all wave-specific negative codes:
-       * -999 and -94 → -2 (Script error/information lost)
+       * -999 → -2 (Script error/information lost)
+       * -94 → -8 (Don't know/insufficient information)
        * -99, -98, and NA → -3 (Not asked/not interviewed)
      - Preserve standard missing codes:
        * -9 = Refusal

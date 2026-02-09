@@ -8,6 +8,7 @@ override: |
   1. **File Loading**:
      - When loading input files, always prepend the directory data/input/.
      - Load the datasets listed in the metadata.
+     - Include the wave 1 file to ensure all NSIDs are present in the final output, even if wave 1 has no NS-SEC variable.
      - Merge all files using full_join by NSID.
 
   2. **Variable Naming Conventions**:
@@ -23,15 +24,15 @@ override: |
        * -3 = Not asked at the fieldwork stage/participated/interviewed
        * -2 = Schedule not applicable/Script error/information lost
        * -1 = Item not applicable
+     - Map each wave-specific code by its MEANING in the metadata (e.g., "Insufficient information" → -8, "Not applicable" → -1), not blanket to one value.
      - Retain missing codes as explicit factor levels.
 
   4. **NS-SEC Variable Processing**:
      For each age-specific NS-SEC variable:
-     - Accept only valid categories 1–17 as occupational classes.
-     - Recode invalid or fractional values to missing.
+     - The raw data uses detailed sub-categories with fractional codes (e.g., 3.1, 3.2, 12.4, 13.1). These are valid NS-SEC sub-categories — collapse them to their major category using floor() (e.g., 3.1 → 3, 12.7 → 12).
+     - After collapsing, accept only integer categories 1–17 as valid occupational classes.
      - Recode NA to -3 (not asked/interviewed).
-     - Map wave-specific negatives (e.g., -100, -97, -999, -998, -997, -995, -94, -92, -91, -99, -98, -996) to the standard missing scheme.
-
+     
   5. **Special Derivation for Age 25**:
      - At age 25, explicitly derive the full-time student category (15) using concurrent economic activity information.
 

@@ -20,8 +20,8 @@ override: |
      - Do not create additional adult detailed variables (no `hownadtl25` or `hownadtl32`).
 
   4. **Handling Multiple Indicators**:
-     - For waves with multiple binary indicators (e.g., W5Hous12BHH, W5Hous12CHH), combine them into single categorical variables.
-     - Follow exact mappings from metadata; do not use catch-all TRUE clauses.
+     - Some waves split tenure across multiple variables: a type variable (Owned/Rented/Other) and separate sub-type variables for owned and rented properties.
+     - When combining these into a single 8-category variable, map each sub-type to its correct position in the unified scheme — do not copy sub-type codes directly, as owned code 1 and rented code 1 mean different things.
 
   5. **Standard Missing-Value Codes**:
      Use the following standard codes consistently:
