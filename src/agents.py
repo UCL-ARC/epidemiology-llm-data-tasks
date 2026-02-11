@@ -190,7 +190,7 @@ if __name__ == "__main__":
     from .tools import produce_and_execute_r
 
     tools = [produce_and_execute_r]
-    model_id = "gpt-oss:120b-cloud"
+    model_id = "ministral-3:14b-cloud"
     model_name = f"ollama_chat/{model_id}"
     api_key = "ollama"
 
