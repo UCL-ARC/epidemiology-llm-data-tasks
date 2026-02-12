@@ -42,7 +42,10 @@ class CodeComparisonTool:
         self.rubric = CodeQualityRubric()
 
     def _run_r_lintr(self, file_path: Path) -> str:
-        """Run lintr::lint() on a snippet of R code and return the lint output as a string."""
+        """
+        Run lintr::lint() on a snippet of R code and return the lint output
+        as a string.
+        """
         file_path = Path(file_path).resolve()
 
         r_cmd = f"""
@@ -86,7 +89,8 @@ class CodeComparisonTool:
     ) -> tuple[int, int, bool]:
         """
         Compare two pieces of code using a linter approach.
-        Returns the number of lint errors found in each code snippet and whether they are identical after linting.
+        Returns the number of lint errors found in each code snippet and whether \
+        they are identical after linting.
         """
         # For simplicity, we will just strip whitespace for this example.
         # Here you would integrate with the linter to compare the code
