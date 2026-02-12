@@ -12,9 +12,9 @@ override: |
   2. **Variable Naming Conventions**:
      - Use the exact ID variable name from source data (e.g., NSID) - do NOT create or rename to generic "id".
      - All variable names must be short, descriptive, and lowercase.
-     - Common abbreviations: eth = ethnicity, lang = language, sori = sexual orientation, partnr = partnership/marital status, reg = region, educaim = educational aims, educ = educational qualifications, ecoact = economic activity, nssec = occupational class, inc = income, imd = area deprivation, hown = housing tenure.
-     - For age-specific variables: append age as numeric suffix (e.g., eth14 = ethnicity at age 14, partnr19 = partnership status at age 19).
-     - For detailed adult versions: append "adu" after the variable name (e.g., partnradu25 = detailed adult partnership status at age 25).
+     - Common abbreviations: eth = ethnicity, lang = language, sori = sexual orientation, partnr = partnership/marital status, reg = region, educaim = educational aims/qualifications being studied, educ = educational qualifications attained, ecoact = economic activity.
+     - For age-specific variables: append age as numeric suffix (e.g., ecoact17 = economic activity at age 17).
+     - For parental variables: include parent and age in the suffix (e.g., ecoactdtma14 = mother's detailed economic activity at age 14; ecoactdtpa14 = father's detailed economic activity at age 14).
 
   3. **Standard Missing-Value Codes**:
      Use these codes for ALL variables:
@@ -32,43 +32,53 @@ override: |
      - Preserve as much conceptual detail as possible while maintaining comparability across ages.
 
   5. **Dual-Level Variables** (collapsed + detailed):
-     - For variables where later waves have more detailed categories than earlier waves (e.g., marital status that distinguishes civil partnerships in later waves but not earlier ones), create both:
+     - For variables where later waves have more detailed categories than earlier waves (e.g., marital status or adult economic activity), create both:
        a. Collapsed harmonised variables with consistent categories across all ages to enable temporal comparisons.
-       b. Detailed age-specific variables that preserve the full granularity of later measurements for nuanced analysis.
+       b. Detailed age-specific adult variables that preserve the full granularity of later measurements.
 
-  6. **Missing Value Code Harmonization**:
-     - Convert wave-specific negative codes (e.g., -100, -97, -999, -998, -997, -995, -94, -92, -91, -99) to the standard missing-value codes defined in instruction 3.
-     - Multiple wave-specific codes may map to the same standard code (e.g., -100 and -97 may both map to -3).
-     - Follow exact mappings provided in metadata.
+  6. **Explicit Recoding for Different Measurement Approaches**:
+     - When measurement approaches differ substantially across waves (e.g., different employment/activity classifications at each age), explicitly recode each wave into a shared small set of mutually exclusive categories (e.g., paid work, training, education, unemployed, looking after home, other) using clear logical mappings.
 
   7. **Time-Invariant vs Time-Varying Characteristics**:
-     - For **time-invariant** or stable characteristics (e.g., sex, ethnicity, language spoken at home):
+     - For **time-invariant** or stable characteristics (e.g., sex, ethnicity, language spoken at home, parental education):
        * Create a single consolidated variable.
        * Prioritisation strategy depends on the variable:
          - For characteristics expected to be stable and established early (e.g., ethnicity, language): prioritise the earliest valid response.
          - For characteristics that may be corrected or updated over time (e.g., sex): prioritise the most recent valid response.
        * Only use positive values in the prioritisation logic; include missing codes as fallback values when no positive values exist.
      
-     - For **time-varying** characteristics (e.g., sexual orientation, relationship status, employment):
+     - For **time-varying** characteristics (e.g., economic activity, employment status, education, relationship status, geographical location):
        * Retain age-specific variables rather than creating a single consolidated measure.
        * Preserve temporal variation for longitudinal analysis.
 
-  8. **Factor Variables and Labels**:
-     - When recoding categorical variables, use factor variables with explicit labels for both valid categories and all missing value codes to preserve metadata.
+  8. **Derived Categorical Variables**:
+     - When creating derived categorical variables from more detailed measures (e.g., collapsing many activity states into a 6-category scheme), apply the transformation consistently across all ages and convert the result to a labeled factor.
 
-  9. **Package Requirements**:
-     - Use ONLY standard R packages: haven, dplyr, purrr, labelled, readr.
-     - Load packages at the start of the script using library().
+  9. **Missing Value Code Harmonization**:
+     - Convert wave-specific negative codes (e.g., -100, -97, -999, -998, -997, -995, -94, -92, -91, -99, -98, -996) to the standard missing-value codes defined in instruction 3.
+     - Multiple wave-specific codes may map to the same standard code.
+     - Follow exact mappings provided in metadata.
 
-  10. **Output Requirements**:
+  10. **Factor Variables and Labels**:
+      - When recoding categorical variables, use factor variables with explicit labels for both valid categories and all missing value codes to preserve metadata.
+
+  11. **Parental Economic Activity**:
+      - For parental economic activity, retain separate detailed variables for mothers and fathers at each age.
+      - Harmonise to a common detailed classification (full-time, part-time, unemployed, training, education, home, retired, sick/disabled, other) with age-specific suffixes.
+
+  12. **Package Requirements**:
+      - Use ONLY standard R packages: haven, dplyr, purrr, labelled, readr.
+      - Load packages at the start of the script using library().
+
+  13. **Output Requirements**:
       - Your R script must output one single cleaned csv named data/output/cleaned_data.csv.
 
-  11. **Variables to Include in Output**:
+  14. **Variables to Include in Output**:
       - Include the ID variable from source data.
       - Explicitly output only the derived variables that were created during the cleaning process.
       - Do NOT include intermediate wave-specific variables unless they are the final output.
 
-  12. **Execution**:
+  15. **Execution**:
       - You must run your R script after generating it.
 
   Produce your script in R.
