@@ -1,14 +1,14 @@
 options(repos = c(CRAN = "https://cloud.r-project.org/"))
-list_of_packages <- c("haven", "dplyr", "purrr", "here", "labelled", "readr")
-new_packages <- list_of_packages[!(list_of_packages %in% installed.packages()[, "Package"])]
-if (length(new_packages)) install.packages(new_packages)
+list_of_packages <- c('haven', 'dplyr', 'purrr', 'here', 'labelled', 'readr')
+new_packages <- list_of_packages[!(list_of_packages %in% installed.packages()[,"Package"])]
+if(length(new_packages)) install.packages(new_packages)
 suppressPackageStartupMessages({
-  library(haven) # for reading SPSS/Stata files
-  library(dplyr) # for data manipulation
-  library(purrr) # for functional programming (map, reduce)
-  library(here) # for file paths
-  library(labelled) # for handling labelled data
-  library(readr) # for reading delimited files
+  library(haven)  # for reading SPSS/Stata files
+  library(dplyr)  # for data manipulation
+  library(purrr)  # for functional programming (map, reduce)
+  library(here)  # for file paths
+  library(labelled)  # for handling labelled data
+  library(readr)  # for reading delimited files
 })
 
 # Data path
@@ -114,5 +114,5 @@ sex_all <- sex_all %>%
 # Create output directory if it doesn't exist
 dir.create(file.path(getwd(), "data", "output"), recursive = TRUE, showWarnings = FALSE)
 
-output_data_path <- file.path(getwd(), "data", "output", "output.csv")
+output_data_path <- file.path(getwd(), "data", "output","output.csv")
 write.csv(sex_all, output_data_path, row.names = FALSE)
