@@ -2,7 +2,8 @@
   "wave_one_lsype_young_person_2020.tab": {
     "file_info": {
       "number_of_variables": 350,
-      "number_of_cases": 15760
+      "number_of_cases": 15760,
+      "description": "Sweep 1 (Age 14) Young Person Data File"
     },
     "variables": {
       "NSID": {
@@ -15,7 +16,8 @@
   "wave_four_lsype_young_person_2020.tab": {
     "file_info": {
       "number_of_variables": 1049,
-      "number_of_cases": 11791
+      "number_of_cases": 11791,
+      "description": "Sweep 4 (Age 17) Young Person Data File"
     },
     "variables": {
       "NSID": {
@@ -28,7 +30,8 @@
   "wave_six_lsype_young_person_2020.tab": {
     "file_info": {
       "number_of_variables": 760,
-      "number_of_cases": 9791
+      "number_of_cases": 9791,
+      "description": "Sweep 6 (Age 19) Young Person Data File"
     },
     "variables": {
       "NSID": {
@@ -58,7 +61,8 @@
   "wave_seven_lsype_young_person_2020.tab": {
     "file_info": {
       "number_of_variables": 850,
-      "number_of_cases": 8675
+      "number_of_cases": 8675,
+      "description": "Sweep 7 (Age 20) Young Person Data File"
     },
     "variables": {
       "NSID": {
@@ -89,7 +93,8 @@
   "ns8_2015_self_completion.tab": {
     "file_info": {
       "number_of_variables": 111,
-      "number_of_cases": 7705
+      "number_of_cases": 7705,
+      "description": "Wave Eight Self-Completion Data File"
     },
     "variables": {
       "NSID": {
@@ -118,7 +123,8 @@
   "ns9_2022_main_interview.tab": {
     "file_info": {
       "number_of_variables": 1805,
-      "number_of_cases": 7279
+      "number_of_cases": 7279,
+      "description": "Age 32 (Sweep 9) Main Interview Data File"
     },
     "variables": {
       "NSID": {

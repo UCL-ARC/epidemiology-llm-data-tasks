@@ -1,0 +1,250 @@
+{
+  "wave_one_lsype_family_background_2020.tab": {
+    "file_info": {
+      "number_of_variables": 381,
+      "number_of_cases": 15760,
+      "description": "Sweep 1 (Age 14) Family Background Data File"
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      },
+      "W1hiqualmum": {
+        "position": 347,
+        "variable_label": "DV: Mother's highest qualification (detailed)",
+        "type": "numeric",
+        "spss_measurement_level": "ORDINAL",
+        "spss_user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-999.0": "Missing - household data lost",
+          "-99.0": "Mother not interviewed",
+          "-98.0": "Mother not present",
+          "-94.0": "Insufficient information",
+          "-92.0": "Refused",
+          "-91.0": "Not applicable",
+          "1.0": "Higher Degree",
+          "2.0": "First Degree",
+          "3.0": "HE Diploma",
+          "4.0": "HNC/HND/NVQ4",
+          "5.0": "Teaching qualification, non-degree",
+          "6.0": "Nursing qualification, non-degree",
+          "7.0": "A Levels",
+          "8.0": "OND/ONC",
+          "9.0": "City and guilds part III, NVQ3",
+          "10.0": "CSYS",
+          "11.0": "Scottish Higher Grade",
+          "12.0": "AS Level",
+          "13.0": "Trade apprenticeship",
+          "14.0": "City and guilds part II, NVQ2",
+          "15.0": "GCSE grade A-C and equivalent",
+          "16.0": "GCSE grade D-E and equivalent",
+          "17.0": "City and guilds part I, NVQ1",
+          "18.0": "Youth training, skill seekers",
+          "19.0": "Qualification, level unspecified",
+          "20.0": "No qualification mentioned"
+        }
+      },
+      "W1hiqualdad": {
+        "position": 348,
+        "variable_label": "DV: Father's highest qualification (detailed)",
+        "type": "numeric",
+        "spss_measurement_level": "ORDINAL",
+        "spss_user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-999.0": "Missing - household data lost",
+          "-99.0": "Father not interviewed",
+          "-98.0": "Father not present",
+          "-94.0": "Insufficient information",
+          "-92.0": "Refused",
+          "-91.0": "Not applicable",
+          "-1.0": "Don't know",
+          "1.0": "Higher Degree",
+          "2.0": "First Degree",
+          "3.0": "HE Diploma",
+          "4.0": "HNC/HND/NVQ4",
+          "5.0": "Teaching qualification, non-degree",
+          "6.0": "Nursing qualification, non-degree",
+          "7.0": "A Levels",
+          "8.0": "OND/ONC",
+          "9.0": "City and guilds part III, NVQ3",
+          "10.0": "CSYS",
+          "11.0": "Scottish Higher Grade",
+          "12.0": "AS Level",
+          "13.0": "Trade apprenticeship",
+          "14.0": "City and guilds part II, NVQ2",
+          "15.0": "GCSE grade A-C and equivalent",
+          "16.0": "GCSE grade D-E and equivalent",
+          "17.0": "City and guilds part I, NVQ1",
+          "18.0": "Youth training, skill seekers",
+          "19.0": "Qualification, level unspecified",
+          "20.0": "No qualification mentioned"
+        }
+      }
+    }
+  },
+  "wave_two_lsype_family_background_2020.tab": {
+    "file_info": {
+      "number_of_variables": 1030,
+      "number_of_cases": 13530,
+      "description": "Sweep 2 (Age 15) Family Background Data File"
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      },
+      "W2hiqualmum": {
+        "position": 849,
+        "variable_label": "DV: Mother's highest qualification (detailed)",
+        "type": "numeric",
+        "spss_measurement_level": "ORDINAL",
+        "spss_user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-999.0": "Missing - household data lost",
+          "-99.0": "Mother not interviewed",
+          "-98.0": "Mother not present",
+          "-94.0": "Insufficient information",
+          "-92.0": "Refused",
+          "-91.0": "Not applicable",
+          "1.0": "Higher Degree",
+          "2.0": "First Degree",
+          "3.0": "HE Diploma",
+          "4.0": "HNC/HND/NVQ4",
+          "5.0": "Teaching qualification, non-degree",
+          "6.0": "Nursing qualification, non-degree",
+          "7.0": "A Levels",
+          "8.0": "OND/ONC",
+          "9.0": "City and guilds part III, NVQ3",
+          "10.0": "CSYS",
+          "11.0": "Scottish Higher Grade",
+          "12.0": "AS Level",
+          "13.0": "Trade apprenticeship",
+          "14.0": "City and guilds part II, NVQ2",
+          "15.0": "GCSE grade A-C and equivalent",
+          "16.0": "GCSE grade D-E and equivalent",
+          "17.0": "City and guilds part I, NVQ1",
+          "18.0": "Youth training, skill seekers",
+          "19.0": "Qualification, level unspecified",
+          "20.0": "No qualification mentioned"
+        }
+      },
+      "W2hiqualdad": {
+        "position": 850,
+        "variable_label": "DV: Father's highest qualification (detailed)",
+        "type": "numeric",
+        "spss_measurement_level": "ORDINAL",
+        "spss_user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-999.0": "Missing - household data lost",
+          "-99.0": "Father not interviewed",
+          "-98.0": "Father not present",
+          "-94.0": "Insufficient information",
+          "-92.0": "Refused",
+          "-91.0": "Not applicable",
+          "-1.0": "Don't know",
+          "1.0": "Higher Degree",
+          "2.0": "First Degree",
+          "3.0": "HE Diploma",
+          "4.0": "HNC/HND/NVQ4",
+          "5.0": "Teaching qualification, non-degree",
+          "6.0": "Nursing qualification, non-degree",
+          "7.0": "A Levels",
+          "8.0": "OND/ONC",
+          "9.0": "City and guilds part III, NVQ3",
+          "10.0": "CSYS",
+          "11.0": "Scottish Higher Grade",
+          "12.0": "AS Level",
+          "13.0": "Trade apprenticeship",
+          "14.0": "City and guilds part II, NVQ2",
+          "15.0": "GCSE grade A-C and equivalent",
+          "16.0": "GCSE grade D-E and equivalent",
+          "17.0": "City and guilds part I, NVQ1",
+          "18.0": "Youth training, skill seekers",
+          "19.0": "Qualification, level unspecified",
+          "20.0": "No qualification mentioned"
+        }
+      }
+    }
+  },
+  "wave_four_lsype_family_background_2020.tab": {
+    "file_info": {
+      "number_of_variables": 422,
+      "number_of_cases": 11791,
+      "description": "Sweep 4 (Age 17) Family Background Data File"
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      },
+      "w4hiqualmum": {
+        "position": 411,
+        "variable_label": "DV: Mother's highest qualification (detailed) - Source: Main W1 or W2 MP or SP, Boost W4 MP",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-99.0": "Mother not interviewed",
+          "-98.0": "Mother not present",
+          "-94.0": "Insufficient information",
+          "1.0": "Higher Degree",
+          "2.0": "First Degree",
+          "3.0": "HE Diploma",
+          "4.0": "HNC/HND/NVQ4",
+          "5.0": "Teaching qualification, non-degree",
+          "6.0": "Nursing qualification, non-degree",
+          "7.0": "A Levels",
+          "8.0": "OND/ONC",
+          "9.0": "City and guilds part III, NVQ3",
+          "10.0": "CSYS",
+          "11.0": "Scottish Higher Grade",
+          "12.0": "AS Level",
+          "13.0": "Trade apprenticeship",
+          "14.0": "City and guilds part II, NVQ2",
+          "15.0": "GCSE grade A-C and equivalent",
+          "16.0": "GCSE grade D-E and equivalent",
+          "17.0": "City and guilds part I, NVQ1",
+          "18.0": "Youth training, skill seekers",
+          "19.0": "Qualification, level unspecified",
+          "20.0": "No qualification mentioned"
+        }
+      },
+      "w4hiqualdad": {
+        "position": 412,
+        "variable_label": "DV: Father's highest qualification (detailed) - Source: Main W1 or W2 MP or SP, Boost W4 MP",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-99.0": "Father not interviewed",
+          "-98.0": "Father not present",
+          "-94.0": "Insufficient information",
+          "1.0": "Higher Degree",
+          "2.0": "First Degree",
+          "3.0": "HE Diploma",
+          "4.0": "HNC/HND/NVQ4",
+          "5.0": "Teaching qualification, non-degree",
+          "6.0": "Nursing qualification, non-degree",
+          "7.0": "A Levels",
+          "8.0": "OND/ONC",
+          "9.0": "City and guilds part III, NVQ3",
+          "10.0": "CSYS",
+          "11.0": "Scottish Higher Grade",
+          "12.0": "AS Level",
+          "13.0": "Trade apprenticeship",
+          "14.0": "City and guilds part II, NVQ2",
+          "15.0": "GCSE grade A-C and equivalent",
+          "16.0": "GCSE grade D-E and equivalent",
+          "17.0": "City and guilds part I, NVQ1",
+          "18.0": "Youth training, skill seekers",
+          "19.0": "Qualification, level unspecified",
+          "20.0": "No qualification mentioned"
+        }
+      }
+    }
+  }
+}

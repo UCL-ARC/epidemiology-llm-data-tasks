@@ -1,0 +1,110 @@
+{
+  "wave_one_lsype_young_person_2020.tab": {
+    "file_info": {
+      "number_of_variables": 350,
+      "number_of_cases": 15760,
+      "description": "Sweep 1 (Age 14) Young Person Data File"
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      }
+    }
+  },
+  "wave_four_lsype_young_person_2020.tab": {
+    "file_info": {
+      "number_of_variables": 1049,
+      "number_of_cases": 11791,
+      "description": "Sweep 4 (Age 17) Young Person Data File"
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      }
+    }
+  },
+  "ns8_2015_derived.tab": {
+    "file_info": {
+      "number_of_variables": 53,
+      "number_of_cases": 7705,
+      "description": "Wave Eight Derived Data File"
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      },
+      "W8DINCB": {
+        "position": 27,
+        "variable_label": "DV: Banded weekly income",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-1.0 thru None",
+        "value_labels": {
+          "-1.0": "Not applicable",
+          "1.0": "less than 25",
+          "2.0": "25 to 50",
+          "3.0": "50 to 90",
+          "4.0": "90 to 140",
+          "5.0": "140 to 240",
+          "6.0": "240 to 300",
+          "7.0": "300 to 350",
+          "8.0": "350 to 400",
+          "9.0": "400 to 500",
+          "10.0": "500 to 600",
+          "11.0": "600 to 700",
+          "12.0": "700 to 800",
+          "13.0": "800 to 900",
+          "14.0": "900 to 1200",
+          "15.0": "1200 to 1400",
+          "16.0": "more than 1400"
+        }
+      }
+    }
+  },
+  "ns9_2022_derived_variables.tab": {
+    "file_info": {
+      "number_of_variables": 68,
+      "number_of_cases": 7279,
+      "description": "Age 32 (Sweep 9) Derived Variables Data File"
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      },
+      "W9DINCB": {
+        "position": 29,
+        "variable_label": "DV: Banded weekly income of cohort member and partner",
+        "type": "numeric",
+        "spss_measurement_level": "NOMINAL",
+        "spss_user_missing_values": "-1.0 thru None",
+        "value_labels": {
+          "-1.0": "Not applicable",
+          "1.0": "less than 25",
+          "2.0": "25 to 50",
+          "3.0": "50 to 90",
+          "4.0": "90 to 140",
+          "5.0": "140 to 240",
+          "6.0": "240 to 300",
+          "7.0": "300 to 350",
+          "8.0": "350 to 400",
+          "9.0": "400 to 500",
+          "10.0": "500 to 600",
+          "11.0": "600 to 700",
+          "12.0": "700 to 800",
+          "13.0": "800 to 900",
+          "14.0": "900 to 1200",
+          "15.0": "1200 to 1400",
+          "16.0": "more than 1400"
+        }
+      }
+    }
+  }
+}

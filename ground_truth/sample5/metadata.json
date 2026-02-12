@@ -2,7 +2,8 @@
   "wave_one_lsype_young_person_2020.tab": {
     "file_info": {
       "number_of_variables": 350,
-      "number_of_cases": 15760
+      "number_of_cases": 15760,
+      "description": "Sweep 1 (Age 14) Young Person Data File"
     },
     "variables": {
       "NSID": {
@@ -15,48 +16,22 @@
   "wave_four_lsype_young_person_2020.tab": {
     "file_info": {
       "number_of_variables": 1049,
-      "number_of_cases": 11791
+      "number_of_cases": 11791,
+      "description": "Sweep 4 (Age 17) Young Person Data File"
     },
     "variables": {
       "NSID": {
         "position": 1,
         "variable_label": "NSID - cohort member identifier",
         "value_labels": {}
-      }
-    }
-  },
-  "wave_five_lsype_young_person_2020.tab": {
-    "file_info": {
-      "number_of_variables": 730,
-      "number_of_cases": 10422
-    },
-    "variables": {
-      "NSID": {
-        "position": 1,
-        "variable_label": "NSID - cohort member identifier",
-        "value_labels": {}
-      },
-      "W5Marstat2YP": {
-        "position": 625,
-        "variable_label": "YP: Whether married or engaged",
-        "type": "numeric",
-        "spss_measurement_level": "NOMINAL",
-        "spss_user_missing_values": "-999.0 thru -1.0",
-        "value_labels": {
-          "-92.0": "Refused",
-          "-91.0": "Not applicable",
-          "-1.0": "Don't know",
-          "1.0": "Married",
-          "2.0": "Engaged",
-          "3.0": "Neither"
-        }
       }
     }
   },
   "wave_six_lsype_young_person_2020.tab": {
     "file_info": {
       "number_of_variables": 760,
-      "number_of_cases": 9791
+      "number_of_cases": 9791,
+      "description": "Sweep 6 (Age 19) Young Person Data File"
     },
     "variables": {
       "NSID": {
@@ -88,7 +63,8 @@
   "ns8_2015_derived.tab": {
     "file_info": {
       "number_of_variables": 53,
-      "number_of_cases": 7705
+      "number_of_cases": 7705,
+      "description": "Wave Eight Derived Data File"
     },
     "variables": {
       "NSID": {
@@ -122,7 +98,8 @@
   "ns9_2022_derived_variables.tab": {
     "file_info": {
       "number_of_variables": 68,
-      "number_of_cases": 7279
+      "number_of_cases": 7279,
+      "description": "Age 32 (Sweep 9) Derived Variables Data File"
     },
     "variables": {
       "NSID": {
