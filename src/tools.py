@@ -6,7 +6,8 @@ from pathlib import Path
 
 def produce_and_execute_r(rscript: str) -> str:
     """
-    Produce an executable R script and write and execute the r script returning stdout and stderr.
+    Produce an executable R script and write and execute the r script returning stdout
+    and stderr.
 
     Args:
     rscript: The rscript to execute. This should be correct R.

@@ -71,7 +71,7 @@ class TestCopyRawData:
 
         assert failed_files == []
         # The function calls mkdir with the path and exist_ok=True
-        mock_mkdir.assert_called_with(sample_input_dir, exist_ok=True)
+        mock_mkdir.assert_called_with(sample_input_dir, exist_ok=True, parents=True)
         assert mock_file.call_count == 4  # 2 files x 2 opens each (read + write)
 
     @patch("pathlib.Path.mkdir")
