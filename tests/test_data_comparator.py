@@ -461,7 +461,7 @@ class TestCompare:
             index=pd.Index(range(50), name="id"),
         )
 
-        result = comparator.compare(gt_df, pred_df)
+        result, _ = comparator.compare(gt_df, pred_df)
 
         assert isinstance(result, DataComparisonResult)
         assert result.primary_key == "id | id"
@@ -502,7 +502,7 @@ class TestCompare:
             index=pd.Index(range(50), name="id"),
         )
 
-        result = comparator.compare(gt_df, pred_df, use_data_matching=False)
+        result, _ = comparator.compare(gt_df, pred_df, use_data_matching=False)
 
         assert len(result.unmatched_gt_columns) == 1
         assert "col_b" in result.unmatched_gt_columns
@@ -534,7 +534,7 @@ class TestCompare:
             index=pd.Index(range(100), name="id"),
         )
 
-        result = comparator.compare(gt_df, pred_df, use_data_matching=True)
+        result, _ = comparator.compare(gt_df, pred_df, use_data_matching=True)
 
         # Data matching should find the match
         matched_cols = [m for m in result.column_matches if m.pred_column is not None]
@@ -565,7 +565,7 @@ class TestCompare:
             index=pd.Index(range(100), name="id"),
         )
 
-        result = comparator.compare(gt_df, pred_df, use_data_matching=False)
+        result, _ = comparator.compare(gt_df, pred_df, use_data_matching=False)
 
         # No data matching, column stays unmatched
         assert "values" in result.unmatched_gt_columns
@@ -602,7 +602,7 @@ class TestIntegration:
             index=pd.Index(range(50), name="id"),
         )
 
-        result = comparator.compare(gt_df, pred_df)
+        result, _ = comparator.compare(gt_df, pred_df)
 
         # Verify structure
         assert isinstance(result, DataComparisonResult)
