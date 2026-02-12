@@ -5,14 +5,16 @@ tasks:
       Follow all instructions:
 
       1. Ensure when you load the input files you append the dir "data/input/" this is where they are stored.
-      2. Rename variables. All variable names are short, descriptive, and lowercase (e.g., eth = ethnicity). Age at measurement is appended as a numeric suffix (e.g., eth14 = ethnicity at age 14). 
-      3. Use standard missing-value codes (minus values) for all variables e.g., -9 = Refusal  -8 = Don’t know/insufficient information -1 = Item not applicable
-      4. To support analyses across time, derive consistent response categories where possible at different ages. When identical response categories existed across ages, retained them unchanged. When categories differ,  collapsed or re-mapped them to a common scheme.  Where using the same response categories is not possible (e.g., substantially different instruments, such as parental income collected with different bands), provide multiple variables with clearly labelled, age-specific categories.
-      5. Use only standard R 
-      6. Your R script must output one single cleaned csv named data/output/cleaned_data.csv
-      7. Explicitly output only the derived variables that were created during the cleaning process to the csv
-      8. You must run your R script.
-            
+      2. Identify and handle missing values appropriately (e.g., imputation, removal).
+      3. Correct any data type inconsistencies (e.g., converting strings to dates).
+      4. Remove duplicate records.
+      5. Standardise formats for categorical variables
+      6. Consolidate any variables
+      7. Use only standard R libraries
+      8. Your R script must output one single cleaned csv named data/output/cleaned_data.csv
+      9. Explicitly output only the derived variables that were created during the cleaning process to the csv
+      10. You must run your R script.
+
       Produce your script in R.
       Here is the appropriate metadata for the task:
       

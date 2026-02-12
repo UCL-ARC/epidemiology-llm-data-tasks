@@ -1,4 +1,7 @@
-"""Script to initialise ground truth data for samples by copying raw data files and running R scripts."""
+"""
+Script to initialise ground truth data for samples by copying raw data files and
+running R scripts.
+"""
 
 import argparse
 import json
@@ -17,7 +20,8 @@ def get_arg_parser() -> argparse.ArgumentParser:
         "--input_dir",
         type=Path,
         required=True,
-        help="Path to the directory containing the raw data used for ground truth generation.",
+        help="Path to the directory containing the raw data used for ground truth"
+        "generation.",
     )
     parser.add_argument(
         "-g",
@@ -56,7 +60,7 @@ def load_metadata(metadata_path: Path) -> dict:
 def copy_raw_data(input_dir: Path, sample_input_dir: Path, metadata: dict) -> list:
     """Copy raw data files based on metadata."""
     failed_files = []
-    Path.mkdir(sample_input_dir, exist_ok=True)
+    Path.mkdir(sample_input_dir, parents=True, exist_ok=True)
     for file_name in metadata:
         src_file = input_dir / file_name
         dest_file = sample_input_dir / file_name
