@@ -1,2 +1,64 @@
 task_id: 1
 task_type: data_cleaning_r
+override: |
+  You have access to raw survey datasets on a cohort study followed up at multiple ages. Your task is to clean and preprocess these datasets into a single file ready for analysis.
+  
+  Follow these instructions precisely:
+
+  1. **File Loading**:
+     - Ensure when you load the input files you append the dir "data/input/" this is where they are stored.
+     - Load each dataset into a separate object and merge using full_join by the ID variable.
+
+  2. **Variable Naming Conventions**:
+     - Use the exact ID variable name from source data (e.g., NSID) - do NOT create or rename to generic "id".
+     - All variable names must be short, descriptive, and lowercase.
+
+  3. **Variable Derivation**:
+     - After merging, create **all derived variables**.
+     - Create first the detailed adolescent variables (`hownteen14-20`), preserving full granularity where available.
+     - Then create collapsed, harmonized variables for all ages (`hown14-20, hown25, hown32`), using consistent categories.
+     - Do not create additional adult detailed variables (no `hownadtl25` or `hownadtl32`).
+
+  4. **Handling Multiple Indicators**:
+     - For waves with multiple binary indicators (e.g., W5Hous12BHH, W5Hous12CHH), combine them into single categorical variables.
+     - Follow exact mappings from metadata; do not use catch-all TRUE clauses.
+
+  5. **Standard Missing-Value Codes**:
+     Use the following standard codes consistently:
+     - -9 = Refusal
+     - -8 = Don't know/insufficient information
+     - -1 = Item not applicable
+     - -3 = Not asked/participated/interviewed
+     - -2 = Script error/information lost
+     - Map all wave-specific codes to these standard codes according to the metadata.
+
+  6. **Factor Variables and Labels**:
+     - For detailed adolescent variables (`hownteen14-20`), use long descriptive labels, e.g.:
+       "Owned outright", "Being bought on a mortgage/bank loan", "Shared ownership (owns & rents property)", "Rented from a Council or New Town", "Rented from a Housing Association", "Rented privately", "Rent free", "Some other arrangement", "Item not applicable", "Script error/information lost", "Not asked at the fieldwork stage/participated/interviewed", "Don't know/insufficient information", "Refusal".
+     - For collapsed variables (`hown14-20, hown25, hown32`), use descriptive labels like:
+       "Owned outright", "Owned, buying with help of mortgage/loan", "Part rent, part mortgage", "Rent it", "live rent-free", "Other", "Item not applicable", "Script error/information lost", "Not asked at the fieldwork stage/participated/interviewed", "Don't know/insufficient information", "Refusal".
+
+  7. **General Processing Rules**:
+     - Merge first, recode later.
+     - Process all waves and ages present in the metadata.
+     - Follow metadata precisely for mappings, variable names, and missing value codes.
+
+  8. **Package Requirements**:
+     - Required packages: haven, dplyr, purrr, labelled, readr.
+     - Load packages at the start of the script using library().
+
+  9. **Output Requirements**:
+     - Write the cleaned dataset to a single CSV using base R: `write.csv(cleaned_data, "data/output/cleaned_data.csv", row.names = FALSE)`.
+
+  10. **Variables to Include in Output**:
+      - Keep only NSID, all collapsed age-specific variables (`hown14-20, hown25, hown32`), and all detailed adolescent variables (`hownteen14-20`).
+      - Do not include raw source variables (e.g., W5Hous12BHH).
+
+  11. **Execution**:
+      - Produce a complete runnable R script and run it.
+
+  Produce your script in R.
+  
+  Here is the appropriate metadata for the task:
+
+  {metadata}

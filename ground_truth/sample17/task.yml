@@ -1,2 +1,97 @@
 task_id: 1
 task_type: data_cleaning_r
+override: |
+  You have access to raw survey datasets from a longitudinal cohort study followed up at multiple ages. The datasets include area deprivation scores measured at different ages, which may contain missing values, wave-specific missing codes, or inconsistent metadata. Your task is to clean and harmonise these deprivation score variables and output a single cleaned dataset ready for analysis.
+
+  Follow all instructions:
+
+  1. **File Loading**:
+     - Ensure when loading input files you always prepend the directory "data/input/".
+     - Load each dataset into a separate object.
+     - Merge all datasets using full_join by the ID variable NSID.
+
+     - Load and merge the following files:
+       * wave_one_lsype_young_person_2020.tab
+       * wave_two_lsype_family_background_2020.tab
+       * wave_three_lsype_family_background_2020.tab
+       * wave_four_lsype_young_person_2020.tab
+       * ns9_2022_derived_variables.tab
+
+  2. **Variable Naming Conventions**:
+     - Use the exact ID variable name from source data (NSID). Do NOT rename it to a generic ID.
+     - All variable names must be short, descriptive, and lowercase.
+     - Use the abbreviation "imd" for area deprivation.
+     - Append numeric age suffixes to age-specific variables:
+       * imd15
+       * imd16
+       * imd32
+
+  3. **Standard Missing-Value Codes**:
+     Use the following standard missing-value codes for ALL variables:
+     - -9 = Refusal
+     - -8 = Don’t know / insufficient information
+     - -3 = Not asked at the fieldwork stage / not interviewed
+     - -2 = Script error / information lost
+     - -1 = Not applicable
+
+  4. **Variable Selection and Renaming**:
+     - Retain only the area deprivation score variables from the source datasets.
+     - Rename the retained variables to:
+       * imd15
+       * imd16
+       * imd32
+     - Do NOT retain any other raw or intermediate variables.
+
+  5. **Missing Value Code Harmonisation**:
+     - Recode all wave-specific missing codes to the standard missing-value scheme defined in instruction 3.
+     - Specifically:
+       * Recode -94 to -8.
+       * Recode NA values to -3.
+
+  6. **Response Scale and Measurement Handling**:
+     - Area deprivation scores are continuous and measured on the same scale across all ages.
+     - Retain deprivation variables as numeric continuous variables.
+     - Do NOT create categorical bands.
+     - Do NOT create collapsed or consolidated measures across ages.
+     - Do NOT harmonise across ages beyond consistent naming and missing-value handling.
+
+  7. **Time-Varying Characteristics**:
+     - Treat area deprivation as a time-varying characteristic.
+     - Retain age-specific variables (imd15, imd16, imd32).
+     - Do NOT create a single combined deprivation variable.
+
+  8. **Variable Labelling**:
+     - Convert each deprivation score variable to a labelled numeric variable using labelled().
+     - Provide explicit labels for all standard missing-value codes.
+     - Do NOT apply value labels to valid continuous values.
+
+  9. **Package Requirements**:
+     - Use ONLY standard R packages:
+       * haven
+       * dplyr
+       * purrr
+       * labelled
+       * readr
+     - Load all packages at the start of the script using library().
+
+  10. **Output Requirements**:
+      - Output exactly one cleaned CSV file named:
+        data/output/cleaned_data.csv
+      - Use write_csv() or write.csv() with row.names = FALSE.
+
+  11. **Variables to Include in Output**:
+      - Include only the following variables in the final output:
+        * NSID
+        * imd15
+        * imd16
+        * imd32
+      - Do NOT include raw source variables.
+      - Do NOT include intermediate or wave-specific variables unless they are final outputs.
+
+  12. **Execution**:
+      - Produce a complete, runnable R script.
+      - You must run the R script after generating it.
+
+  Here is the appropriate metadata for the task:
+
+  {metadata}
