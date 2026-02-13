@@ -147,7 +147,10 @@ class TestExecutionContext:
         assert temp_dir.exists()  # not removed
 
     def test_execution_context_without_context_path_uses_cwd(self):
-        """When context_path=None, should just yield original cwd and not change dirs."""
+        """
+        When context_path=None, should just yield original cwd and not change
+        dirs.
+        """
         base = DummyAgent()
         original_cwd = Path.cwd()
 
@@ -165,7 +168,10 @@ class TestSmolAgentInit:
     def test_smolagent_initialises_model_and_agent(
         self, mock_lite_model, mock_tool_agent
     ):
-        """SmolAgent should construct LiteLLMModel and ToolCallingAgent with correct args."""
+        """
+        SmolAgent should construct LiteLLMModel and ToolCallingAgent with correct
+        args.
+        """
 
         def dummy_tool(x: int) -> int:
             """
@@ -208,7 +214,10 @@ class TestSmolAgentForward:
     def test_forward_returns_agentresult_with_context(
         self, mock_lite_model, mock_tool_agent, tmp_path
     ):
-        """forward should call underlying ToolCallingAgent.run and adapt RunResult to AgentResult."""
+        """
+        forward should call underlying ToolCallingAgent.run and adapt
+        RunResult to AgentResult.
+        """
 
         def dummy_tool(x: int) -> int:
             """
@@ -271,7 +280,10 @@ class TestSmolAgentForward:
     @patch("src.agents.ToolCallingAgent")
     @patch("src.agents.LiteLLMModel")
     def test_forward_uses_cwd_when_no_context(self, mock_lite_model, mock_tool_agent):
-        """If context_path is None, forward should still work and not fail on context manager."""
+        """
+        If context_path is None, forward should still work and not fail
+        on context manager.
+        """
 
         def dummy_tool(x: int) -> int:
             """
