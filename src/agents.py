@@ -190,7 +190,7 @@ if __name__ == "__main__":
     from .tools import produce_and_execute_r
 
     tools = [produce_and_execute_r]
-    model_id = "ministral-3:14b-cloud"
+    model_id = "qwen3-next:80b-cloud"
     model_name = f"ollama_chat/{model_id}"
     api_key = "ollama"
 
@@ -208,7 +208,7 @@ if __name__ == "__main__":
         ],
         key=lambda p: int(p.name[6:]),
     )
-    # test_dirs = [Path(f"./ground_truth/sample{x}") for x in [10]]
+    test_dirs = [Path(f"./ground_truth/sample{x}") for x in [14, 15, 16, 17]]
 
     for test_dir in test_dirs:
         logger.info(f"\n=== Testing with context: {test_dir} ===")
