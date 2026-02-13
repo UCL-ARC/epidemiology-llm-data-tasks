@@ -11,25 +11,23 @@
         "variable_label": "NSID - cohort member identifier",
         "value_labels": {}
       },
-      "W8TENURE": {
-        "position": 54,
-        "variable_label": "Tenure",
+    "W9DTENURE": {
+        "position": 20,
+        "variable_label": "DV: Housing Tenure",
         "type": "numeric",
         "spss_measurement_level": "NOMINAL",
-        "spss_user_missing_values": "-9.0 thru -8.0 and -1.0",
+        "spss_user_missing_values": "-8.0 thru None",
         "value_labels": {
-          "-9.0": "Refused",
-          "-8.0": "Don't know",
-          "-1.0": "Not applicable",
-          "1.0": "Own – outright",
-          "2.0": "Own – buying with help of mortg or loan",
-          "3.0": "Part rent/mortgage (shared/equity own)",
-          "4.0": "Rent inc Housing Ben/Lcl Housing Allow",
-          "5.0": "Rent-free inc rels/friend exc squatting",
-          "6.0": "Squatting",
-          "7.0": "Other arrangement inc board to parents"
+            "-8.0": "Insufficient information",
+            "1.0": "Own outright",
+            "2.0": "Own, buying with help of mortgage/loan",
+            "3.0": "Part rent, part mortgage (shared equity)",
+            "4.0": "Rent it",
+            "5.0": "Live rent-free, incl. relatives/friends",
+            "6.0": "Squatting",
+            "7.0": "Other"
         }
-      }
+    }
     }
   },
   "wave_four_lsype_family_background_2020.tab": {
