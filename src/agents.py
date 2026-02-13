@@ -190,11 +190,17 @@ if __name__ == "__main__":
     from .tools import produce_and_execute_r
 
     tools = [produce_and_execute_r]
-    model_id = "gpt-oss:120b-cloud"
+
+    # --- Ollama (via LiteLLM) ---
+    model_id = "deepseek-r1:14b"
     model_name = f"ollama_chat/{model_id}"
     api_key = "ollama"
-
     agent = SmolAgent(tools=tools, model_name=model_name, api_key=api_key)
+
+    # --- HuggingFace Inference Endpoints (via LiteLLM) ---
+    # model_name = "huggingface/Qwen/Qwen2.5-Coder-32B-Instruct"
+    # api_key = os.environ.get("HF_TOKEN")
+    # agent = SmolAgent(tools=tools, model_name=model_name, api_key=api_key)
     tasks_path = Path("./ground_truth/tasks.yml")
     with tasks_path.open() as f:
         tasks = yaml.safe_load(f)["tasks"]
