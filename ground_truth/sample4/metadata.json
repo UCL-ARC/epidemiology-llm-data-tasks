@@ -43,8 +43,8 @@
         "position": 577,
         "variable_label": "YP: Sexuality",
         "type": "numeric",
-        "spss_measurement_level": "NOMINAL",
-        "spss_user_missing_values": "-999.0 thru -1.0",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-999.0 thru -1.0",
         "value_labels": {
           "-97.0": "Respondent declined self completion",
           "-92.0": "Refused",
@@ -74,8 +74,8 @@
         "position": 652,
         "variable_label": "YP: Sexuality",
         "type": "numeric",
-        "spss_measurement_level": "NOMINAL",
-        "spss_user_missing_values": "-999.0 thru -1.0",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-999.0 thru -1.0",
         "value_labels": {
           "-100.0": "Respondent declined sexual experience questions",
           "-97.0": "Refused self completion",
@@ -106,8 +106,8 @@
         "position": 23,
         "variable_label": "Gender identity/sexual orientation",
         "type": "numeric",
-        "spss_measurement_level": "NOMINAL",
-        "spss_user_missing_values": "-9.0 thru -8.0 and -1.0",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-9.0 thru -8.0 and -1.0",
         "value_labels": {
           "-9.0": "Refused",
           "-8.0": "Don't know",
@@ -136,8 +136,8 @@
         "position": 1630,
         "variable_label": "Sexual orientation",
         "type": "numeric",
-        "spss_measurement_level": "NOMINAL",
-        "spss_user_missing_values": "-9.0 thru -1.0",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-9.0 thru -1.0",
         "value_labels": {
           "-9.0": "Refused",
           "-8.0": "Don't know",

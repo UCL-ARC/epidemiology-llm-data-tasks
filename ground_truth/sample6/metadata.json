@@ -43,8 +43,8 @@
         "position": 1027,
         "variable_label": "Urban/Rural Indicator (England)",
         "type": "numeric",
-        "spss_measurement_level": "NOMINAL",
-        "spss_user_missing_values": "-999.0 thru -1.0",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-999.0 thru -1.0",
         "value_labels": {
           "-94.0": "Insufficient information",
           "1.0": "Urban >= 10k - sparse",
@@ -61,8 +61,8 @@
         "position": 1028,
         "variable_label": "Government Office Region",
         "type": "numeric",
-        "spss_measurement_level": "SCALE",
-        "spss_user_missing_values": "-999.0 thru -1.0",
+        "measurement_level": "SCALE",
+        "user_missing_values": "-999.0 thru -1.0",
         "value_labels": {
           "-94.0": "Insufficient information",
           "1.0": "North East",
@@ -85,12 +85,17 @@
       "description": "Sweep 3 (Age 16) Family Background Data File"
     },
     "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      },
       "urbind": {
         "position": 158,
         "variable_label": "Urban/Rural Indicator (England)",
         "type": "numeric",
-        "spss_measurement_level": "NOMINAL",
-        "spss_user_missing_values": "-999.0 thru -1.0",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-999.0 thru -1.0",
         "value_labels": {
           "-94.0": "Insufficient information",
           "1.0": "Urban >= 10k - sparse",
@@ -107,8 +112,8 @@
         "position": 159,
         "variable_label": "Government Office Region",
         "type": "numeric",
-        "spss_measurement_level": "SCALE",
-        "spss_user_missing_values": "-999.0 thru -1.0",
+        "measurement_level": "SCALE",
+        "user_missing_values": "-999.0 thru -1.0",
         "value_labels": {
           "-94.0": "Insufficient information",
           "1.0": "North East",
@@ -140,8 +145,8 @@
         "position": 3,
         "variable_label": "DV: Interview Government Office Region",
         "type": "numeric",
-        "spss_measurement_level": "NOMINAL",
-        "spss_user_missing_values": "-9.0 thru -8.0 and -1.0",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-9.0 thru -8.0 and -1.0",
         "value_labels": {
           "-9.0": "Refused",
           "-8.0": "Insufficient information",
@@ -179,8 +184,8 @@
         "position": 2,
         "variable_label": "DV: Interview Government Office Region",
         "type": "numeric",
-        "spss_measurement_level": "NOMINAL",
-        "spss_user_missing_values": "-1.0 thru -8.0 and -9.0",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-1.0 thru -8.0 and -9.0",
         "value_labels": {
           "-9.0": "Refused",
           "-8.0": "Insufficient information",
@@ -218,8 +223,8 @@
         "position": 11,
         "variable_label": "Nation of UK - derived",
         "type": "numeric",
-        "spss_measurement_level": "NOMINAL",
-        "spss_user_missing_values": "-9.0 thru -1.0",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-9.0 thru -1.0",
         "value_labels": {
           "-9.0": "Refused",
           "-8.0": "Don't know",

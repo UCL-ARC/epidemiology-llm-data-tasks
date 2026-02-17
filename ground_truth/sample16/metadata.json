@@ -15,8 +15,8 @@
         "position": 408,
         "variable_label": "DV: Total gross weekly income for main parent (and partner)",
         "type": "numeric",
-        "spss_measurement_level": "SCALE",
-        "spss_user_missing_values": "-999.0 thru -1.0",
+        "measurement_level": "SCALE",
+        "user_missing_values": "-999.0 thru -1.0",
         "value_labels": {
           "-996.0": "No parent in household",
           "-99.0": "MP not interviewed",
@@ -54,8 +54,8 @@
         "position": 123,
         "variable_label": "DV: Total income from work, benefits, and anything else for respondent (and partner) (Weekly)",
         "type": "numeric",
-        "spss_measurement_level": "SCALE",
-        "spss_user_missing_values": "-999.0 thru -1.0",
+        "measurement_level": "SCALE",
+        "user_missing_values": "-999.0 thru -1.0",
         "value_labels": {
           "-99.0": "MP not interviewed",
           "-92.0": "Refused",
@@ -92,8 +92,8 @@
         "position": 882,
         "variable_label": "DV: Gross weekly salary of HH (edited)",
         "type": "numeric",
-        "spss_measurement_level": "SCALE",
-        "spss_user_missing_values": "-999.0 thru -1.0",
+        "measurement_level": "SCALE",
+        "user_missing_values": "-999.0 thru -1.0",
         "value_labels": {
           "-999.0": "Missing in error",
           "-992.0": "No information - work status questions refused",
@@ -123,8 +123,8 @@
         "position": 378,
         "variable_label": "DV: Gross weekly salary of HH (edited)",
         "type": "numeric",
-        "spss_measurement_level": "SCALE",
-        "spss_user_missing_values": "-999.0 thru -1.0",
+        "measurement_level": "SCALE",
+        "user_missing_values": "-999.0 thru -1.0",
         "value_labels": {
           "-999.0": "Missing in error",
           "-992.0": "No information - work status questions refused",

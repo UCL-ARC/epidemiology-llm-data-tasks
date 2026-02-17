@@ -9,6 +9,8 @@ override: |
      - When loading input files, always prepend the directory data/input/.
      - Load the family background datasets from waves 1, 2, and 4.
      - Merge all datasets using full_join by NSID.
+     - The input files are tab-delimited (.tab) text files. Use `readr::read_delim()` with `delim = "\t"` to load them. 
+     - Load each file explicitly by name from the metadata.
 
   2. **Variable Selection**:
      - Select only the parental highest qualification variables for mother and father plus NSID.

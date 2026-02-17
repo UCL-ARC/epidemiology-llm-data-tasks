@@ -15,8 +15,8 @@
         "position": 350,
         "variable_label": "DV: Young person's ethnic group (detailed)",
         "type": "numeric",
-        "spss_measurement_level": "NOMINAL",
-        "spss_user_missing_values": "-999.0 thru -1.0",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-999.0 thru -1.0",
         "value_labels": {
           "-999.0": "Missing - household data lost",
           "-94.0": "Insufficient information",
@@ -50,12 +50,17 @@
       "description": "Sweep 2 (Age 15) Young Person Data File"
     },
     "variables": {
+        "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      },
       "W2ethnicYP": {
         "position": 86,
         "variable_label": "YP: Ethnic origin (self-designation)",
         "type": "numeric",
-        "spss_measurement_level": "NOMINAL",
-        "spss_user_missing_values": "-999.0 thru -1.0",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-999.0 thru -1.0",
         "value_labels": {
           "-998.0": "Interviewer missed question",
           "-997.0": "Script error",
@@ -91,12 +96,17 @@
       "description": "Sweep 4 (Age 17) Young Person Data File"
     },
     "variables": {
+        "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      },
       "w4ethnic2YP": {
         "position": 994,
         "variable_label": "DV: Young person's ethnic group (detailed) Source: Main W1 YP, Boost W4 YP & HH",
         "type": "numeric",
-        "spss_measurement_level": "NOMINAL",
-        "spss_user_missing_values": "-999.0 thru -1.0",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-999.0 thru -1.0",
         "value_labels": {
           "-94.0": "Insufficient information",
           "-1.0": "Don't know",
@@ -136,8 +146,8 @@
         "position": 42,
         "variable_label": "DV: Ethnic group - Detailed",
         "type": "numeric",
-        "spss_measurement_level": "NOMINAL",
-        "spss_user_missing_values": "-9.0 thru -8.0 and -1.0",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-9.0 thru -8.0 and -1.0",
         "value_labels": {
           "-9.0": "Refused",
           "-8.0": "Insufficient information",
@@ -178,8 +188,8 @@
         "position": 48,
         "variable_label": "DV: Ethnic group - Detailed",
         "type": "numeric",
-        "spss_measurement_level": "NOMINAL",
-        "spss_user_missing_values": "-8.0 thru None",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-8.0 thru None",
         "value_labels": {
           "-8.0": "Insufficient information",
           "1.0": "White - British",

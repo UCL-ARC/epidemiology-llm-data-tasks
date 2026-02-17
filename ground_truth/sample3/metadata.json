@@ -6,12 +6,17 @@
       "description": "Sweep 1 (Age 14) Young Person Data File"
     },
     "variables": {
+        "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      }, 
       "W1englangYP": {
         "position": 94,
         "variable_label": "YP: Whether English is first or main language",
         "type": "numeric",
-        "spss_measurement_level": "NOMINAL",
-        "spss_user_missing_values": "-999.0 thru -1.0",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-999.0 thru -1.0",
         "value_labels": {
           "-99.0": "YP not interviewed",
           "-92.0": "Refused",
@@ -32,12 +37,17 @@
       "description": "Sweep 2 (Age 15) Young Person Data File"
     },
     "variables": {
+        "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      },
       "W2EnglangYP": {
         "position": 85,
         "variable_label": "YP: Whether English is first or main language",
         "type": "numeric",
-        "spss_measurement_level": "NOMINAL",
-        "spss_user_missing_values": "-999.0 thru -1.0",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-999.0 thru -1.0",
         "value_labels": {
           "-998.0": "Interviewer missed question",
           "-997.0": "Script error",
@@ -61,12 +71,17 @@
       "description": "Sweep 3 (Age 16) Family Background Data File"
     },
     "variables": {
+        "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      },
       "W3englangHH": {
         "position": 27,
         "variable_label": "HH: Whether English is main language of household",
         "type": "numeric",
-        "spss_measurement_level": "NOMINAL",
-        "spss_user_missing_values": "-999.0 thru -1.0",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-999.0 thru -1.0",
         "value_labels": {
           "-999.0": "HH grid missing",
           "-997.0": "Script Error",
@@ -89,12 +104,17 @@
       "description": "Sweep 4 (Age 17) Family Background Data File"
     },
     "variables": {
+        "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      }, 
       "W4EngLangHH": {
         "position": 22,
         "variable_label": "HH: Whether English is main language of household",
         "type": "numeric",
-        "spss_measurement_level": "NOMINAL",
-        "spss_user_missing_values": "-999.0 thru -1.0",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-999.0 thru -1.0",
         "value_labels": {
           "-999.0": "Missing household grid",
           "-997.0": "Script error",

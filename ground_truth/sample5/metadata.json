@@ -43,8 +43,8 @@
         "position": 570,
         "variable_label": "YP: Marital status",
         "type": "numeric",
-        "spss_measurement_level": "NOMINAL",
-        "spss_user_missing_values": "-999.0 thru -1.0",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-999.0 thru -1.0",
         "value_labels": {
           "-997.0": "Script error",
           "-97.0": "Respondent declined self completion",
@@ -76,8 +76,8 @@
         "position": 10,
         "variable_label": "DV: Legal marital status",
         "type": "numeric",
-        "spss_measurement_level": "NOMINAL",
-        "spss_user_missing_values": "-9.0 thru -8.0 and -1.0",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-9.0 thru -8.0 and -1.0",
         "value_labels": {
           "-9.0": "Refused",
           "-8.0": "Insufficient information",
@@ -111,8 +111,8 @@
         "position": 16,
         "variable_label": "DV: Legal marital status",
         "type": "numeric",
-        "spss_measurement_level": "NOMINAL",
-        "spss_user_missing_values": "-8.0 thru -9.0",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-8.0 thru -9.0",
         "value_labels": {
           "-9.0": "Refused",
           "-8.0": "Insufficient information",

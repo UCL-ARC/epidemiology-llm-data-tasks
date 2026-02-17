@@ -43,8 +43,8 @@
         "position": 1030,
         "variable_label": "2004 Index of Multiple Deprivation ROUNDED SCORE",
         "type": "numeric",
-        "spss_measurement_level": "SCALE",
-        "spss_user_missing_values": "-999.0 thru -1.0",
+        "measurement_level": "SCALE",
+        "user_missing_values": "-999.0 thru -1.0",
         "value_labels": {
           "-94.0": "Insufficient Information"
         }
@@ -67,8 +67,8 @@
         "position": 161,
         "variable_label": "2004 Index of Multiple Deprivation ROUNDED SCORE",
         "type": "numeric",
-        "spss_measurement_level": "SCALE",
-        "spss_user_missing_values": "-999.0 thru -1.0",
+        "measurement_level": "SCALE",
+        "user_missing_values": "-999.0 thru -1.0",
         "value_labels": {
           "-94.0": "Insufficient Information"
         }
@@ -91,8 +91,8 @@
         "position": 3,
         "variable_label": "DV: 2019 Index of Multiple Deprivation rank decile",
         "type": "numeric",
-        "spss_measurement_level": "NOMINAL",
-        "spss_user_missing_values": "-8.0 thru None",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-8.0 thru None",
         "value_labels": {
           "-8.0": "Insufficient information",
           "1.0": "Most deprived decile",
