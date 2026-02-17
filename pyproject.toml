@@ -50,6 +50,10 @@ module = ["loguru.*", "pandas.*"]
 ignore_missing_imports = true
 module = "yaml.*"
 
+[[tool.mypy.overrides]]
+ignore_missing_imports = true
+module = ["smolagents", "smolagents.*"]
+
 [tool.pytest.ini_options]
 addopts = ["--color=yes", "--import-mode=importlib", "--verbose"]
 pythonpath = "."

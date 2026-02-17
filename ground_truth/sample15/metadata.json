@@ -43,8 +43,8 @@
         "position": 27,
         "variable_label": "DV: Banded weekly income",
         "type": "numeric",
-        "spss_measurement_level": "NOMINAL",
-        "spss_user_missing_values": "-1.0 thru None",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-1.0 thru None",
         "value_labels": {
           "-1.0": "Not applicable",
           "1.0": "less than 25",
@@ -83,8 +83,8 @@
         "position": 29,
         "variable_label": "DV: Banded weekly income of cohort member and partner",
         "type": "numeric",
-        "spss_measurement_level": "NOMINAL",
-        "spss_user_missing_values": "-1.0 thru None",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-1.0 thru None",
         "value_labels": {
           "-1.0": "Not applicable",
           "1.0": "less than 25",

@@ -9,6 +9,7 @@ from abc import ABC, abstractmethod
 from collections.abc import Callable, Generator
 from contextlib import contextmanager
 from pathlib import Path
+from typing import Literal
 
 # data imports
 import yaml
@@ -16,9 +17,11 @@ from loguru import logger
 from pydantic import BaseModel
 
 # smolagent imports
-from smolagents import LiteLLMModel, ToolCallingAgent
+from smolagents import CodeAgent, LiteLLMModel, ToolCallingAgent
 from smolagents import tool as stool  # renamed to avoid conflict - teehee
 from smolagents.tools import Tool
+
+from src.r_code_agent import create_r_code_agent
 
 
 # TO DO: When more frameworks are supported be more specific here
@@ -119,7 +122,11 @@ class SmolAgent(Agent):
     """Agent using smolagents with temporary directory context management."""
 
     def __init__(
-        self, tools: list[Callable], model_name: str, api_key: str | None = None
+        self,
+        tools: list[Callable],
+        model_name: str,
+        api_key: str | None = None,
+        agent_type: Literal["tool_calling", "code"] = "tool_calling",
     ) -> None:
         """Initialise the SmolAgent with tools and model configuration."""
         super().__init__()
@@ -129,19 +136,27 @@ class SmolAgent(Agent):
         self.tools = self._initialise_tools(tools)
         self.model_name = model_name
         self.api_key = api_key
+        self.agent_type = agent_type
         self.agent = self._initialise_agent()
 
     def _initialise_tools(self, tools: list[Callable]) -> list[Tool]:
         """Wrap provided tool functions into smolagents Tool objects."""
         return [stool(t) for t in tools]
 
-    def _initialise_agent(self) -> ToolCallingAgent:
-        """Initialise the ToolCallingAgent with the specified model and tools."""
+    def _initialise_agent(self) -> CodeAgent | ToolCallingAgent:
+        """Initialise the agent with the specified model and tools."""
         llm_model = LiteLLMModel(model_id=self.model_name, api_key=self.api_key)
+        if self.agent_type == "code":
+            return create_r_code_agent(
+                model=llm_model,
+                tools=self.tools,
+                stream_outputs=False,
+                return_full_result=True,
+            )
         return ToolCallingAgent(
             model=llm_model,
             tools=self.tools,
-            stream_outputs=False,  # To do: this doesnt stop live printing
+            stream_outputs=False,
             return_full_result=True,
         )
 
@@ -189,12 +204,37 @@ if __name__ == "__main__":
     # This is to demo how the pipeline would/could work
     from .tools import produce_and_execute_r
 
-    tools = [produce_and_execute_r]
-    model_id = "qwen3-next:80b-cloud"
+    # --- Ollama (via LiteLLM) ---
+    # model_id = "qwen3-next:80b-cloud"
+    # model_id = "nemotron-3-nano:30b-cloud" struggles with the R code and gives up.
+    # model_id = "devstral-small-2:24b-cloud"
+    model_id = "gemma3:27b-cloud"
+    # model_id = "ministral-3:14b-cloud"
+    # model_id = "gpt-oss:20b-cloud"
     model_name = f"ollama_chat/{model_id}"
     api_key = "ollama"
 
-    agent = SmolAgent(tools=tools, model_name=model_name, api_key=api_key)
+    # --- HuggingFace Inference Endpoints (via LiteLLM) ---
+    # model_id = "Qwen/Qwen3-30B-A3B-Instruct-2507"
+    # model_name = f"huggingface/{model_id}"
+    # api_key = os.environ.get("HF_TOKEN")
+
+    # "code" → R CodeAgent (model writes R, executed directly via Rscript)
+    # "tool_calling" → ToolCallingAgent (model calls produce_and_execute_r via JSON)
+    agent_type: Literal["tool_calling", "code"] = "tool_calling"
+
+    # Tools are only needed for tool_calling mode
+    tools: list[Callable] = (
+        [produce_and_execute_r] if agent_type == "tool_calling" else []
+    )
+
+    agent = SmolAgent(
+        tools=tools,
+        model_name=model_name,
+        api_key=api_key,
+        agent_type=agent_type,
+    )
+
     tasks_path = Path("./ground_truth/tasks.yml")
     with tasks_path.open() as f:
         tasks = yaml.safe_load(f)["tasks"]
@@ -208,7 +248,7 @@ if __name__ == "__main__":
         ],
         key=lambda p: int(p.name[6:]),
     )
-    test_dirs = [Path(f"./ground_truth/sample{x}") for x in [14, 15, 16, 17]]
+    # test_dirs = [Path(f"./ground_truth/sample{x}") for x in [16]]
 
     for test_dir in test_dirs:
         logger.info(f"\n=== Testing with context: {test_dir} ===")

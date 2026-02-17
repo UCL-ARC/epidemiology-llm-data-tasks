@@ -9,7 +9,9 @@ override: |
      - Ensure when loading input files you always prepend the directory "data/input/".
      - Load each dataset into a separate object.
      - Merge all datasets using full_join by the ID variable NSID.
-
+     - The input files are tab-delimited (.tab) text files. Use `readr::read_delim()` with `delim = "\t"` to load them. 
+     - Load each file explicitly by name from the metadata.
+     
      - Load and merge the following files:
        * wave_one_lsype_young_person_2020.tab
        * wave_two_lsype_family_background_2020.tab
