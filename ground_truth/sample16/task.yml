@@ -6,8 +6,8 @@ override: |
   Follow all instructions:
 
   1. **File Loading**:
-     - When loading input files, always prepend the directory data/input/.
-     - Load and merge all available files by NSID using full.
+     - Ensure when you load the input files you append the dir "data/input/" this is where they are stored.
+     - Load each dataset into a separate object and merge using full_join by the ID variable.
      - The input files are tab-delimited (.tab) text files. Use `readr::read_delim()` with `delim = "\t"` to load them. 
      - Load each file explicitly by name from the metadata.
      
