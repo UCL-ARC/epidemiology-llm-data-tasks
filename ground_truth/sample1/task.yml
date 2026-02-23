@@ -14,8 +14,6 @@ override: |
      - The input files are tab-delimited (.tab) text files. Use `readr::read_delim()` with `delim = "\t"` to load them. 
      - Load each file explicitly by name from the metadata.
 
-
-
   2. **Variable Naming Conventions**:
      - Use the exact ID variable name from source data (e.g., NSID) - do NOT create or rename to generic "id".
      - All variable names must be short, descriptive, and lowercase.
