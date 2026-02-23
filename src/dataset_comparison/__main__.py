@@ -17,7 +17,9 @@ def main() -> None:
     results = []
 
     # TO DO: remove the hardcoding here
-    for output_dir in Path("tmp/smolagent_context").glob("sample*/data/output"):
+    for output_dir in Path("tmp/smolagent_context_devstral-small-2:24b-cloud").glob(
+        "sample*/data/output"
+    ):
         gt_file = output_dir / "output.csv"
         pred_file = output_dir / "cleaned_data.csv"
 
@@ -34,7 +36,7 @@ def main() -> None:
             categorical_threshold=20,
             match_threshold=0.8,
             data_match_threshold=0.7,
-            categorical_data_match_threshold=0.9,
+            categorical_data_match_threshold=0.98,
             numerical_data_match_threshold=0.0,
             categorical_match_threshold=0.8,
         )

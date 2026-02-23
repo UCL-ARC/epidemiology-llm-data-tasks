@@ -1,0 +1,68 @@
+task_id: 1
+task_type: data_cleaning_r
+override: |
+  You have access to raw survey datasets from a longitudinal cohort study that collected mental health measures at multiple ages. Your task is to clean and derive psychological distress scores from the GHQ-12 (General Health Questionnaire, 12-item version) across four survey sweeps, producing a single analysis-ready file.
+
+  Follow all instructions:
+
+  1. **File Loading**:
+     - Load input files from "data/input/" directory.
+     - The input files are tab-delimited (.tab) text files. Use `readr::read_delim()` with `delim = "\t"` to load them.
+     - Load each file explicitly by name from the metadata.
+     - Load each dataset into a separate object, selecting only the ID variable and relevant GHQ variables from each file.
+     - Merge all datasets using `full_join` by the ID variable.
+
+  2. **Variable Naming Conventions**:
+     - Use the exact ID variable name from source data (e.g., NSID) — do NOT create or rename to a generic "id".
+     - All derived variable names must be short, descriptive, and lowercase.
+     - For the pre-derived GHQ-12 total scores provided in the source data: name as `ghqXX` where XX is the participant's age at that sweep (e.g., ghq15, ghq17, ghq25, ghq32).
+     - For the manually computed GHQ-12 sum scores derived from item-level data: name as `ghqtlXX` where XX is the participant's age (e.g., ghqtl15, ghqtl17, ghqtl25, ghqtl32).
+
+  3. **Standard Missing-Value Codes**:
+     Use these codes for ALL derived variables:
+     - -1 = Item not applicable
+     - -2 = Script error/information lost
+     - -3 = Not asked at the fieldwork stage/participated/interviewed
+     - -8 = Don't know/insufficient information
+     - -9 = Refusal
+
+  4. **Deriving GHQ-12 Sum Scores (ghqtlXX variables)**:
+     - For each sweep, compute a sum score from the 12 individual GHQ items using the following logic:
+       * If ALL 12 items are `NA` for a respondent, assign `-3` (did not participate).
+       * If ANY item contains a negative value (indicating a missing-value code in the source data), assign `-8` (insufficient information).
+       * Otherwise, sum the 12 items (using `rowSums` with `na.rm = TRUE`) to produce a score on the 0–12 scale.
+     - The 12 GHQ items per sweep are listed in the metadata.
+
+  5. **Harmonising Pre-Derived GHQ Scores (ghqXX variables)**:
+     - The source data contains pre-computed GHQ-12 scores for some sweeps. Harmonise these to the standard missing-value codes:
+       * For earlier sweeps (wave 2 and wave 4): map source codes `-96` and `-99` to `-3`; map `-97` and `-92` to `-9`; `NA` maps to `-3`; all other values are kept as-is.
+       * For later sweeps (wave 8 and wave 9): `NA` maps to `-3`; all other values are kept as-is.
+     - Follow exact mappings provided in metadata.
+
+  6. **Variable Labels**:
+     - Apply `labelled::labelled()` to all eight derived variables (ghq15, ghq17, ghq25, ghq32, ghqtl15, ghqtl17, ghqtl25, ghqtl32) with the standard missing-value code labels defined in instruction 3.
+
+  7. **Output Variables**:
+     - Convert all derived GHQ variables (excluding the ID variable) to factors before saving.
+     - The final output must contain ONLY:
+       * The ID variable
+       * The four pre-derived GHQ scores: ghq15, ghq17, ghq25, ghq32
+       * The four manually computed GHQ sum scores: ghqtl15, ghqtl17, ghqtl25, ghqtl32
+     - Do NOT include raw source variables, intermediate variables, or individual GHQ items in the output.
+
+  8. **Package Requirements**:
+     - Use ONLY: haven, dplyr, purrr, labelled, readr.
+     - Load all packages at the start of the script using `library()`.
+
+  9. **Output Requirements**:
+     - Save the final cleaned dataset as a CSV file to data/output/output.csv.
+     - Create the output directory if it does not exist.
+
+  10. **Execution**:
+      - You must run your R script after generating it.
+
+  Produce your script in R.
+
+  Here is the appropriate metadata for the task:
+
+  {metadata}
