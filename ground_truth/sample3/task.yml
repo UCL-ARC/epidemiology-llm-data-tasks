@@ -40,6 +40,7 @@ override: |
        * -92 → -9 (Refusal)
        * -91 → -1 (Item not applicable)
        * -1 → -8 (Don't know/insufficient information)
+     - Any Null value to be coded as -3 (Not asked/interview not conducted) to distinguish from explicit missing codes.
      - Follow exact mappings provided in metadata.
 
   6. **Time-Invariant vs Time-Varying Characteristics**:

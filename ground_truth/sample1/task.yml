@@ -26,6 +26,7 @@ override: |
      - -8 = Don't know/insufficient information
      - -1 = Item not applicable
      - -3 = Not asked at the fieldwork stage/participated/interviewed
+     - Any Null value to be coded as -3 (not asked/interviewed) to distinguish from explicit missing codes.
 
   4. **Response Category Harmonization**:
      - When the SAME construct is measured across ages with DIFFERENT response categories, harmonize them into a common coding scheme.
@@ -41,7 +42,7 @@ override: |
   6. **Time-Invariant vs Time-Varying Characteristics**:
      - For **time-invariant** or stable characteristics (e.g., sex, ethnicity):
        * Create a single consolidated variable.
-       * Prioritise the most recent valid response and fall back to earlier waves when more recent data is missing.
+       * Prioritise the most recent valid response (i.e. ns9_2022_main_interview) and fall back to earliest valid wave when the most recent data is missing.
        * Only use positive values in the prioritisation logic; retain missing codes separately.
 
   7. **Factor Variables and Labels**:

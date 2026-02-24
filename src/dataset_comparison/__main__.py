@@ -17,9 +17,7 @@ def main() -> None:
     results = []
 
     # TO DO: remove the hardcoding here
-    for output_dir in Path("tmp/smolagent_context_devstral-small-2:24b-cloud").glob(
-        "sample*/data/output"
-    ):
+    for output_dir in Path("tmp/smolagent_context").glob("sample*/data/output"):
         gt_file = output_dir / "output.csv"
         pred_file = output_dir / "cleaned_data.csv"
 

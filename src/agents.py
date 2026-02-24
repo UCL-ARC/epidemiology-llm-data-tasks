@@ -181,7 +181,7 @@ class SmolAgent(Agent):
         """
         with self._execution_context(
             context_path, persist=persist_context
-        ) as working_dir:  # noqa: F841
+        ) as working_dir:
             logger.info(f"Running agent with prompt: {prompt}")
 
             # Run the agent
@@ -191,13 +191,20 @@ class SmolAgent(Agent):
             time_taken = result.timing.duration
             steps = len(result.steps)
             token_usage = result.token_usage.total_tokens
-            return AgentResult(
+
+            agent_result = AgentResult(
                 result=output,
                 state=state,
                 time_taken=time_taken,
                 steps=steps,
                 token_usage=token_usage,
             )
+
+            # Save agent result metadata to the working directory
+            result_path = working_dir / "runtime_data.json"
+            result_path.write_text(agent_result.model_dump_json(indent=2))
+
+            return agent_result
 
 
 if __name__ == "__main__":
@@ -208,9 +215,10 @@ if __name__ == "__main__":
     # model_id = "qwen3-next:80b-cloud"
     # model_id = "nemotron-3-nano:30b-cloud" struggles with the R code and gives up.
     # model_id = "devstral-small-2:24b-cloud"
-    model_id = "gemma3:27b-cloud"
+    # model_id = "gemma3:27b-cloud"
     # model_id = "ministral-3:14b-cloud"
     # model_id = "gpt-oss:20b-cloud"
+    model_id = "gpt-oss:120b-cloud"
     model_name = f"ollama_chat/{model_id}"
     api_key = "ollama"
 
@@ -248,7 +256,7 @@ if __name__ == "__main__":
         ],
         key=lambda p: int(p.name[6:]),
     )
-    # test_dirs = [Path(f"./ground_truth/sample{x}") for x in [16]]
+    test_dirs = [Path(f"./ground_truth/sample{x}") for x in [18, 19, 20]]
 
     for test_dir in test_dirs:
         logger.info(f"\n=== Testing with context: {test_dir} ===")

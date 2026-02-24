@@ -38,6 +38,7 @@ override: |
          - `4`: None of these qualifications
      - Rules:
        * Preserve standard missing codes (`-9`, `-8`, `-3`, `-2`, `-1`) explicitly as factor levels.
+       * Any Null value to be coded as -3 to distinguish from explicit missing codes.
        * When multiple indicators are present, always prioritise the highest valid qualification observed across ALL sources.
        * Treat academic and vocational routes as equally valid inputs.
        * Individual vocational tick-box variables must be classified to the correct NVQ tier using the variable_label in the metadata — e.g., "NVQ/SVQ - Level 3 - 5" and "HNC/HND" are NVQ 4–5 level, NOT NVQ 1–3. Do NOT treat all vocational qualifications as the same level.

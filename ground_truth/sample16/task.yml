@@ -24,6 +24,8 @@ override: |
      - -1 = Item not applicable
      - -3 = Not asked/interviewed
      - -2 = Script error/lost
+     - Any Null value to be coded as -3 (Not asked at the fieldwork stage/participated/interviewed) to distinguish from explicit missing codes.
+
      - Map all wave-specific missing codes to these standards.
      - Be careful to handle missing values separately from valid data when deriving new variables.
 
