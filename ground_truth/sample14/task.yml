@@ -32,6 +32,7 @@ override: |
      - -1 = Item not applicable
      - -3 = Not asked/participated/interviewed
      - -2 = Script error/information lost
+     - Any Null value to be coded as -3 (Not asked at the fieldwork stage/participated/interviewed) to distinguish from explicit missing codes.
      - Map all wave-specific codes to these standard codes according to the metadata.
 
   6. **Factor Variables and Labels**:

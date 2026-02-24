@@ -26,6 +26,7 @@ override: |
      - -3 = Not asked at the fieldwork stage/participated/interviewed
      - -2 = Schedule not applicable/Script error/information lost
      - -7 = Prefer not to say
+     - Any Null value to be coded as -3 (Not asked at the fieldwork stage/participated/interviewed) to distinguish from explicit missing codes.
 
   4. **Response Category Harmonization**:
      - When the SAME construct is measured across ages with DIFFERENT response categories, harmonize them into a common coding scheme.

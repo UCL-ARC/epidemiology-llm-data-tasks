@@ -25,6 +25,7 @@ override: |
      - -3 = Not asked at the fieldwork stage/participated/interviewed
      - -8 = Don't know/insufficient information
      - -9 = Refusal
+     - Any Null value to be coded as -3 (Not asked at the fieldwork stage/participated/interviewed) to distinguish from explicit missing codes.
 
   4. **Deriving GHQ-12 Sum Scores (ghqtlXX variables)**:
      - For each sweep, compute a sum score from the 12 individual GHQ items using the following logic:

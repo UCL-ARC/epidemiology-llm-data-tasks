@@ -28,6 +28,7 @@ override: |
      - -1 = Item not applicable
      - -3 = Not asked/interviewed
      - -2 = Script error/lost
+     - Any Null value to be coded as -3 (Not asked at the fieldwork stage/participated/interviewed) to distinguish from explicit missing codes.
 
   5. **Missing Value Code Harmonization**:
      - Recode wave-specific negative codes to the standard missing scheme.

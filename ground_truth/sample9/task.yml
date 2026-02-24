@@ -46,6 +46,7 @@ override: |
        * -2 = Schedule not applicable/Script error/information lost
        * -1 = Item not applicable
      - Note: the same numeric code may have different meanings across waves and variables — always check the per-variable value_labels.
+     - Any Null value to be coded as -3 (Not asked at the fieldwork stage/participated/interviewed) to distinguish from explicit missing codes.
      - Preserve missing codes as explicit factor levels.
 
   7. **Factor Variables and Labels**:

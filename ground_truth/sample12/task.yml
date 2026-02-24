@@ -26,6 +26,7 @@ override: |
        * -2 = Schedule not applicable/Script error/information lost
        * -1 = Item not applicable
      - Map each wave-specific code by its MEANING in the metadata (e.g., "Insufficient information" → -8, "Not applicable" → -1), not blanket to one value.
+     - Any Null value to be coded as -3 (Not asked at the fieldwork stage/participated/interviewed) to distinguish from explicit missing codes.
      - Retain missing codes as explicit factor levels.
 
   4. **NS-SEC Variable Processing**:
