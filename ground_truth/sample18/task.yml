@@ -55,8 +55,7 @@ override: |
      - Load all packages at the start of the script using `library()`.
 
   9. **Output Requirements**:
-     - Save the final cleaned dataset as a CSV file to data/output/output.csv.
-     - Create the output directory if it does not exist.
+     - Write exactly one CSV file named data/output/cleaned_data.csv.
 
   10. **Execution**:
       - You must run your R script after generating it.
