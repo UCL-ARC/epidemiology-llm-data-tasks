@@ -368,6 +368,23 @@ class DataComparator:
                 )
                 output_df[f"{match.gt_column}_unmatched"] = joined_df[gt_col_name]
 
+        # Remap categorical _pred columns using the co-occurrence mapping
+        for comp in column_comparisons:
+            if (
+                comp.categorical_comparison
+                and comp.categorical_comparison.category_mapping
+            ):
+                pred_col = f"{comp.gt_column}_pred"
+                if pred_col in output_df.columns:
+                    mapping = comp.categorical_comparison.category_mapping
+                    output_df[pred_col] = (
+                        output_df[pred_col]
+                        .fillna("__NA__")
+                        .astype(str)
+                        .map(lambda x, m=mapping: m.get(x, x))
+                        .replace("__NA__", pd.NA)
+                    )
+
         task_completion_percentage = (
             (
                 [
