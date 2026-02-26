@@ -77,6 +77,7 @@ class CategoricalComparison:
     category_overlap_score: float
     distribution_similarity: float
     data_match: bool | None
+    category_mapping: dict[str, str] = field(default_factory=dict)
 
 
 @dataclass
