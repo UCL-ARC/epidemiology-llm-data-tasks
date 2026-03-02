@@ -91,7 +91,7 @@ override: |
 
   12. **Execution**:
       - Produce a complete, runnable R script.
-      - You must run the R script after generating it.
+      - You must run the R script after generating it and observe that the script successuflly ran.
 
   Here is the appropriate metadata for the task:
 
