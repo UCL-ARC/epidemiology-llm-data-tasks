@@ -220,7 +220,7 @@ if __name__ == "__main__":
     model_id = "qwen3-next:80b-cloud"
     model_id = "qwen3.5:cloud"
     # model_id = "nemotron-3-nano:30b-cloud" struggles with the R code and gives up.
-    model_id = "devstral-small-2:24b-cloud"
+    # model_id = "devstral-small-2:24b-cloud"
     # model_id = "gemma3:27b-cloud"
     # model_id = "ministral-3:14b-cloud"
     # model_id = "gpt-oss:20b-cloud"
@@ -263,7 +263,7 @@ if __name__ == "__main__":
         ],
         key=lambda p: int(p.name[6:]),
     )
-    test_dirs = [Path(f"./ground_truth/sample{x}") for x in [15, 17]]
+    test_dirs = [Path(f"./ground_truth/sample{x}") for x in [8, 13]]
 
     for test_dir in test_dirs:
         logger.info(f"\n=== Testing with context: {test_dir} ===")
