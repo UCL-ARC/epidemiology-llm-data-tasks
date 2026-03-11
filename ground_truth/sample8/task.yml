@@ -103,6 +103,7 @@ override: |
 
   10. **Execution Requirement**:
       - You must run your R script after creating it to verify it executes successfully.
+      - IMPORTANT: If your R script fails, read the error message carefully, fix the script, and try again. Never return an error message as your final answer.
 
   Produce your script in R.
 

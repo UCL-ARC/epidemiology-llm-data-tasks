@@ -25,7 +25,6 @@ override: |
      - -3 = Not asked/interviewed
      - -2 = Script error/lost
      - Any Null value to be coded as -3 (Not asked at the fieldwork stage/participated/interviewed) to distinguish from explicit missing codes.
-
      - Map all wave-specific missing codes to these standards.
      - Be careful to handle missing values separately from valid data when deriving new variables.
 
@@ -62,7 +61,8 @@ override: |
       - Write exactly one CSV file named data/output/cleaned_data.csv.
 
   11. **Execution**:
-      - Produce a complete runnable R script and run it.
+      - You must run your R script after generating it.
+      - IMPORTANT: If your R script fails, read the error message carefully, fix the script, and try again. Never return an error message as your final answer.
 
   Produce your script in R.
   

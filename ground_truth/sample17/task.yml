@@ -90,8 +90,8 @@ override: |
       - Do NOT include intermediate or wave-specific variables unless they are final outputs.
 
   12. **Execution**:
-      - Produce a complete, runnable R script.
-      - You must run the R script after generating it and observe that the script successuflly ran.
+      - You must run your R script after generating it.
+      - IMPORTANT: If your R script fails, read the error message carefully, fix the script, and try again. Never return an error message as your final answer.
 
   Here is the appropriate metadata for the task:
 
