@@ -61,8 +61,8 @@ override: |
       - Write exactly one CSV file named data/output/cleaned_data.csv.
 
   11. **Execution**:
-      - Produce a complete, runnable R script that follows these instructions using the provided metadata.
       - You must run your R script after generating it.
+      - IMPORTANT: If your R script fails, read the error message carefully, fix the script, and try again. Never return an error message as your final answer.
 
   Produce your script in R.
   
