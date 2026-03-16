@@ -103,5 +103,3 @@ write_delim(output_data, 'data/output/cleaned_data.csv', delim = ',')
 # Verify output
 print(paste('Successfully created cleaned data with', nrow(output_data), 'cases and', ncol(output_data), 'variables'))
 print(head(output_data))
-
-}]
