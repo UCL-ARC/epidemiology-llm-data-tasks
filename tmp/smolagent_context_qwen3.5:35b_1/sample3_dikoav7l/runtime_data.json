@@ -1,0 +1,7 @@
+{
+  "result": "The cleaned dataset has been successfully created at data/output/cleaned_data.csv. The file contains 16,111 cohort members with two columns: NSID (the cohort member identifier) and lang (the consolidated language variable). The lang variable harmonizes the wave-specific language measures (W1englangYP, W2EnglangYP, W3englangHH, W4EngLangHH) into a single variable using the prioritization rule (earliest valid positive value). Missing codes have been converted to the standard codes (-9=Refusal, -8=Don't know, -1=Not applicable, -3=Not asked, -2=Schedule not applicable). The value distribution shows 12,453 respondents with English only, 1,873 with English first/main and other languages, 1,122 with another main language, and 468 bilingual respondents.",
+  "state": "success",
+  "time_taken": 73.48871922492981,
+  "steps": 7,
+  "token_usage": 45543
+}

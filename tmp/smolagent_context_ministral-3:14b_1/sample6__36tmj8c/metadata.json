@@ -1,0 +1,242 @@
+{
+"wave_one_lsype_young_person_2020.tab": {
+    "file_info": {
+    "number_of_variables": 350,
+    "number_of_cases": 15760,
+    "description": "Sweep 1 (Age 14) Young Person Data File"
+    },
+    "variables": {
+    "NSID": {
+    "position": 1,
+    "variable_label": "NSID - cohort member identifier",
+    "value_labels": {}
+    }
+    }
+    },
+"wave_four_lsype_young_person_2020.tab": {
+    "file_info": {
+    "number_of_variables": 1049,
+    "number_of_cases": 11791,
+    "description": "Sweep 4 (Age 17) Young Person Data File"
+    },
+    "variables": {
+    "NSID": {
+    "position": 1,
+    "variable_label": "NSID - cohort member identifier",
+    "value_labels": {}
+    }
+    }
+},
+  "wave_two_lsype_family_background_2020.tab": {
+    "file_info": {
+      "number_of_variables": 1030,
+      "number_of_cases": 13530,
+      "description": "Sweep 2 (Age 15) Family Background Data File"
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      },
+      "urbind": {
+        "position": 1027,
+        "variable_label": "Urban/Rural Indicator (England)",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-94.0": "Insufficient information",
+          "1.0": "Urban >= 10k - sparse",
+          "2.0": "Town & Fringe - sparse",
+          "3.0": "Village - sparse",
+          "4.0": "Hamlet and Isolated Dwelling - sparse",
+          "5.0": "Urban >= 10k - less sparse",
+          "6.0": "Town & Fringe - less sparse",
+          "7.0": "Village - less sparse",
+          "8.0": "Hamlet & Isolated Dwelling"
+        }
+      },
+      "gor": {
+        "position": 1028,
+        "variable_label": "Government Office Region",
+        "type": "numeric",
+        "measurement_level": "SCALE",
+        "user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-94.0": "Insufficient information",
+          "1.0": "North East",
+          "2.0": "North West",
+          "3.0": "Yorkshire and The Humber",
+          "4.0": "East Midlands",
+          "5.0": "West Midlands",
+          "6.0": "East of England",
+          "7.0": "London",
+          "8.0": "South East",
+          "9.0": "South West"
+        }
+      }
+    }
+  },
+  "wave_three_lsype_family_background_2020.tab": {
+    "file_info": {
+      "number_of_variables": 161,
+      "number_of_cases": 12430,
+      "description": "Sweep 3 (Age 16) Family Background Data File"
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      },
+      "urbind": {
+        "position": 158,
+        "variable_label": "Urban/Rural Indicator (England)",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-94.0": "Insufficient information",
+          "1.0": "Urban >= 10k - sparse",
+          "2.0": "Town & Fringe - sparse",
+          "3.0": "Village - sparse",
+          "4.0": "Hamlet and Isolated Dwelling - sparse",
+          "5.0": "Urban >= 10k - less sparse",
+          "6.0": "Town & Fringe - less sparse",
+          "7.0": "Village - less sparse",
+          "8.0": "Hamlet & Isolated Dwelling"
+        }
+      },
+      "gor": {
+        "position": 159,
+        "variable_label": "Government Office Region",
+        "type": "numeric",
+        "measurement_level": "SCALE",
+        "user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-94.0": "Insufficient information",
+          "1.0": "North East",
+          "2.0": "North West",
+          "3.0": "Yorkshire and the Humber",
+          "4.0": "East Midlands",
+          "5.0": "West Midlands",
+          "6.0": "East of England",
+          "7.0": "London",
+          "8.0": "South East",
+          "9.0": "South West"
+        }
+      }
+    }
+  },
+  "ns8_2015_derived.tab": {
+    "file_info": {
+      "number_of_variables": 53,
+      "number_of_cases": 7705,
+      "description": "Wave Eight Derived Data File"
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      },
+      "W8DGOR": {
+        "position": 3,
+        "variable_label": "DV: Interview Government Office Region",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-9.0 thru -8.0 and -1.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Insufficient information",
+          "-1.0": "Not applicable",
+          "1.0": "North East",
+          "2.0": "North West",
+          "3.0": "Yorkshire and the Humber",
+          "4.0": "East Midlands",
+          "5.0": "West Midlands",
+          "6.0": "East of England",
+          "7.0": "London",
+          "8.0": "South East",
+          "9.0": "South West",
+          "10.0": "Wales",
+          "11.0": "Scotland",
+          "12.0": "Northern Ireland",
+          "13.0": "Unknown due to faulty/missing postcode"
+        }
+      }
+    }
+  },
+  "ns9_2022_derived_variables.tab": {
+    "file_info": {
+      "number_of_variables": 68,
+      "number_of_cases": 7279,
+      "description": "Age 32 (Sweep 9) Derived Variables Data File"
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      },
+      "W9DRGN": {
+        "position": 2,
+        "variable_label": "DV: Interview Government Office Region",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-1.0 thru -8.0 and -9.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Insufficient information",
+          "-1.0": "Not applicable",
+          "1.0": "North East",
+          "2.0": "North West",
+          "3.0": "Yorkshire and the Humber",
+          "4.0": "East Midlands",
+          "5.0": "West Midlands",
+          "6.0": "East of England",
+          "7.0": "London",
+          "8.0": "South East",
+          "9.0": "South West",
+          "10.0": "Wales",
+          "11.0": "Scotland",
+          "12.0": "Northern Ireland",
+          "13.0": "Unknown due to faulty/missing postcode"
+        }
+      }
+    }
+  },
+  "ns9_2022_main_interview.tab": {
+    "file_info": {
+      "number_of_variables": 1805,
+      "number_of_cases": 7279,
+      "description": "Age 32 (Sweep 9) Main Interview Data File"
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      },
+      "W9NATIONRES": {
+        "position": 11,
+        "variable_label": "Nation of UK - derived",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Don't know",
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "England",
+          "2.0": "Scotland",
+          "3.0": "Wales",
+          "4.0": "Northern Ireland",
+          "5.0": "Outside of UK or unknown"
+        }
+      }
+    }
+  }
+}

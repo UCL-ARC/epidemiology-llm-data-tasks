@@ -1,0 +1,7 @@
+{
+  "result": "The R script has been successfully executed. The output file data/output/cleaned_data.csv has been created with 16,111 rows containing NSID and alcfst variables.\n\nThe alcfst variable (first age of alcohol consumption) distribution:\n- Age 14: 6,155 individuals\n- Age 15: 2,707 individuals\n- Age 16: 1,227 individuals\n- Age 17: 1,060 individuals\n- Age 19: 654 individuals\n- Age 20: 137 individuals\n- Age 25: 264 individuals\n- Age 32: 196 individuals\n- Never had alcohol (99): 10 individuals\n- Don't know/insufficient information (-8): 3,701 individuals\n\nThe script followed all requirements:\n1. Loaded all 8 wave files from data/input/ using read_delim with tab delimiter\n2. Selected NSID and alcohol-related variables from each wave\n3. Applied special rule for age 14 (requiring both ever had alcohol AND had alcohol in last 12 months)\n4. Used AUDIT frequency items for ages 25 and 32 (response > \"Never\" indicates drinking)\n5. Derived first age of drinking as minimum age where drinker indicator = 1\n6. Assigned 99 for confirmed never drinkers, -8 for unknown/insufficient information\n7. Converted alcfst to factor with appropriate labels\n8. Output only NSID and alcfst to data/output/cleaned_data.csv",
+  "state": "success",
+  "time_taken": 263.3373758792877,
+  "steps": 5,
+  "token_usage": 64609
+}

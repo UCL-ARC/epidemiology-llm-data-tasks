@@ -1,0 +1,7 @@
+{
+  "result": "Task completed. Output: data/output/cleaned_data.csv with 16111 rows and 5 columns (NSID, educ25, educ32, educadtl32, educvdtl32).",
+  "state": "success",
+  "time_taken": 317.18671011924744,
+  "steps": 9,
+  "token_usage": 224309
+}

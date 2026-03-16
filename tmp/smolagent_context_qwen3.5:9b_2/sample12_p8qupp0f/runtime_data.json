@@ -1,0 +1,7 @@
+{
+  "result": "Successfully completed. The cleaned NS-SEC data has been written to data/output/cleaned_data.csv with 16,111 observations and 7 variables (NSID, nssec17, nssec18, nssec19, nssec20, nssec25, nssec32). Missing values were harmonized to standard codes (-9=Refusal, -8=Don't know, -7=Prefer not to say, -3=Not asked, -2=Schedule not applicable, -1=Not applicable), fractional codes were collapsed to integers using floor(), and all NS-SEC variables are factors with appropriate labels.",
+  "state": "success",
+  "time_taken": 487.5559575557709,
+  "steps": 9,
+  "token_usage": 256070
+}

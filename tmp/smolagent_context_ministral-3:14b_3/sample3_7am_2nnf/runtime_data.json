@@ -1,0 +1,7 @@
+{
+  "result": "The preprocessing and cleaning of the survey datasets have been successfully completed. The cleaned and consolidated dataset is saved as 'data/output/cleaned_data.csv'. This file contains the ID variable (NSID) and the consolidated language variable (lang) as specified in the task requirements.",
+  "state": "success",
+  "time_taken": 166.134131193161,
+  "steps": 6,
+  "token_usage": 45564
+}

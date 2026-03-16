@@ -1,0 +1,7 @@
+{
+  "result": "Data cleaning completed successfully. The cleaned dataset has been written to data/output/cleaned_data.csv with 16,111 rows and 11 columns (NSID, hown14_20, hown25, hown32, hownteen14, hownteen15, hownteen16, hownteen17, hownteen18, hownteen19, hownteen20). All datasets were loaded from data/input/, merged by NSID using full_join, and variables were recoded according to the metadata specifications with standard missing value codes (-9=Refusal, -8=Don't know, -1=Not applicable, -3=Not asked, -2=Script error).",
+  "state": "success",
+  "time_taken": 245.21053624153137,
+  "steps": 6,
+  "token_usage": 124142
+}

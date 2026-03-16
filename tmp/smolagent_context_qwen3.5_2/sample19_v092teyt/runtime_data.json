@@ -1,0 +1,7 @@
+{
+  "result": "Successfully created cleaned dataset at data/output/cleaned_data.csv with 16,111 rows and 3 variables (NSID, bmi25, bmi32). The BMI variables have been harmonized with standard missing value codes (-9=Refusal, -8=Don't know/insufficient information, -1=Not applicable, -3=Not asked/interviewed). Valid BMI values are retained as continuous numeric values.",
+  "state": "success",
+  "time_taken": 29.55539584159851,
+  "steps": 4,
+  "token_usage": 13914
+}

@@ -1,0 +1,7 @@
+{
+  "result": "Data cleaning completed successfully. The R script:\n\n1. Loaded all 4 wave files from data/input/ using readr::read_delim() with tab delimiter\n2. Merged datasets using full_join by NSID (the original ID variable)\n3. Renamed wave-specific variables to lowercase format (lang_S1, lang_S2, lang_S3, lang_S4)\n4. Harmonized missing value codes to standard codes (-9=Refusal, -8=Don't know, -1=Not applicable, -3=Not asked, -2=Schedule not applicable)\n5. Created consolidated 'lang' variable using prioritization logic for time-invariant characteristics (earliest valid positive value first, then earliest missing code as fallback)\n6. Output contains only NSID and lang columns (no intermediate wave-specific variables)\n7. Saved to data/output/cleaned_data.csv\n\nFinal output: 16,111 rows × 2 columns (NSID, lang)\nLanguage variable distribution: 12,453 English only (1), 1,873 English first/main + other languages (2), 1,122 Other language (3), 468 Bilingual (4), 194 Not asked (-3), 1 Don't know (-8)",
+  "state": "success",
+  "time_taken": 79.57191872596741,
+  "steps": 4,
+  "token_usage": 19671
+}

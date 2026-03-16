@@ -1,0 +1,7 @@
+{
+  "result": "Data cleaning complete. The R script successfully:\n\n1. Loaded all 6 datasets from data/input/ using readr::read_delim() with tab delimiter\n2. Merged all datasets by NSID using full_join (resulting in 16,111 cases)\n3. Harmonized sexual orientation variables across waves 6, 7, 8, and 9:\n   - sori19 (Age 19): from W6SexualityYP\n   - sori20 (Age 20): from W7SexualityYP\n   - sori25 (Age ~25): from W8SEXUALITY\n   - sori32 (Age 32): from W9SORI\n4. Converted wave-specific missing value codes to standard codes:\n   - -9 = Refusal\n   - -8 = Don't know\n   - -7 = Prefer not to say\n   - -3 = Not asked at fieldwork stage\n   - -1 = Not applicable\n5. Created factor variables with explicit labels for all categories\n6. Output saved to data/output/cleaned_data.csv with 5 columns (NSID, sori19, sori20, sori25, sori32)",
+  "state": "success",
+  "time_taken": 117.66537594795227,
+  "steps": 3,
+  "token_usage": 20901
+}

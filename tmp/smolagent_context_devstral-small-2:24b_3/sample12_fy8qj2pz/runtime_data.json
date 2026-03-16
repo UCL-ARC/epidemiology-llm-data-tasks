@@ -1,0 +1,7 @@
+{
+  "result": "The cleaned dataset has been successfully created and saved as data/output/cleaned_data.csv. The file contains NSID and the following NS-SEC occupational class variables: nssec17, nssec18, nssec19, nssec20, and nssec32. All variables have been properly cleaned, harmonized, and processed according to the specifications.",
+  "state": "success",
+  "time_taken": 378.7918748855591,
+  "steps": 20,
+  "token_usage": 1266499
+}

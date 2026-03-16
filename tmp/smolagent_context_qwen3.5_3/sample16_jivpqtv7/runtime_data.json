@@ -1,0 +1,7 @@
+{
+  "result": "Data cleaning complete. The cleaned dataset has been written to data/output/cleaned_data.csv with 16,111 observations and 7 variables (NSID, incwhh14, incwhh15, incwhhcnt14, incwhhcnt15, incwhh16, incwhh17). All missing value codes have been harmonized to the standard scheme (-9=Refusal, -8=Don't know/insufficient information, -1=Item not applicable, -3=Not asked/interviewed, -2=Script error/lost). Banded income variables (incwhh14, incwhh15, incwhh16, incwhh17) are factors with descriptive labels for both income categories and missing codes. Continuous income variables (incwhhcnt14, incwhhcnt15) retain original values with missing codes properly labeled.",
+  "state": "success",
+  "time_taken": 162.14308977127075,
+  "steps": 5,
+  "token_usage": 41437
+}

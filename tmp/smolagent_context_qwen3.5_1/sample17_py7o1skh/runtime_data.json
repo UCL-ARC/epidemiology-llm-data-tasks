@@ -1,0 +1,7 @@
+{
+  "result": "Successfully cleaned and harmonised the deprivation score variables. The output file data/output/cleaned_data.csv has been created with 16,111 rows and 4 columns (NSID, imd15, imd16, imd32). All missing value codes have been standardised (-94 recoded to -8, NA recoded to -3), and value labels have been applied for the standard missing value codes. The dataset is ready for analysis.",
+  "state": "success",
+  "time_taken": 92.73461699485779,
+  "steps": 5,
+  "token_usage": 32782
+}

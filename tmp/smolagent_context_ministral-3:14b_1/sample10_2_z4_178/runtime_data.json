@@ -1,0 +1,7 @@
+{
+  "result": "The survey datasets have been successfully cleaned and preprocessed. The merged and harmonized dataset, containing the variables NSID, ecoact17, ecoact18, ecoact19, ecoact20, ecoact25, and ecoact32, has been saved as 'cleaned_data.csv' in the 'data/output/' directory.",
+  "state": "success",
+  "time_taken": 141.0185329914093,
+  "steps": 6,
+  "token_usage": 108549
+}

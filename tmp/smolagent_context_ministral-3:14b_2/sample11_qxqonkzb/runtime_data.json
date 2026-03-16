@@ -1,0 +1,7 @@
+{
+  "result": "Data cleaning and preprocessing completed successfully. The cleaned dataset with harmonized employment status variables for mothers and fathers at ages 14-17 has been saved to data/output/cleaned_data.csv.",
+  "state": "success",
+  "time_taken": 68.28060603141785,
+  "steps": 6,
+  "token_usage": 60710
+}

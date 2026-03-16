@@ -1,0 +1,7 @@
+{
+  "result": "The cleaned dataset has been successfully created and saved to data/output/cleaned_data.csv. The file contains 16,111 rows and 17 columns including: NSID, collapsed tenure variables (hown14, hown15, hown16, hown17, hown18, hown19, hown20, hown25, hown32), and detailed adolescent tenure variables (hownteen14, hownteen15, hownteen16, hownteen17, hownteen18, hownteen19, hownteen20). All missing values have been recoded to standard codes (-9=Refusal, -8=Don't know, -1=Not applicable, -3=Not asked, -2=Script error) and multi-variable tenure indicators have been combined into unified 8-category variables.",
+  "state": "success",
+  "time_taken": 801.0822126865387,
+  "steps": 16,
+  "token_usage": 541577
+}

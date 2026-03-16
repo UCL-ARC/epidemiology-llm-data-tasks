@@ -1,0 +1,7 @@
+{
+  "result": "The cleaned and harmonized dataset has been successfully created and saved to data/output/cleaned_data.csv. The dataset contains the NSID and all parental NS-SEC variables (nssecma14-nssecma18 for mothers and nssecpa14-nssecpa18 for fathers) that have been properly cleaned and harmonized according to the specifications.",
+  "state": "success",
+  "time_taken": 99.99062418937683,
+  "steps": 11,
+  "token_usage": 267251
+}

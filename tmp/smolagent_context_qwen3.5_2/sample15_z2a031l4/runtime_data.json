@@ -1,0 +1,7 @@
+{
+  "result": "Data cleaning complete. The cleaned dataset has been written to data/output/cleaned_data.csv with 9408 rows and 3 columns (NSID, inc25, inc32). The income variables have been properly harmonized with standard missing value codes (-3 for Not asked/interviewed, -1 for Not applicable) and income bands 1-16. Wave 8 income (W8DINCB) was renamed to inc25 and Wave 9 income (W9DINCB) was renamed to inc32. NA values from the full_join were recoded to -3 as required.",
+  "state": "success",
+  "time_taken": 93.5682122707367,
+  "steps": 7,
+  "token_usage": 34116
+}

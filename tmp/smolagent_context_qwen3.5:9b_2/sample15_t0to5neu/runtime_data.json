@@ -1,0 +1,7 @@
+{
+  "result": "The script has successfully executed. The cleaned dataset has been written to data/output/cleaned_data.csv with 16,111 rows and 3 columns (NSID, inc25, inc32). All income variables have been converted to labelled factors with proper standard missing value codes (-9 for Refusal, -8 for Don't know/insufficient information, -1 for Not applicable, -3 for Not asked/interviewed, and -2 for Script error/lost). NAs have been recoded to -3. The dataset follows all specified requirements for variable naming, missing value harmonization, and output format.",
+  "state": "success",
+  "time_taken": 51.609718799591064,
+  "steps": 3,
+  "token_usage": 11050
+}

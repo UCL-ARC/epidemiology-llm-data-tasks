@@ -1,0 +1,7 @@
+{
+  "result": "Data cleaning complete. The cleaned dataset has been saved to data/output/cleaned_data.csv with the following variables: NSID (cohort identifier), ecoact17, ecoact18, ecoact19, ecoact20, ecoact25, ecoact32 (harmonized age-specific economic activity variables), and ecoactadu25, ecoactadu32 (detailed adult versions for ages 25 and 32). All variables have been harmonized with standardized missing value codes (-9=Refusal, -8=Don't know, -1=Not applicable, -3=Not asked) and converted to factors with appropriate labels.",
+  "state": "success",
+  "time_taken": 654.7554688453674,
+  "steps": 3,
+  "token_usage": 17857
+}

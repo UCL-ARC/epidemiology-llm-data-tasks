@@ -1,0 +1,7 @@
+{
+  "result": "The cleaned dataset has been successfully created with 9,408 rows and 3 columns (NSID, inc25, inc32). The file is saved at data/output/cleaned_data.csv. Both income variables have been recoded with standard missing value codes (-9 for Refusal, -8 for Don't know, -1 for Not applicable, -3 for Not asked/interviewed, -2 for Script error/lost) and converted to labelled factors with all substantive income categories and missing value labels applied.",
+  "state": "success",
+  "time_taken": 79.9020643234253,
+  "steps": 8,
+  "token_usage": 59798
+}

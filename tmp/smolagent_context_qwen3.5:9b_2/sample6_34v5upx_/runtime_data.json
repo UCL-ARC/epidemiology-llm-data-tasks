@@ -1,0 +1,7 @@
+{
+  "result": "Data cleaning completed successfully. All 7 datasets have been merged into a single file (data/output/cleaned_data.csv) with 16,111 cases and 4,510 variables. Missing values have been harmonized to standard codes (-9=-99, -8=-98, -1=-91, -3=-93, -2=-92, -7=-97, and NULL values coded as -3).",
+  "state": "success",
+  "time_taken": 152.9606008529663,
+  "steps": 6,
+  "token_usage": 93104
+}

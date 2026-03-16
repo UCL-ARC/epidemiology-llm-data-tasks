@@ -1,0 +1,7 @@
+{
+  "result": "Data cleaning complete. The cleaned dataset has been saved to data/output/cleaned_data.csv with 16,111 observations and 17 variables (NSID, hown14-20, hown25, hown32, hownteen14-20). All missing values have been recoded to standard codes (-9=Refusal, -8=Don't know, -1=Not applicable, -3=Not asked, -2=Script error) and all variables have been properly labeled.",
+  "state": "success",
+  "time_taken": 1107.7630360126495,
+  "steps": 15,
+  "token_usage": 853935
+}

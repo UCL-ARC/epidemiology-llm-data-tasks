@@ -1,0 +1,7 @@
+{
+  "result": "The data cleaning process has been successfully completed. The cleaned dataset containing the ID variable (NSID) and derived marital status variables (partnr19, partnr25, partnr32, partnradu25, partnradu32) has been saved as 'cleaned_data.csv' in the 'data/output/' directory. This file is now ready for analysis.",
+  "state": "success",
+  "time_taken": 147.9985659122467,
+  "steps": 8,
+  "token_usage": 156329
+}

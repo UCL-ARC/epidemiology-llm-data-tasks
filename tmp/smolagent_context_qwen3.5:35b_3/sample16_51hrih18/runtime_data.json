@@ -1,0 +1,7 @@
+{
+  "result": "The data cleaning task has been completed successfully. The cleaned dataset has been written to data/output/cleaned_data.csv with the following variables:\n- NSID (cohort member identifier)\n- incwhh14 (banded household weekly income at age 14)\n- incwhh15 (banded household weekly income at age 15)\n- incwhhcnt14 (continuous household weekly income at age 14)\n- incwhhcnt15 (continuous household weekly income at age 15)\n- incwhh16 (banded household weekly income at age 16)\n- incwhh17 (banded household weekly income at age 17)\n\nAll missing value codes have been standardized to the scheme:\n- -9 = Refusal\n- -8 = Don't know/insufficient information\n- -1 = Item not applicable\n- -3 = Not asked/interviewed\n- -2 = Script error/lost",
+  "state": "success",
+  "time_taken": 2122.6955292224884,
+  "steps": 18,
+  "token_usage": 498326
+}

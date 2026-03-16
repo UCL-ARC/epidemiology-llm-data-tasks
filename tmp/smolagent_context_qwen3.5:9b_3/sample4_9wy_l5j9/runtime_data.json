@@ -1,0 +1,7 @@
+{
+  "result": "The cleaned data has been successfully written to data/output/cleaned_data.csv with 16111 rows and 15 columns. The file includes:\n\n1. NSID - the cohort member identifier\n2. Age-specific sexuality variables with harmonized categories:\n   - sori14, sori14_lbl (Age 14)\n   - sori17, sori17_lbl (Age 17)\n   - sori19, sori19_lbl (Age 19)\n   - sori20, sori20_lbl (Age 20)\n   - sori_wave8, sori_wave8_lbl (Wave 8/Self-Completion)\n   - sori_wave9, sori_wave9_lbl (Wave 9/Age 32)\n3. Consolidated sori variable - uses most recent valid response (time-varying)\n4. Consolidated sori_lbl with labels for all values\n\nMissing value codes have been harmonized:\n- -9 = Refusal\n- -8 = Don't know/insufficient information\n- -7 = Prefer not to say\n- -1 = Not applicable\n- -3 = Not asked at fieldwork stage\n- -2 = Schedule not applicable\n\nResponse categories harmonized to: 1=Heterosexual/Straight, 2=Gay/Lesbian, 3=Bisexual, 4=Other, 5=Prefer not to say",
+  "state": "success",
+  "time_taken": 390.2983810901642,
+  "steps": 12,
+  "token_usage": 239751
+}

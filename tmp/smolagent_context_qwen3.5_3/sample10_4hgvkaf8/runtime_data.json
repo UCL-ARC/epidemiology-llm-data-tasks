@@ -1,0 +1,7 @@
+{
+  "result": "Data cleaning complete. The cleaned dataset has been saved to data/output/cleaned_data.csv with 16,111 observations and 9 variables:\n\n- NSID: Cohort member identifier\n- ecoact17: Harmonized economic activity at age 17 (6 categories)\n- ecoact18: Harmonized economic activity at age 18 (6 categories)\n- ecoact19: Harmonized economic activity at age 19 (6 categories)\n- ecoact20: Harmonized economic activity at age 20 (6 categories)\n- ecoact25: Harmonized economic activity at age 25 (6 categories)\n- ecoact32: Harmonized economic activity at age 32 (6 categories)\n- ecoactadu25: Detailed economic activity at age 25 (10 categories)\n- ecoactadu32: Detailed economic activity at age 32 (10 categories)\n\nThe script successfully:\n1. Loaded all 7 tab-delimited files from data/input/\n2. Merged datasets using full_join by NSID\n3. Converted wave-specific missing value codes to standard codes (-9=Refusal, -8=Don't know, -1=Not applicable, -3=Not asked, -2=Schedule not applicable)\n4. Created harmonized 6-category economic activity variables for all ages (17, 18, 19, 20, 25, 32)\n5. Created detailed 10-category adult variables for ages 25 and 32\n6. Applied wave-specific recoding logic for each variable\n7. Converted all variables to factors with appropriate labels\n8. Output the final cleaned dataset to data/output/cleaned_data.csv",
+  "state": "success",
+  "time_taken": 117.15489792823792,
+  "steps": 4,
+  "token_usage": 42229
+}

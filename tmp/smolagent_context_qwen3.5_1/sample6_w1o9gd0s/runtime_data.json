@@ -1,0 +1,7 @@
+{
+  "result": "Data cleaning completed successfully. The cleaned dataset has been saved to data/output/cleaned_data.csv with 16,111 observations and 8 variables (NSID identifier plus 7 derived age-specific geographical variables: regov15, regov16, regov_w8, regov32, regub15, regub16, regnat32). All missing value codes have been harmonized to standard codes, and factor labels have been applied to categorical variables.",
+  "state": "success",
+  "time_taken": 95.92189812660217,
+  "steps": 4,
+  "token_usage": 76964
+}

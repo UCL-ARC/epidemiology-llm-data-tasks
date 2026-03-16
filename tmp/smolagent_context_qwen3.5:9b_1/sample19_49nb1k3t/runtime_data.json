@@ -1,0 +1,7 @@
+{
+  "result": "data/output/cleaned_data.csv - Dataset created with 16111 observations containing variables: NSID, bmi25, bmi32",
+  "state": "success",
+  "time_taken": 227.90317249298096,
+  "steps": 13,
+  "token_usage": 142701
+}

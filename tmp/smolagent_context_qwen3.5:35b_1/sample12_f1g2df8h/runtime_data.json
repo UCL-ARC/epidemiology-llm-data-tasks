@@ -1,0 +1,7 @@
+{
+  "result": "The task has been completed successfully. The cleaned data file has been created at data/output/cleaned_data.csv containing 16,111 cohort members with 7 columns: NSID and the six age-specific NS-SEC variables (nssec17, nssec18, nssec19, nssec20, nssec25, nssec32). All NS-SEC variables have been processed according to the specifications: fractional codes collapsed to major categories using floor(), missing value codes harmonized to the standard scheme (-9=Refusal, -8=Don't know/insufficient information, -7=Prefer not to say, -3=Not asked at fieldwork, -2=Schedule not applicable, -1=Item not applicable), NA values coded as -3, and full-time student category (15) derived at age 25 using economic activity information. All variables are stored as labelled factor variables with explicit labels for categories 1-17 and all standard missing codes.",
+  "state": "success",
+  "time_taken": 511.66716051101685,
+  "steps": 16,
+  "token_usage": 305136
+}

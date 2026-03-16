@@ -1,0 +1,7 @@
+{
+  "result": "Data cleaning completed successfully. The cleaned dataset has been written to data/output/cleaned_data.csv with 16,111 rows and 11 columns (NSID plus 10 NS-SEC variables: nssecma14, nssecpa14, nssecma15, nssecpa15, nssecma16, nssecpa16, nssecma17, nssecpa17, nssecma18, nssecpa18). All NS-SEC values have been harmonized to the 17-category classification with missing value codes properly recoded.",
+  "state": "success",
+  "time_taken": 899.4502611160278,
+  "steps": 10,
+  "token_usage": 287158
+}

@@ -1,0 +1,7 @@
+{
+  "result": "Cleaned NS-SEC data successfully created at data/output/cleaned_data.csv with NSID and nssec17-nssec32 variables",
+  "state": "success",
+  "time_taken": 168.70704698562622,
+  "steps": 9,
+  "token_usage": 107129
+}

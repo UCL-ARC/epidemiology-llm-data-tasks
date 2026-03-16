@@ -1,0 +1,7 @@
+{
+  "result": "The R script successfully processed all 5 waves of NS-SEC occupational class data. The cleaned dataset has been written to data/output/cleaned_data.csv with 16,111 rows and 11 columns (NSID, nssecma14-nssecma18, nssecpa14-nssecpa18). All variables have been harmonized to use consistent variable naming conventions, missing value codes have been standardized, and NS-SEC categories have been recoded with proper labels.",
+  "state": "success",
+  "time_taken": 249.20866441726685,
+  "steps": 11,
+  "token_usage": 206675
+}

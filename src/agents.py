@@ -148,7 +148,10 @@ class SmolAgent(Agent):
     def _initialise_agent(self) -> CodeAgent | ToolCallingAgent:
         """Initialise the agent with the specified model and tools."""
         llm_model = LiteLLMModel(
-            model_id=self.model_name, api_key=self.api_key, temperature=self.temperature
+            model_id=self.model_name,
+            api_key=self.api_key,
+            temperature=self.temperature,
+            # extra_body={"num_ctx": 132000},
         )
         if self.agent_type == "code":
             return create_r_code_agent(
@@ -216,15 +219,7 @@ if __name__ == "__main__":
     from .tools import produce_and_execute_r
 
     # --- Ollama (via LiteLLM) ---
-    # model_id = "qwen3-coder-next:cloud"
-    model_id = "qwen3-next:80b-cloud"
-    model_id = "qwen3.5:cloud"
-    # model_id = "nemotron-3-nano:30b-cloud" struggles with the R code and gives up.
-    # model_id = "devstral-small-2:24b-cloud"
-    # model_id = "gemma3:27b-cloud"
-    # model_id = "ministral-3:14b-cloud"
-    # model_id = "gpt-oss:20b-cloud"
-    # model_id = "gpt-oss:120b-cloud"
+    model_id = "gemma3:4b"
     model_name = f"ollama_chat/{model_id}"
     api_key = "ollama"
 
@@ -247,7 +242,7 @@ if __name__ == "__main__":
         model_name=model_name,
         api_key=api_key,
         agent_type=agent_type,
-        temperature=0.3,
+        temperature=0.8,
     )
 
     tasks_path = Path("./ground_truth/tasks.yml")
@@ -263,7 +258,7 @@ if __name__ == "__main__":
         ],
         key=lambda p: int(p.name[6:]),
     )
-    test_dirs = [Path(f"./ground_truth/sample{x}") for x in [8, 13]]
+    # test_dirs = [Path(f"./ground_truth/sample{x}") for x in [8, 13]]
 
     for test_dir in test_dirs:
         logger.info(f"\n=== Testing with context: {test_dir} ===")

@@ -1,0 +1,7 @@
+{
+  "result": "The cleaned and harmonized dataset has been successfully created and saved as `data/output/cleaned_data.csv`. The file contains the variables NSID, inc25 (income at age 25), and inc32 (income at age 32), with standardized missing value codes and labelled factors for income bands.",
+  "state": "success",
+  "time_taken": 44.16317796707153,
+  "steps": 6,
+  "token_usage": 43915
+}

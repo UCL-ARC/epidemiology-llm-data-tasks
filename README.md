@@ -86,3 +86,36 @@ This project includes a small agent framework in `src/agents.py` that wraps exis
   - `time_taken`: duration in seconds
   - `steps`: number of agent steps
   - `token_usage`: total tokens used
+
+## Experiment Data
+
+Experiment outputs live under `tmp/`. The `data/` directories within each sample (containing raw `.tab` inputs and generated `.csv` outputs) are excluded from version control to keep the repository lightweight. All other experiment files — R scripts, task definitions, metadata, and summaries — are tracked.
+
+### Rebuilding experiment data
+
+After cloning, use `src/rebuild_experiments.py` to regenerate the `data/input/` and `data/output/` directories for each experiment sample. This copies raw `.tab` files from your local data directory and re-runs the R scripts (`rtruth.R` and `rpred.R`) to produce `cleaned_data.csv` and `output.csv`.
+
+```sh
+# Rebuild all experiments (requires raw data in data/input/)
+python -m src.rebuild_experiments
+
+# Rebuild only a specific model's experiments
+python -m src.rebuild_experiments --model "qwen3.5:9b"
+
+# Rebuild a specific sample across all models
+python -m src.rebuild_experiments --sample 4
+
+# Combine filters and enable verbose R output
+python -m src.rebuild_experiments --model "qwen3.5:9b_1" --sample 13 -v
+
+# Use a custom raw data directory
+python -m src.rebuild_experiments -i data/UKDA-5545-tab/tab/safeguarded_eul
+```
+
+| Flag | Default | Description |
+|------|---------|-------------|
+| `-i`, `--input_dir` | `data/input` | Directory containing raw `.tab` data files |
+| `-t`, `--tmp_dir` | `tmp` | Root directory of experiment outputs |
+| `-m`, `--model` | all | Filter by model name substring (e.g. `qwen3.5:9b`, `devstral-small-2:24b_2`) |
+| `-s`, `--sample` | all | Filter by sample number (e.g. `4`) |
+| `-v`, `--verbose` | off | Print R script stdout |

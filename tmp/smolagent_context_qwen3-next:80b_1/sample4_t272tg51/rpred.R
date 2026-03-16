@@ -1,0 +1,17 @@
+library(readr)
+library(dplyr)
+library(haven)
+library(purrr)
+library(labelled)
+
+wave6 <- read_delim("data/input/wave_six_lsype_young_person_2020.tab", delim = "\t")
+wave7 <- read_delim("data/input/wave_seven_lsype_young_person_2020.tab", delim = "\t")
+ns8 <- read_delim("data/input/ns8_2015_self_completion.tab", delim = "\t")
+ns9 <- read_delim("data/input/ns9_2022_main_interview.tab", delim = "\t")
+
+wave6_clean <- wave6 %>% select(NSID, W6SexualityYP) %>% rename(sori19 = W6SexualityYP) %>% mutate(sori19 = case_when(sori19 == -97 ~ -9, sori19 == -92 ~ -9, sori19 == -91 ~ -1, sori19 == -1 ~ -8, is.na(sori19) ~ -3, sori19 < 0 ~ -3, TRUE ~ sori19))
+wave7_clean <- wave7 %>% select(NSID, W7SexualityYP) %>% rename(sori20 = W7SexualityYP) %>% mutate(sori20 = case_when(sori20 == -100 ~ -7, sori20 == -97 ~ -9, sori20 == -92 ~ -9, sori20 == -91 ~ -1, sori20 == -1 ~ -8, is.na(sori20) ~ -3, sori20 < 0 ~ -3, TRUE ~ sori20))
+ns8_clean <- ns8 %>% select(NSID, W8SEXUALITY) %>% rename(sori30 = W8SEXUALITY) %>% mutate(sori30 = case_when(sori30 == -9 ~ -9, sori30 == -8 ~ -8, sori30 == -1 ~ -1, is.na(sori30) ~ -3, sori30 < 0 ~ -3, TRUE ~ sori30))
+ns9_clean <- ns9 %>% select(NSID, W9SORI) %>% rename(sori32 = W9SORI) %>% mutate(sori32 = case_when(sori32 == -9 ~ -9, sori32 == -8 ~ -8, sori32 == -3 ~ -3, sori32 == -1 ~ -1, sori32 == 5 ~ -7, is.na(sori32) ~ -3, sori32 < 0 ~ -3, TRUE ~ sori32))
+cleaned_data <- wave6_clean %>% full_join(wave7_clean, by = "NSID") %>% full_join(ns8_clean, by = "NSID") %>% full_join(ns9_clean, by = "NSID")
+write_csv(cleaned_data, "data/output/cleaned_data.csv")

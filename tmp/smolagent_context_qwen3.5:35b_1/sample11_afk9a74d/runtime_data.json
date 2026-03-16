@@ -1,0 +1,7 @@
+{
+  "result": "The R script has successfully cleaned and preprocessed the survey datasets. The output file data/output/cleaned_data.csv contains:\n\n1. NSID - the cohort member identifier\n2. ecoactdtma14-ecoactdtma17 - Mother's detailed economic activity at ages 14-17 (recoded to 6-category scheme)\n3. ecoactdtpa14-ecoactdtpa17 - Father's detailed economic activity at ages 14-17 (recoded to 6-category scheme)\n\nAll variables have been:\n- Standardized with proper missing value codes (-9=Refusal, -8=Don't know, -3=Not asked)\n- Recoded to a harmonized 6-category employment scheme (Paid work 30+ hrs, Paid work <30 hrs, Unemployed, Training, Education, Home/Retired/Sick/Other)\n- Converted to labeled factors with explicit labels\n- Named according to conventions (ecoactdtm = mother's detailed economic activity, ecoactdtp = father's detailed economic activity, with age suffixes)",
+  "state": "success",
+  "time_taken": 29.952532052993774,
+  "steps": 3,
+  "token_usage": 13828
+}

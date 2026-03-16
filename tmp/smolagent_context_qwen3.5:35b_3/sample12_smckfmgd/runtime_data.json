@@ -1,0 +1,7 @@
+{
+  "result": "The cleaned data file has been successfully created at data/output/cleaned_data.csv with 16,111 records and 7 columns (NSID, nssec17, nssec18, nssec19, nssec20, nssec25, nssec32). All NS-SEC variables have been processed to:\n1. Collapse fractional codes to major categories using floor()\n2. Harmonize missing codes to standard scheme (-9=Refusal, -8=Insufficient info, -7=Prefer not to say, -3=Not asked, -2=Schedule not applicable, -1=Item not applicable)\n3. Convert NA values to -3 (Not asked at fieldwork)\n4. Retain only valid integer categories 1-17 for occupational classes\n5. Convert to labelled factor variables with explicit labels for all 17 categories and missing codes\n\nThe file contains longitudinal NS-SEC data from ages 17, 18, 19, 20, 25, and 32, merged using full_join across all six waves to ensure complete NSID coverage.",
+  "state": "success",
+  "time_taken": 164.9742934703827,
+  "steps": 8,
+  "token_usage": 86634
+}

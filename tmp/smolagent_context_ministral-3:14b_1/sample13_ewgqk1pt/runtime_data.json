@@ -1,0 +1,7 @@
+{
+  "result": "The cleaned and harmonized dataset has been successfully generated and saved to `data/output/cleaned_data.csv`. The file contains the following variables:\n\n- `NSID` (cohort member identifier)\n- `nssecma14`, `nssecpa14` (Mother/Father NS-SEC at age 14)\n- `nssecma15`, `nssecpa15` (Mother/Father NS-SEC at age 15)\n- `nssecma16`, `nssecpa16` (Mother/Father NS-SEC at age 16)\n- `nssecma17`, `nssecpa17` (Mother/Father NS-SEC at age 17)\n- `nssecma18`, `nssecpa18` (Mother/Father NS-SEC at age 18)\n\nAll NS-SEC variables are harmonized to the 17-category classification with proper handling of missing values.",
+  "state": "success",
+  "time_taken": 105.63174700737,
+  "steps": 6,
+  "token_usage": 102932
+}

@@ -1,0 +1,7 @@
+{
+  "result": "The R script has been successfully executed. It loaded 9 tab-delimited files from data/input/, merged them using full_join by NSID, standardized missing value codes (-9=Refusal, -8=Don't know, -1=Not applicable, -3=Not asked), created age-specific sex variables, and consolidated them into a single sex_consolidated factor variable following the hierarchy of most recent valid response. The cleaned data has been written to data/output/cleaned_data.csv with 16111 rows and 7511 columns.",
+  "state": "success",
+  "time_taken": 300.7878496646881,
+  "steps": 6,
+  "token_usage": 84352
+}

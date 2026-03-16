@@ -1,0 +1,5 @@
+library(readr)
+output <- read_csv("data/output/cleaned_data.csv")
+cat("Rows:", nrow(output), "\n")
+cat("Columns:", paste(names(output), collapse = ", "), "\n")
+print(head(output))

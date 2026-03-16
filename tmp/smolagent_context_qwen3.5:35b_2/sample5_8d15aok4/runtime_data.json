@@ -1,0 +1,7 @@
+{
+  "result": "Data cleaning complete. Output saved to data/output/cleaned_data.csv with 16111 observations and 5 variables (NSID, marstat19, marstat25, marstat32, marstat_adu). The script successfully:\n\n1. Loaded all 5 input files from data/input/ directory\n2. Merged datasets using full_join by NSID\n3. Converted wave-specific missing codes to standard codes (-9, -8, -1, -3, -2, -7)\n4. Created age-specific marital status variables (marstat19, marstat25, marstat32)\n5. Created collapsed harmonized marital status variable (marstat_adu) for cross-age comparability\n6. Applied appropriate value labels to all categorical variables\n7. Output cleaned data to data/output/cleaned_data.csv",
+  "state": "success",
+  "time_taken": 156.72800970077515,
+  "steps": 6,
+  "token_usage": 63000
+}

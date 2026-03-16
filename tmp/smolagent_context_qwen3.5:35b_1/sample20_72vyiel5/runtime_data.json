@@ -1,0 +1,7 @@
+{
+  "result": "The script has successfully completed all requirements:\n\n1. Loaded all 8 input files from data/input/ using readr::read_delim()\n2. Selected NSID and alcohol-related variables from each wave\n3. Merged datasets using full_join by NSID\n4. Created drinker indicators for ages 14, 15, 16, 17, 19, 20, 25, and 32\n5. Applied special rule for age 14 (required BOTH ever had alcohol AND had drink in last 12 months)\n6. Derived alcfst variable with:\n   - Earliest age of drinking for those who drank\n   - 99 for confirmed never drinkers\n   - -8 for unknown/insufficient information\n7. Converted alcfst to factor with levels: 14, 15, 16, 17, 19, 20, 25, 32, 99, -8\n8. Output file written to data/output/cleaned_data.csv with NSID and alcfst columns\n\nDistribution of alcfst:\n- Age 14: 6,155\n- Age 15: 2,707\n- Age 16: 1,227\n- Age 17: 1,060\n- Age 19: 654\n- Age 20: 137\n- Age 25: 426\n- Age 32: 142\n- Never had alcohol (99): 482\n- Don't know/insufficient information (-8): 3,121",
+  "state": "success",
+  "time_taken": 56.51986384391785,
+  "steps": 3,
+  "token_usage": 20408
+}

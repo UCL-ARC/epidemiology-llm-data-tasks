@@ -1,0 +1,7 @@
+{
+  "result": "Data cleaning complete. The cleaned dataset (data/output/cleaned_data.csv) contains 16,111 rows and 2,279 columns. All 5 input files were successfully merged by NSID and 3 harmonized marital status variables (marstat_wave6, marstat_wave8, marstat_wave9) were created for temporal comparison.",
+  "state": "success",
+  "time_taken": 540.8571543693542,
+  "steps": 9,
+  "token_usage": 225054
+}

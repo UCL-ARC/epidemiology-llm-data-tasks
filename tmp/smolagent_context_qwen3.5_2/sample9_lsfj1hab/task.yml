@@ -1,0 +1,77 @@
+task_id: 1
+task_type: data_cleaning_r
+override: |
+  You have access to raw survey datasets from a longitudinal cohort study with repeated family background interviews. Your task is to clean and consolidate parental education variables only and produce a single cleaned file ready for analysis.
+
+  Follow all instructions:
+
+  1. **File Loading**:
+     - Ensure when you load the input files you append the dir "data/input/" this is where they are stored.
+     - Load each dataset into a separate object and merge using full_join by the ID variable.
+     - The input files are tab-delimited (.tab) text files. Use `readr::read_delim()` with `delim = "\t"` to load them. 
+     - Load each file explicitly by name from the metadata.
+
+  2. **Variable Selection**:
+     - Select only the parental highest qualification variables for mother and father plus NSID.
+     - Do not retain or derive any non-parental-education variables.
+
+  3. **Variable Naming Conventions**:
+     - Use the exact ID variable name from source data (NSID).
+     - Rename variables using the standard convention:
+       * educdtlma = detailed maternal education (consolidated across waves)
+       * educdtlpa = detailed paternal education (consolidated across waves)
+       * educma = collapsed maternal education
+       * educpa = collapsed paternal education
+
+  4. **Consolidation Logic for Time-Invariant Characteristics**:
+     - For parental education (stable characteristics), create a single consolidated detailed variable for each parent.
+     - Prioritise valid positive responses across waves in the specified order.
+     - Fall back to negative codes when no positive values exist.
+
+  5. **Derived Collapsed Variables**:
+     - From each consolidated detailed variable, derive a collapsed parental education variable that maps the 20 detailed qualification categories to a 5-level NVQ-equivalent scheme:
+       * 0 = NVQ 4–5: degree-level qualifications and above (e.g., Higher Degree, First Degree, HE Diploma, HNC/HND/NVQ4)
+       * 1 = NVQ 1–3: sub-degree qualifications from teaching/nursing through to City & Guilds Part I/NVQ1
+       * 2 = None/entry: training programmes below NVQ level (e.g., youth training)
+       * 3 = Other: qualifications where the level is unspecified or cannot be determined
+       * 4 = No qualifications mentioned
+     - Retain negative missing codes unchanged in the collapsed variable.
+     - The collapsed variable must have a DIFFERENT distribution from the detailed variable — it is NOT a copy.
+
+  6. **Missing Value Code Harmonization**:
+     - Harmonise all wave-specific negative missing codes to the standard scheme using the value_labels in the metadata to determine meaning:
+       * -9 = Refusal
+       * -8 = Don't know/insufficient information
+       * -3 = Not asked at the fieldwork stage/participated/interviewed
+       * -2 = Schedule not applicable/Script error/information lost
+       * -1 = Item not applicable
+     - Note: the same numeric code may have different meanings across waves and variables — always check the per-variable value_labels.
+     - Any Null value to be coded as -3 (Not asked at the fieldwork stage/participated/interviewed) to distinguish from explicit missing codes.
+     - Preserve missing codes as explicit factor levels.
+
+  7. **Factor Variables and Labels**:
+     - Convert both collapsed and detailed parental education variables to labelled factor variables with human-readable labels.
+     - Include explicit labels for all valid categories and missing codes.
+
+  8. **Scope Restrictions**:
+     - Do not create age-specific parental variables.
+     - Do not create harmonised summaries beyond mother and father.
+     - Do not create any additional derived measures.
+
+  9. **Package Requirements**:
+     - Use ONLY standard R packages: haven, dplyr, purrr, labelled, readr.
+     - Load packages at the start of the script using library().
+
+  10. **Output Requirements**:
+      - Output dataset must contain exactly 5 variables: NSID, educma, educpa, educdtlma, educdtlpa.
+      - Write a single CSV file named data/output/cleaned_data.csv.
+
+  11. **Execution**:
+      - Produce a complete, runnable R script that performs this workflow using the provided metadata.
+      - You must run your R script after creating it.
+
+  Produce your script in R.
+  
+  Here is the appropriate metadata for the task:
+
+  {metadata}

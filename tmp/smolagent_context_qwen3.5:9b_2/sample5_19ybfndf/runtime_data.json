@@ -1,0 +1,7 @@
+{
+  "result": "Script executed successfully. Cleaned and merged survey datasets from waves 1, 4, 6, 8, and 9 into data/output/cleaned_data.csv containing 16,111 rows and 7 columns (NSID, W6MarStatYP_std, W8DMARSTAT_std, W9DMARSTAT_std, MarStatCollapsed_W6, MarStatCollapsed_W8, MarStatCollapsed_W9).",
+  "state": "success",
+  "time_taken": 167.44997262954712,
+  "steps": 6,
+  "token_usage": 53806
+}

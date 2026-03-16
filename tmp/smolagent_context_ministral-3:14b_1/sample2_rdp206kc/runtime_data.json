@@ -1,0 +1,7 @@
+{
+  "result": "The cleaned and preprocessed dataset has been successfully generated and saved as 'data/output/cleaned_data.csv'. The file contains the following variables:\n- NSID (cohort member identifier)\n- eth_consolidated (consolidated ethnicity variable)\n- eth14 (ethnicity at age 14)\n- eth15 (ethnicity at age 15)\n- eth17 (ethnicity at age 17)\n- eth23 (ethnicity at age 23)\n- eth32 (ethnicity at age 32)\n\nThe dataset is ready for further analysis.",
+  "state": "success",
+  "time_taken": 102.28293585777283,
+  "steps": 7,
+  "token_usage": 104567
+}

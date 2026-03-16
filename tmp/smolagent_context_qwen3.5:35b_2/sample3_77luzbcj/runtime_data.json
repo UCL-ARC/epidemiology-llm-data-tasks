@@ -1,0 +1,7 @@
+{
+  "result": "The cleaned dataset has been successfully created at data/output/cleaned_data.csv with 16,111 records containing the NSID identifier and the consolidated language variable (lang). The data was processed as follows:\n\n1. All 4 wave files were loaded from data/input/ using read_delim with tab delimiter\n2. Files were merged using full_join by NSID\n3. Missing value codes were harmonized according to the metadata mappings:\n   - -999, -998, -997, -995, -94 → -2 (Schedule not applicable)\n   - -99 → -3 (Not asked/interview not conducted)\n   - -92 → -9 (Refusal)\n   - -91 → -1 (Item not applicable)\n   - -1 → -8 (Don't know/insufficient information)\n   - Null values → -3\n4. Wave-specific variables were created (lang_S1, lang_S2, lang_S3, lang_S4)\n5. A consolidated language variable (lang) was created using earliest valid positive value prioritization\n6. Output includes only NSID and the consolidated lang variable",
+  "state": "success",
+  "time_taken": 29.277108192443848,
+  "steps": 3,
+  "token_usage": 11591
+}

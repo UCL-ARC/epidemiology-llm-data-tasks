@@ -1,0 +1,7 @@
+{
+  "result": "Data cleaning completed. Output file: data/output/cleaned_data.csv with variables NSID, inc25, inc32",
+  "state": "success",
+  "time_taken": 560.6068847179413,
+  "steps": 19,
+  "token_usage": 370859
+}

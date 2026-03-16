@@ -1,0 +1,7 @@
+{
+  "result": "The cleaned and preprocessed dataset has been successfully saved as `data/output/cleaned_data.csv`. This file contains the merged and harmonized data with a consolidated sexual orientation variable (`sori`) based on the most recent valid responses across all waves, following the specified cleaning and preprocessing instructions.",
+  "state": "success",
+  "time_taken": 133.11305499076843,
+  "steps": 8,
+  "token_usage": 120614
+}
