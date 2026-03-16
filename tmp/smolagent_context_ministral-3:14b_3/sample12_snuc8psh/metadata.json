@@ -1,0 +1,400 @@
+{
+  "wave_one_lsype_young_person_2020.tab": {
+    "file_info": {
+      "number_of_variables": 350,
+      "number_of_cases": 15760,
+      "description": "Sweep 1 (Age 14) Young Person Data File"
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      }
+    }
+  },
+  "ns9_2022_main_interview.tab": {
+    "file_info": {
+      "number_of_variables": 1805,
+      "number_of_cases": 7279,
+      "description": "Age 32 (Sweep 9) Main Interview Data File"
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      },
+      "W9NSSEC": {
+        "position": 323,
+        "variable_label": "DV: NS-SEC (2020) Full operational categories",
+        "type": "numeric",
+        "measurement_level": "SCALE",
+        "user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-1.0": "Not Applicable",
+          "1.0": "Employers in large organisations",
+          "2.0": "Higher managerial and administrative occupations",
+          "3.0": "Higher professional occupations",
+          "4.0": "Lower professional and higher technical occupations",
+          "5.0": "Lower managerial and administrative occupations",
+          "6.0": "Higher supervisory occupations",
+          "7.0": "Intermediate occupations",
+          "8.0": "Employers in small establishments",
+          "9.0": "Own account workers",
+          "10.0": "Lower supervisory occupations",
+          "11.0": "Lower technical occupations",
+          "12.0": "Semi-routine occupations",
+          "13.0": "Routine occupations",
+          "14.0": "Never worked and Long-term unemployed",
+          "15.0": "Full-time students",
+          "16.0": "Occupations not stated or inadequately described",
+          "17.0": "Not classifiable for other reasons"
+        }
+      }
+    }
+  },
+  "ns8_2015_derived.tab": {
+    "file_info": {
+      "number_of_variables": 53,
+      "number_of_cases": 7705,
+      "description": "Wave Eight Derived Data File"
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      },
+      "W8DACTIVITYC": {
+        "position": 16,
+        "variable_label": "DV: Current activity of CM - backcoded",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-9.0 thru -8.0 and -1.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Insufficient information",
+          "-1.0": "Not applicable",
+          "1.0": "Employee - in paid work",
+          "2.0": "Self employed",
+          "3.0": "In unpaid/voluntary work",
+          "4.0": "Unemployed",
+          "5.0": "Education: School/college/university",
+          "6.0": "Apprenticeship",
+          "7.0": "On gov't scheme for employment training",
+          "8.0": "Sick or disabled",
+          "9.0": "Looking after home or family",
+          "10.0": "Something else"
+        }
+      },
+      "W8DNSSEC17": {
+        "position": 19,
+        "variable_label": "DV: NS-SEC (2010) (Full operational categories)",
+        "type": "numeric",
+        "measurement_level": "SCALE",
+        "user_missing_values": "-9.0 thru -8.0 and -1.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Insufficient information",
+          "-1.0": "Not applicable",
+          "1.0": "Employers in large orgs.",
+          "2.0": "Higher managerial occupations",
+          "3.1": "Higher profess. trad. employees",
+          "3.2": "Higher profess. new employees",
+          "3.3": "Higher profess. trad. self-employed",
+          "3.4": "Higher profess. new self-employed",
+          "4.1": "Lower profess. trad. employees",
+          "4.2": "Lower profess. new employees",
+          "4.3": "Lower profess. trad. self-employed",
+          "4.4": "Lower profess. new self-employed",
+          "5.0": "Lower managerial occupations",
+          "6.0": "Higher supervisory occupations",
+          "7.1": "Intermed. clerical and administrative",
+          "7.2": "Intermed. sales and service",
+          "7.3": "Intermed. technical and auxiliary",
+          "7.4": "Intermed. engineering",
+          "8.1": "Employers in small orgs. non-profess.",
+          "8.2": "Employers in small orgs. agriculture",
+          "9.1": "Own account workers non profess.",
+          "9.2": "Own account workers agriculture",
+          "10.0": "Lower supervisory occupations",
+          "11.1": "Lower technical craft",
+          "11.2": "Lower technical process operative",
+          "12.1": "Semi-routine sales",
+          "12.2": "Semi-routine services",
+          "12.3": "Semi-routine technical",
+          "12.4": "Semi-routine operative",
+          "12.5": "Semi-routine agricultural",
+          "12.6": "Semi-routine clerical",
+          "12.7": "Semi-routine childcare",
+          "13.1": "Routine sales and service",
+          "13.2": "Routine production",
+          "13.3": "Routine technical",
+          "13.4": "Routine operative",
+          "13.5": "Routine agricultural"
+        }
+      }
+    }
+  },
+  "wave_six_lsype_young_person_2020.tab": {
+    "file_info": {
+      "number_of_variables": 760,
+      "number_of_cases": 9791,
+      "description": "Sweep 6 (Age 19) Young Person Data File"
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      },
+      "w6nsseccatYP": {
+        "position": 702,
+        "variable_label": "DV: YP's NS-SEC operational category",
+        "type": "numeric",
+        "measurement_level": "SCALE",
+        "user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-91.0": "Not applicable",
+          "1.0": "Employers in large organisations",
+          "2.0": "Higher managerial occupations",
+          "3.1": "Higher professional traditional employee",
+          "3.2": "Higher professional new employee",
+          "3.3": "Higher professional traditional self employed",
+          "3.4": "Higher professional new self employed",
+          "4.1": "Lower professional traditional employee",
+          "4.2": "Lower professional new employee",
+          "4.3": "Lower professional traditional self employed",
+          "4.4": "Lower professional new self employed",
+          "5.0": "Lower managerial occupations",
+          "6.0": "Higher supervisory occupations",
+          "7.1": "Intermediate clerical and administrative",
+          "7.2": "Intermediate sales and service",
+          "7.3": "Intermediate technical and auxiliary",
+          "7.4": "Intermediate engineering",
+          "8.1": "Employers in small orgs non-professional",
+          "8.2": "Employers in small orgs agriculture",
+          "9.1": "Own account workers non professional",
+          "9.2": "Own account workers agriculture",
+          "10.0": "Lower supervisory occupations",
+          "11.1": "Lower technical craft",
+          "11.2": "Lower technical process operative",
+          "12.1": "Semi routine sales",
+          "12.2": "Semi routine services",
+          "12.3": "Semi routine technical",
+          "12.4": "Semi routine operative",
+          "12.5": "Semi routine agricultural",
+          "12.6": "Semi routine clerical",
+          "12.7": "Semi routine childcare",
+          "13.1": "Routine sales and service",
+          "13.2": "Routine production",
+          "13.3": "Routine technical",
+          "13.4": "Routine operative",
+          "13.5": "Routine agricultural",
+          "14.1": "Never worked",
+          "14.2": "Long-term unemployed",
+          "14.3": "Not working",
+          "15.0": "Full-time students",
+          "16.0": "Not classified or inadequately stated",
+          "17.0": "Not classifiable for other reasons"
+        }
+      }
+    }
+  },
+  "wave_seven_lsype_young_person_2020.tab": {
+    "file_info": {
+      "number_of_variables": 850,
+      "number_of_cases": 8675,
+      "description": "Sweep 7 (Age 20) Young Person Data File"
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      },
+      "W7NSSECCat": {
+        "position": 822,
+        "variable_label": "Admin: NS-SEC operational category for young person",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-91.0": "Not applicable",
+          "1.0": "Employers in large organisations",
+          "2.0": "Higher managerial occupations",
+          "3.1": "Higher professional - traditional employees",
+          "3.2": "Higher professional - new employees",
+          "3.3": "Higher professional - traditional self-employed",
+          "3.4": "Higher professional - new self-employed",
+          "4.1": "Lower professional - traditional employees",
+          "4.2": "Lower professional - new employees",
+          "4.3": "Lower professional - traditional self-employed",
+          "4.4": "Lower professional - new self-employed",
+          "5.0": "Lower managerial occupations",
+          "6.0": "Higher supervisory occupations",
+          "7.1": "Intermediate occupations - clerical and administrative",
+          "7.2": "Intermediate occupations - sales and service",
+          "7.3": "Intermediate occupations - technical and auxiliary",
+          "7.4": "Intermediate occupations - engineering",
+          "8.1": "Employers in small organisations (non-professional)",
+          "8.2": "Employers in small organisations (agriculture)",
+          "9.1": "Own account workers (non professional)",
+          "9.2": "Own account workers (agriculture)",
+          "10.0": "Lower supervisory occupations",
+          "11.1": "Lower technical occupations - craft",
+          "11.2": "Lower technical occupations - process operative",
+          "12.1": "Semi routine occupations - sales",
+          "12.2": "Semi routine occupations - services",
+          "12.3": "Semi routine occupations - technical",
+          "12.4": "Semi routine occupations - operative",
+          "12.5": "Semi routine occupations - agricultural",
+          "12.6": "Semi routine occupations - clerical",
+          "12.7": "Semi routine occupations - childcare",
+          "13.1": "Routine occupations - sales and service",
+          "13.2": "Routine occupations - production",
+          "13.3": "Routine occupations - technical",
+          "13.4": "Routine occupations - operative",
+          "13.5": "Routine occupations - agricultural",
+          "14.1": "Never worked",
+          "14.2": "Long-term unemployed",
+          "14.3": "Not working",
+          "15.0": "Full-time students",
+          "16.0": "Occupations not stated or inadequately described",
+          "17.0": "Not classifiable for other reasons"
+        }
+      }
+    }
+  },
+  "wave_five_lsype_young_person_2020.tab": {
+    "file_info": {
+      "number_of_variables": 730,
+      "number_of_cases": 10422,
+      "description": "Sweep 5 (Age 18) Young Person Data File"
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      },
+      "W5nsseccatYP": {
+        "position": 704,
+        "variable_label": "DV: YP's NS-SEC operational category",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-91.0": "Not applicable",
+          "1.0": "Employers in large organisations",
+          "2.0": "Higher managerial occupations",
+          "3.1": "Higher professional traditional employee",
+          "3.2": "Higher professional new employee",
+          "3.3": "Higher professional traditional self emp",
+          "3.4": "Higher professional new self emp",
+          "4.1": "Lower professional traditional employee",
+          "4.2": "Lower professional new employee",
+          "4.3": "Lower professional traditional self emp",
+          "4.4": "Lower professional new self emp",
+          "5.0": "Lower managerial occupations",
+          "6.0": "Higher supervisory occupations",
+          "7.1": "Intermediate clerical and administrative",
+          "7.2": "Intermediate sales and service",
+          "7.3": "Intermediate technical and auxiliary",
+          "7.4": "Intermediate engineering",
+          "8.1": "Employers in small orgs non-professional",
+          "8.2": "Employers in small orgs agriculture",
+          "9.1": "Own account workers non professional",
+          "9.2": "Own account workers agriculture",
+          "10.0": "Lower supervisory occupations",
+          "11.1": "Lower technical craft",
+          "11.2": "Lower technical process operative",
+          "12.1": "Semi routine sales",
+          "12.2": "Semi routine services",
+          "12.3": "Semi routine technical",
+          "12.4": "Semi routine operative",
+          "12.5": "Semi routine agricultural",
+          "12.6": "Semi routine clerical",
+          "12.7": "Semi routine childcare",
+          "13.1": "Routine sales and service",
+          "13.2": "Routine production",
+          "13.3": "Routine technical",
+          "13.4": "Routine operative",
+          "13.5": "Routine agricultural",
+          "14.1": "Never worked",
+          "14.2": "Long-term unemployed",
+          "14.3": "Not working",
+          "15.0": "Full-time students",
+          "16.0": "Not classified or inadequately stated",
+          "17.0": "Not classifiable for other reasons"
+        }
+      }
+    }
+  },
+  "wave_four_lsype_young_person_2020.tab": {
+    "file_info": {
+      "number_of_variables": 1049,
+      "number_of_cases": 11791,
+      "description": "Sweep 4 (Age 17) Young Person Data File"
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      },
+      "W4nsseccatYP": {
+        "position": 1003,
+        "variable_label": "DV: YP's NS-SEC operational category",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-99.0": "YP Not interviewed",
+          "-91.0": "Not applicable",
+          "1.0": "Employers in large organisations",
+          "2.0": "Higher managerial occupations",
+          "3.1": "Higher professional traditional employee",
+          "3.2": "Higher professional new employee",
+          "3.3": "Higher professional traditional self emp",
+          "3.4": "Higher professional new self emp",
+          "4.1": "Lower professional traditional employee",
+          "4.2": "Lower professional new employee",
+          "4.3": "Lower professional traditional self emp",
+          "4.4": "Lower professional new self emp",
+          "5.0": "Lower managerial occupations",
+          "6.0": "Higher supervisory occupations",
+          "7.1": "Intermediate clerical and administrative",
+          "7.2": "Intermediate sales and service",
+          "7.3": "Intermediate technical and auxiliary",
+          "7.4": "Intermediate engineering",
+          "8.1": "Employers in small orgs non-professional",
+          "8.2": "Employers in small orgs agriculture",
+          "9.1": "Own account workers non professional",
+          "9.2": "Own account workers agriculture",
+          "10.0": "Lower supervisory occupations",
+          "11.1": "Lower technical craft",
+          "11.2": "Lower technical process operative",
+          "12.1": "Semi routine sales",
+          "12.2": "Semi routine services",
+          "12.3": "Semi routine technical",
+          "12.4": "Semi routine operative",
+          "12.5": "Semi routine agricultural",
+          "12.6": "Semi routine clerical",
+          "12.7": "Semi routine childcare",
+          "13.1": "Routine sales and service",
+          "13.2": "Routine production",
+          "13.3": "Routine technical",
+          "13.4": "Routine operative",
+          "13.5": "Routine agricultural",
+          "14.1": "Never worked",
+          "14.2": "Long-term unemployed",
+          "15.0": "Full-time students",
+          "16.0": "Not classified or inadequately stated",
+          "17.0": "Not classifiable for other reasons"
+        }
+      }
+    }
+  }
+}

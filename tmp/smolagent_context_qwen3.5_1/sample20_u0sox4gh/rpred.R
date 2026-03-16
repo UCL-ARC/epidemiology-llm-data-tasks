@@ -1,0 +1,6 @@
+library(readr)
+output <- read_csv("data/output/cleaned_data.csv")
+cat("Total rows:", nrow(output), "\n")
+cat("Columns:", paste(names(output), collapse=", "), "\n")
+cat("\nFrequency of alcfst:\n")
+print(table(output$alcfst, useNA = "ifany"))

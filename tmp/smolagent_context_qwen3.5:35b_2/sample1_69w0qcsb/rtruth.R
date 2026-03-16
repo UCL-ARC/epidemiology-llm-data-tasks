@@ -1,0 +1,118 @@
+options(repos = c(CRAN = "https://cloud.r-project.org/"))
+list_of_packages <- c('haven', 'dplyr', 'purrr', 'here', 'labelled', 'readr')
+new_packages <- list_of_packages[!(list_of_packages %in% installed.packages()[,"Package"])]
+if(length(new_packages)) install.packages(new_packages)
+suppressPackageStartupMessages({
+  library(haven)  # for reading SPSS/Stata files
+  library(dplyr)  # for data manipulation
+  library(purrr)  # for functional programming (map, reduce)
+  library(here)  # for file paths
+  library(labelled)  # for handling labelled data
+  library(readr)  # for reading delimited files
+})
+
+# Data path
+# Set folder path (change as needed)
+data_path <- 'data/input/' 
+
+# Read required datasets only
+S1yp <- read_delim(file.path(data_path, "wave_one_lsype_young_person_2020.tab"),show_col_types=FALSE)
+S2yp <- read_delim(file.path(data_path, "wave_two_lsype_young_person_2020.tab"),show_col_types=FALSE)
+S3yp <- read_delim(file.path(data_path, "wave_three_lsype_young_person_2020.tab"),show_col_types=FALSE)
+S4yp <- read_delim(file.path(data_path, "wave_four_lsype_young_person_2020.tab"),show_col_types=FALSE)
+S5yp <- read_delim(file.path(data_path, "wave_five_lsype_young_person_2020.tab"),show_col_types=FALSE)
+S6yp <- read_delim(file.path(data_path, "wave_six_lsype_young_person_2020.tab"),show_col_types=FALSE)
+S7yp <- read_delim(file.path(data_path, "wave_seven_lsype_young_person_2020.tab"),show_col_types=FALSE)
+S8mi <- read_delim(file.path(data_path, "ns8_2015_main_interview.tab"),show_col_types=FALSE)
+S9mi <- read_delim(file.path(data_path, "ns9_2022_main_interview.tab"),show_col_types=FALSE)
+
+sex_vars <- list(
+  S1 = S1yp %>% select(NSID, sex_S1 = W1sexYP),
+  S2 = S2yp %>% select(NSID, sex_S2 = W2SexYP),
+  S3 = S3yp %>% select(NSID, sex_S3 = W3sexYP),
+  S4 = S4yp %>% select(NSID, W4Boost, sex_S4 = W4SexYP),
+  S5 = S5yp %>% select(NSID, sex_S5 = W5SexYP),
+  S6 = S6yp %>% select(NSID, sex_S6 = W6Sex),
+  S7 = S7yp %>% select(NSID, sex_S7 = W7Sex),
+  S8 = S8mi %>% select(NSID, sex_S8 = W8CMSEX),
+  S9 = S9mi %>% select(NSID, sex_S9 = W9DSEX)
+)
+
+# Merge all sweeps by NSID
+sex_all <- reduce(sex_vars, full_join, by = "NSID")
+
+# Harmonise the missing values for S1-7
+# Vector of S1–S7 variable names
+sex_vars_s1_s7 <- paste0("sex_S", 1:7)
+
+# Apply custom recode to S1–S7
+sex_all <- sex_all %>%
+  mutate(
+    across(
+      all_of(sex_vars_s1_s7),
+      ~ case_when(
+        .x == -92 ~ -9,
+        .x == -91 ~ -1,
+        .x == -99 ~ -3,
+        .default = .x
+      )
+    )
+  )
+
+# Harmonise sex: prefer self-report at S9, else taken from other sweeps in order S1 -> S9.
+sex_all <- sex_all %>%
+  mutate(
+    # First pass: positive values only
+    sex_final_main = case_when(
+      sex_S9 > 0 ~ sex_S9,
+      sex_S1 > 0 ~ sex_S1,
+      sex_S2 > 0 ~ sex_S2,
+      sex_S3 > 0 ~ sex_S3,
+      sex_S4 > 0 ~ sex_S4,
+      sex_S5 > 0 ~ sex_S5,
+      sex_S6 > 0 ~ sex_S6,
+      sex_S7 > 0 ~ sex_S7,
+      sex_S8 > 0 ~ sex_S8,
+      .default = NA
+    ),
+    # Otherwise first non‑substantive (<1) from S1–S8
+    sex_final = case_when(
+      !is.na(sex_final_main) ~ sex_final_main,
+      sex_S1 < 1 ~ sex_S1,
+      sex_S2 < 1 ~ sex_S2,
+      sex_S3 < 1 ~ sex_S3,
+      sex_S4 < 1 ~ sex_S4,
+      sex_S5 < 1 ~ sex_S5,
+      sex_S6 < 1 ~ sex_S6,
+      sex_S7 < 1 ~ sex_S7,
+      sex_S8 < 1 ~ sex_S8,
+      .default = NA
+    )
+  )
+
+sex_all <- sex_all %>%
+  mutate(
+    sex = case_when(
+      sex_final == 1 ~ 0, # 1 = male → 0
+      sex_final == 2 ~ 1, # 2 = female → 1
+      TRUE ~ sex_final
+    ),
+    sex = factor(
+      sex,
+      levels = c(0, 1, -1, -3, -9),
+      labels = c(
+        "Male",
+        "Female",
+        "Item not applicable",
+        "Not asked at the fieldwork stage/participated/interviewed",
+        "Refusal"
+      )
+    )
+  ) %>%
+  select(NSID, sex)
+  
+# Create output directory if it doesn't exist
+dir.create(file.path(getwd(), "data", "output"), recursive = TRUE, showWarnings = FALSE)
+
+output_data_path <- file.path(getwd(), "data", "output","output.csv")
+write.csv(sex_all, output_data_path, row.names = FALSE)

@@ -1,0 +1,452 @@
+{
+  "wave_one_lsype_young_person_2020.tab": {
+    "file_info": {
+      "number_of_variables": 350,
+      "number_of_cases": 15760,
+      "description": "Sweep 1 (Age 14) Young Person Data File"
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      },
+      "W1alceverYP": {
+        "position": 272,
+        "variable_label": "YP: Whether ever had proper alcoholic drink",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-99.0": "YP not interviewed",
+          "-97.0": "YP refused CASI section",
+          "-96.0": "YP unable to complete CASI section",
+          "-92.0": "Refused",
+          "-91.0": "Not applicable",
+          "-1.0": "Don't know",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W1alcmonYP": {
+        "position": 273,
+        "variable_label": "YP: Whether had alcoholic drink in last 12 months",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-99.0": "YP not interviewed",
+          "-97.0": "YP refused CASI section",
+          "-96.0": "YP unable to complete CASI section",
+          "-92.0": "Refused",
+          "-91.0": "Not applicable",
+          "-1.0": "Don't know",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W1alcfreqYP": {
+        "position": 274,
+        "variable_label": "YP: Frequency of having alcoholic drink in last 12 months",
+        "type": "numeric",
+        "measurement_level": "ORDINAL",
+        "user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-99.0": "YP not interviewed",
+          "-97.0": "YP refused CASI section",
+          "-96.0": "YP unable to complete CASI section",
+          "-92.0": "Refused",
+          "-91.0": "Not applicable",
+          "-1.0": "Don't know",
+          "1.0": "Most days",
+          "2.0": "Once or twice a week",
+          "3.0": "Two or three times a month",
+          "4.0": "Once a month",
+          "5.0": "Once every couple of months",
+          "6.0": "Less often"
+        }
+      }
+    }
+  },
+  "wave_two_lsype_young_person_2020.tab": {
+    "file_info": {
+      "number_of_variables": 564,
+      "number_of_cases": 13530,
+      "description": "Sweep 2 (Age 15) Young Person Data File"
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      },
+      "W2alceverYP": {
+        "position": 452,
+        "variable_label": "YP: Whether ever had proper alcoholic drink",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-998.0": "Interviewer missed question",
+          "-997.0": "Script error",
+          "-995.0": "Missing history section data - unexplained",
+          "-99.0": "YP not interviewed",
+          "-97.0": "YP refused self completion",
+          "-96.0": "YP using interpreter",
+          "-92.0": "Refused",
+          "-91.0": "Not applicable",
+          "-1.0": "Don't Know",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W2alcfreqYP": {
+        "position": 453,
+        "variable_label": "YP: Frequency of having alcoholic drink in last 12 months",
+        "type": "numeric",
+        "measurement_level": "ORDINAL",
+        "user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-998.0": "Interviewer missed question",
+          "-997.0": "Script error",
+          "-995.0": "Missing history section data - unexplained",
+          "-99.0": "YP not interviewed",
+          "-97.0": "YP refused self completion",
+          "-96.0": "YP using interpreter",
+          "-92.0": "Refused",
+          "-91.0": "Not applicable",
+          "-1.0": "Don't Know",
+          "1.0": "Most days",
+          "2.0": "Once or twice a week",
+          "3.0": "Two or three times a month",
+          "4.0": "Once a month",
+          "5.0": "Once every couple of months",
+          "6.0": "Less often"
+        }
+      }
+    }
+  },
+  "wave_three_lsype_young_person_2020.tab": {
+    "file_info": {
+      "number_of_variables": 652,
+      "number_of_cases": 12430,
+      "description": "Sweep 3 (Age 16) Young Person Data File"
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      },
+      "W3alceverYP": {
+        "position": 576,
+        "variable_label": "YP: Whether YP ever had proper alcoholic drink",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-99.0": "YP not interviewed",
+          "-97.0": "YP refused self completion",
+          "-96.0": "YP using interpreter",
+          "-92.0": "Refused",
+          "-91.0": "Not applicable",
+          "-1.0": "Don't know",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W3alcfreqYP": {
+        "position": 577,
+        "variable_label": "YP: Frequency of YP having alcoholic drink in last 12 months",
+        "type": "numeric",
+        "measurement_level": "ORDINAL",
+        "user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-99.0": "YP not interviewed",
+          "-97.0": "YP refused self completion",
+          "-96.0": "YP using interpreter",
+          "-92.0": "Refused",
+          "-91.0": "Not applicable",
+          "-1.0": "Don't know",
+          "1.0": "Most days",
+          "2.0": "Once or twice a week",
+          "3.0": "Two or three times a month",
+          "4.0": "Once a month",
+          "5.0": "Once every couple of months",
+          "6.0": "Less often"
+        }
+      }
+    }
+  },
+  "wave_four_lsype_young_person_2020.tab": {
+    "file_info": {
+      "number_of_variables": 1049,
+      "number_of_cases": 11791,
+      "description": "Sweep 4 (Age 17) Young Person Data File"
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      },
+      "W4AlcEverYP": {
+        "position": 884,
+        "variable_label": "YP: Whether YP ever had proper alcoholic drink",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-99.0": "YP not interviewed",
+          "-97.0": "YP refused self completion",
+          "-96.0": "YP using interpreter",
+          "-92.0": "Refused",
+          "-91.0": "Not applicable",
+          "-1.0": "Don't know",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W4AlcFreqYP": {
+        "position": 885,
+        "variable_label": "YP: Frequency of YP having alcoholic drink in last 12 months",
+        "type": "numeric",
+        "measurement_level": "ORDINAL",
+        "user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-99.0": "YP not interviewed",
+          "-97.0": "YP refused self completion",
+          "-96.0": "YP using interpreter",
+          "-92.0": "Refused",
+          "-91.0": "Not applicable",
+          "-1.0": "Don't know",
+          "1.0": "Most days",
+          "2.0": "Once or twice a week",
+          "3.0": "2 or 3 times a month",
+          "4.0": "Once a month",
+          "5.0": "Once every couple of months or",
+          "6.0": "Less often?"
+        }
+      }
+    }
+  },
+  "wave_six_lsype_young_person_2020.tab": {
+    "file_info": {
+      "number_of_variables": 760,
+      "number_of_cases": 9791,
+      "description": "Sweep 6 (Age 19) Young Person Data File"
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      },
+      "W6AlcEverYP": {
+        "position": 546,
+        "variable_label": "YP: Whether ever had an alcoholic drink",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-997.0": "Script error",
+          "-97.0": "Respondent declined self completion",
+          "-92.0": "Refused",
+          "-91.0": "Not applicable",
+          "-1.0": "Don't know",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W6AlcFreqYP": {
+        "position": 547,
+        "variable_label": "YP: Frequency of drinking alcohol in the last 12 months",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-997.0": "Script error",
+          "-97.0": "Respondent declined self completion",
+          "-92.0": "Refused",
+          "-91.0": "Not applicable",
+          "-1.0": "Don't know",
+          "1.0": "Almost every day",
+          "2.0": "Five or six days a week",
+          "3.0": "Three or four days a week",
+          "4.0": "Once or twice a week",
+          "5.0": "Once or twice a month",
+          "6.0": "Once every couple of months",
+          "7.0": "Once or twice a year",
+          "8.0": "Not at all"
+        }
+      }
+    }
+  },
+  "wave_seven_lsype_young_person_2020.tab": {
+    "file_info": {
+      "number_of_variables": 850,
+      "number_of_cases": 8675,
+      "description": "Sweep 7 (Age 20) Young Person Data File"
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      },
+      "W7AlcEverYP": {
+        "position": 616,
+        "variable_label": "YP: Whether ever had an alcoholic drink (if no previous positive response)",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-996.0": "Probelm with feed forward variable",
+          "-97.0": "Refused self completion",
+          "-92.0": "Refused",
+          "-91.0": "Not applicable",
+          "-1.0": "Don't know",
+          "1.0": "Yes",
+          "2.0": "No"
+        }
+      },
+      "W7AlcFreqYP": {
+        "position": 617,
+        "variable_label": "YP: Frequency of drinking alcohol in the last 12 months",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-97.0": "Refused self completion",
+          "-92.0": "Refused",
+          "-91.0": "Not applicable",
+          "-1.0": "Don't know",
+          "1.0": "Almost every day",
+          "2.0": "Five or six days a week",
+          "3.0": "Three or four days a week",
+          "4.0": "Once or twice a week",
+          "5.0": "Once or twice a month",
+          "6.0": "Once every couple of months",
+          "7.0": "Once or twice a year",
+          "8.0": "Not all in the last 12 months?"
+        }
+      }
+    }
+  },
+  "ns8_2015_self_completion.tab": {
+    "file_info": {
+      "number_of_variables": 111,
+      "number_of_cases": 7705,
+      "description": "Wave Eight Self Completion Data File"
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      },
+      "W8AUDIT2": {
+        "position": 42,
+        "variable_label": "How many drinks containing alcohol has on a typical day of drinking",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-9.0 thru -8.0 and -1.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Don't know",
+          "-1.0": "Not applicable",
+          "1.0": "1-2 drinks",
+          "2.0": "3-4 drinks",
+          "3.0": "5-6 drinks",
+          "4.0": "7-9 drinks",
+          "5.0": "10 plus drinks"
+        }
+      },
+      "W8AUDIT6": {
+        "position": 43,
+        "variable_label": "How often had six or more drinks on one occasion in the past year",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-9.0 thru -8.0 and -1.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Don't know",
+          "-1.0": "Not applicable",
+          "1.0": "Never",
+          "2.0": "Less than monthly",
+          "3.0": "Monthly",
+          "4.0": "Weekly",
+          "5.0": "Daily, or almost daily"
+        }
+      }
+    }
+  },
+  "ns9_2022_main_interview.tab": {
+    "file_info": {
+      "number_of_variables": 1805,
+      "number_of_cases": 7279,
+      "description": "Age 32 (Sweep 9) Main Interview Data File"
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      },
+      "W9AUDIT1": {
+        "position": 1582,
+        "variable_label": "How often has had a drink containing alcohol",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Don't know",
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Never",
+          "2.0": "Monthly or less",
+          "3.0": "2-4 times a month",
+          "4.0": "2-3 times a week",
+          "5.0": "4 or more times a week"
+        }
+      },
+      "W9AUDIT2": {
+        "position": 1583,
+        "variable_label": "How many drinks containing alcohol has on a typical day of drinking",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Don't know",
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "1-2 drinks",
+          "2.0": "3-4 drinks",
+          "3.0": "5-6 drinks",
+          "4.0": "7-9 drinks",
+          "5.0": "10 or more drinks"
+        }
+      },
+      "W9AUDIT3": {
+        "position": 1584,
+        "variable_label": "How often had six or more drinks on one occasion in the past year",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Don't know",
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Never",
+          "2.0": "Less than monthly",
+          "3.0": "Monthly",
+          "4.0": "Weekly",
+          "5.0": "Daily, or almost daily"
+        }
+      }
+    }
+  }
+}
