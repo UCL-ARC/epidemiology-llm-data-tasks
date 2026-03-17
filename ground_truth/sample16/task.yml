@@ -31,6 +31,11 @@ override: |
   4. **Missing Value Code Harmonization**:
      - Recode all wave-specific negative codes and NAs to the standard missing scheme.
      - When deriving banded variables from continuous income, handle missing values first (preserving their codes), then apply banding logic only to valid positive values.
+     - Note: the wave-specific code -3 ("Not yet paid", present in age 14 and 15 waves) is NOT                                                                                                                       
+       equivalent to the standard -3. Map it to -1 (Item not applicable), as income is not                                                                                                                           
+       applicable when payment has not yet been received.                                                                                                                                                            
+     - Note: the wave-specific code -996 ("No parent in household", present in age 17 wave)                                                                                                                          
+       should be mapped to -3 (Not asked/interviewed). 
 
   5. **Waves with Continuous Income (ages 14 and 15)**:
      - Derive categorical income bands based on realistic weekly household income thresholds.

@@ -25,7 +25,7 @@ override: |
 
   4. **Consolidation Logic for Time-Invariant Characteristics**:
      - For parental education (stable characteristics), create a single consolidated detailed variable for each parent.
-     - Prioritise valid positive responses across waves in the specified order.
+     - Prioritise valid positive responses across waves in file order: wave 1 first, then wave 2, then wave 4. When no positive value exists, fall back to negative codes in the same wave order.    
      - Fall back to negative codes when no positive values exist.
 
   5. **Derived Collapsed Variables**:
@@ -46,6 +46,7 @@ override: |
        * -2 = Schedule not applicable/Script error/information lost
        * -1 = Item not applicable
      - Note: the same numeric code may have different meanings across waves and variables — always check the per-variable value_labels.
+     - Map each missing value code to the standard harmonised scheme based on its label in the metadata. 
      - Any Null value to be coded as -3 (Not asked at the fieldwork stage/participated/interviewed) to distinguish from explicit missing codes.
      - Preserve missing codes as explicit factor levels.
 
