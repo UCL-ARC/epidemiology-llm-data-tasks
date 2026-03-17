@@ -71,20 +71,20 @@ hh_income_rec <- hh_income_all %>%
     incwhh14 = case_when(
       is.na(incwhh14_raw) ~ -3,
       incwhh14_raw %in% c(-92, -992) ~ -9,
-      incwhh14_raw %in% c(-999, -94) ~ -2,
+      incwhh14_raw == -999 ~ -2,
       incwhh14_raw == -99 ~ -3,
       incwhh14_raw == -91 ~ -1,
-      incwhh14_raw == -1 ~ -8,
+      incwhh14_raw %in% c(-1, -94) ~ -8,
       incwhh14_raw == -3 ~ -1,
       TRUE ~ convert_to_band(incwhh14_raw)
     ),
     incwhhcnt14 = case_when(
       is.na(incwhh14_raw) ~ -3,
       incwhh14_raw %in% c(-92, -992) ~ -9,
-      incwhh14_raw %in% c(-999, -94) ~ -2,
+      incwhh14_raw == -999 ~ -2,
       incwhh14_raw == -99 ~ -3,
       incwhh14_raw == -91 ~ -1,
-      incwhh14_raw == -1 ~ -8,
+      incwhh14_raw %in% c(-1, -94) ~ -8,
       incwhh14_raw == -3 ~ -1,
       TRUE ~ incwhh14_raw
     ),
