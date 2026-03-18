@@ -219,7 +219,11 @@ if __name__ == "__main__":
     from .tools import produce_and_execute_r
 
     # --- Ollama (via LiteLLM) ---
-    model_id = "gemma3:4b"
+    model_id = "devstral-small-2:24b-cloud"
+    model_id = "ministral-3:14b-cloud"
+    # model_id = "qwen3-next:80b-cloud"
+    # model_id = "qwen3.5:397b-cloud"
+    # model_id = "gemma3:27b-cloud"
     model_name = f"ollama_chat/{model_id}"
     api_key = "ollama"
 
@@ -258,46 +262,49 @@ if __name__ == "__main__":
         ],
         key=lambda p: int(p.name[6:]),
     )
-    # test_dirs = [Path(f"./ground_truth/sample{x}") for x in [8, 13]]
+    test_dirs = [Path(f"./ground_truth/sample{x}") for x in [14]]
+    # test_dirs = [Path(f"./ground_truth/sample{x}") for x in [14, 16]]
 
-    for test_dir in test_dirs:
-        logger.info(f"\n=== Testing with context: {test_dir} ===")
+    for i in range(2):
+        logger.info(f"\n\n=== Agent Run {i+1} ===")
+        for test_dir in test_dirs:
+            logger.info(f"\n=== Testing with context: {test_dir} ===")
 
-        task_path = Path(test_dir) / "task.yml"
-        with task_path.open() as f:
-            task = yaml.safe_load(f)
+            task_path = Path(test_dir) / "task.yml"
+            with task_path.open() as f:
+                task = yaml.safe_load(f)
 
-        override = task.get("override", None)
+            override = task.get("override", None)
 
-        # TO DO: add examples of override usage in ground_truth
-        if override:
-            prompt = override
+            # TO DO: add examples of override usage in ground_truth
+            if override:
+                prompt = override
 
-        else:
-            task_type = task.get("task_type", "unknown")
-            # Get  the first item where key1 equals val
-            task_data = next(
-                (item for item in tasks if item.get("task_type") == task_type), None
+            else:
+                task_type = task.get("task_type", "unknown")
+                # Get  the first item where key1 equals val
+                task_data = next(
+                    (item for item in tasks if item.get("task_type") == task_type), None
+                )
+
+                if task_data is None:
+                    logger.warning(f"No task data found for type: {task_type}")
+                    continue
+
+                prompt = task_data["prompt"]
+
+            metadata_path = Path(test_dir) / "metadata.json"
+            with metadata_path.open() as f:
+                metadata = json.load(f)
+
+            prompt = prompt.format(metadata=metadata)
+
+            # Run agent with context
+            result = agent.forward(
+                prompt,
+                context_path=Path(test_dir),
+                persist_context=True,  # Set to True to inspect the temp directory
             )
 
-            if task_data is None:
-                logger.warning(f"No task data found for type: {task_type}")
-                continue
-
-            prompt = task_data["prompt"]
-
-        metadata_path = Path(test_dir) / "metadata.json"
-        with metadata_path.open() as f:
-            metadata = json.load(f)
-
-        prompt = prompt.format(metadata=metadata)
-
-        # Run agent with context
-        result = agent.forward(
-            prompt,
-            context_path=Path(test_dir),
-            persist_context=True,  # Set to True to inspect the temp directory
-        )
-
-        logger.info(f"\n=== Result for context: {test_dir} ===")
-        logger.info(result)
+            logger.info(f"\n=== Result for context: {test_dir} ===")
+            logger.info(result)

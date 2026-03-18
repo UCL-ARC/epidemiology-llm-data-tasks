@@ -1,7 +1,0 @@
-{
-  "result": "The R script has been executed successfully. The cleaned and harmonized dataset has been written to 'data/output/cleaned_data.csv' with the following variables: NSID, incwhh14, incwhh15, incwhhcnt14, incwhhcnt15, incwhh16, and incwhh17.",
-  "state": "success",
-  "time_taken": 36.73258590698242,
-  "steps": 4,
-  "token_usage": 33906
-}

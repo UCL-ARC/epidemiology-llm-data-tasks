@@ -1,0 +1,7 @@
+{
+  "result": "Data cleaning and harmonization completed successfully. The cleaned dataset containing NSID, incwhh14, incwhh15, incwhhcnt14, incwhhcnt15, incwhh16, and incwhh17 variables has been saved to 'data/output/cleaned_data.csv'. All missing values have been standardized according to the specified codes, and income variables have been properly banded and labeled.",
+  "state": "success",
+  "time_taken": 187.7199831008911,
+  "steps": 12,
+  "token_usage": 294101
+}
