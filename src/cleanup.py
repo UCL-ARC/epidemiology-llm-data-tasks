@@ -33,48 +33,55 @@ def main(*, delete_data: bool = False) -> None:  # noqa: PLR0912
         if id_part.isdigit():
             sample_dirs[int(id_part)].append(p)
 
-    incomplete: list[int] = []
-    complete: list[int] = []
+    incomplete_dirs: list[Path] = []
+    complete_dirs: list[Path] = []
+    missing_samples: list[int] = []
 
     for sid in all_sample_ids:
         dirs = sorted(sample_dirs[sid], key=lambda p: p.stat().st_mtime)
 
         if not dirs:
-            incomplete.append(sid)
+            missing_samples.append(sid)
             continue
 
-        # Check if any dir has cleaned_data.csv in data/output/
-        valid_dirs = [
-            d for d in dirs if (d / "data" / "output" / "cleaned_data.csv").exists()
-        ]
-
-        if valid_dirs:
-            if delete_data:
-                # Keep the latest valid one, delete everything else
-                keep = valid_dirs[-1]
-                for d in dirs:
-                    if d != keep:
-                        logger.info(f"Deleting duplicate/stale dir: {d}")
-                        shutil.rmtree(d)
-            complete.append(sid)
-        else:
-            if delete_data:
-                # No valid output — delete all dirs for this sample
-                for d in dirs:
-                    logger.info(f"Deleting incomplete dir (no cleaned_data.csv): {d}")
-                    shutil.rmtree(d)
+        for d in dirs:
+            if (d / "data" / "output" / "cleaned_data.csv").exists():
+                complete_dirs.append(d)
             else:
-                for d in dirs:
-                    logger.info(f"Would delete incomplete dir: {d}")
-            incomplete.append(sid)
+                incomplete_dirs.append(d)
 
-    logger.info(f"\nComplete samples ({len(complete)}): {complete}")
-    logger.info(f"Incomplete/missing samples ({len(incomplete)}): {incomplete}")
+    # Report
+    logger.info(f"\nComplete dirs ({len(complete_dirs)}):")
+    for d in complete_dirs:
+        logger.info(f"  ✓ {d}")
 
-    if not delete_data and incomplete:
-        logger.info("Run with --delete to remove incomplete outputs.")
+    if incomplete_dirs:
+        logger.info(
+            f"\nIncomplete dirs ({len(incomplete_dirs)}) — " f"no cleaned_data.csv:"
+        )
+        for d in incomplete_dirs:
+            logger.info(f"  ✗ {d}")
 
-    logger.info(f"\nsamples_to_run = {incomplete}")
+    if missing_samples:
+        logger.info(f"\nMissing samples (no dirs at all): {missing_samples}")
+
+    # Delete incomplete dirs
+    if incomplete_dirs:
+        if delete_data:
+            for d in incomplete_dirs:
+                logger.info(f"Deleting incomplete dir: {d}")
+                shutil.rmtree(d)
+            logger.info(f"Deleted {len(incomplete_dirs)} incomplete dir(s).")
+        else:
+            logger.info(
+                f"\nRun with --delete to remove {len(incomplete_dirs)} "
+                f"incomplete dir(s).",
+            )
+
+    # Report which samples still need running (missing or have no complete dirs)
+    complete_sample_ids = {int(d.name[6 : d.name.find("_", 6)]) for d in complete_dirs}
+    samples_to_run = sorted(set(all_sample_ids) - complete_sample_ids)
+    logger.info(f"\nsamples_to_run = {samples_to_run}")
 
 
 if __name__ == "__main__":

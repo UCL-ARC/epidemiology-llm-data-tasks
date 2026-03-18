@@ -14,7 +14,7 @@ def main() -> None:
     """Run comparison on sample data directories."""
     logger.remove()
     logger.add(sys.stderr, level="INFO")
-    model_name = "_qwen3.5:9b_3"
+    model_name = "_devstral-small-2:24b_2"
 
     results = []
 
