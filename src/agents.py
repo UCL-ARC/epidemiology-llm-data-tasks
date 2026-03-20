@@ -219,11 +219,7 @@ if __name__ == "__main__":
     from .tools import produce_and_execute_r
 
     # --- Ollama (via LiteLLM) ---
-    model_id = "devstral-small-2:24b-cloud"
-    model_id = "ministral-3:14b-cloud"
-    # model_id = "qwen3-next:80b-cloud"
-    # model_id = "qwen3.5:397b-cloud"
-    # model_id = "gemma3:27b-cloud"
+    model_id = "gemma3:4b"
     model_name = f"ollama_chat/{model_id}"
     api_key = "ollama"
 
@@ -262,7 +258,7 @@ if __name__ == "__main__":
         ],
         key=lambda p: int(p.name[6:]),
     )
-    test_dirs = [Path(f"./ground_truth/sample{x}") for x in [14]]
+    test_dirs = [Path(f"./ground_truth/sample{x}") for x in [9, 16]]
     # test_dirs = [Path(f"./ground_truth/sample{x}") for x in [14, 16]]
 
     for i in range(2):

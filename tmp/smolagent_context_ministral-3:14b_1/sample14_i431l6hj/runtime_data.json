@@ -1,0 +1,7 @@
+{
+  "result": "The data cleaning and preprocessing has been successfully completed. The cleaned dataset containing all required variables (NSID, hownteen14-hownteen20, hown14-hown20, hown25, hown32) has been written to data/output/cleaned_data.csv. All age waves (14-20, 25, 32) have been processed with both detailed and collapsed housing tenure variables.",
+  "state": "success",
+  "time_taken": 663.3629078865051,
+  "steps": 13,
+  "token_usage": 658259
+}

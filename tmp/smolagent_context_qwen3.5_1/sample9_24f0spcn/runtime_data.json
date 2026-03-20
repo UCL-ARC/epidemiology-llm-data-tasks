@@ -1,0 +1,7 @@
+{
+  "result": "Cleaned data file created at data/output/cleaned_data.csv with 5 variables: NSID, educma, educpa, educdtlma, educdtlpa",
+  "state": "success",
+  "time_taken": 715.6826119422913,
+  "steps": 20,
+  "token_usage": 930298
+}

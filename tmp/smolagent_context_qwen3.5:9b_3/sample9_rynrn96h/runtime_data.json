@@ -1,0 +1,7 @@
+{
+  "result": "Successfully created cleaned_data.csv with 16111 rows and 5 variables (NSID, educdtlma, educdtlpa, educma, educpa)",
+  "state": "success",
+  "time_taken": 346.7703700065613,
+  "steps": 8,
+  "token_usage": 159385
+}

@@ -1,0 +1,7 @@
+{
+  "result": "The cleaned dataset has been successfully created at data/output/cleaned_data.csv. The file contains 16,111 observations with the following variables: NSID, incwhh14 (banded age 14), incwhh15 (banded age 15), incwhhcnt14 (continuous age 14), incwhhcnt15 (continuous age 15), incwhh16 (categorical age 16), and incwhh17 (categorical age 17). All wave-specific missing codes have been harmonized to standard codes (-9=Refusal, -8=Don't know, -1=Item not applicable, -3=Not asked/interviewed, -2=Script error/lost).",
+  "state": "success",
+  "time_taken": 68.85354208946228,
+  "steps": 5,
+  "token_usage": 35561
+}

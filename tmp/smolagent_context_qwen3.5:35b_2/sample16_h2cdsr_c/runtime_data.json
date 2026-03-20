@@ -1,7 +1,0 @@
-{
-  "result": "The cleaned dataset has been successfully created at data/output/cleaned_data.csv with 16,111 rows and 7 columns (NSID, incwhh14, incwhh15, incwhhcnt14, incwhhcnt15, incwhh16, incwhh17). All missing codes have been harmonized to the standard scheme (-9=Refusal, -8=Don't know, -3=Not asked, -2=Script error, -1=Item not applicable). Banded income variables (incwhh14, incwhh15) were derived from continuous income for ages 14-15, while banded variables (incwhh16, incwhh17) were retained from the original categorical data for ages 16-17.",
-  "state": "success",
-  "time_taken": 252.20672965049744,
-  "steps": 11,
-  "token_usage": 185075
-}
