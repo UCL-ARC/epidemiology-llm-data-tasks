@@ -1,6 +1,0 @@
-library(readr)
-data <- read_csv("data/output/cleaned_data.csv")
-str(data)
-head(data)
-colnames(data)
-nrow(data)
