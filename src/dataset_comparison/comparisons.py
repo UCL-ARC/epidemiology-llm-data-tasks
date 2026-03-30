@@ -238,6 +238,7 @@ def compare_categorical(
         category_overlap_score=category_overlap_score,
         distribution_similarity=distribution_similarity,
         data_match=exact_match_rate >= data_match_threshold,
+        category_mapping=final_mapping,
     )
 
 

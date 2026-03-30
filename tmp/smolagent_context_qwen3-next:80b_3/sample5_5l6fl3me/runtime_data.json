@@ -1,0 +1,7 @@
+{
+  "result": "Data cleaning completed successfully. The R script loaded 5 wave datasets (wave_one, wave_four, wave_six, ns8_2015_derived, ns9_2022_derived), merged them by NSID using full_join, harmonized missing value codes to standard codes (-9=Refused, -8=Don't know, -1=Not applicable, -3=Not asked, -2=Script error, -7=Prefer not to say), and created both collapsed harmonized marital status variables (partnr19, partnr25, partnr32) and detailed adult versions (partnradu19, partnradu25, partnradu32) with appropriate value labels. The cleaned dataset with 16,111 rows and 7 columns (NSID + 6 derived variables) has been written to data/output/cleaned_data.csv.",
+  "state": "success",
+  "time_taken": 89.55758929252625,
+  "steps": 4,
+  "token_usage": 35404
+}

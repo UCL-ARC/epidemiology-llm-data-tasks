@@ -1,0 +1,7 @@
+{
+  "result": "Data cleaning complete. The cleaned dataset has been written to data/output/cleaned_data.csv containing NSID, collapsed age-specific variables (hown14, hown15, hown16, hown17, hown18, hown19, hown20, hown25, hown32), and detailed adolescent variables (hownteen14, hownteen15, hownteen16, hownteen17, hownteen18, hownteen19, hownteen20).",
+  "state": "success",
+  "time_taken": 145.99243187904358,
+  "steps": 4,
+  "token_usage": 60363
+}

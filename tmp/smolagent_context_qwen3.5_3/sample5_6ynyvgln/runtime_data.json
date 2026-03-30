@@ -1,0 +1,7 @@
+{
+  "result": "Data cleaning completed successfully. The R script loaded 5 tab-delimited survey datasets (wave_one_lsype_young_person_2020.tab, wave_four_lsype_young_person_2020.tab, wave_six_lsype_young_person_2020.tab, ns8_2015_derived.tab, ns9_2022_derived_variables.tab) from data/input/, merged them by NSID using full_join, and created harmonized marital status variables with:\n\n1. Collapsed harmonized variables (partnr19, partnr25, partnr32) with consistent categories across all ages: 1=Single, 2=Married, 3=Separated, 4=Divorced, 5=Widowed\n\n2. Detailed age-specific variables (partnradu25, partnradu32) preserving full granularity including Civil Partnership categories\n\n3. Standard missing value codes applied: -9=Refusal, -8=Don't know/Insufficient information, -1=Not applicable, -3=Not asked, -2=Script error\n\n4. Wave-specific missing codes converted (-997, -97, -92, -91, -1 from wave 6; -9, -8, -1 from waves 8 and 9)\n\nOutput file: data/output/cleaned_data.csv with 16,111 observations and 6 variables (NSID, partnr19, partnr25, partnradu25, partnr32, partnradu32)",
+  "state": "success",
+  "time_taken": 61.46661829948425,
+  "steps": 3,
+  "token_usage": 17678
+}

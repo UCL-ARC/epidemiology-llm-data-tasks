@@ -6,9 +6,11 @@ override: |
   Follow all instructions:
 
   1. **File Loading**:
-     - When loading input files, always prepend the directory data/input/.
-     - Load and merge all available files by NSID using full joins
-     
+     - Ensure when you load the input files you append the dir "data/input/" this is where they are stored.
+     - Load each dataset into a separate object and merge using full_join by the ID variable.
+     - The input files are tab-delimited (.tab) text files. Use `readr::read_delim()` with `delim = "\t"` to load them. 
+     - Load each file explicitly by name from the metadata.
+
   2. **Variable Naming Conventions**:
      - Use the exact ID variable name from source data (NSID).
      - Use short, descriptive, lowercase variable names with age suffixes:
@@ -26,9 +28,11 @@ override: |
      - -1 = Item not applicable
      - -3 = Not asked/interviewed
      - -2 = Script error/lost
+     - Any Null value to be coded as -3 (Not asked at the fieldwork stage/participated/interviewed) to distinguish from explicit missing codes.
 
   5. **Missing Value Code Harmonization**:
-     - Recode all NA values and wave-specific negative codes to the standard missing scheme.
+     - Recode wave-specific negative codes to the standard missing scheme.
+     - NA values arising from respondents absent from a wave should be recoded to -3 (not asked/interviewed), not -1 (not applicable).
      - Follow exact mappings provided in metadata.
 
   6. **Non-Harmonization Across Ages**:
@@ -52,7 +56,8 @@ override: |
       - Write exactly one CSV file named data/output/cleaned_data.csv.
 
   11. **Execution**:
-      - Produce a complete runnable R script and run it.
+      - You must run your R script after generating it.
+      - IMPORTANT: If your R script fails, read the error message carefully, fix the script, and try again. Never return an error message as your final answer.
 
   Produce your script in R.
   

@@ -1,0 +1,7 @@
+{
+  "result": "Data cleaning and preprocessing completed successfully. The R script loaded 7 survey datasets from data/input/, merged them by NSID using full_join, and created harmonized economic activity variables for ages 17, 18, 19, 20, 25, and 32 (ecoact17, ecoact18, ecoact19, ecoact20, ecoact25, ecoact32) with 6-category collapsed coding, plus detailed adult versions for ages 25 and 32 (ecoactadu25, ecoactadu32) with 10-category detailed coding. All variables were converted to factors with appropriate labels, missing values were standardized according to the specified codes, and the final cleaned dataset with 16,111 rows and 9 columns was written to data/output/cleaned_data.csv.",
+  "state": "success",
+  "time_taken": 61.6658890247345,
+  "steps": 3,
+  "token_usage": 23564
+}

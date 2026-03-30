@@ -1,0 +1,7 @@
+{
+  "result": "Successfully cleaned and harmonized parental NS-SEC occupational class variables across all 5 waves. The script:\n\n1. Loaded all 5 tab-delimited files from data/input/\n2. Selected and renamed variables to nssecma14-18 (mothers) and nssecpa14-18 (fathers)\n3. Harmonized NS-SEC classification by taking integer part (categories 1-17)\n4. Harmonized missing value codes:\n   - -999 → -2 (Script error/information lost)\n   - -94 → -8 (Don't know/insufficient information)\n   - -99, -98 → -3 (Not asked/not interviewed)\n5. Merged all waves using full_join by NSID\n6. Converted all NS-SEC variables to labelled factors with explicit labels\n7. Output contains 11 variables (NSID + 10 NS-SEC variables) and 16,111 rows\n8. Written to data/output/cleaned_data.csv",
+  "state": "success",
+  "time_taken": 326.87771105766296,
+  "steps": 7,
+  "token_usage": 133843
+}

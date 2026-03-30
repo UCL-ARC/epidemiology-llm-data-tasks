@@ -271,7 +271,7 @@ class TestAggregateComparisonResults:
 
     def test_single_result_numeric(self) -> None:
         """Test aggregation with a single numeric-only result."""
-        summary_df = aggregate_comparison_results([("sample1", _DEFAULT_RESULT)])
+        summary_df = aggregate_comparison_results([("sample1", _DEFAULT_RESULT, None)])
         assert len(summary_df) == 2  # 1 sample + 1 aggregate row
         assert summary_df.iloc[0]["sample"] == "sample1"
         assert summary_df.iloc[1]["sample"] == "AGGREGATE"
@@ -295,7 +295,7 @@ class TestAggregateComparisonResults:
                 ),
             ],
         )
-        summary_df = aggregate_comparison_results([("sample1", result)])
+        summary_df = aggregate_comparison_results([("sample1", result, None)])
         assert len(summary_df) == 2
         assert summary_df.iloc[0]["matched_categorical_cols"] == 1
         assert summary_df.iloc[0]["matched_numeric_cols"] == 0
@@ -323,7 +323,7 @@ class TestAggregateComparisonResults:
             task_completion_percentage=50.0,
         )
         summary_df = aggregate_comparison_results(
-            [("sample1", _DEFAULT_RESULT), ("sample2", result2)]
+            [("sample1", _DEFAULT_RESULT, None), ("sample2", result2, None)]
         )
         assert len(summary_df) == 3  # 2 samples + aggregate
         agg = summary_df[summary_df["sample"] == "AGGREGATE"].iloc[0]
@@ -351,7 +351,7 @@ class TestAggregateComparisonResults:
             ],
             unmatched_gt_columns=["missing"],
         )
-        summary_df = aggregate_comparison_results([("sample1", result)])
+        summary_df = aggregate_comparison_results([("sample1", result, None)])
         row = summary_df.iloc[0]
         assert row["true_positives"] == 1
         assert row["false_positives"] == 0
@@ -378,7 +378,7 @@ class TestAggregateComparisonResults:
                 ),
             ],
         )
-        summary_df = aggregate_comparison_results([("sample1", result)])
+        summary_df = aggregate_comparison_results([("sample1", result, None)])
         row = summary_df.iloc[0]
         assert row["true_positives"] == 0
         assert row["false_positives"] == 1
@@ -406,7 +406,7 @@ class TestAggregateComparisonResults:
             unmatched_gt_columns=["extra"],
         )
         summary_df = aggregate_comparison_results(
-            [("s1", _DEFAULT_RESULT), ("s2", result2)]
+            [("s1", _DEFAULT_RESULT, None), ("s2", result2, None)]
         )
         agg = summary_df[summary_df["sample"] == "AGGREGATE"].iloc[0]
         # Total TP=2, FP=0, FN=1
@@ -425,7 +425,7 @@ class TestAggregateComparisonResults:
             column_comparisons=[],
             unmatched_gt_columns=["col"],
         )
-        summary_df = aggregate_comparison_results([("sample1", result)])
+        summary_df = aggregate_comparison_results([("sample1", result, None)])
         row = summary_df.iloc[0]
         assert row["precision"] is None
         assert row["recall"] == pytest.approx(0.0)
@@ -447,7 +447,7 @@ class TestAggregateComparisonResults:
                 ),
             ],
         )
-        summary_df = aggregate_comparison_results([("sample1", result)])
+        summary_df = aggregate_comparison_results([("sample1", result, None)])
         row = summary_df.iloc[0]
         assert row["avg_numeric_rmse"] is None
         assert row["avg_numeric_corr"] is None
@@ -455,7 +455,7 @@ class TestAggregateComparisonResults:
 
     def test_task_completion_fields(self) -> None:
         """Test task completion percentage and task_complete flag."""
-        summary_df = aggregate_comparison_results([("sample1", _DEFAULT_RESULT)])
+        summary_df = aggregate_comparison_results([("sample1", _DEFAULT_RESULT, None)])
         row = summary_df.iloc[0]
         assert row["task_completion_percentage"] == 100.0
         assert row["task_complete"] is True
@@ -466,7 +466,7 @@ class TestAggregateComparisonResults:
             _DEFAULT_RESULT,
             task_completion_percentage=75.0,
         )
-        summary_df = aggregate_comparison_results([("sample1", result)])
+        summary_df = aggregate_comparison_results([("sample1", result, None)])
         row = summary_df.iloc[0]
         assert row["task_complete"] is False
 
@@ -477,7 +477,7 @@ class TestAggregateComparisonResults:
             task_completion_percentage=50.0,
         )
         summary_df = aggregate_comparison_results(
-            [("s1", _DEFAULT_RESULT), ("s2", result2)]
+            [("s1", _DEFAULT_RESULT, None), ("s2", result2, None)]
         )
         agg = summary_df[summary_df["sample"] == "AGGREGATE"].iloc[0]
         assert agg["avg_task_completion_percentage"] == pytest.approx(75.0)
@@ -502,7 +502,7 @@ class TestAggregateComparisonResults:
                 ),
             ],
         )
-        summary_df = aggregate_comparison_results([("sample1", result)])
+        summary_df = aggregate_comparison_results([("sample1", result, None)])
         row = summary_df.iloc[0]
         assert row["true_positives"] == 1
 
@@ -525,6 +525,6 @@ class TestAggregateComparisonResults:
                 ),
             ],
         )
-        summary_df = aggregate_comparison_results([("sample1", result)])
+        summary_df = aggregate_comparison_results([("sample1", result, None)])
         row = summary_df.iloc[0]
         assert row["false_positives"] == 1

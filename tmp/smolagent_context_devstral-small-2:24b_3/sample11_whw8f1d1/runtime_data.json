@@ -1,0 +1,7 @@
+{
+  "result": "The R script has been successfully executed. The cleaned dataset has been saved as 'data/output/cleaned_data.csv'. The script performed the following steps:\n\n1. Loaded all four wave datasets using `readr::read_delim()` with tab delimiter.\n2. Merged the datasets using `full_join()` by the NSID variable.\n3. Harmonized missing value codes across waves to standard codes (-9, -8, -1, -3, -2, -7).\n4. Created age-specific detailed variables for parental economic activity (ecoactdtma14, ecoactdtpa14, etc.).\n5. Created collapsed harmonized variables for parental economic activity (ecoactma14, ecoactpa14, etc.).\n6. Converted all categorical variables to factors with appropriate labels.\n7. Selected and output only the final derived variables to 'data/output/cleaned_data.csv'.\n\nThe output file contains the NSID identifier and both detailed and collapsed variables for parental economic activity at ages 14, 15, 16, and 17.",
+  "state": "success",
+  "time_taken": 29.00138020515442,
+  "steps": 3,
+  "token_usage": 24783
+}

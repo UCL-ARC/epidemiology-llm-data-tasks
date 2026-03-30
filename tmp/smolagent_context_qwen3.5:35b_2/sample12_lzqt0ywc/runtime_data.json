@@ -1,0 +1,7 @@
+{
+  "result": "The R script has been successfully executed. The cleaned data file has been created at data/output/cleaned_data.csv with 16,111 observations and 7 variables (NSID, nssec17, nssec18, nssec19, nssec20, nssec25, nssec32). All NS-SEC variables have been processed according to the specifications: wave-specific missing codes have been harmonized to the standard scheme (-9=Refusal, -8=Don't know/insufficient information, -7=Prefer not to say, -3=Not asked at fieldwork stage, -2=Schedule not applicable, -1=Item not applicable), fractional codes have been collapsed to major categories using floor(), NA values have been coded as -3, and all variables have been converted to labelled factor variables with explicit labels for categories 1-17 and all standard missing codes. The age 25 variable has been specially derived using the W8DACTIVITYC variable to identify full-time students (category 15).",
+  "state": "success",
+  "time_taken": 678.8449165821075,
+  "steps": 18,
+  "token_usage": 473780
+}

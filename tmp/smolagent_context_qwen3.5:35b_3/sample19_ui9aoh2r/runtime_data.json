@@ -1,0 +1,7 @@
+{
+  "result": "The cleaned dataset has been successfully created at data/output/cleaned_data.csv with 16,111 cohort members and 3 variables (NSID, bmi25, bmi32). BMI values are continuous numeric variables with missing values harmonized to -3 (not asked/interviewed).",
+  "state": "success",
+  "time_taken": 618.471084356308,
+  "steps": 21,
+  "token_usage": 342025
+}

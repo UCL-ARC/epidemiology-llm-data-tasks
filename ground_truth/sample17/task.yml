@@ -6,10 +6,11 @@ override: |
   Follow all instructions:
 
   1. **File Loading**:
-     - Ensure when loading input files you always prepend the directory "data/input/".
-     - Load each dataset into a separate object.
-     - Merge all datasets using full_join by the ID variable NSID.
-
+     - Ensure when you load the input files you append the dir "data/input/" this is where they are stored.
+     - Load each dataset into a separate object and merge using full_join by the ID variable.
+     - The input files are tab-delimited (.tab) text files. Use `readr::read_delim()` with `delim = "\t"` to load them. 
+     - Load each file explicitly by name from the metadata.
+     
      - Load and merge the following files:
        * wave_one_lsype_young_person_2020.tab
        * wave_two_lsype_family_background_2020.tab
@@ -89,8 +90,8 @@ override: |
       - Do NOT include intermediate or wave-specific variables unless they are final outputs.
 
   12. **Execution**:
-      - Produce a complete, runnable R script.
-      - You must run the R script after generating it.
+      - You must run your R script after generating it.
+      - IMPORTANT: If your R script fails, read the error message carefully, fix the script, and try again. Never return an error message as your final answer.
 
   Here is the appropriate metadata for the task:
 

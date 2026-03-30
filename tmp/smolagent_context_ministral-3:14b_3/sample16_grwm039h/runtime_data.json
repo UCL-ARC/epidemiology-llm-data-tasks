@@ -1,0 +1,7 @@
+{
+  "result": "The R script has been successfully generated and executed to clean and harmonize the household weekly income variables from the survey datasets. The script performs the following steps:\n\n1. Loads the datasets from the specified input directory.\n\n2. Merges datasets by the NSID variable.\n\n3. Recodes missing values for continuous variables (W1GrsswkHH and W2GrsswkHH) according to the standard missing-value codes.\n\n4. Creates banded income variables for ages 14 and 15 based on predefined income thresholds.\n\n5. Handles already banded variables for ages 16 and 17, recoding missing values appropriately.\n\n6. Selects the required variables and writes the cleaned dataset to `data/output/cleaned_data.csv`.\n\nThe output file `cleaned_data.csv` contains the following variables:\n- NSID\n- incwhh14, incwhh15 (banded income variables for ages 14 and 15)\n- incwhhcnt14, incwhhcnt15 (continuous income variables for ages 14 and 15)\n- incwhh16, incwhh17 (banded income variables for ages 16 and 17)\n\nThe script follows the specified naming conventions and handles missing values according to the provided instructions.",
+  "state": "success",
+  "time_taken": 116.11450123786926,
+  "steps": 7,
+  "token_usage": 105096
+}

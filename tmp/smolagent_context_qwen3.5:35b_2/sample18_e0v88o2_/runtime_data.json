@@ -1,0 +1,7 @@
+{
+  "result": "The R script has been successfully executed and the cleaned data file has been created at data/output/cleaned_data.csv. The file contains the NSID variable along with the eight GHQ-12 derived variables: ghq15, ghq17, ghq25, ghq32 (pre-derived scores harmonized to standard missing value codes) and ghqtl15, ghqtl17, ghqtl25, ghqtl32 (manually computed sum scores from item-level data). All derived GHQ variables have been converted to factors with standard missing value code labels applied.",
+  "state": "success",
+  "time_taken": 335.14243507385254,
+  "steps": 11,
+  "token_usage": 297790
+}

@@ -1,0 +1,7 @@
+{
+  "result": "The R script has been successfully executed to clean and preprocess the survey datasets. The cleaned data has been saved to 'data/output/cleaned_data.csv'.",
+  "state": "success",
+  "time_taken": 14.29425573348999,
+  "steps": 3,
+  "token_usage": 12714
+}

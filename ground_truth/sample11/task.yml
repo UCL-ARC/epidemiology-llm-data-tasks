@@ -8,7 +8,9 @@ override: |
   1. **File Loading**:
      - Ensure when you load the input files you append the dir "data/input/" this is where they are stored.
      - Load each dataset into a separate object and merge using full_join by the ID variable.
-
+     - The input files are tab-delimited (.tab) text files. Use `readr::read_delim()` with `delim = "\t"` to load them. 
+     - Load each file explicitly by name from the metadata.
+     
   2. **Variable Naming Conventions**:
      - Use the exact ID variable name from source data (e.g., NSID) - do NOT create or rename to generic "id".
      - All variable names must be short, descriptive, and lowercase.
@@ -24,6 +26,7 @@ override: |
      - -3 = Not asked at the fieldwork stage/participated/interviewed
      - -2 = Schedule not applicable/Script error/information lost
      - -7 = Prefer not to say
+     - Any Null value to be coded as -3 (Not asked at the fieldwork stage/participated/interviewed) to distinguish from explicit missing codes.
 
   4. **Response Category Harmonization**:
      - When the SAME construct is measured across ages with DIFFERENT response categories, harmonize them into a common coding scheme.
@@ -55,9 +58,10 @@ override: |
      - When creating derived categorical variables from more detailed measures (e.g., collapsing many activity states into a 6-category scheme), apply the transformation consistently across all ages and convert the result to a labeled factor.
 
   9. **Missing Value Code Harmonization**:
-     - Convert wave-specific negative codes (e.g., -100, -97, -999, -998, -997, -995, -94, -92, -91, -99, -98, -996) to the standard missing-value codes defined in instruction 3.
+     - Convert wave-specific negative codes to the standard missing-value codes defined in instruction 3.
      - Multiple wave-specific codes may map to the same standard code.
      - Follow exact mappings provided in metadata.
+     - Do NOT blanket-remap all negative codes to a single value (e.g., all to -9). Each wave-specific code has a distinct meaning — map it to the standard code that best matches that meaning.
 
   10. **Factor Variables and Labels**:
       - When recoding categorical variables, use factor variables with explicit labels for both valid categories and all missing value codes to preserve metadata.
@@ -80,6 +84,7 @@ override: |
 
   15. **Execution**:
       - You must run your R script after generating it.
+      - IMPORTANT: If your R script fails, read the error message carefully, fix the script, and try again. Never return an error message as your final answer.
 
   Produce your script in R.
   

@@ -1,0 +1,10 @@
+# Verify the output file
+output <- readr::read_csv("data/output/cleaned_data.csv")
+cat("Number of rows:", nrow(output), "\n")
+cat("Number of columns:", ncol(output), "\n")
+cat("Column names:\n")
+print(names(output))
+cat("\nFirst few rows:\n")
+print(head(output))
+cat("\nStructure:\n")
+str(output)

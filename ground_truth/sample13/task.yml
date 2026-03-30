@@ -6,10 +6,11 @@ override: |
   Follow all instructions:
 
   1. **File Loading**:
-     - When loading input files, always prepend the directory data/input/.
-     - Load all waves listed in the metadata.
-     - Merge all waves by NSID using full joins.
-
+     - Ensure when you load the input files you append the dir "data/input/" this is where they are stored.
+     - Load each dataset into a separate object and merge using full_join by the ID variable.
+     - The input files are tab-delimited (.tab) text files. Use `readr::read_delim()` with `delim = "\t"` to load them. 
+     - Load each file explicitly by name from the metadata.
+     
   2. **Variable Naming Conventions**:
      - Use the exact ID variable name from source data (NSID).
      - Use short, descriptive, lowercase variable names.
@@ -29,7 +30,8 @@ override: |
 
   5. **Missing Value Code Harmonization**:
      - Harmonise all wave-specific negative codes:
-       * -999 and -94 → -2 (Script error/information lost)
+       * -999 → -2 (Script error/information lost)
+       * -94 → -8 (Don't know/insufficient information)
        * -99, -98, and NA → -3 (Not asked/not interviewed)
      - Preserve standard missing codes:
        * -9 = Refusal
@@ -63,8 +65,8 @@ override: |
      - Write exactly one CSV file named data/output/cleaned_data.csv.
 
   10. **Execution**:
-      - Produce a complete runnable R script.
       - You must run your R script after generating it.
+      - IMPORTANT: If your R script fails, read the error message carefully, fix the script, and try again. Never return an error message as your final answer.
 
   Produce your script in R.
   

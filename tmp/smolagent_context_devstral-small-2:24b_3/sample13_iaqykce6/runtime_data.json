@@ -1,0 +1,7 @@
+{
+  "result": "The cleaned and harmonized dataset has been successfully created and saved as 'data/output/cleaned_data.csv'. The file contains the NSID identifier and the parental NS-SEC occupational class variables (nssecma14-nssecma18 for mothers and nssecpa14-nssecpa18 for fathers) across all five waves of the longitudinal study. The data has been properly harmonized according to the 17-category NS-SEC classification and missing value codes have been standardized as specified.",
+  "state": "success",
+  "time_taken": 139.51196908950806,
+  "steps": 10,
+  "token_usage": 321012
+}

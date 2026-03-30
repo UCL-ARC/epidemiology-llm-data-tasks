@@ -1,0 +1,7 @@
+{
+  "result": "The R script has been executed successfully. The cleaned and consolidated parental education data has been saved to 'data/output/cleaned_data.csv'.",
+  "state": "success",
+  "time_taken": 15.822865962982178,
+  "steps": 3,
+  "token_usage": 13598
+}

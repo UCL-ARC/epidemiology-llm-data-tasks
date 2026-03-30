@@ -1,0 +1,7 @@
+{
+  "result": "Data cleaning completed successfully. Output file: data/output/cleaned_data.csv with 16111 rows containing NSID and harmonized education variables (educaim17, educaim19, educaim20, educaim25, educaim32) using the six-category coding scheme (0=HVQ 4-5, 1=NVQ 1-3, 2=Entry level, 3=Other, 4=None of these, 5=Not studying) with proper missing value recoding (-3 for all missing/NA values).",
+  "state": "success",
+  "time_taken": 293.2999155521393,
+  "steps": 6,
+  "token_usage": 126795
+}

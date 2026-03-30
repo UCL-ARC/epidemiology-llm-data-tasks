@@ -8,6 +8,9 @@ override: |
   1. **File Loading**:
      - Ensure when you load the input files you append the dir "data/input/" this is where they are stored.
      - Load each dataset into a separate object and merge using full_join by the ID variable.
+     - The input files are tab-delimited (.tab) text files. Use `readr::read_delim()` with `delim = "\t"` to load them. 
+     - Load each file explicitly by name from the metadata.
+     - Load ALL datasets listed in the metadata, even if they contain only the ID variable. All files are needed to construct the complete cohort member frame via full_join.
 
   2. **Variable Naming Conventions**:
      - Use the exact ID variable name from source data (e.g., NSID) - do NOT create or rename to generic "id".
@@ -22,16 +25,19 @@ override: |
      - -3 = Not asked at the fieldwork stage/participated/interviewed
      - -2 = Schedule not applicable/Script error/information lost
      - NEVER collapse different missing-value meanings into the same code unless metadata explicitly says so.
+     - Any Null value to be coded as -3 (Not asked at the fieldwork stage/participated/interviewed) to distinguish from explicit missing codes.
 
   4. **Response Category Harmonization**:
      - When the SAME construct is measured across ages with DIFFERENT response categories, harmonize them into a common multi-category coding scheme.
      - Create age-specific variables (educaim17, educaim19, educaim20, educaim25, educaim32) that ALL use the SAME ordered conceptual categories:
-       * 0 = NVQ 4–5 (higher/HE level)
-       * 1 = NVQ 1–3 (lower/mid level)
-       * 2 = None/entry level
-       * 3 = Other
+       * 0 = NVQ 4–5 (higher/HE level): Doctorate, Masters, Undergraduate/First degree, Diplomas in HE, Other HE, PGCE, Teaching quals, Nursing quals, HNC/HND, NVQ 4, NVQ 5, Professional qualifications at degree level
+       * 1 = NVQ 1–3 (lower/mid level): A/AS levels, AVCE, GCSE, NVQ 1, NVQ 2, NVQ 3, Intermediate/Foundation GNVQ, Other level 1/2/3, Apprenticeships, BTEC, City & Guilds, Key Skills, RSA, Scottish equivalents
+       * 2 = None/entry level: Entry level qualifications, Basic skills
+       * 3 = Other: "Other" or "level unknown" qualifications
        * 4 = None of these qualifications
        * 5 = Not studying
+     - Note: at age 17 there are NO NVQ 4–5 options — all substantive codes are NVQ 1–3.
+     - Note: the numeric codes for the same qualification DIFFER across waves (e.g., NVQ 1 = code 9 at age 17 but code 1 at age 20). Always classify by the qualification LABEL, not the numeric code.
      - Do NOT collapse all substantive responses into only one or two categories.
      - Preserve as much conceptual detail as possible while maintaining comparability across ages.
 
@@ -85,6 +91,7 @@ override: |
 
   14. **Execution**:
       - You must run your R script after generating it.
+      - IMPORTANT: If your R script fails, read the error message carefully, fix the script, and try again. Never return an error message as your final answer.
 
   Produce your script in R.
 

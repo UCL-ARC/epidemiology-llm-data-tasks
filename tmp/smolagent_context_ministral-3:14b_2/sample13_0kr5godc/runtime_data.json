@@ -1,0 +1,7 @@
+{
+  "result": "The data cleaning and harmonization process has been successfully completed. The cleaned dataset containing the NS-SEC occupational class variables for mothers and fathers across waves 14-18 has been output to 'data/output/cleaned_data.csv'. The file includes the following variables:\n\n- NSID (cohort member identifier)\n- nssecma14, nssecpa14 (mother's and father's NS-SEC at age 14)\n- nssecma15, nssecpa15 (mother's and father's NS-SEC at age 15)\n- nssecma16, nssecpa16 (mother's and father's NS-SEC at age 16)\n- nssecma17, nssecpa17 (mother's and father's NS-SEC at age 17)\n- nssecma18, nssecpa18 (mother's and father's NS-SEC at age 18)\n\nAll variables have been properly harmonized according to the 17-category NS-SEC classification with appropriate missing value codes.",
+  "state": "success",
+  "time_taken": 173.02980613708496,
+  "steps": 10,
+  "token_usage": 256289
+}

@@ -1,0 +1,7 @@
+{
+  "result": "The NS-SEC occupational class variables have been successfully cleaned and harmonized. The final output file 'data/output/cleaned_data.csv' contains:\n\n1. NSID - cohort member identifier\n2. nssec17 - NS-SEC at age 17\n3. nssec18 - NS-SEC at age 18\n4. nssec19 - NS-SEC at age 19\n5. nssec20 - NS-SEC at age 20\n6. nssec25 - NS-SEC at age 25 (with full-time student category derived)\n7. nssec32 - NS-SEC at age 32\n\nAll variables have been:\n- Harmonized to standard missing value codes (-9 to -1)\n- Collapsed from detailed sub-categories to major categories (1-17)\n- Converted to labelled factors with appropriate category labels\n- Processed according to the specified requirements\n\nThe output file is ready for analysis.",
+  "state": "success",
+  "time_taken": 45.73831820487976,
+  "steps": 7,
+  "token_usage": 91264
+}

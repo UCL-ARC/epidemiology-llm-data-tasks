@@ -1,0 +1,7 @@
+{
+  "result": "Data cleaning complete. The cleaned dataset has been saved to data/output/cleaned_data.csv. The script successfully:\n\n1. Loaded all 5 input files from data/input/ directory (wave_one_lsype_young_person_2020.tab, wave_two_lsype_young_person_2020.tab, wave_four_lsype_young_person_2020.tab, ns8_2015_derived.tab, ns9_2022_derived_variables.tab)\n\n2. Merged datasets using full_join by NSID variable\n\n3. Converted wave-specific missing codes to standard codes:\n   - -999, -998, -997, -995, -99 → -3 (not asked/interviewed)\n   - -94 → -8 (insufficient information)\n   - -92 → -9 (refusal)\n   - -91 → -1 (not applicable)\n   - -1 → -1 (don't know)\n   - -9 → -9 (refusal)\n   - -8 → -8 (insufficient information)\n\n4. Created age-specific ethnicity variables: eth14, eth15, eth17, eth23, eth32\n\n5. Created consolidated ethnicity variable (eth) prioritizing earliest valid response for time-invariant characteristic\n\n6. Output cleaned data to data/output/cleaned_data.csv",
+  "state": "success",
+  "time_taken": 698.976051568985,
+  "steps": 17,
+  "token_usage": 291062
+}

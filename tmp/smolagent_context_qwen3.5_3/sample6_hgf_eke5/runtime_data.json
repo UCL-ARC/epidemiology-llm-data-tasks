@@ -1,0 +1,7 @@
+{
+  "result": "Data cleaning completed successfully. Output file: data/output/cleaned_data.csv with 16111 rows and 10 columns (NSID, regub15, regub16, regov15, regov16, regov25, regov32, regnat32, ukres32, regov_harmonised).",
+  "state": "success",
+  "time_taken": 193.11862683296204,
+  "steps": 8,
+  "token_usage": 187645
+}

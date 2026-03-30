@@ -9,6 +9,7 @@ from abc import ABC, abstractmethod
 from collections.abc import Callable, Generator
 from contextlib import contextmanager
 from pathlib import Path
+from typing import Literal
 
 # data imports
 import yaml
@@ -16,9 +17,11 @@ from loguru import logger
 from pydantic import BaseModel
 
 # smolagent imports
-from smolagents import LiteLLMModel, ToolCallingAgent
+from smolagents import CodeAgent, LiteLLMModel, ToolCallingAgent
 from smolagents import tool as stool  # renamed to avoid conflict - teehee
 from smolagents.tools import Tool
+
+from src.r_code_agent import create_r_code_agent
 
 
 # TO DO: When more frameworks are supported be more specific here
@@ -119,7 +122,12 @@ class SmolAgent(Agent):
     """Agent using smolagents with temporary directory context management."""
 
     def __init__(
-        self, tools: list[Callable], model_name: str, api_key: str | None = None
+        self,
+        tools: list[Callable],
+        model_name: str,
+        api_key: str | None = None,
+        temperature: float = 0.3,
+        agent_type: Literal["tool_calling", "code"] = "tool_calling",
     ) -> None:
         """Initialise the SmolAgent with tools and model configuration."""
         super().__init__()
@@ -129,19 +137,33 @@ class SmolAgent(Agent):
         self.tools = self._initialise_tools(tools)
         self.model_name = model_name
         self.api_key = api_key
+        self.agent_type = agent_type
+        self.temperature = temperature
         self.agent = self._initialise_agent()
 
     def _initialise_tools(self, tools: list[Callable]) -> list[Tool]:
         """Wrap provided tool functions into smolagents Tool objects."""
         return [stool(t) for t in tools]
 
-    def _initialise_agent(self) -> ToolCallingAgent:
-        """Initialise the ToolCallingAgent with the specified model and tools."""
-        llm_model = LiteLLMModel(model_id=self.model_name, api_key=self.api_key)
+    def _initialise_agent(self) -> CodeAgent | ToolCallingAgent:
+        """Initialise the agent with the specified model and tools."""
+        llm_model = LiteLLMModel(
+            model_id=self.model_name,
+            api_key=self.api_key,
+            temperature=self.temperature,
+            # extra_body={"num_ctx": 132000},
+        )
+        if self.agent_type == "code":
+            return create_r_code_agent(
+                model=llm_model,
+                tools=self.tools,
+                stream_outputs=False,
+                return_full_result=True,
+            )
         return ToolCallingAgent(
             model=llm_model,
             tools=self.tools,
-            stream_outputs=False,  # To do: this doesnt stop live printing
+            stream_outputs=False,
             return_full_result=True,
         )
 
@@ -166,7 +188,7 @@ class SmolAgent(Agent):
         """
         with self._execution_context(
             context_path, persist=persist_context
-        ) as working_dir:  # noqa: F841
+        ) as working_dir:
             logger.info(f"Running agent with prompt: {prompt}")
 
             # Run the agent
@@ -176,7 +198,8 @@ class SmolAgent(Agent):
             time_taken = result.timing.duration
             steps = len(result.steps)
             token_usage = result.token_usage.total_tokens
-            return AgentResult(
+
+            agent_result = AgentResult(
                 result=output,
                 state=state,
                 time_taken=time_taken,
@@ -184,23 +207,44 @@ class SmolAgent(Agent):
                 token_usage=token_usage,
             )
 
+            # Save agent result metadata to the working directory
+            result_path = working_dir / "runtime_data.json"
+            result_path.write_text(agent_result.model_dump_json(indent=2))
+
+            return agent_result
+
 
 if __name__ == "__main__":
     # This is to demo how the pipeline would/could work
     from .tools import produce_and_execute_r
 
-    tools = [produce_and_execute_r]
-
     # --- Ollama (via LiteLLM) ---
-    model_id = "deepseek-r1:14b"
+    model_id = "gemma3:4b"
     model_name = f"ollama_chat/{model_id}"
     api_key = "ollama"
-    agent = SmolAgent(tools=tools, model_name=model_name, api_key=api_key)
 
     # --- HuggingFace Inference Endpoints (via LiteLLM) ---
-    # model_name = "huggingface/Qwen/Qwen2.5-Coder-32B-Instruct"
+    # model_id = "Qwen/Qwen3-30B-A3B-Instruct-2507"
+    # model_name = f"huggingface/{model_id}"
     # api_key = os.environ.get("HF_TOKEN")
-    # agent = SmolAgent(tools=tools, model_name=model_name, api_key=api_key)
+
+    # "code" → R CodeAgent (model writes R, executed directly via Rscript)
+    # "tool_calling" → ToolCallingAgent (model calls produce_and_execute_r via JSON)
+    agent_type: Literal["tool_calling", "code"] = "tool_calling"
+
+    # Tools are only needed for tool_calling mode
+    tools: list[Callable] = (
+        [produce_and_execute_r] if agent_type == "tool_calling" else []
+    )
+
+    agent = SmolAgent(
+        tools=tools,
+        model_name=model_name,
+        api_key=api_key,
+        agent_type=agent_type,
+        temperature=0.8,
+    )
+
     tasks_path = Path("./ground_truth/tasks.yml")
     with tasks_path.open() as f:
         tasks = yaml.safe_load(f)["tasks"]
@@ -214,46 +258,49 @@ if __name__ == "__main__":
         ],
         key=lambda p: int(p.name[6:]),
     )
-    test_dirs = [Path(f"./ground_truth/sample{x}") for x in [10]]
+    test_dirs = [Path(f"./ground_truth/sample{x}") for x in [9, 16]]
+    # test_dirs = [Path(f"./ground_truth/sample{x}") for x in [14, 16]]
 
-    for test_dir in test_dirs:
-        logger.info(f"\n=== Testing with context: {test_dir} ===")
+    for i in range(2):
+        logger.info(f"\n\n=== Agent Run {i+1} ===")
+        for test_dir in test_dirs:
+            logger.info(f"\n=== Testing with context: {test_dir} ===")
 
-        task_path = Path(test_dir) / "task.yml"
-        with task_path.open() as f:
-            task = yaml.safe_load(f)
+            task_path = Path(test_dir) / "task.yml"
+            with task_path.open() as f:
+                task = yaml.safe_load(f)
 
-        override = task.get("override", None)
+            override = task.get("override", None)
 
-        # TO DO: add examples of override usage in ground_truth
-        if override:
-            prompt = override
+            # TO DO: add examples of override usage in ground_truth
+            if override:
+                prompt = override
 
-        else:
-            task_type = task.get("task_type", "unknown")
-            # Get  the first item where key1 equals val
-            task_data = next(
-                (item for item in tasks if item.get("task_type") == task_type), None
+            else:
+                task_type = task.get("task_type", "unknown")
+                # Get  the first item where key1 equals val
+                task_data = next(
+                    (item for item in tasks if item.get("task_type") == task_type), None
+                )
+
+                if task_data is None:
+                    logger.warning(f"No task data found for type: {task_type}")
+                    continue
+
+                prompt = task_data["prompt"]
+
+            metadata_path = Path(test_dir) / "metadata.json"
+            with metadata_path.open() as f:
+                metadata = json.load(f)
+
+            prompt = prompt.format(metadata=metadata)
+
+            # Run agent with context
+            result = agent.forward(
+                prompt,
+                context_path=Path(test_dir),
+                persist_context=True,  # Set to True to inspect the temp directory
             )
 
-            if task_data is None:
-                logger.warning(f"No task data found for type: {task_type}")
-                continue
-
-            prompt = task_data["prompt"]
-
-        metadata_path = Path(test_dir) / "metadata.json"
-        with metadata_path.open() as f:
-            metadata = json.load(f)
-
-        prompt = prompt.format(metadata=metadata)
-
-        # Run agent with context
-        result = agent.forward(
-            prompt,
-            context_path=Path(test_dir),
-            persist_context=True,  # Set to True to inspect the temp directory
-        )
-
-        logger.info(f"\n=== Result for context: {test_dir} ===")
-        logger.info(result)
+            logger.info(f"\n=== Result for context: {test_dir} ===")
+            logger.info(result)

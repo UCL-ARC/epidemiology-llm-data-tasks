@@ -1,0 +1,7 @@
+{
+  "result": "Data cleaning and preprocessing complete. The merged dataset contains 16,111 rows and 1,991 columns. The cleaned data has been saved to data/output/cleaned_data.csv. All wave-specific missing value codes have been standardized to the standard codes (-9=Refusal, -8=Don't know/insufficient information, -1=Item not applicable, -3=Not asked, -2=Schedule error, -7=Prefer not to say, -99=Parent not interviewed/present, -98=Parent not present). Parental employment status variables have been harmonized across all waves with consistent value labels and converted to factor variables.",
+  "state": "success",
+  "time_taken": 93.9290382862091,
+  "steps": 5,
+  "token_usage": 38852
+}

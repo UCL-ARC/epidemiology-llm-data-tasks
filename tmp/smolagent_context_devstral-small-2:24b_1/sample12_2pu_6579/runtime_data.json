@@ -1,0 +1,7 @@
+{
+  "result": "The R script has been successfully executed. The cleaned and harmonized NS-SEC occupational class variables have been processed and saved to 'data/output/cleaned_data.csv'. The file contains the NSID and the age-specific NS-SEC variables (nssec17, nssec18, nssec19, nssec20, nssec25, nssec32) with harmonized missing value codes and collapsed fractional codes to major categories.",
+  "state": "success",
+  "time_taken": 61.02490496635437,
+  "steps": 6,
+  "token_usage": 86732
+}

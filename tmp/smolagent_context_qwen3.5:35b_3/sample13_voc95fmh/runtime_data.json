@@ -1,0 +1,7 @@
+{
+  "result": "The cleaned dataset has been successfully created at data/output/cleaned_data.csv with 16,111 observations and 11 variables (NSID, nssecma14, nssecpa14, nssecma15, nssecpa15, nssecma16, nssecpa16, nssecma17, nssecpa17, nssecma18, nssecpa18). All parental NS-SEC variables have been harmonized to the 17-category classification by taking the integer part, missing values have been recoded according to the specified mapping (-999→-2, -94→-8, -99/-98/NA→-3), and the data has been merged across all 5 waves using full_join by NSID.",
+  "state": "success",
+  "time_taken": 310.0049648284912,
+  "steps": 16,
+  "token_usage": 342461
+}

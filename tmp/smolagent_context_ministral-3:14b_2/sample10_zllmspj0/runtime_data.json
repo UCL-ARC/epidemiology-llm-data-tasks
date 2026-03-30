@@ -1,0 +1,7 @@
+{
+  "result": "The cleaned and preprocessed dataset is ready and saved as `data/output/cleaned_data.csv`. It includes the NSID and harmonized economic activity variables for ages 17, 18, 19, 20, 25, and 32.",
+  "state": "success",
+  "time_taken": 114.44487285614014,
+  "steps": 4,
+  "token_usage": 43659
+}

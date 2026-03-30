@@ -1,0 +1,7 @@
+{
+  "result": "The cleaned and preprocessed dataset has been successfully generated and saved as `data/output/cleaned_data.csv`.",
+  "state": "success",
+  "time_taken": 177.29280924797058,
+  "steps": 8,
+  "token_usage": 151204
+}

@@ -1,0 +1,7 @@
+{
+  "result": "The cleaned dataset has been successfully created and saved to data/output/cleaned_data.csv. The file contains 16,111 rows with 11 columns: NSID and 10 parental NS-SEC variables (nssecma14, nssecpa14, nssecma15, nssecpa15, nssecma16, nssecpa16, nssecma17, nssecpa17, nssecma18, nssecpa18). All NS-SEC values have been recoded to the harmonised 17-category classification with proper missing value codes applied.",
+  "state": "success",
+  "time_taken": 60.225242614746094,
+  "steps": 5,
+  "token_usage": 49451
+}

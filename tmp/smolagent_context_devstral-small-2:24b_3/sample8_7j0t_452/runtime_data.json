@@ -1,0 +1,7 @@
+{
+  "result": "The cleaned educational qualification dataset has been successfully created at data/output/cleaned_data.csv containing the variables NSID, educ25, educ32, educadtl32, and educvdtl32 as specified.",
+  "state": "success",
+  "time_taken": 200.22658705711365,
+  "steps": 7,
+  "token_usage": 203875
+}

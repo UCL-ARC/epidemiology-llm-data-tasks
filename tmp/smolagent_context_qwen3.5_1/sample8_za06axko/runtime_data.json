@@ -1,0 +1,7 @@
+{
+  "result": "Data cleaning completed successfully. Output file data/output/cleaned_data.csv contains 16111 rows and 5 columns: NSID, educ25, educ32, educadtl32, educvdtl32. All educational qualification variables were harmonized according to specifications with proper NVQ level mappings and missing code preservation.",
+  "state": "success",
+  "time_taken": 397.27438473701477,
+  "steps": 7,
+  "token_usage": 156325
+}

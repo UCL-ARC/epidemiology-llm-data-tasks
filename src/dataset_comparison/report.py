@@ -198,13 +198,14 @@ def print_comparison_report(result: DataComparisonResult) -> None:  # noqa: PLR0
 
 
 def aggregate_comparison_results(  # noqa: PLR0915, PLR0912
-    results: list[tuple[str, DataComparisonResult]],
+    results: list[tuple[str, DataComparisonResult, dict | None]],
 ) -> pd.DataFrame:
     """
     Aggregate comparison results across multiple samples into a summary dataframe.
 
     Args:
-        results: List of (sample_name, DataComparisonResult) tuples.
+        results: List of (sample_name, DataComparisonResult, runtime_data) tuples.
+            runtime_data is an optional dict with keys: token_usage, steps, time_taken.
 
     Returns:
         DataFrame with aggregated metrics for each sample plus an overall aggregate row.
@@ -212,7 +213,7 @@ def aggregate_comparison_results(  # noqa: PLR0915, PLR0912
     """
     results_summary = []
 
-    for sample_name, result in results:
+    for sample_name, result, runtime_data in results:
         # Count columns
         matched_cols = sum(1 for m in result.column_matches if m.pred_column)
         unmatched_gt_cols = len(result.unmatched_gt_columns)
@@ -230,7 +231,7 @@ def aggregate_comparison_results(  # noqa: PLR0915, PLR0912
 
         # Count data matches for precision/recall/F1
         # TP: matched column with data_match = True
-        # FP: matched column with data_match = False
+        # FP: matched column with no data_match = False
         # FN: unmatched GT columns
         true_positives = 0
         false_positives = 0
@@ -254,11 +255,14 @@ def aggregate_comparison_results(  # noqa: PLR0915, PLR0912
             if (true_positives + false_positives) > 0
             else None
         )
+
+        matched_with_data = true_positives + false_positives  # all matched columns
         recall = (
-            true_positives / (true_positives + false_negatives)
-            if (true_positives + false_negatives) > 0
+            matched_with_data / (matched_with_data + false_negatives)
+            if (matched_with_data + false_negatives) > 0
             else None
         )
+
         f1_score = (
             2 * precision * recall / (precision + recall)
             if precision is not None and recall is not None and (precision + recall) > 0
@@ -331,6 +335,11 @@ def aggregate_comparison_results(  # noqa: PLR0915, PLR0912
                 "task_complete": result.task_completion_percentage == 100.0  # noqa: PLR2004
                 if result.task_completion_percentage is not None
                 else None,
+                "token_usage": runtime_data.get("token_usage")
+                if runtime_data
+                else None,
+                "steps": runtime_data.get("steps") if runtime_data else None,
+                "time_taken": runtime_data.get("time_taken") if runtime_data else None,
             }
         )
 
@@ -347,9 +356,14 @@ def aggregate_comparison_results(  # noqa: PLR0915, PLR0912
         agg_precision = (
             total_tp / (total_tp + total_fp) if (total_tp + total_fp) > 0 else None
         )
+
+        total_matched = total_tp + total_fp
         agg_recall = (
-            total_tp / (total_tp + total_fn) if (total_tp + total_fn) > 0 else None
+            total_matched / (total_matched + total_fn)
+            if (total_matched + total_fn) > 0
+            else None
         )
+
         agg_f1 = (
             2 * agg_precision * agg_recall / (agg_precision + agg_recall)
             if agg_precision is not None
@@ -388,6 +402,12 @@ def aggregate_comparison_results(  # noqa: PLR0915, PLR0912
                 "task_completion_percentage"
             ].mean(),
             "number_task_complete": summary_df["task_complete"].sum(),
+            "total_token_usage": summary_df["token_usage"].sum(),
+            "avg_token_usage": summary_df["token_usage"].mean(),
+            "total_steps": summary_df["steps"].sum(),
+            "avg_steps": summary_df["steps"].mean(),
+            "total_time_taken": summary_df["time_taken"].sum(),
+            "avg_time_taken": summary_df["time_taken"].mean(),
         }
         summary_df = pd.concat(
             [summary_df, pd.DataFrame([aggregate_row])], ignore_index=True

@@ -1,0 +1,7 @@
+{
+  "result": "The R script successfully loaded 6 wave files from data/input/, harmonized the economic activity variables (W4empsYP, W5mainactYP, W6TCurrentAct, W7TCurrentAct, W8DACTIVITYC, W9DACTIVITYC) with standard missing value codes (-9=-9 Refusal, -8=-8 Don't know, -1=-1 Not applicable, -3=-3 Not asked, -2=-2 Schedule error), created harmonized variables ecoact17, ecoactadu18, ecoact19, ecoact20, ecoact25, ecoact32, merged all waves by NSID, converted harmonized variables to factors, and wrote the cleaned data to data/output/cleaned_data.csv with 16,111 rows and variables: NSID, ecoact17, ecoactadu18, ecoact19, ecoact20, ecoact25, ecoact32",
+  "state": "success",
+  "time_taken": 264.85984802246094,
+  "steps": 7,
+  "token_usage": 274129
+}

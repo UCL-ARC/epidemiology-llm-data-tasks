@@ -58,6 +58,7 @@ def _make_result() -> DataComparisonResult:
 class TestMain:
     """Tests for the main() CLI entry point."""
 
+    @patch("src.dataset_comparison.__main__.json.load")
     @patch("src.dataset_comparison.__main__.print_comparison_report")
     @patch("src.dataset_comparison.__main__.aggregate_comparison_results")
     @patch("src.dataset_comparison.__main__.DataComparator")
@@ -70,6 +71,7 @@ class TestMain:
         mock_comparator_cls: MagicMock,
         mock_aggregate: MagicMock,
         mock_print_report: MagicMock,
+        mock_json_load: MagicMock,
         tmp_path: Path,
     ) -> None:
         """Test main processes found sample directories."""
@@ -106,6 +108,13 @@ class TestMain:
 
         # Mock aggregate
         mock_aggregate.return_value = MagicMock(spec=pd.DataFrame)
+
+        # Mock json.load for runtime data
+        mock_json_load.return_value = {
+            "token_usage": 100,
+            "steps": 3,
+            "time_taken": 1.5,
+        }
 
         main()
 

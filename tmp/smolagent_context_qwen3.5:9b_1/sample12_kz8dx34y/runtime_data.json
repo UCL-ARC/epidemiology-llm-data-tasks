@@ -1,0 +1,7 @@
+{
+  "result": "The R script successfully processed and cleaned all survey datasets. The output file data/output/cleaned_data.csv has been created with 16,111 records containing NSID and the six NS-SEC variables (nssec17, nssec18, nssec19, nssec20, nssec25, nssec32) as labelled factor variables with harmonized missing codes (-9=Refusal, -8=DK/Insufficient, -7=Prefer not to say, -3=Not asked, -2=Schedule not applicable, -1=Not applicable).",
+  "state": "success",
+  "time_taken": 172.7877495288849,
+  "steps": 5,
+  "token_usage": 55425
+}

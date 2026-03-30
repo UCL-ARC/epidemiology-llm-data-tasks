@@ -1,0 +1,11 @@
+# Verify the output file
+output_data <- read.csv("data/output/cleaned_data.csv")
+cat("Output file verification:\n")
+cat("Number of rows:", nrow(output_data), "\n")
+cat("Number of columns:", ncol(output_data), "\n")
+cat("\nColumn names:\n")
+print(colnames(output_data))
+cat("\nFirst few rows:\n")
+print(head(output_data))
+cat("\nStructure of data:\n")
+str(output_data)

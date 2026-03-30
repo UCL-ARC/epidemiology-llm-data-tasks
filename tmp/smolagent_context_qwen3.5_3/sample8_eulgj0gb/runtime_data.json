@@ -1,0 +1,7 @@
+{
+  "result": "The R script executed successfully. The cleaned dataset has been created with exactly 5 variables (NSID, educ25, educ32, educadtl32, educvdtl32) for 16,111 cases and written to data/output/cleaned_data.csv.\n\nSummary of variables created:\n- educ25: Collapsed NVQ level at age 25 (wave 8), combining W8DHANVQH (academic) and W8VCQU* variables (vocational), coded 0-4 with missing codes preserved\n- educ32: Collapsed NVQ level at age 32 (wave 9), combining W9DANVQH and W9DVNVQH, using identical coding to educ25\n- educadtl32: Detailed academic qualifications at age 32 from W9ACQU* variables, with human-readable labels\n- educvdtl32: Detailed vocational qualifications at age 32 from W9VCQU* variables, with human-readable labels\n\nAll missing codes (-9, -8, -3, -2, -1) are preserved as explicit factor levels, and NULL values are coded as -3.",
+  "state": "success",
+  "time_taken": 760.9742338657379,
+  "steps": 5,
+  "token_usage": 224593
+}

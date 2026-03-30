@@ -1,0 +1,7 @@
+library(readr)
+data <- read_csv("data/output/cleaned_data.csv", show_col_types = FALSE)
+cat("Dimensions:", nrow(data), "rows,", ncol(data), "columns\n")
+cat("Variables:", paste(names(data), collapse = ", "), "\n")
+print(table(data$educ25, useNA = "ifany"))
+print(table(data$educ32, useNA = "ifany"))
+print(head(data, 5))

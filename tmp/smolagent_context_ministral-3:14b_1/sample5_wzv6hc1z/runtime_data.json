@@ -1,0 +1,7 @@
+{
+  "result": "The data cleaning and preprocessing script executed successfully. The cleaned and merged dataset has been saved as `data/output/cleaned_data.csv`, containing the following derived variables:\n\n- **NSID**: Cohort member identifier\n- **partnr**: Harmonized marital status (collapsed)\n- **partnr19**: Marital status at age 19\n- **partnr25**: Marital status at age 25\n- **partnradu25**: Detailed marital status at age 25\n- **partnr32**: Marital status at age 32\n- **partnradu32**: Detailed marital status at age 32\n\nAll missing values have been harmonized according to the specified standard codes, and factor variables with appropriate labels have been created for categorical variables.",
+  "state": "success",
+  "time_taken": 94.02503895759583,
+  "steps": 6,
+  "token_usage": 81009
+}

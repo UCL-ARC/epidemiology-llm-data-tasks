@@ -1,0 +1,7 @@
+{
+  "result": "Successfully cleaned and preprocessed the survey datasets. The R script loaded 7 tab-delimited files from data/input/, merged them using full_join by NSID, applied wave-specific missing value code harmonization, created harmonized economic activity variables (ecoact17, ecoact18, ecoact19, ecoact20, ecoact25, ecoact32) with 6-category scheme, created detailed adult variables (ecoactadu25, ecoactadu32) with 10-category scheme, and output to data/output/cleaned_data.csv. Final output: 16,111 rows x 9 columns.",
+  "state": "success",
+  "time_taken": 147.8361530303955,
+  "steps": 5,
+  "token_usage": 52809
+}

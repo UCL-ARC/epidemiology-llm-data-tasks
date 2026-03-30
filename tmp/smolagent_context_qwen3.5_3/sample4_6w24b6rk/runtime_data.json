@@ -1,0 +1,7 @@
+{
+  "result": "Data cleaning completed successfully. The R script loaded 6 wave files (wave_one, wave_four, wave_six, wave_seven, ns8_2015, ns9_2022), merged them by NSID using full_join, and created harmonized sexual orientation variables (sori19, sori20, sori25, sori32) with standardized missing value codes. The cleaned dataset has been saved to data/output/cleaned_data.csv containing NSID and the four derived sexual orientation variables.",
+  "state": "success",
+  "time_taken": 87.64251184463501,
+  "steps": 3,
+  "token_usage": 18677
+}

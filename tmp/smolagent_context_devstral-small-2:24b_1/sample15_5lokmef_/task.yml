@@ -1,0 +1,65 @@
+task_id: 1
+task_type: data_cleaning_r
+override: |
+  You have access to raw survey datasets from a longitudinal cohort study. Your task is to clean and harmonise income band variables measured at different ages and output a single cleaned dataset.
+
+  Follow all instructions:
+
+  1. **File Loading**:
+     - Ensure when you load the input files you append the dir "data/input/" this is where they are stored.
+     - Load each dataset into a separate object and merge using full_join by the ID variable.
+     - The input files are tab-delimited (.tab) text files. Use `readr::read_delim()` with `delim = "\t"` to load them. 
+     - Load each file explicitly by name from the metadata.
+
+  2. **Variable Naming Conventions**:
+     - Use the exact ID variable name from source data (NSID).
+     - Use short, descriptive, lowercase variable names with age suffixes:
+       * inc25 for income at age 25
+       * inc32 for income at age 32
+
+  3. **Variable Selection and Renaming**:
+     - Retain only the income variables from waves 8 and 9.
+     - Rename them to inc25 and inc32.
+
+  4. **Standard Missing-Value Codes**:
+     Use these codes for ALL variables:
+     - -9 = Refusal
+     - -8 = Don't know/insufficient information
+     - -1 = Item not applicable
+     - -3 = Not asked/interviewed
+     - -2 = Script error/lost
+     - Any Null value to be coded as -3 (Not asked at the fieldwork stage/participated/interviewed) to distinguish from explicit missing codes.
+
+  5. **Missing Value Code Harmonization**:
+     - Recode wave-specific negative codes to the standard missing scheme.
+     - NA values arising from respondents absent from a wave should be recoded to -3 (not asked/interviewed), not -1 (not applicable).
+     - Follow exact mappings provided in metadata.
+
+  6. **Non-Harmonization Across Ages**:
+     - Because income bands differ across ages, retain separate age-specific variables.
+     - Do not attempt to collapse or harmonise categories across ages.
+
+  7. **Factor Variables and Labels**:
+     - Convert each income variable to a labelled factor with explicit labels for:
+       * All substantive income categories
+       * All standard missing codes
+
+  8. **Scope Restrictions**:
+     - Do not create a consolidated income variable across waves.
+
+  9. **Package Requirements**:
+     - Use ONLY standard R packages: haven, dplyr, purrr, labelled, readr.
+     - Load packages at the start of the script using library().
+
+  10. **Output Requirements**:
+      - Output only the following variables: NSID, inc25, inc32.
+      - Write exactly one CSV file named data/output/cleaned_data.csv.
+
+  11. **Execution**:
+      - Produce a complete runnable R script and run it.
+
+  Produce your script in R.
+  
+  Here is the appropriate metadata for the task:
+
+  {metadata}

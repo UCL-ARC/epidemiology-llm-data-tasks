@@ -1,0 +1,7 @@
+{
+  "result": "The cleaned dataset has been successfully created at data/output/cleaned_data.csv with 16,111 rows and 9 columns (NSID plus 8 age-specific employment variables: empsmum14, empsdad14, empsmum15, empsdad15, empsmum16, empsdad16, empsmum17, empsdad17). All missing values have been recoded to standard codes (-9=Refusal, -8=Don't know, -3=Not asked) according to the metadata specifications. Age-specific suffixes (14, 15, 16, 17) denote the age at which the parental employment data was collected.",
+  "state": "success",
+  "time_taken": 175.90350031852722,
+  "steps": 5,
+  "token_usage": 73011
+}
