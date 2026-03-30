@@ -105,9 +105,9 @@ class DataComparator:
 
         if len(gt_df) > 0:
             matched_keys = set(joined_df.index)
-            completeness_score = len(matched_keys) / len(gt_keys_unique)
+            join_completeness_score = len(matched_keys) / len(gt_keys_unique)
         else:
-            completeness_score = 0.0
+            join_completeness_score = 0.0
 
         completeness = JoinCompleteness(
             gt_row_count=len(gt_df),
@@ -117,12 +117,12 @@ class DataComparator:
             extra_in_pred=extra_in_pred,
             gt_duplicate_keys=gt_duplicate_keys,
             pred_duplicate_keys=pred_duplicate_keys,
-            completeness_score=completeness_score,
+            join_completeness_score=join_completeness_score,
         )
 
         logger.info(
             f"Join completeness: {len(joined_df)}/{len(gt_df)} rows "
-            f"({completeness_score:.1%}), "
+            f"({join_completeness_score:.1%}), "
             f"missing={missing_in_pred}, extra={extra_in_pred}"
         )
 

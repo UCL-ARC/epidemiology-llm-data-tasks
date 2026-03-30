@@ -24,32 +24,32 @@ def print_comparison_report(result: DataComparisonResult) -> None:  # noqa: PLR0
 
     # Join Completeness Panel
     jc = result.join_completeness
-    completeness_text = Text()
-    completeness_text.append(f"Ground truth rows:    {jc.gt_row_count}\n")
-    completeness_text.append(f"Predicted rows:       {jc.pred_row_count}\n")
-    completeness_text.append(f"Joined rows:          {jc.joined_row_count}\n")
-    completeness_text.append(
+    join_completeness_text = Text()
+    join_completeness_text.append(f"Ground truth rows:    {jc.gt_row_count}\n")
+    join_completeness_text.append(f"Predicted rows:       {jc.pred_row_count}\n")
+    join_completeness_text.append(f"Joined rows:          {jc.joined_row_count}\n")
+    join_completeness_text.append(
         f"Missing in pred:      {jc.missing_in_pred}",
         style="red" if jc.missing_in_pred > 0 else "green",
     )
-    completeness_text.append("\n")
-    completeness_text.append(
+    join_completeness_text.append("\n")
+    join_completeness_text.append(
         f"Extra in pred:        {jc.extra_in_pred}",
         style="yellow" if jc.extra_in_pred > 0 else "green",
     )
-    completeness_text.append("\n")
-    completeness_text.append(
-        f"Completeness:         {jc.completeness_score:.1%}",
-        style="green" if jc.completeness_score == 1.0 else "yellow",
+    join_completeness_text.append("\n")
+    join_completeness_text.append(
+        f"Join Completeness:         {jc.join_completeness_score:.1%}",
+        style="green" if jc.join_completeness_score == 1.0 else "yellow",
     )
 
     if jc.has_duplicates:
-        completeness_text.append("\n\n")
-        completeness_text.append("⚠ Duplicate keys detected!", style="bold red")
+        join_completeness_text.append("\n\n")
+        join_completeness_text.append("⚠ Duplicate keys detected!", style="bold red")
 
     console.print(
         Panel(
-            completeness_text,
+            join_completeness_text,
             title="[bold]Join Completeness[/bold]",
             border_style="blue",
         )
@@ -229,7 +229,7 @@ def aggregate_comparison_results(  # noqa: PLR0915, PLR0912
             1 for comp in result.column_comparisons if comp.categorical_comparison
         )
 
-        # Count data matches for precision/recall/F1
+        # Count data matches for completeness/correctness/yield
         # TP: matched column with data_match = True
         # FP: matched column with no data_match = False
         # FN: unmatched GT columns
@@ -249,23 +249,23 @@ def aggregate_comparison_results(  # noqa: PLR0915, PLR0912
 
         false_negatives = unmatched_gt_cols
 
-        # Calculate precision, recall, F1
-        precision = (
+        # Calculate correctness, completeness, output_yield
+        correctness = (
             true_positives / (true_positives + false_positives)
             if (true_positives + false_positives) > 0
             else None
         )
 
         matched_with_data = true_positives + false_positives  # all matched columns
-        recall = (
+        completeness = (
             matched_with_data / (matched_with_data + false_negatives)
             if (matched_with_data + false_negatives) > 0
             else None
         )
 
-        f1_score = (
-            2 * precision * recall / (precision + recall)
-            if precision is not None and recall is not None and (precision + recall) > 0
+        output_yield = (
+            correctness * completeness
+            if correctness is not None and completeness is not None
             else None
         )
 
@@ -300,7 +300,7 @@ def aggregate_comparison_results(  # noqa: PLR0915, PLR0912
                 "gt_rows": result.join_completeness.gt_row_count,
                 "pred_rows": result.join_completeness.pred_row_count,
                 "joined_rows": result.join_completeness.joined_row_count,
-                "row_completeness": result.join_completeness.completeness_score,
+                "join_completeness": result.join_completeness.join_completeness_score,
                 "gt_cols": total_gt_cols,
                 "pred_cols": total_pred_cols,
                 "matched_cols": matched_cols,
@@ -314,9 +314,9 @@ def aggregate_comparison_results(  # noqa: PLR0915, PLR0912
                 "true_positives": true_positives,
                 "false_positives": false_positives,
                 "false_negatives": false_negatives,
-                "precision": precision,
-                "recall": recall,
-                "f1_score": f1_score,
+                "correctness": correctness,
+                "completeness": completeness,
+                "output_yield": output_yield,
                 "avg_numeric_rmse": sum(numeric_rmse_values) / len(numeric_rmse_values)
                 if numeric_rmse_values
                 else None,
@@ -348,27 +348,26 @@ def aggregate_comparison_results(  # noqa: PLR0915, PLR0912
 
     # Add aggregate row
     if len(summary_df) > 0:
-        # Calculate aggregate precision/recall/F1 from totals (micro-averaging)
+        # Calculate aggregate correctness/completeness/output_yield
+        # from totals (micro-averaging)
         total_tp = summary_df["true_positives"].sum()
         total_fp = summary_df["false_positives"].sum()
         total_fn = summary_df["false_negatives"].sum()
 
-        agg_precision = (
+        agg_correctness = (
             total_tp / (total_tp + total_fp) if (total_tp + total_fp) > 0 else None
         )
 
         total_matched = total_tp + total_fp
-        agg_recall = (
+        agg_completeness = (
             total_matched / (total_matched + total_fn)
             if (total_matched + total_fn) > 0
             else None
         )
 
-        agg_f1 = (
-            2 * agg_precision * agg_recall / (agg_precision + agg_recall)
-            if agg_precision is not None
-            and agg_recall is not None
-            and (agg_precision + agg_recall) > 0
+        agg_output_yield = (
+            agg_correctness * agg_completeness
+            if agg_correctness is not None and agg_completeness is not None
             else None
         )
 
@@ -377,7 +376,7 @@ def aggregate_comparison_results(  # noqa: PLR0915, PLR0912
             "gt_rows": summary_df["gt_rows"].sum(),
             "pred_rows": summary_df["pred_rows"].sum(),
             "joined_rows": summary_df["joined_rows"].sum(),
-            "row_completeness": summary_df["row_completeness"].mean(),
+            "join_completeness": summary_df["join_completeness"].mean(),
             "gt_cols": summary_df["gt_cols"].sum(),
             "pred_cols": summary_df["pred_cols"].sum(),
             "matched_cols": summary_df["matched_cols"].sum(),
@@ -389,9 +388,9 @@ def aggregate_comparison_results(  # noqa: PLR0915, PLR0912
             "true_positives": total_tp,
             "false_positives": total_fp,
             "false_negatives": total_fn,
-            "precision": agg_precision,
-            "recall": agg_recall,
-            "f1_score": agg_f1,
+            "correctness": agg_correctness,
+            "completeness": agg_completeness,
+            "output_yield": agg_output_yield,
             "avg_numeric_rmse": summary_df["avg_numeric_rmse"].mean(),
             "avg_numeric_corr": summary_df["avg_numeric_corr"].mean(),
             "avg_categorical_exact_match": summary_df[
@@ -449,7 +448,7 @@ def aggregate_comparison_results(  # noqa: PLR0915, PLR0912
             "Column Match Rate", f"[{match_style}]{col_match_rate:.1%}[/{match_style}]"
         )
 
-        # Precision/Recall/F1 section
+        # Correctness/Completeness/Output Yield section
         metrics_table.add_row("", "")  # Spacer row
         metrics_table.add_row(
             "[bold]Data Match Metrics[/bold]", "[dim](TP/FP/FN based)[/dim]"
@@ -458,43 +457,50 @@ def aggregate_comparison_results(  # noqa: PLR0915, PLR0912
         metrics_table.add_row("  False Positives", f"[red]{int(total_fp)}[/red]")
         metrics_table.add_row("  False Negatives", f"[yellow]{int(total_fn)}[/yellow]")
 
-        if agg_precision is not None:
-            prec_style = (
+        if agg_correctness is not None:
+            correctness_style = (
                 "green"
-                if agg_precision >= 0.8  # noqa: PLR2004
+                if agg_correctness >= 0.8  # noqa: PLR2004
                 else "yellow"
-                if agg_precision >= 0.5  # noqa: PLR2004
+                if agg_correctness >= 0.5  # noqa: PLR2004
                 else "red"
             )
             metrics_table.add_row(
-                "  Precision", f"[{prec_style}]{agg_precision:.3f}[/{prec_style}]"
+                "  Correctness",
+                f"[{correctness_style}]{agg_correctness:.3f}[/{correctness_style}]",
             )
         else:
-            metrics_table.add_row("  Precision", "[dim]N/A[/dim]")
+            metrics_table.add_row("  Correctness", "[dim]N/A[/dim]")
 
-        if agg_recall is not None:
-            recall_style = (
+        if agg_completeness is not None:
+            completeness_style = (
                 "green"
-                if agg_recall >= 0.8  # noqa: PLR2004
+                if agg_completeness >= 0.8  # noqa: PLR2004
                 else "yellow"
-                if agg_recall >= 0.5  # noqa: PLR2004
+                if agg_completeness >= 0.5  # noqa: PLR2004
                 else "red"
             )
             metrics_table.add_row(
-                "  Recall", f"[{recall_style}]{agg_recall:.3f}[/{recall_style}]"
+                "  Completeness",
+                f"[{completeness_style}]{agg_completeness:.3f}[/{completeness_style}]",
             )
         else:
-            metrics_table.add_row("  Recall", "[dim]N/A[/dim]")
+            metrics_table.add_row("  Completeness", "[dim]N/A[/dim]")
 
-        if agg_f1 is not None:
-            f1_style = (
-                "green" if agg_f1 >= 0.8 else "yellow" if agg_f1 >= 0.5 else "red"  # noqa: PLR2004
+        if agg_output_yield is not None:
+            output_yield_style = (
+                "green"
+                if agg_output_yield >= 0.8  # noqa: PLR2004
+                else "yellow"
+                if agg_output_yield >= 0.5  # noqa: PLR2004
+                else "red"
             )
             metrics_table.add_row(
-                "  F1 Score", f"[{f1_style}]{agg_f1:.3f}[/{f1_style}]"
+                "  Output Yield",
+                f"[{output_yield_style}]{agg_output_yield:.3f}[/{output_yield_style}]",
             )
         else:
-            metrics_table.add_row("  F1 Score", "[dim]N/A[/dim]")
+            metrics_table.add_row("  Output Yield", "[dim]N/A[/dim]")
 
         metrics_table.add_row("", "")  # Spacer row
 
