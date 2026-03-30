@@ -16,6 +16,8 @@ from src.dataset_comparison.models import (
     NumericComparison,
 )
 
+_MODEL_ARG = "_test_model_1"
+
 
 def _make_result() -> DataComparisonResult:
     """Create a minimal DataComparisonResult for testing."""
@@ -27,7 +29,7 @@ def _make_result() -> DataComparisonResult:
             joined_row_count=10,
             missing_in_pred=0,
             extra_in_pred=0,
-            completeness_score=1.0,
+            join_completeness_score=1.0,
             gt_duplicate_keys=0,
             pred_duplicate_keys=0,
         ),
@@ -63,10 +65,8 @@ class TestMain:
     @patch("src.dataset_comparison.__main__.aggregate_comparison_results")
     @patch("src.dataset_comparison.__main__.DataComparator")
     @patch("src.dataset_comparison.__main__.pd.read_csv")
-    @patch("src.dataset_comparison.__main__.Path")
     def test_main_processes_samples(
         self,
-        mock_path_cls: MagicMock,
         mock_read_csv: MagicMock,
         mock_comparator_cls: MagicMock,
         mock_aggregate: MagicMock,
@@ -75,25 +75,19 @@ class TestMain:
         tmp_path: Path,
     ) -> None:
         """Test main processes found sample directories."""
-        # Set up output_dir mock
-        gt_file = MagicMock(spec=Path)
-        pred_file = MagicMock(spec=Path)
-        comparison_output_file = MagicMock(spec=Path)
-        gt_file.exists.return_value = True
-        pred_file.exists.return_value = True
-
-        output_dir = MagicMock(spec=Path)
-        output_dir.__truediv__ = MagicMock(
-            side_effect=[gt_file, pred_file, comparison_output_file]
+        # Create real directory structure
+        output_dir = (
+            tmp_path / f"smolagent_context{_MODEL_ARG}" / "sample1" / "data" / "output"
         )
-        output_dir.parent.parent.name = "sample1"
+        output_dir.mkdir(parents=True)
+        (output_dir / "output.csv").write_text("id,a\n0,1\n1,2\n")
+        (output_dir / "cleaned_data.csv").write_text("id,a\n0,1\n1,2\n")
 
-        # Configure Path("tmp/...").glob() to return our output_dir
-        # and Path("tmp/.../comparison_summary.csv") for aggregate output
-        mock_base_path = MagicMock()
-        mock_base_path.glob.return_value = [output_dir]
-        summary_path = MagicMock(spec=Path)
-        mock_path_cls.side_effect = [mock_base_path, summary_path]
+        # Create runtime_data.json
+        runtime_dir = output_dir.parent.parent
+        (runtime_dir / "runtime_data.json").write_text(
+            '{"token_usage": 100, "steps": 3, "time_taken": 1.5}'
+        )
 
         # Mock CSV reading
         sample_df = pd.DataFrame({"a": [1, 2]}, index=pd.Index([0, 1], name="id"))
@@ -109,53 +103,39 @@ class TestMain:
         # Mock aggregate
         mock_aggregate.return_value = MagicMock(spec=pd.DataFrame)
 
-        # Mock json.load for runtime data
-        mock_json_load.return_value = {
-            "token_usage": 100,
-            "steps": 3,
-            "time_taken": 1.5,
-        }
-
-        main()
+        main([_MODEL_ARG, "--base-dir", str(tmp_path)])
 
         mock_comparator.compare.assert_called_once()
         mock_print_report.assert_called_once_with(result)
 
     @patch("src.dataset_comparison.__main__.DataComparator")
-    @patch("src.dataset_comparison.__main__.Path")
     def test_main_skips_missing_files(
         self,
-        mock_path_cls: MagicMock,
         mock_comparator_cls: MagicMock,
+        tmp_path: Path,
     ) -> None:
         """Test main skips directories with missing files."""
-        output_dir = MagicMock(spec=Path)
-        gt_file = MagicMock(spec=Path)
-        pred_file = MagicMock(spec=Path)
-        gt_file.exists.return_value = True
-        pred_file.exists.return_value = False  # Missing predicted file
-        output_dir.__truediv__ = MagicMock(side_effect=[gt_file, pred_file])
+        output_dir = (
+            tmp_path / f"smolagent_context{_MODEL_ARG}" / "sample1" / "data" / "output"
+        )
+        output_dir.mkdir(parents=True)
+        # Only create gt file, not pred file
+        (output_dir / "output.csv").write_text("id,a\n0,1\n")
 
-        mock_base_path = MagicMock()
-        mock_base_path.glob.return_value = [output_dir]
-        mock_path_cls.return_value = mock_base_path
-
-        main()
+        main([_MODEL_ARG, "--base-dir", str(tmp_path)])
 
         mock_comparator_cls.return_value.compare.assert_not_called()
 
     @patch("src.dataset_comparison.__main__.DataComparator")
-    @patch("src.dataset_comparison.__main__.Path")
     def test_main_no_samples_found(
         self,
-        mock_path_cls: MagicMock,
         mock_comparator_cls: MagicMock,
+        tmp_path: Path,
     ) -> None:
         """Test main when no sample directories are found."""
-        mock_base_path = MagicMock()
-        mock_base_path.glob.return_value = []
-        mock_path_cls.return_value = mock_base_path
+        context_dir = tmp_path / f"smolagent_context{_MODEL_ARG}"
+        context_dir.mkdir(parents=True)
 
-        main()
+        main([_MODEL_ARG, "--base-dir", str(tmp_path)])
 
         mock_comparator_cls.return_value.compare.assert_not_called()
