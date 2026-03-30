@@ -196,7 +196,9 @@ class TestSmolAgentInit:
         assert len(agent.tools) == 1
 
         # LiteLLMModel called as expected
-        mock_lite_model.assert_called_once_with(model_id=model_name, api_key=api_key)
+        mock_lite_model.assert_called_once_with(
+            model_id=model_name, api_key=api_key, temperature=0.3
+        )
         # ToolCallingAgent constructed with that model and our tools
         mock_tool_agent.assert_called_once()
         args, kwargs = mock_tool_agent.call_args

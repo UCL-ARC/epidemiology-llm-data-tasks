@@ -1,0 +1,21 @@
+library(haven);library(dplyr);library(readr)
+w1<-read_delim("data/input/wave_one_lsype_family_background_2020.tab",delim="	",show_col_types=FALSE)
+w2<-read_delim("data/input/wave_two_lsype_family_background_2020.tab",delim="	",show_col_types=FALSE)
+w3<-read_delim("data/input/wave_three_lsype_family_background_2020.tab",delim="	",show_col_types=FALSE)
+w4<-read_delim("data/input/wave_four_lsype_family_background_2020.tab",delim="	",show_col_types=FALSE)
+w5<-read_delim("data/input/wave_five_lsype_family_background_2020.tab",delim="	",show_col_types=FALSE)
+w6<-read_delim("data/input/wave_six_lsype_young_person_2020.tab",delim="	",show_col_types=FALSE)
+w7<-read_delim("data/input/wave_seven_lsype_young_person_2020.tab",delim="	",show_col_types=FALSE)
+w8<-read_delim("data/input/ns8_2015_main_interview.tab",delim="	",show_col_types=FALSE)
+w9<-read_delim("data/input/ns9_2022_derived_variables.tab",delim="	",show_col_types=FALSE)
+data<-w1%>%full_join(w2,by="NSID")%>%full_join(w3,by="NSID")%>%full_join(w4,by="NSID")%>%full_join(w5,by="NSID")%>%full_join(w6,by="NSID")%>%full_join(w7,by="NSID")%>%full_join(w8,by="NSID")%>%full_join(w9,by="NSID")
+recode_miss<-function(x){case_when(x%in%c(-999,-99,-995,-997,-998)~-2,x==-92~-9,x==-91~-1,x==-1~-8,is.na(x)~-3,TRUE~x)}
+combine_ten<-function(tv,os,rs){case_when(tv%in%c(-999,-99,-995,-997,-998)~-2,tv==-92~-9,tv==-91~-1,tv==-1~-8,tv==1&os==1~1,tv==1&os==2~2,tv==1&os==3~3,tv==1&os==4~8,tv==2&rs==1~4,tv==2&rs==2~5,tv==2&rs==3~6,tv==2&rs==4~7,tv==2&rs==5~8,tv==3~8,is.na(tv)~-3,TRUE~as.numeric(tv))}
+data<-data%>%mutate(hownteen14=recode_miss(W1hous12HH),hownteen15=recode_miss(W2Hous12HH),hownteen16=recode_miss(W3hous12HH),hownteen17=recode_miss(W4Hous12HH),hownteen18=combine_ten(W5Hous12HH,W5Hous12BHH,W5Hous12CHH),hownteen19=combine_ten(W6Hous12YP,W6Hous12bYP,W6Hous12cYP),hownteen20=combine_ten(W7Hous12YP,W7Hous12bYP,W7Hous12cYP))
+collapse_ten<-function(x){case_when(x==1~1,x==2~2,x==3~3,x%in%c(4,5,6)~4,x==7~5,x==8~6,x%in%c(-1,-2,-3,-8,-9)~x,is.na(x)~-3,TRUE~as.numeric(x))}
+data<-data%>%mutate(hown14=collapse_ten(hownteen14),hown15=collapse_ten(hownteen15),hown16=collapse_ten(hownteen16),hown17=collapse_ten(hownteen17),hown18=collapse_ten(hownteen18),hown19=collapse_ten(hownteen19),hown20=collapse_ten(hownteen20))
+data<-data%>%mutate(hown25_raw=case_when(W8TENURE%in%c(-9,-8,-1)~W8TENURE,is.na(W8TENURE)~-3,TRUE~as.numeric(W8TENURE)),hown25=collapse_ten(hown25_raw))
+data<-data%>%mutate(hown32_raw=case_when(W9DTENURE==-8~-8,is.na(W9DTENURE)~-3,TRUE~as.numeric(W9DTENURE)),hown32=collapse_ten(hown32_raw))
+cleaned_data<-data%>%select(NSID,hown14,hown15,hown16,hown17,hown18,hown19,hown20,hown25,hown32,hownteen14,hownteen15,hownteen16,hownteen17,hownteen18,hownteen19,hownteen20)
+write.csv(cleaned_data,"data/output/cleaned_data.csv",row.names=FALSE)
+cat("Done")

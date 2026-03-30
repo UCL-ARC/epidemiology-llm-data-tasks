@@ -8,6 +8,8 @@ override: |
   1. **File Loading**:
      - Ensure when you load the input files you append the dir "data/input/" this is where they are stored.
      - Load each dataset into a separate object and merge using full_join by the ID variable.
+     - The input files are tab-delimited (.tab) text files. Use `readr::read_delim()` with `delim = "\t"` to load them. 
+     - Load each file explicitly by name from the metadata.
 
   2. **Variable Naming Conventions**:
      - Use the exact ID variable name from source data (e.g., NSID) - NEVER create or rename to generic "id".
@@ -23,22 +25,25 @@ override: |
      - -1 = Item not applicable
      - -3 = Not asked at the fieldwork stage/participated/interviewed
      - -2 = Schedule not applicable/Script error/information lost
+     - Any Null value to be coded as -3 (Not asked at the fieldwork stage/participated/interviewed) to distinguish from explicit missing codes.
 
   4. **Response Category Harmonization**:
      - When the SAME construct is measured across ages with DIFFERENT response categories, harmonize them into a common coding scheme.
-     - Create age-specific harmonized variables (e.g., ecoact17, ecoact18, ecoact19, ecoact20, ecoact25, ecoact32) that ALL use the SAME response categories.
-     - Follow the EXACT category scheme specified in the metadata.
-     - Each wave requires its own case_when() logic to map original categories to harmonized categories.
-     - Do NOT simplify or reduce the number of categories - use the exact scheme from metadata.
+     - Map raw wave-specific categories to harmonized categories by LABEL MEANING, not by matching numeric codes — the same integer can mean different things in different waves.
+     - Each wave requires its own case_when() logic because raw code numbers differ between waves.
+     - Simply remapping missing codes and passing raw values through is NOT harmonization.
 
   5. **Dual-Level Variables** (collapsed + detailed):
      - For variables with detailed adult measurements:
        a. Create harmonized/collapsed versions for ALL ages using the common category scheme.
        b. ALSO preserve detailed adult versions ONLY for ages where detailed data exists.
+     - Collapsed variables must have FEWER categories than detailed versions — they cannot be identical copies.
+     - For the collapsed versions, group related detailed categories into broader categories (e.g., "employee" + "self-employed" → "In paid work").
      - Both versions should be included in final output.
      - Example: If wave 8 (age 25) and wave 9 (age 32) have detailed categories:
        * Create: ecoact25, ecoact32 (harmonized 6-category)
        * AND: ecoactadu25, ecoactadu32 (detailed 10-category)
+
 
   6. **Wave-Specific Recoding Logic**:
      - Each wave needs its OWN case_when() to map from original to harmonized categories.
@@ -82,6 +87,7 @@ override: |
 
   15. **Execution**:
       - You must run your R script after generating it.
+      - IMPORTANT: If your R script fails, read the error message carefully, fix the script, and try again. Never return an error message as your final answer.
 
   Produce your script in R.
   

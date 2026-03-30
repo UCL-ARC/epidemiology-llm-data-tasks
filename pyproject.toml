@@ -50,13 +50,17 @@ module = ["loguru.*", "pandas.*"]
 ignore_missing_imports = true
 module = "yaml.*"
 
+[[tool.mypy.overrides]]
+ignore_missing_imports = true
+module = ["smolagents", "smolagents.*"]
+
 [tool.pytest.ini_options]
 addopts = ["--color=yes", "--import-mode=importlib", "--verbose"]
 pythonpath = "."
 testpaths = ["tests"]
 
 [tool.ruff]
-extend-exclude = ["app/migrations/versions/*.py", "docs/*.py"]
+extend-exclude = ["app/migrations/versions/*.py", "docs/*.py", "tmp/"]
 fix = true
 force-exclude = true
 target-version = "py312"

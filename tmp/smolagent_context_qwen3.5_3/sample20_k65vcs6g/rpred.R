@@ -1,0 +1,7 @@
+library(readr)
+output <- read_csv("data/output/cleaned_data.csv")
+cat("Number of rows:", nrow(output), "\n")
+cat("Number of columns:", ncol(output), "\n")
+cat("Column names:", paste(names(output), collapse=", "), "\n")
+print(head(output, 10))
+print(table(output$alcfst))

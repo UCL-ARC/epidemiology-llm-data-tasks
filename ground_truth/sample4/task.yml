@@ -8,6 +8,8 @@ override: |
   1. **File Loading**:
      - Ensure when you load the input files you append the dir "data/input/" this is where they are stored.
      - Load each dataset into a separate object and merge using full_join by the ID variable.
+     - The input files are tab-delimited (.tab) text files. Use `readr::read_delim()` with `delim = "\t"` to load them. 
+     - Load each file explicitly by name from the metadata.
 
   2. **Variable Naming Conventions**:
      - Use the exact ID variable name from source data (e.g., NSID) - do NOT create or rename to generic "id".
@@ -19,15 +21,18 @@ override: |
      Use these codes for ALL variables:
      - -9 = Refusal
      - -8 = Don't know/insufficient information
+     - -7 = Prefer not to say
      - -1 = Item not applicable
      - -3 = Not asked at the fieldwork stage/participated/interviewed
      - -2 = Schedule not applicable
+     - Any Null value to be coded as -3 (Not asked at the fieldwork stage/participated/interviewed) to distinguish from explicit missing codes.
 
   4. **Response Category Harmonization**:
      - When the SAME construct is measured across ages with DIFFERENT response categories, harmonize them into a common coding scheme.
      - Create age-specific variables that ALL use the SAME conceptual categories where possible.
      - Where harmonization is not possible (e.g., substantially different instruments like income bands), provide multiple variables with clearly labelled, age-specific categories.
      - Preserve as much conceptual detail as possible while maintaining comparability across ages.
+     - Response options that indicate non-substantive answers (e.g., "Prefer not to say", "Don't want to answer") should be treated as non-response and mapped to the appropriate standard missing-value code, NOT as substantive categories.
 
   5. **Missing Value Code Harmonization**:
      - Convert wave-specific negative codes (e.g., -999, -998, -997, -94, -92, -91, -99) to the standard missing-value codes defined in instruction 3.
@@ -59,6 +64,7 @@ override: |
 
   11. **Execution**:
       - You must run your R script after generating it.
+      - IMPORTANT: If your R script fails, read the error message carefully, fix the script, and try again. Never return an error message as your final answer.
 
   Produce your script in R.
   
