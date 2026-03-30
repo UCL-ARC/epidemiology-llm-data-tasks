@@ -7,7 +7,7 @@ from pathlib import Path
 from loguru import logger
 
 
-def main(*, delete_data: bool = False) -> None:  # noqa: PLR0912
+def main(*, delete_data: bool = False) -> None:  # noqa: PLR0912, C901
     """Identify incomplete smolagent outputs and optionally delete them."""
     context_root = Path("./tmp/smolagent_context")
     all_sample_ids = list(range(1, 21))
@@ -79,7 +79,12 @@ def main(*, delete_data: bool = False) -> None:  # noqa: PLR0912
             )
 
     # Report which samples still need running (missing or have no complete dirs)
-    complete_sample_ids = {int(d.name[6 : d.name.find("_", 6)]) for d in complete_dirs}
+    complete_sample_ids = set()
+    for d in complete_dirs:
+        underscore_idx = d.name.find("_", 6)
+        id_part = d.name[6:underscore_idx] if underscore_idx != -1 else d.name[6:]
+        if id_part.isdigit():
+            complete_sample_ids.add(int(id_part))
     samples_to_run = sorted(set(all_sample_ids) - complete_sample_ids)
     logger.info(f"\nsamples_to_run = {samples_to_run}")
 
