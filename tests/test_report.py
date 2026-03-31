@@ -26,7 +26,7 @@ _DEFAULT_JOIN_COMPLETENESS = JoinCompleteness(
     joined_row_count=100,
     missing_in_pred=0,
     extra_in_pred=0,
-    completeness_score=1.0,
+    join_completeness_score=1.0,
     gt_duplicate_keys=0,
     pred_duplicate_keys=0,
 )
@@ -147,7 +147,7 @@ class TestPrintComparisonReport:
                 _DEFAULT_JOIN_COMPLETENESS,
                 missing_in_pred=10,
                 extra_in_pred=5,
-                completeness_score=0.9,
+                join_completeness_score=0.9,
             ),
         )
         print_comparison_report(result)
@@ -275,7 +275,7 @@ class TestAggregateComparisonResults:
         assert len(summary_df) == 2  # 1 sample + 1 aggregate row
         assert summary_df.iloc[0]["sample"] == "sample1"
         assert summary_df.iloc[1]["sample"] == "AGGREGATE"
-        assert summary_df.iloc[0]["row_completeness"] == 1.0
+        assert summary_df.iloc[0]["join_completeness"] == 1.0
         assert summary_df.iloc[0]["matched_cols"] == 1
         assert summary_df.iloc[0]["unmatched_gt_cols"] == 0
 
@@ -330,8 +330,8 @@ class TestAggregateComparisonResults:
         assert agg["matched_cols"] == 2
         assert agg["unmatched_gt_cols"] == 1
 
-    def test_precision_recall_f1_computed(self) -> None:
-        """Test that precision, recall, F1 are computed correctly."""
+    def test_correctness_completeness_yield_computed(self) -> None:
+        """Test that correctness, completeness, output_yield are computed correctly."""
         result = replace(
             _DEFAULT_RESULT,
             column_matches=[
@@ -356,11 +356,11 @@ class TestAggregateComparisonResults:
         assert row["true_positives"] == 1
         assert row["false_positives"] == 0
         assert row["false_negatives"] == 1
-        assert row["precision"] == pytest.approx(1.0)
-        assert row["recall"] == pytest.approx(0.5)
+        assert row["correctness"] == pytest.approx(1.0)
+        assert row["completeness"] == pytest.approx(0.5)
 
-    def test_precision_recall_with_false_positives(self) -> None:
-        """Test precision/recall when there are false positives."""
+    def test_correctness_with_false_positives(self) -> None:
+        """Test correctness when there are false positives."""
         result = replace(
             _DEFAULT_RESULT,
             column_matches=[
@@ -382,10 +382,10 @@ class TestAggregateComparisonResults:
         row = summary_df.iloc[0]
         assert row["true_positives"] == 0
         assert row["false_positives"] == 1
-        assert row["precision"] == pytest.approx(0.0)
+        assert row["correctness"] == pytest.approx(0.0)
 
-    def test_aggregate_precision_recall_micro(self) -> None:
-        """Test aggregate row uses micro-averaged precision/recall."""
+    def test_aggregate_correctness_completeness_micro(self) -> None:
+        """Test aggregate row uses micro-averaged correctness/completeness."""
         result2 = replace(
             _DEFAULT_RESULT,
             column_matches=[
@@ -412,11 +412,11 @@ class TestAggregateComparisonResults:
         # Total TP=2, FP=0, FN=1
         assert agg["true_positives"] == 2
         assert agg["false_negatives"] == 1
-        assert agg["precision"] == pytest.approx(1.0)
-        assert agg["recall"] == pytest.approx(2.0 / 3.0)
+        assert agg["correctness"] == pytest.approx(1.0)
+        assert agg["completeness"] == pytest.approx(2.0 / 3.0)
 
     def test_no_matches_yields_none_metrics(self) -> None:
-        """Test that no TP+FP yields None precision."""
+        """Test that no TP+FP yields None correctness."""
         result = replace(
             _DEFAULT_RESULT,
             column_matches=[
@@ -427,9 +427,9 @@ class TestAggregateComparisonResults:
         )
         summary_df = aggregate_comparison_results([("sample1", result, None)])
         row = summary_df.iloc[0]
-        assert row["precision"] is None
-        assert row["recall"] == pytest.approx(0.0)
-        assert row["f1_score"] is None
+        assert row["correctness"] is None
+        assert row["completeness"] == pytest.approx(0.0)
+        assert row["output_yield"] is None
 
     def test_aggregate_with_none_numeric_metrics(self) -> None:
         """Test aggregate handles samples with no numeric columns."""
