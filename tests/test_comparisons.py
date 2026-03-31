@@ -1,7 +1,5 @@
 """Tests for comparisons module."""
 
-import math
-
 import numpy as np
 import pandas as pd
 import pytest
@@ -12,7 +10,6 @@ from src.dataset_comparison.comparisons import (
     compute_categorical_similarity,
     compute_numeric_similarity,
     infer_column_type,
-    jensen_shannon_divergence,
 )
 from src.dataset_comparison.models import ColumnType
 
@@ -254,57 +251,6 @@ class TestComputeNumericSimilarity:
         result = compute_numeric_similarity(gt_series, pred_series)
 
         assert result == 0.0
-
-
-class TestJensenShannonDivergence:
-    """Tests for jensen_shannon_divergence function."""
-
-    def test_identical_distributions(self) -> None:
-        """Test that identical distributions have divergence of ~0."""
-        p = {"a": 0.5, "b": 0.3, "c": 0.2}
-        q = {"a": 0.5, "b": 0.3, "c": 0.2}
-
-        result = jensen_shannon_divergence(p, q)
-
-        assert result == pytest.approx(0.0, abs=1e-6)
-
-    def test_completely_different_distributions(self) -> None:
-        """Test that non-overlapping distributions have high divergence."""
-        p = {"a": 1.0}
-        q = {"b": 1.0}
-
-        result = jensen_shannon_divergence(p, q)
-
-        # JS divergence is bounded by ln(2) ≈ 0.693
-        assert result > 0.5
-
-    def test_symmetric(self) -> None:
-        """Test that JS divergence is symmetric."""
-        p = {"a": 0.7, "b": 0.3}
-        q = {"a": 0.3, "b": 0.7}
-
-        result_pq = jensen_shannon_divergence(p, q)
-        result_qp = jensen_shannon_divergence(q, p)
-
-        assert result_pq == pytest.approx(result_qp)
-
-    def test_handles_missing_categories(self) -> None:
-        """Test that missing categories in one distribution are handled."""
-        p = {"a": 0.5, "b": 0.5}
-        q = {"a": 0.5, "b": 0.3, "c": 0.2}
-
-        result = jensen_shannon_divergence(p, q)
-
-        assert 0.0 < result < 1.0
-
-    def test_bounded_by_ln2(self) -> None:
-        """Test that JS divergence is bounded by ln(2)."""
-        p = {"a": 1.0}
-        q = {"b": 1.0}
-
-        result = jensen_shannon_divergence(p, q)
-
-        assert result <= math.log(2) + 1e-6
 
 
 class TestCompareCategorical:
