@@ -314,8 +314,8 @@ class TestMatchColumns:
         assert matches[0].method is None
 
     @patch("src.dataset_comparison.column_matcher.CrossEncoder")
-    def test_greedy_matching(self, mock_cross_encoder: MagicMock) -> None:
-        """Test that greedy algorithm assigns best matches first."""
+    def test_optimal_matching(self, mock_cross_encoder: MagicMock) -> None:
+        """Test that hungarian algorithm assigns best matches first."""
         mock_instance = MagicMock()
         # Make semantic scores low so Levenshtein dominates
         mock_instance.predict.side_effect = lambda x: [0.0] * len(x)

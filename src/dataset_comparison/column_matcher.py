@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 from jellyfish import levenshtein_distance
 from loguru import logger
+from scipy.optimize import linear_sum_assignment
 from sentence_transformers import CrossEncoder
 
 from .models import ColumnMatch, MatchMethod
@@ -144,56 +145,63 @@ class ColumnMatcher:
             gt_columns, pred_columns, semantic_weighting
         )
 
+        score_matrix = np.array(
+            [
+                [similarity_matrix[gt_col][pred_col][0] for pred_col in pred_columns]
+                for gt_col in gt_columns
+            ]
+        )
+
+        if not gt_columns or not pred_columns:
+            return [
+                ColumnMatch(gt_column=gt_col, pred_column=None, score=0.0, method=None)
+                for gt_col in gt_columns
+            ]
+
+        # Hungarian algorithm (linear_sum_assignment minimises, so negate)
+        row_ind, col_ind = linear_sum_assignment(-score_matrix)
+        assigned_gt = set(row_ind)
+
         matches: list[ColumnMatch] = []
-        available_pred_columns = set(pred_columns)
 
-        # Get best scores for each gt column
-        gt_best_scores = [
-            (gt_col, max(similarity_matrix[gt_col].values(), key=lambda x: x[0]))
-            for gt_col in gt_columns
-        ]
-
-        # Greedy: start with the best column match
-        gt_sorted = sorted(gt_best_scores, key=lambda x: x[1][0], reverse=True)
-
-        for gt_col, _ in gt_sorted:
-            best_pred_col = None
-            best_score = 0.0
-            best_method = None
-
-            for pred_col in available_pred_columns:
-                score, method = similarity_matrix[gt_col][pred_col]
-                if score > best_score:
-                    best_score = score
-                    best_pred_col = pred_col
-                    best_method = method
-
-            if best_score >= self.match_threshold and best_pred_col is not None:
+        for r, c in zip(row_ind, col_ind, strict=False):
+            score, method = similarity_matrix[gt_columns[r]][pred_columns[c]]
+            if score >= self.match_threshold:
                 matches.append(
                     ColumnMatch(
-                        gt_column=gt_col,
-                        pred_column=best_pred_col,
-                        score=best_score,
-                        method=best_method,
+                        gt_column=gt_columns[r],
+                        pred_column=pred_columns[c],
+                        score=score,
+                        method=method,
                     )
                 )
-                available_pred_columns.remove(best_pred_col)
-                method_str = best_method.value if best_method else "incompatible"
                 logger.info(
-                    f"Matched '{gt_col}' -> '{best_pred_col}' "
-                    f"(score={best_score:.3f}, method={method_str})"
+                    f"Matched '{gt_columns[r]}' -> '{pred_columns[c]}' "
+                    f"(score={score:.3f}, method={method.value})"
                 )
             else:
                 matches.append(
                     ColumnMatch(
-                        gt_column=gt_col,
+                        gt_column=gt_columns[r],
                         pred_column=None,
-                        score=best_score,
+                        score=score,
                         method=None,
                     )
                 )
                 logger.warning(
-                    f"No match found for '{gt_col}' (best score={best_score:.3f})"
+                    f"No match found for '{gt_columns[r]}' (best score={score:.3f})"
+                )
+
+        # Handle GT columns with no assignment (only occurs when n_gt > n_pred)
+        for r, gt_col in enumerate(gt_columns):
+            if r not in assigned_gt:
+                matches.append(
+                    ColumnMatch(
+                        gt_column=gt_col, pred_column=None, score=0.0, method=None
+                    )
+                )
+                logger.warning(
+                    f"No match found for '{gt_col}' (insufficient pred columns)"
                 )
 
         return matches
