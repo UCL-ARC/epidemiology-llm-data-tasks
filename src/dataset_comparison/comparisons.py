@@ -4,6 +4,7 @@
 import numpy as np
 import pandas as pd
 from loguru import logger
+from scipy.spatial.distance import jensenshannon
 
 from .models import CategoricalComparison, ColumnType, NumericComparison
 
@@ -125,30 +126,14 @@ def compute_numeric_similarity(
     return max(0.0, 1.0 - nrmse)
 
 
-# TO DO: is this the correct metric to use here?
-def jensen_shannon_divergence(
-    p: dict[str, float],
-    q: dict[str, float],
-) -> float:
-    """Calculate Jensen-Shannon divergence between two distributions."""
-    all_categories = set(p.keys()) | set(q.keys())
-
-    p_vec = np.array([p.get(c, 0.0) for c in all_categories])
-    q_vec = np.array([q.get(c, 0.0) for c in all_categories])
-
-    eps = 1e-10
-    p_vec = p_vec + eps
-    q_vec = q_vec + eps
-
-    p_vec = p_vec / p_vec.sum()
-    q_vec = q_vec / q_vec.sum()
-
-    m_vec = 0.5 * (p_vec + q_vec)
-
-    kl_p_m = float((p_vec * np.log(p_vec / m_vec)).sum())
-    kl_q_m = float((q_vec * np.log(q_vec / m_vec)).sum())
-
-    return 0.5 * kl_p_m + 0.5 * kl_q_m
+def compute_js_similarity(p: dict, q: dict) -> float:
+    """Compute similarity between two categorical distributions using Jensen-Shannon."""
+    all_cats = sorted(set(p) | set(q))
+    p_vec = np.array([p.get(c, 0.0) for c in all_cats]) + 1e-10
+    q_vec = np.array([q.get(c, 0.0) for c in all_cats]) + 1e-10
+    p_vec /= p_vec.sum()
+    q_vec /= q_vec.sum()
+    return 1.0 - float(jensenshannon(p_vec, q_vec))  # already [0,1]
 
 
 def compare_categorical(
@@ -225,9 +210,7 @@ def compare_categorical(
 
     gt_dist = gt_str.value_counts(normalize=True).to_dict()
     pred_dist = pred_str_mapped.value_counts(normalize=True).to_dict()
-
-    js_divergence = jensen_shannon_divergence(gt_dist, pred_dist)
-    distribution_similarity = 1.0 - js_divergence
+    distribution_similarity = compute_js_similarity(gt_dist, pred_dist)
 
     return CategoricalComparison(
         exact_match_rate=exact_match_rate,
