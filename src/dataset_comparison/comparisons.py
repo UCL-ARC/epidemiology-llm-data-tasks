@@ -75,14 +75,20 @@ def compare_numeric(
     rmse = float(np.sqrt((diff**2).mean()))
     mae = float(diff.abs().mean())
 
-    # Normalize by min max
-    gt_range = abs(float(gt_clean.max()) - float(gt_clean.min()))
-    if gt_range == 0:
+    iqr = float(np.percentile(gt_clean, 75) - np.percentile(gt_clean, 25))
+    if iqr == 0:
+        # Fall back to range if IQR is zero (e.g. heavily skewed/constant)
+        gt_range = abs(float(gt_clean.max()) - float(gt_clean.min()))
+        normaliser = gt_range
+    else:
+        normaliser = iqr
+
+    if normaliser == 0:
         nrmse = 0.0 if rmse == 0 else float("inf")
         nmae = 0.0 if mae == 0 else float("inf")
     else:
-        nrmse = rmse / gt_range
-        nmae = mae / gt_range
+        nrmse = rmse / normaliser
+        nmae = mae / normaliser
 
     try:
         if gt_clean.std() > 0 and pred_clean.std() > 0:
@@ -113,17 +119,9 @@ def compute_numeric_similarity(
 ) -> float:
     """Compute similarity score for numeric columns based on normalised RMSE."""
     comparison = compare_numeric(gt_series, pred_series)
-
-    if np.isnan(comparison.rmse):
+    if comparison.nrmse is None or np.isnan(comparison.nrmse):
         return 0.0
-
-    # Normalize by min max
-    gt_range = abs(float(gt_series.max()) - float(gt_series.min()))
-    if gt_range == 0:
-        return 1.0 if comparison.rmse == 0 else 0.0
-
-    nrmse = comparison.rmse / gt_range
-    return max(0.0, 1.0 - nrmse)
+    return max(0.0, 1.0 - comparison.nrmse)
 
 
 def compute_js_similarity(p: dict, q: dict) -> float:
