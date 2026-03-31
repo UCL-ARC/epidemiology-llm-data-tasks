@@ -233,7 +233,7 @@ class TestComputeSimilarityMatrix:
     def test_computes_all_pairs(self, mock_cross_encoder: MagicMock) -> None:
         """Test that similarity is computed for all column pairs."""
         mock_instance = MagicMock()
-        mock_instance.predict.return_value = 0.5
+        mock_instance.predict.side_effect = lambda x: [0.5] * len(x)
         mock_cross_encoder.return_value = mock_instance
 
         matcher = ColumnMatcher()
@@ -274,7 +274,7 @@ class TestMatchColumns:
     def test_exact_matches(self, mock_cross_encoder: MagicMock) -> None:
         """Test matching with identical column names."""
         mock_instance = MagicMock()
-        mock_instance.predict.return_value = 0.5
+        mock_instance.predict.side_effect = lambda x: [0.5] * len(x)
         mock_cross_encoder.return_value = mock_instance
 
         matcher = ColumnMatcher(match_threshold=0.5)
@@ -318,7 +318,7 @@ class TestMatchColumns:
         """Test that greedy algorithm assigns best matches first."""
         mock_instance = MagicMock()
         # Make semantic scores low so Levenshtein dominates
-        mock_instance.predict.return_value = 0.0
+        mock_instance.predict.side_effect = lambda x: [0.0] * len(x)
         mock_cross_encoder.return_value = mock_instance
 
         matcher = ColumnMatcher(match_threshold=0.5)
@@ -342,7 +342,7 @@ class TestMatchColumns:
     def test_more_gt_than_pred_columns(self, mock_cross_encoder: MagicMock) -> None:
         """Test when GT has more columns than pred."""
         mock_instance = MagicMock()
-        mock_instance.predict.return_value = 0.0
+        mock_instance.predict.side_effect = lambda x: [0.0] * len(x)
         mock_cross_encoder.return_value = mock_instance
 
         matcher = ColumnMatcher(match_threshold=0.5)
@@ -364,7 +364,7 @@ class TestMatchColumns:
     def test_more_pred_than_gt_columns(self, mock_cross_encoder: MagicMock) -> None:
         """Test when pred has more columns than GT."""
         mock_instance = MagicMock()
-        mock_instance.predict.return_value = 0.0
+        mock_instance.predict.side_effect = lambda x: [0.0] * len(x)
         mock_cross_encoder.return_value = mock_instance
 
         matcher = ColumnMatcher(match_threshold=0.5)

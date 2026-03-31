@@ -1,5 +1,6 @@
 """Column matching using name similarity (Levenshtein and semantic)."""
 
+import numpy as np
 import pandas as pd
 from jellyfish import levenshtein_distance
 from loguru import logger
@@ -49,13 +50,21 @@ class ColumnMatcher:
 
         return 1.0 - (distance / max_len)
 
+    def _levenshtein_similarities(self, pairs: list[tuple[str, str]]) -> list[float]:
+        """Calculate normalised Levenshtein similarity for a batch of pairs."""
+        return [self._levenshtein_similarity(a, b) for a, b in pairs]
+
+    def _semantic_similarities(self, pairs: list[tuple[str, str]]) -> list[float]:
+        """Calculate semantic similarity for a batch of pairs in one forward pass."""
+        if not pairs:
+            return []
+        normalised = [[self._normalise(a), self._normalise(b)] for a, b in pairs]
+        raw_scores = np.atleast_1d(self.cross_encoder.predict(normalised))
+        return [float(max(0.0, min(1.0, s))) for s in raw_scores]
+
     def _semantic_similarity(self, a: str, b: str) -> float:
         """Calculate semantic similarity using cross-encoder (0-1)."""
-        a_norm = self._normalise(a)
-        b_norm = self._normalise(b)
-
-        score = self.cross_encoder.predict([[a_norm, b_norm]])
-        return float(max(0.0, min(1.0, score)))
+        return self._semantic_similarities([(a, b)])[0]
 
     def _best_similarity(
         self, a: str, b: str, semantic_weighting: float
@@ -75,19 +84,32 @@ class ColumnMatcher:
         semantic_weighting: float = 1.0,
     ) -> dict[str, dict[str, tuple[float, MatchMethod]]]:
         """Compute similarity scores for all column pairs."""
-        matrix: dict[str, dict[str, tuple[float, MatchMethod]]] = {}
+        if not gt_columns or not pred_columns:
+            return {gt_col: {} for gt_col in gt_columns}
 
-        for gt_col in gt_columns:
-            matrix[gt_col] = {}
-            for pred_col in pred_columns:
-                score, method = self._best_similarity(
-                    gt_col, pred_col, semantic_weighting
-                )
-                matrix[gt_col][pred_col] = (score, method)
-                logger.debug(
-                    f"Similarity '{gt_col}' <-> '{pred_col}': {score:.3f} "
-                    f"({method.value})"
-                )
+        pairs = [
+            (gt_col, pred_col) for gt_col in gt_columns for pred_col in pred_columns
+        ]
+
+        lev_scores = self._levenshtein_similarities(pairs)
+        sem_scores = self._semantic_similarities(pairs)
+
+        matrix: dict[str, dict[str, tuple[float, MatchMethod]]] = {}
+        for (gt_col, pred_col), lev, sem in zip(
+            pairs, lev_scores, sem_scores, strict=False
+        ):
+            if gt_col not in matrix:
+                matrix[gt_col] = {}
+            weighted_sem = sem * semantic_weighting
+            if lev >= weighted_sem:
+                matrix[gt_col][pred_col] = (lev, MatchMethod.LEVENSHTEIN)
+            else:
+                matrix[gt_col][pred_col] = (weighted_sem, MatchMethod.SEMANTIC)
+            logger.debug(
+                f"Similarity '{gt_col}' <-> '{pred_col}': "
+                f"{matrix[gt_col][pred_col][0]:.3f} "
+                f"({matrix[gt_col][pred_col][1].value})"
+            )
 
         return matrix
 
