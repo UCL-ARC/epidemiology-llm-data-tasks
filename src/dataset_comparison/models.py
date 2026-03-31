@@ -39,7 +39,7 @@ class JoinCompleteness:
     joined_row_count: int
     missing_in_pred: int
     extra_in_pred: int
-    completeness_score: float
+    join_completeness_score: float
     gt_duplicate_keys: int
     pred_duplicate_keys: int
 

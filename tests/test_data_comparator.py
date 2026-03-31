@@ -73,7 +73,7 @@ class TestCheckJoinCompleteness:
         assert completeness.joined_row_count == 3
         assert completeness.missing_in_pred == 0
         assert completeness.extra_in_pred == 0
-        assert completeness.completeness_score == 1.0
+        assert completeness.join_completeness_score == 1.0
         assert completeness.gt_duplicate_keys == 0
         assert completeness.pred_duplicate_keys == 0
         assert len(joined_df) == 3
@@ -95,7 +95,7 @@ class TestCheckJoinCompleteness:
         assert completeness.joined_row_count == 2
         assert completeness.missing_in_pred == 2
         assert completeness.extra_in_pred == 0
-        assert completeness.completeness_score == 0.5
+        assert completeness.join_completeness_score == 0.5
 
     @patch("src.dataset_comparison.data_comparator.ColumnMatcher")
     def test_extra_keys_in_pred(self, mock_column_matcher: MagicMock) -> None:
@@ -114,7 +114,7 @@ class TestCheckJoinCompleteness:
         assert completeness.joined_row_count == 2
         assert completeness.missing_in_pred == 0
         assert completeness.extra_in_pred == 2
-        assert completeness.completeness_score == 1.0  # All GT keys found
+        assert completeness.join_completeness_score == 1.0  # All GT keys found
 
     @patch("src.dataset_comparison.data_comparator.ColumnMatcher")
     def test_no_overlapping_keys(self, mock_column_matcher: MagicMock) -> None:
@@ -129,7 +129,7 @@ class TestCheckJoinCompleteness:
         assert completeness.joined_row_count == 0
         assert completeness.missing_in_pred == 2
         assert completeness.extra_in_pred == 2
-        assert completeness.completeness_score == 0.0
+        assert completeness.join_completeness_score == 0.0
 
     @patch("src.dataset_comparison.data_comparator.ColumnMatcher")
     def test_duplicate_keys_in_gt(self, mock_column_matcher: MagicMock) -> None:
@@ -169,7 +169,7 @@ class TestCheckJoinCompleteness:
 
         assert completeness.gt_row_count == 0
         assert completeness.joined_row_count == 0
-        assert completeness.completeness_score == 0.0
+        assert completeness.join_completeness_score == 0.0
 
     @patch("src.dataset_comparison.data_comparator.ColumnMatcher")
     def test_joined_df_has_suffixes(self, mock_column_matcher: MagicMock) -> None:
@@ -465,7 +465,7 @@ class TestCompare:
 
         assert isinstance(result, DataComparisonResult)
         assert result.primary_key == "id | id"
-        assert result.join_completeness.completeness_score == 1.0
+        assert result.join_completeness.join_completeness_score == 1.0
         assert len(result.column_matches) == 2
         assert len(result.column_comparisons) == 2
         assert result.unmatched_gt_columns == []
@@ -611,7 +611,7 @@ class TestIntegration:
         assert all(isinstance(c, ColumnComparison) for c in result.column_comparisons)
 
         # Verify completeness
-        assert result.join_completeness.completeness_score == 1.0
+        assert result.join_completeness.join_completeness_score == 1.0
 
         # Verify comparisons
         assert len(result.column_comparisons) == 2
