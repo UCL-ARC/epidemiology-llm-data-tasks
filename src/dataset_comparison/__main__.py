@@ -23,6 +23,12 @@ def get_arg_parser() -> argparse.ArgumentParser:
         "(e.g. '_qwen3.5:9b_3' → tmp/smolagent_context_qwen3.5:9b_3).",
     )
     parser.add_argument(
+        "-v",
+        "--verbose",
+        action="store_true",
+        help="Enable debug logging.",
+    )
+    parser.add_argument(
         "--base-dir",
         type=Path,
         default=Path("tmp"),
@@ -82,10 +88,12 @@ def get_arg_parser() -> argparse.ArgumentParser:
 def main(argv: list[str] | None = None) -> None:
     """Run comparison on sample data directories."""
     logger.remove()
-    logger.add(sys.stderr, level="INFO")
 
     parser = get_arg_parser()
     args = parser.parse_args(argv)
+
+    log_level = "DEBUG" if args.verbose else "INFO"
+    logger.add(sys.stderr, level=log_level)
 
     context_dir = args.base_dir / f"smolagent_context{args.model}"
 

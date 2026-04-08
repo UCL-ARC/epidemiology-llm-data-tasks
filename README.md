@@ -87,6 +87,97 @@ This project includes a small agent framework in `src/agents.py` that wraps exis
   - `steps`: number of agent steps
   - `token_usage`: total tokens used
 
+## Dataset Comparison
+
+The `src/dataset_comparison/` module compares agent-generated output CSVs against ground truth CSVs. It handles mismatched column names, different category labels, and partial outputs.
+
+### Overview
+
+`DataComparator` orchestrates the full comparison pipeline:
+
+1. **Join completeness** — rows are joined on the dataframe index (primary key). Reports how many ground truth rows are present in the predicted output, and flags duplicate keys.
+2. **Column matching** — ground truth columns are matched to predicted columns by name.
+3. **Data-based fallback matching** — any columns that could not be matched by name are matched by data similarity.
+4. **Per-column comparison** — each matched column pair is compared using type-appropriate metrics.
+5. **Reporting** — results are printed per-sample and aggregated across experiments.
+
+### Column Matching (`column_matcher.py`)
+
+Columns are matched using a two-stage process:
+
+- **Levenshtein similarity** — normalised edit distance between lowercased, stripped column names.
+- **Semantic similarity** — a `cross-encoder/stsb-roberta-base` cross-encoder scores name pairs for meaning similarity.
+
+The best score across both methods is used. The Hungarian algorithm (`scipy.optimize.linear_sum_assignment`) then finds the globally optimal one-to-one assignment across all column pairs. Matches below
+`match_threshold` (default `0.5`) are left unmatched and passed to the data-based fallback.
+
+**Data-based fallback** computes actual data similarity between all unmatched column pairs (numeric: normalised RMSE; categorical: weighted exact match + distribution + overlap) and again uses the Hungarian
+algorithm to assign the best pairs. Only matches above `data_match_threshold` (default `0.7`) are accepted.
+
+### Column Type Inference (`comparisons.py`)
+
+A column is treated as categorical if either series is non-numeric, or if either series has fewer than `categorical_threshold` (default 20) unique values. Otherwise it is treated as numeric.
+
+### Numeric Comparison
+
+Matched numeric columns are compared using:
+
+| Metric | Description |
+|--------|-------------|
+| RMSE | Root mean squared error |
+| MAE | Mean absolute error |
+| NRMSE | RMSE normalised by IQR (falls back to range if IQR is zero) |
+| NMAE | MAE normalised by IQR |
+| Correlation | Pearson correlation (omitted if either series is constant) |
+
+A column is flagged as a **data match** if `NRMSE <= numerical_data_match_threshold` (default `0.0`, i.e. exact).
+
+### Categorical Comparison
+
+Categorical columns often use different label strings for the same underlying category (e.g. `"Paid work"` vs `"FT paid work"`). The comparison handles this with automatic category mapping:
+
+1. **Co-occurrence matrix** — for each ground truth category, the normalised distribution of predicted values co-occurring with it is computed. This gives a score for how strongly each (gt category, pred
+category) pair co-occurs.
+2. **Greedy assignment** — categories are sorted by their best co-occurrence score (descending), then by ground truth count (descending). Each ground truth category claims its best available predicted category.
+Pairs below `categorical_match_threshold` (default `0.8`) are left unmapped.
+3. **Remapping** — predicted values are remapped to ground truth labels before row-wise comparison.
+
+Metrics reported:
+
+| Metric | Description |
+|--------|-------------|
+| Exact match rate | Proportion of rows where (remapped) pred == gt |
+| Category overlap score | Jaccard similarity between gt and pred category sets after remapping |
+| Distribution similarity | Jensen-Shannon similarity (1 − JS divergence) between gt and pred distributions |
+
+A column is a **data match** if `exact_match_rate >= categorical_data_match_threshold` (default `1.0`, i.e. every row must match).
+
+### Result Models (`models.py`)
+
+| Model | Description |
+|-------|-------------|
+| `JoinCompleteness` | Row-level join statistics |
+| `ColumnMatch` | Matched column pair with score and method |
+| `NumericComparison` | Full numeric metrics for one column pair |
+| `CategoricalComparison` | Full categorical metrics for one column pair, including the category mapping used |
+| `ColumnComparison` | Wraps one matched pair with its numeric or categorical comparison |
+| `DataComparisonResult` | Full result for one sample: join completeness, all column matches and comparisons, unmatched columns, task completion percentage |
+
+### Reporting and Aggregate Metrics (`report.py`)
+
+`print_comparison_report()` prints a per-sample rich-formatted report covering join completeness, column match table, and per-column metric tables.
+
+`aggregate_comparison_results()` aggregates across multiple samples into a summary dataframe and prints an aggregate metrics table. Key aggregate metrics are:
+
+| Metric | Definition |
+|--------|------------|
+| **Correctness** | TP / (TP + FP) — of matched columns, what fraction are data matches |
+| **Completeness** | (TP + FP) / (TP + FP + FN) — fraction of gt columns that were matched at all |
+| **Output yield** | Correctness × Completeness — overall fraction of gt columns correctly reproduced |
+
+Where TP = matched column with data match, FP = matched column without data match, FN = unmatched gt column.
+
+
 ## Experiment Data
 
 Experiment outputs live under `tmp/`. The `data/` directories within each sample (containing raw `.tab` inputs and generated `.csv` outputs) are excluded from version control to keep the repository lightweight. All other experiment files — R scripts, task definitions, metadata, and summaries — are tracked.

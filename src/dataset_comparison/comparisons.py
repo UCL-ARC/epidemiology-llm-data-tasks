@@ -4,6 +4,7 @@
 import numpy as np
 import pandas as pd
 from loguru import logger
+from scipy.spatial.distance import jensenshannon
 
 from .models import CategoricalComparison, ColumnType, NumericComparison
 
@@ -74,14 +75,20 @@ def compare_numeric(
     rmse = float(np.sqrt((diff**2).mean()))
     mae = float(diff.abs().mean())
 
-    # Normalize by min max
-    gt_range = abs(float(gt_clean.max()) - float(gt_clean.min()))
-    if gt_range == 0:
+    iqr = float(np.percentile(gt_clean, 75) - np.percentile(gt_clean, 25))
+    if iqr == 0:
+        # Fall back to range if IQR is zero (e.g. heavily skewed/constant)
+        gt_range = abs(float(gt_clean.max()) - float(gt_clean.min()))
+        normaliser = gt_range
+    else:
+        normaliser = iqr
+
+    if normaliser == 0:
         nrmse = 0.0 if rmse == 0 else float("inf")
         nmae = 0.0 if mae == 0 else float("inf")
     else:
-        nrmse = rmse / gt_range
-        nmae = mae / gt_range
+        nrmse = rmse / normaliser
+        nmae = mae / normaliser
 
     try:
         if gt_clean.std() > 0 and pred_clean.std() > 0:
@@ -112,46 +119,22 @@ def compute_numeric_similarity(
 ) -> float:
     """Compute similarity score for numeric columns based on normalised RMSE."""
     comparison = compare_numeric(gt_series, pred_series)
-
-    if np.isnan(comparison.rmse):
+    if comparison.nrmse is None or np.isnan(comparison.nrmse):
         return 0.0
-
-    # Normalize by min max
-    gt_range = abs(float(gt_series.max()) - float(gt_series.min()))
-    if gt_range == 0:
-        return 1.0 if comparison.rmse == 0 else 0.0
-
-    nrmse = comparison.rmse / gt_range
-    return max(0.0, 1.0 - nrmse)
+    return max(0.0, 1.0 - comparison.nrmse)
 
 
-# TO DO: is this the correct metric to use here?
-def jensen_shannon_divergence(
-    p: dict[str, float],
-    q: dict[str, float],
-) -> float:
-    """Calculate Jensen-Shannon divergence between two distributions."""
-    all_categories = set(p.keys()) | set(q.keys())
-
-    p_vec = np.array([p.get(c, 0.0) for c in all_categories])
-    q_vec = np.array([q.get(c, 0.0) for c in all_categories])
-
-    eps = 1e-10
-    p_vec = p_vec + eps
-    q_vec = q_vec + eps
-
-    p_vec = p_vec / p_vec.sum()
-    q_vec = q_vec / q_vec.sum()
-
-    m_vec = 0.5 * (p_vec + q_vec)
-
-    kl_p_m = float((p_vec * np.log(p_vec / m_vec)).sum())
-    kl_q_m = float((q_vec * np.log(q_vec / m_vec)).sum())
-
-    return 0.5 * kl_p_m + 0.5 * kl_q_m
+def compute_js_similarity(p: dict, q: dict) -> float:
+    """Compute similarity between two categorical distributions using Jensen-Shannon."""
+    all_cats = sorted(set(p) | set(q))
+    p_vec = np.array([p.get(c, 0.0) for c in all_cats]) + 1e-10
+    q_vec = np.array([q.get(c, 0.0) for c in all_cats]) + 1e-10
+    p_vec /= p_vec.sum()
+    q_vec /= q_vec.sum()
+    return 1.0 - float(jensenshannon(p_vec, q_vec))  # already [0,1]
 
 
-def compare_categorical(
+def compare_categorical(  # noqa: PLR0915
     gt_series: pd.Series,
     pred_series: pd.Series,
     categorical_match_threshold: float = 0.8,
@@ -164,8 +147,9 @@ def compare_categorical(
     gt_categories = set(gt_str.unique())
     pred_categories = set(pred_str.unique())
 
-    # Get ground truth category counts
+    # Get ground truth and pred category counts
     gt_counts = gt_str.value_counts().to_dict()
+    pred_counts = pred_str.value_counts().to_dict()
 
     # Build category mapping based on co-occurrence
     category_mapping = {}
@@ -211,6 +195,35 @@ def compare_categorical(
         else:
             logger.debug(f"No mapping for '{category}' (best score={best_score:.2f})")
 
+    # check if debug
+    if logger._core.min_level <= 10:  # noqa: SLF001, PLR2004
+        col_w = 35
+        header = (
+            f"{'pred_cat':<{col_w}} {'pred_n':>7}    {'gt_cat':<{col_w}} {'gt_n':>7}"
+        )
+        print(header)  # noqa: T201
+        print("-" * len(header))  # noqa: T201
+
+        mapped_gt = set(final_mapping.values())
+
+        for pred_cat in sorted(pred_categories):
+            gt_cat = final_mapping.get(pred_cat)
+            pred_n = pred_counts.get(pred_cat, 0)
+            if gt_cat:
+                gt_n = gt_counts.get(gt_cat, 0)
+                print(  # noqa: T201
+                    f"{pred_cat:<{col_w}} {pred_n:>7}    {gt_cat:<{col_w}} {gt_n:>7}"
+                )
+            else:
+                print(  # noqa: T201
+                    f"{pred_cat:<{col_w}} {pred_n:>7}    {'unmapped':<{col_w}} {'':>7}"
+                )
+
+        unmatched_gt = gt_categories - mapped_gt
+        for gt_cat in sorted(unmatched_gt):
+            gt_n = gt_counts.get(gt_cat, 0)
+            print(f"{'unmapped':<{col_w}} {'':>7}    {gt_cat:<{col_w}} {gt_n:>7}")  # noqa: T201
+
     pred_str_mapped = pred_str.map(lambda x: final_mapping.get(x, x))
 
     exact_match_rate = float((gt_str == pred_str_mapped).mean())
@@ -225,9 +238,7 @@ def compare_categorical(
 
     gt_dist = gt_str.value_counts(normalize=True).to_dict()
     pred_dist = pred_str_mapped.value_counts(normalize=True).to_dict()
-
-    js_divergence = jensen_shannon_divergence(gt_dist, pred_dist)
-    distribution_similarity = 1.0 - js_divergence
+    distribution_similarity = compute_js_similarity(gt_dist, pred_dist)
 
     return CategoricalComparison(
         exact_match_rate=exact_match_rate,

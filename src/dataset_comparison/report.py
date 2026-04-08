@@ -1,5 +1,6 @@
 """Report generation for data comparison results."""
 
+import numpy as np
 import pandas as pd
 from rich.console import Console
 from rich.panel import Panel
@@ -197,7 +198,7 @@ def print_comparison_report(result: DataComparisonResult) -> None:  # noqa: PLR0
     console.rule("[bold blue]END REPORT[/bold blue]")
 
 
-def aggregate_comparison_results(  # noqa: PLR0915, PLR0912
+def aggregate_comparison_results(  # noqa: PLR0915, PLR0912, C901
     results: list[tuple[str, DataComparisonResult, dict | None]],
 ) -> pd.DataFrame:
     """
@@ -212,6 +213,11 @@ def aggregate_comparison_results(  # noqa: PLR0915, PLR0912
 
     """
     results_summary = []
+
+    all_numeric_rmse: list[float] = []
+    all_numeric_corr: list[float] = []
+    all_categorical_exact_match: list[float] = []
+    all_categorical_overlap: list[float] = []
 
     for sample_name, result, runtime_data in results:
         # Count columns
@@ -343,6 +349,20 @@ def aggregate_comparison_results(  # noqa: PLR0915, PLR0912
             }
         )
 
+        for comp in result.column_comparisons:
+            if comp.numeric_comparison:
+                if not np.isnan(comp.numeric_comparison.rmse):
+                    all_numeric_rmse.append(comp.numeric_comparison.rmse)
+                if comp.numeric_comparison.correlation is not None:
+                    all_numeric_corr.append(comp.numeric_comparison.correlation)
+            elif comp.categorical_comparison:
+                all_categorical_exact_match.append(
+                    comp.categorical_comparison.exact_match_rate
+                )
+                all_categorical_overlap.append(
+                    comp.categorical_comparison.category_overlap_score
+                )
+
     # Create summary dataframe
     summary_df = pd.DataFrame(results_summary)
 
@@ -376,7 +396,8 @@ def aggregate_comparison_results(  # noqa: PLR0915, PLR0912
             "gt_rows": summary_df["gt_rows"].sum(),
             "pred_rows": summary_df["pred_rows"].sum(),
             "joined_rows": summary_df["joined_rows"].sum(),
-            "join_completeness": summary_df["join_completeness"].mean(),
+            "join_completeness": summary_df["joined_rows"].sum()
+            / summary_df["gt_rows"].sum(),
             "gt_cols": summary_df["gt_cols"].sum(),
             "pred_cols": summary_df["pred_cols"].sum(),
             "matched_cols": summary_df["matched_cols"].sum(),
@@ -384,19 +405,26 @@ def aggregate_comparison_results(  # noqa: PLR0915, PLR0912
             "matched_categorical_cols": summary_df["matched_categorical_cols"].sum(),
             "unmatched_gt_cols": summary_df["unmatched_gt_cols"].sum(),
             "unmatched_pred_cols": summary_df["unmatched_pred_cols"].sum(),
-            "col_match_rate": summary_df["col_match_rate"].mean(),
+            "col_match_rate": summary_df["matched_cols"].sum()
+            / summary_df["gt_cols"].sum(),
             "true_positives": total_tp,
             "false_positives": total_fp,
             "false_negatives": total_fn,
             "correctness": agg_correctness,
             "completeness": agg_completeness,
             "output_yield": agg_output_yield,
-            "avg_numeric_rmse": summary_df["avg_numeric_rmse"].mean(),
-            "avg_numeric_corr": summary_df["avg_numeric_corr"].mean(),
-            "avg_categorical_exact_match": summary_df[
-                "avg_categorical_exact_match"
-            ].mean(),
-            "avg_categorical_overlap": summary_df["avg_categorical_overlap"].mean(),
+            "avg_numeric_rmse": float(np.mean(all_numeric_rmse))
+            if all_numeric_rmse
+            else None,
+            "avg_numeric_corr": float(np.mean(all_numeric_corr))
+            if all_numeric_corr
+            else None,
+            "avg_categorical_exact_match": float(np.mean(all_categorical_exact_match))
+            if all_categorical_exact_match
+            else None,
+            "avg_categorical_overlap": float(np.mean(all_categorical_overlap))
+            if all_categorical_overlap
+            else None,
             "avg_task_completion_percentage": summary_df[
                 "task_completion_percentage"
             ].mean(),
