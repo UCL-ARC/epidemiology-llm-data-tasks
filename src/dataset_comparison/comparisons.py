@@ -134,7 +134,7 @@ def compute_js_similarity(p: dict, q: dict) -> float:
     return 1.0 - float(jensenshannon(p_vec, q_vec))  # already [0,1]
 
 
-def compare_categorical(
+def compare_categorical(  # noqa: PLR0915
     gt_series: pd.Series,
     pred_series: pd.Series,
     categorical_match_threshold: float = 0.8,
@@ -147,8 +147,9 @@ def compare_categorical(
     gt_categories = set(gt_str.unique())
     pred_categories = set(pred_str.unique())
 
-    # Get ground truth category counts
+    # Get ground truth and pred category counts
     gt_counts = gt_str.value_counts().to_dict()
+    pred_counts = pred_str.value_counts().to_dict()
 
     # Build category mapping based on co-occurrence
     category_mapping = {}
@@ -193,6 +194,35 @@ def compare_categorical(
             available_pred_categories.remove(best_match)
         else:
             logger.debug(f"No mapping for '{category}' (best score={best_score:.2f})")
+
+    # check if debug
+    if logger._core.min_level <= 10:  # noqa: SLF001, PLR2004
+        col_w = 35
+        header = (
+            f"{'pred_cat':<{col_w}} {'pred_n':>7}    {'gt_cat':<{col_w}} {'gt_n':>7}"
+        )
+        print(header)  # noqa: T201
+        print("-" * len(header))  # noqa: T201
+
+        mapped_gt = set(final_mapping.values())
+
+        for pred_cat in sorted(pred_categories):
+            gt_cat = final_mapping.get(pred_cat)
+            pred_n = pred_counts.get(pred_cat, 0)
+            if gt_cat:
+                gt_n = gt_counts.get(gt_cat, 0)
+                print(  # noqa: T201
+                    f"{pred_cat:<{col_w}} {pred_n:>7}    {gt_cat:<{col_w}} {gt_n:>7}"
+                )
+            else:
+                print(  # noqa: T201
+                    f"{pred_cat:<{col_w}} {pred_n:>7}    {'unmapped':<{col_w}} {'':>7}"
+                )
+
+        unmatched_gt = gt_categories - mapped_gt
+        for gt_cat in sorted(unmatched_gt):
+            gt_n = gt_counts.get(gt_cat, 0)
+            print(f"{'unmapped':<{col_w}} {'':>7}    {gt_cat:<{col_w}} {gt_n:>7}")  # noqa: T201
 
     pred_str_mapped = pred_str.map(lambda x: final_mapping.get(x, x))
 
