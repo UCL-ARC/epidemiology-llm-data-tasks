@@ -35,7 +35,7 @@ class DataComparator:
         categorical_threshold: int = 20,
         cross_encoder_model_name: str = "cross-encoder/stsb-roberta-base",
         match_threshold: float = 0.5,
-        data_match_threshold: float = 0.7,
+        column_data_match_threshold: float = 0.7,
         categorical_data_match_threshold: float = 1.0,
         numerical_data_match_threshold: float = 0.0,
         categorical_match_threshold: float = 0.8,
@@ -47,7 +47,7 @@ class DataComparator:
             categorical_threshold: Max unique values for categorical treatment.
             cross_encoder_model_name: Model for semantic column matching.
             match_threshold: Minimum score for column name matching.
-            data_match_threshold: Minimum score for data-based matching
+            column_data_match_threshold: Minimum score for data-based matching
             i.e. these two columns can be considered for comparison.
             categorical_data_match_threshold: Minimum score for categorical data match,
             i.e. will we report a match 1 implies every row matches.
@@ -59,7 +59,7 @@ class DataComparator:
         self.categorical_threshold = categorical_threshold
         self.categorical_match_threshold = categorical_match_threshold
         # TO DO: rename as this data match threshold differes from the other
-        self.data_match_threshold = data_match_threshold
+        self.column_data_match_threshold = column_data_match_threshold
         self.categorical_data_match_threshold = categorical_data_match_threshold
         self.numerical_data_match_threshold = numerical_data_match_threshold
         self.column_matcher = ColumnMatcher(
@@ -254,7 +254,7 @@ class DataComparator:
             score, method = similarity_matrix[unmatched_gt_columns[r]][
                 unmatched_pred_columns[c]
             ]
-            if score >= self.data_match_threshold:
+            if score >= self.column_data_match_threshold:
                 data_matches.append(
                     ColumnMatch(
                         unmatched_gt_columns[r],
