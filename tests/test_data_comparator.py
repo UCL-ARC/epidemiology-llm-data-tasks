@@ -27,7 +27,7 @@ class TestDataComparatorInit:
 
         assert comparator.categorical_threshold == 20
         assert comparator.categorical_match_threshold == 0.8
-        assert comparator.data_match_threshold == 0.7
+        assert comparator.column_data_match_threshold == 0.7
 
         mock_column_matcher.assert_called_once_with(
             cross_encoder_model_name="cross-encoder/stsb-roberta-base",
@@ -41,13 +41,13 @@ class TestDataComparatorInit:
             categorical_threshold=50,
             cross_encoder_model_name="custom-model",
             match_threshold=0.7,
-            data_match_threshold=0.8,
+            column_data_match_threshold=0.8,
             categorical_match_threshold=0.9,
         )
 
         assert comparator.categorical_threshold == 50
         assert comparator.categorical_match_threshold == 0.9
-        assert comparator.data_match_threshold == 0.8
+        assert comparator.column_data_match_threshold == 0.8
 
         mock_column_matcher.assert_called_once_with(
             cross_encoder_model_name="custom-model",
@@ -289,7 +289,7 @@ class TestDataMatchColumns:
         """Test data matching for numeric columns."""
         comparator = DataComparator(
             categorical_threshold=5,
-            data_match_threshold=0.5,
+            column_data_match_threshold=0.5,
         )
 
         # Create columns with identical data but different names
@@ -313,7 +313,7 @@ class TestDataMatchColumns:
         """Test data matching for categorical columns."""
         comparator = DataComparator(
             categorical_threshold=20,
-            data_match_threshold=0.5,
+            column_data_match_threshold=0.5,
         )
 
         joined_df = pd.DataFrame(
@@ -335,7 +335,7 @@ class TestDataMatchColumns:
         """Test that incompatible types don't match."""
         comparator = DataComparator(
             categorical_threshold=20,
-            data_match_threshold=0.5,
+            column_data_match_threshold=0.5,
         )
 
         joined_df = pd.DataFrame(
@@ -358,7 +358,7 @@ class TestDataMatchColumns:
         """Test that low similarity scores don't produce matches."""
         comparator = DataComparator(
             categorical_threshold=5,
-            data_match_threshold=0.9,  # High threshold
+            column_data_match_threshold=0.9,  # High threshold
         )
 
         # Very different data
@@ -381,7 +381,7 @@ class TestDataMatchColumns:
         """Test that greedy matching assigns best matches first."""
         comparator = DataComparator(
             categorical_threshold=5,
-            data_match_threshold=0.5,
+            column_data_match_threshold=0.5,
         )
 
         # gt_a matches pred_a perfectly, gt_b also matches pred_a well
@@ -485,7 +485,9 @@ class TestCompare:
             ColumnMatch("col_b", None, 0.2, None),
         ]
 
-        comparator = DataComparator(categorical_threshold=5, data_match_threshold=0.9)
+        comparator = DataComparator(
+            categorical_threshold=5, column_data_match_threshold=0.9
+        )
 
         gt_df = pd.DataFrame(
             {
@@ -522,7 +524,7 @@ class TestCompare:
 
         comparator = DataComparator(
             categorical_threshold=5,
-            data_match_threshold=0.5,
+            column_data_match_threshold=0.5,
         )
 
         gt_df = pd.DataFrame(
@@ -553,7 +555,7 @@ class TestCompare:
 
         comparator = DataComparator(
             categorical_threshold=5,
-            data_match_threshold=0.5,
+            column_data_match_threshold=0.5,
         )
 
         gt_df = pd.DataFrame(
