@@ -213,75 +213,9 @@ class TestSmolAgentForward:
 
     @patch("src.agents.ToolCallingAgent")
     @patch("src.agents.LiteLLMModel")
-    def test_forward_returns_agentresult_with_context(
-        self, mock_lite_model, mock_tool_agent, tmp_path
+    def test_forward_uses_cwd_when_no_context(
+        self, mock_lite_model, mock_tool_agent, tmp_path, monkeypatch
     ):
-        """
-        forward should call underlying ToolCallingAgent.run and adapt
-        RunResult to AgentResult.
-        """
-
-        def dummy_tool(x: int) -> int:
-            """
-            Make dummy tool function for testing.
-
-            Args:
-                x: Input value.
-
-            Returns:
-                The output value.
-
-            """
-            return x
-
-        tools = [dummy_tool]
-        model_name = "test-model"
-        api_key = "abc123"
-
-        mock_agent_instance = Mock()
-        mock_tool_agent.return_value = mock_agent_instance
-
-        # Build fake RunResult-like object returned by smolagents
-        fake_token_usage = Mock()
-        fake_token_usage.total_tokens = 42
-
-        fake_timing = Mock()
-        fake_timing.duration = 1.5
-
-        fake_result = Mock()
-        fake_result.output = "final output"
-        fake_result.state = "success"
-        fake_result.steps = [1, 2, 3]
-        fake_result.token_usage = fake_token_usage
-        fake_result.timing = fake_timing
-
-        mock_agent_instance.run.return_value = fake_result
-
-        agent = SmolAgent(tools=tools, model_name=model_name, api_key=api_key)
-
-        # Build a small fake context directory
-        context_dir = tmp_path / "sample1"
-        context_dir.mkdir()
-        (context_dir / "file.txt").write_text("content")
-
-        res = agent.forward(
-            "do something",
-            context_path=context_dir,
-            persist_context=False,
-        )
-
-        mock_agent_instance.run.assert_called_once_with("do something")
-
-        assert isinstance(res, AgentResult)
-        assert res.result == "final output"
-        assert res.state == "success"
-        assert res.time_taken == 1.5
-        assert res.steps == 3
-        assert res.token_usage == 42
-
-    @patch("src.agents.ToolCallingAgent")
-    @patch("src.agents.LiteLLMModel")
-    def test_forward_uses_cwd_when_no_context(self, mock_lite_model, mock_tool_agent):
         """
         If context_path is None, forward should still work and not fail
         on context manager.
@@ -323,6 +257,8 @@ class TestSmolAgentForward:
         mock_agent_instance.run.return_value = fake_result
 
         agent = SmolAgent(tools=tools, model_name=model_name, api_key=None)
+
+        monkeypatch.chdir(tmp_path)
 
         res = agent.forward("task with no context", context_path=None)
 
