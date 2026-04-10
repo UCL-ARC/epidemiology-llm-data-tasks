@@ -75,13 +75,9 @@ def compare_numeric(
     rmse = float(np.sqrt((diff**2).mean()))
     mae = float(diff.abs().mean())
 
-    iqr = float(np.percentile(gt_clean, 75) - np.percentile(gt_clean, 25))
-    if iqr == 0:
-        # Fall back to range if IQR is zero (e.g. heavily skewed/constant)
-        gt_range = abs(float(gt_clean.max()) - float(gt_clean.min()))
-        normaliser = gt_range
-    else:
-        normaliser = iqr
+    # Fall back to range if IQR is zero (e.g. heavily skewed/constant)
+    gt_range = abs(float(gt_clean.max()) - float(gt_clean.min()))
+    normaliser = gt_range
 
     if normaliser == 0:
         nrmse = 0.0 if rmse == 0 else float("inf")
