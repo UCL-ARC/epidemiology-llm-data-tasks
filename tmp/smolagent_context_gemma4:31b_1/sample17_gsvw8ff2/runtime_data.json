@@ -1,0 +1,7 @@
+{
+  "result": "The raw survey datasets have been successfully cleaned and harmonised. The area deprivation variables from multiple waves were extracted, renamed to imd15, imd16, and imd32, and merged by NSID. Missing value codes were harmonised (recoding -94 to -8 and NAs to -3) and standard value labels were applied. The final cleaned dataset containing only NSID, imd15, imd16, and imd32 has been saved to data/output/cleaned_data.csv.",
+  "state": "success",
+  "time_taken": 69.01499891281128,
+  "steps": 4,
+  "token_usage": 19102
+}

@@ -1,0 +1,7 @@
+{
+  "result": "The dataset has been cleaned and harmonised according to the specifications. The resulting file is saved as data/output/cleaned_data.csv, containing the variables NSID, imd15, imd16, and imd32, with missing value codes harmonised and labelled.",
+  "state": "success",
+  "time_taken": 90.28054904937744,
+  "steps": 4,
+  "token_usage": 17498
+}

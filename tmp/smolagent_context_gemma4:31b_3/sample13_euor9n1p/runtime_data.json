@@ -1,0 +1,7 @@
+{
+  "result": "The raw survey datasets have been successfully cleaned and harmonised according to the specified requirements. The parental NS-SEC occupational class variables for mothers and fathers across five waves (ages 14-18) were loaded, merged by NSID, recoded to the 17-category NS-SEC classification, and harmonised for missing value codes. The resulting variables (nssecma14-18 and nssecpa14-18) were converted to labelled factor variables and exported to data/output/cleaned_data.csv.",
+  "state": "success",
+  "time_taken": 120.34358716011047,
+  "steps": 4,
+  "token_usage": 39503
+}

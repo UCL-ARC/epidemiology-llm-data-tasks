@@ -1,0 +1,7 @@
+{
+  "result": "The NS-SEC occupational class variables have been cleaned and harmonised according to the specified instructions. The input datasets were loaded from 'data/input/', merged by NSID, and the variables nssec17, nssec18, nssec19, nssec20, nssec25, and nssec32 were processed. This included collapsing fractional categories using floor(), mapping wave-specific missing codes to the standard scheme (-9, -8, -7, -3, -2, -1), deriving the full-time student category (15) for age 25 using economic activity data, and converting the results into labelled factors. The final cleaned dataset containing only NSID and the harmonised NS-SEC variables has been written to 'data/output/cleaned_data.csv'.",
+  "state": "success",
+  "time_taken": 80.26110625267029,
+  "steps": 3,
+  "token_usage": 18847
+}

@@ -1,0 +1,7 @@
+{
+  "result": "The raw survey datasets have been cleaned and harmonised according to the specified requirements. The educational qualification variables `educ25`, `educ32`, `educadtl32`, and `educvdtl32` were derived using the provided logic and metadata. The final dataset containing `NSID` and these four variables has been written to `data/output/cleaned_data.csv`.",
+  "state": "success",
+  "time_taken": 145.8981990814209,
+  "steps": 4,
+  "token_usage": 62675
+}

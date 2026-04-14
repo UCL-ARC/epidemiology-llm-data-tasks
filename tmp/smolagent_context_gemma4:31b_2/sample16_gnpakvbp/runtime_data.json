@@ -1,0 +1,7 @@
+{
+  "result": "The household weekly income variables have been cleaned and harmonised across four waves (ages 14-17) according to the specified missing-value codes and banding requirements. The final dataset containing NSID, banded income (incwhh14, incwhh15, incwhh16, incwhh17) and continuous income (incwhhcnt14, incwhhcnt15) has been saved to data/output/cleaned_data.csv.",
+  "state": "success",
+  "time_taken": 77.54660606384277,
+  "steps": 3,
+  "token_usage": 13598
+}

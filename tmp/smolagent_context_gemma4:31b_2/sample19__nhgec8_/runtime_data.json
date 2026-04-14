@@ -1,0 +1,7 @@
+{
+  "result": "The BMI variables for ages 25 and 32 have been cleaned and harmonised according to the specifications. The input files were loaded from `data/input/`, merged by `NSID`, and BMI values were mapped to standard missing codes (-9, -8, -1, -3, -2). Valid continuous BMI values were preserved, and NA values were recoded to -3. The final dataset containing only `NSID`, `bmi25`, and `bmi32` was saved to `data/output/cleaned_data.csv`.",
+  "state": "success",
+  "time_taken": 353.7317810058594,
+  "steps": 5,
+  "token_usage": 26247
+}

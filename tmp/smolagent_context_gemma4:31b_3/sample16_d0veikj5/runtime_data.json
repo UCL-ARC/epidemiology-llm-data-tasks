@@ -1,0 +1,7 @@
+{
+  "result": "The survey datasets have been cleaned and harmonised according to the provided specifications. Input files from ages 14, 15, 16, and 17 were loaded from `data/input/`, merged by `NSID`, and the weekly household income variables were processed. Continuous income for ages 14 and 15 was mapped to standard missing codes and banded into categories. Categorical income for ages 16 and 17 was mapped to the same standard missing scheme. All banded variables were converted to factors with descriptive labels, and continuous variables preserved their original values with missing codes. The final dataset containing NSID, incwhh14, incwhh15, incwhhcnt14, incwhhcnt15, incwhh16, and incwhh17 has been written to `data/output/cleaned_data.csv`.",
+  "state": "success",
+  "time_taken": 141.12671875953674,
+  "steps": 4,
+  "token_usage": 27570
+}

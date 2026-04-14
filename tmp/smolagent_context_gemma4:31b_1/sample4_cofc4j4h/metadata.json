@@ -1,0 +1,155 @@
+{
+  "wave_one_lsype_young_person_2020.tab": {
+    "file_info": {
+      "number_of_variables": 350,
+      "number_of_cases": 15760,
+      "description": "Sweep 1 (Age 14) Young Person Data File"
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      }
+    }
+  },
+  "wave_four_lsype_young_person_2020.tab": {
+    "file_info": {
+      "number_of_variables": 1049,
+      "number_of_cases": 11791,
+      "description": "Sweep 4 (Age 17) Young Person Data File"
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      }
+    }
+  },
+  "wave_six_lsype_young_person_2020.tab": {
+    "file_info": {
+      "number_of_variables": 760,
+      "number_of_cases": 9791,
+      "description": "Sweep 6 (Age 19) Young Person Data File"
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      },
+      "W6SexualityYP": {
+        "position": 577,
+        "variable_label": "YP: Sexuality",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-97.0": "Respondent declined self completion",
+          "-92.0": "Refused",
+          "-91.0": "Not applicable",
+          "-1.0": "Don't know",
+          "1.0": "Heterosexual / Straight",
+          "2.0": "Gay / Lesbian",
+          "3.0": "Bisexual",
+          "4.0": "Other"
+        }
+      }
+    }
+  },
+  "wave_seven_lsype_young_person_2020.tab": {
+    "file_info": {
+      "number_of_variables": 850,
+      "number_of_cases": 8675,
+      "description": "Sweep 7 (Age 20) Young Person Data File"
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      },
+      "W7SexualityYP": {
+        "position": 652,
+        "variable_label": "YP: Sexuality",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-100.0": "Respondent declined sexual experience questions",
+          "-97.0": "Refused self completion",
+          "-92.0": "Refused",
+          "-91.0": "Not applicable",
+          "-1.0": "Don't know",
+          "1.0": "Heterosexual / Straight",
+          "2.0": "Gay / Lesbian",
+          "3.0": "Bisexual",
+          "4.0": "Other"
+        }
+      }
+    }
+  },
+  "ns8_2015_self_completion.tab": {
+    "file_info": {
+      "number_of_variables": 111,
+      "number_of_cases": 7705,
+      "description": "Wave Eight Self-Completion Data File"
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      },
+      "W8SEXUALITY": {
+        "position": 23,
+        "variable_label": "Gender identity/sexual orientation",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-9.0 thru -8.0 and -1.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Don't know",
+          "-1.0": "Not applicable",
+          "1.0": "Heterosexual / Straight",
+          "2.0": "Gay / Lesbian",
+          "3.0": "Bisexual",
+          "4.0": "Other"
+        }
+      }
+    }
+  },
+  "ns9_2022_main_interview.tab": {
+    "file_info": {
+      "number_of_variables": 1805,
+      "number_of_cases": 7279,
+      "description": "Age 32 (Sweep 9) Main Interview Data File"
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {}
+      },
+      "W9SORI": {
+        "position": 1630,
+        "variable_label": "Sexual orientation",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Don't know",
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Heterosexual / Straight",
+          "2.0": "Gay / Lesbian",
+          "3.0": "Bisexual",
+          "4.0": "Other",
+          "5.0": "Prefer not to say"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "result": "The parental education variables have been cleaned, consolidated, and harmonized according to the specified logic. The final dataset containing NSID, educma, educpa, educdtlma, and educdtlpa has been saved to data/output/cleaned_data.csv.",
+  "state": "success",
+  "time_taken": 183.11598706245422,
+  "steps": 3,
+  "token_usage": 15836
+}
