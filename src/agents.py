@@ -151,7 +151,7 @@ class SmolAgent(Agent):
             model_id=self.model_name,
             api_key=self.api_key,
             temperature=self.temperature,
-            # extra_body={"num_ctx": 132000},
+            num_ctx=128000,
         )
         if self.agent_type == "code":
             return create_r_code_agent(
@@ -219,7 +219,9 @@ if __name__ == "__main__":
     from .tools import produce_and_execute_r
 
     # --- Ollama (via LiteLLM) ---
-    model_id = "gemma3:4b"
+    model_id = "gemma4:e4b"
+    model_id = "gemma4:31b-cloud"
+    # model_id = "devstral-small-2:24b-cloud"
     model_name = f"ollama_chat/{model_id}"
     api_key = "ollama"
 
@@ -258,10 +260,10 @@ if __name__ == "__main__":
         ],
         key=lambda p: int(p.name[6:]),
     )
-    test_dirs = [Path(f"./ground_truth/sample{x}") for x in [9, 16]]
+    test_dirs = [Path(f"./ground_truth/sample{x}") for x in [13]]
     # test_dirs = [Path(f"./ground_truth/sample{x}") for x in [14, 16]]
 
-    for i in range(2):
+    for i in range(1):
         logger.info(f"\n\n=== Agent Run {i+1} ===")
         for test_dir in test_dirs:
             logger.info(f"\n=== Testing with context: {test_dir} ===")
