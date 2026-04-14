@@ -220,8 +220,6 @@ if __name__ == "__main__":
 
     # --- Ollama (via LiteLLM) ---
     model_id = "gemma4:e4b"
-    model_id = "gemma4:31b-cloud"
-    # model_id = "devstral-small-2:24b-cloud"
     model_name = f"ollama_chat/{model_id}"
     api_key = "ollama"
 
@@ -260,7 +258,7 @@ if __name__ == "__main__":
         ],
         key=lambda p: int(p.name[6:]),
     )
-    test_dirs = [Path(f"./ground_truth/sample{x}") for x in [13]]
+    # test_dirs = [Path(f"./ground_truth/sample{x}") for x in [4]]
     # test_dirs = [Path(f"./ground_truth/sample{x}") for x in [14, 16]]
 
     for i in range(1):
