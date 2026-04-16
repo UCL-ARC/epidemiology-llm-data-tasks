@@ -8,7 +8,13 @@ from pathlib import Path
 import pandas as pd
 from loguru import logger
 
-from . import DataComparator, aggregate_comparison_results, print_comparison_report
+from . import (
+    DataComparator,
+    aggregate_comparison_results,
+    build_category_mapping_table,
+    build_column_mapping_table,
+    print_comparison_report,
+)
 
 
 def get_arg_parser() -> argparse.ArgumentParser:
@@ -93,7 +99,7 @@ def get_arg_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def main(argv: list[str] | None = None) -> None:
+def main(argv: list[str] | None = None) -> None:  # noqa: PLR0915
     """Run comparison on sample data directories."""
     logger.remove()
 
@@ -115,7 +121,7 @@ def main(argv: list[str] | None = None) -> None:
     elif args.model is not None:
         context_dirs = [args.base_dir / f"smolagent_context{args.model}"]
     else:
-        parser.error("either provide a model name or use --all")
+        context_dirs = [args.base_dir / f"smolagent_context{args.model}"]
 
     for context_dir in context_dirs:
         if not context_dir.exists():
@@ -155,6 +161,13 @@ def main(argv: list[str] | None = None) -> None:
 
             # save individual output
             output_df.to_csv(output_dir / "comparison_output.csv")
+
+            # save column and category mapping tables
+            col_map_df = build_column_mapping_table(result)
+            col_map_df.to_csv(output_dir / "column_mapping.csv", index=False)
+
+            cat_map_df = build_category_mapping_table(result)
+            cat_map_df.to_csv(output_dir / "category_mapping.csv", index=False)
 
             # Load runtime metadata (tokens, steps, time)
             runtime_file = output_dir.parent.parent / "runtime_data.json"

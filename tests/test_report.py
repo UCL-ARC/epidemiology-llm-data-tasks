@@ -17,6 +17,8 @@ from src.dataset_comparison.models import (
 )
 from src.dataset_comparison.report import (
     aggregate_comparison_results,
+    build_category_mapping_table,
+    build_column_mapping_table,
     print_comparison_report,
 )
 
@@ -528,3 +530,200 @@ class TestAggregateComparisonResults:
         summary_df = aggregate_comparison_results([("sample1", result, None)])
         row = summary_df.iloc[0]
         assert row["false_positives"] == 1
+
+
+class TestBuildColumnMappingTable:
+    """Tests for build_column_mapping_table function."""
+
+    def test_matched_columns_appear(self) -> None:
+        """Matched columns have status='matched' with gt and pred names."""
+        table = build_column_mapping_table(_DEFAULT_RESULT)
+        matched = table[table["status"] == "matched"]
+        assert len(matched) == 1
+        assert matched.iloc[0]["gt_column"] == "age"
+        assert matched.iloc[0]["pred_column"] == "age"
+        assert matched.iloc[0]["match_score"] == 1.0
+
+    def test_unmatched_gt_columns(self) -> None:
+        """Unmatched GT columns appear with empty pred side."""
+        result = replace(
+            _DEFAULT_RESULT,
+            column_matches=[
+                ColumnMatch("age", "age", 1.0, MatchMethod.LEVENSHTEIN),
+                ColumnMatch("height", None, 0.3, None),
+            ],
+            unmatched_gt_columns=["height"],
+        )
+        table = build_column_mapping_table(result)
+        unmatched_gt = table[table["status"] == "unmatched_gt"]
+        assert len(unmatched_gt) == 1
+        assert unmatched_gt.iloc[0]["gt_column"] == "height"
+        assert unmatched_gt.iloc[0]["pred_column"] == ""
+
+    def test_unmatched_pred_columns(self) -> None:
+        """Unmatched pred columns appear with empty gt side."""
+        result = replace(
+            _DEFAULT_RESULT,
+            unmatched_pred_columns=["extra_col"],
+        )
+        table = build_column_mapping_table(result)
+        unmatched_pred = table[table["status"] == "unmatched_pred"]
+        assert len(unmatched_pred) == 1
+        assert unmatched_pred.iloc[0]["pred_column"] == "extra_col"
+        assert unmatched_pred.iloc[0]["gt_column"] == ""
+
+    def test_data_match_included(self) -> None:
+        """data_match from the comparison is included in matched rows."""
+        result = replace(
+            _DEFAULT_RESULT,
+            column_comparisons=[
+                ColumnComparison(
+                    gt_column="age",
+                    pred_column="age",
+                    column_type=ColumnType.NUMERIC,
+                    numeric_comparison=_DEFAULT_NUMERIC_COMPARISON,
+                    data_match=True,
+                ),
+            ],
+        )
+        table = build_column_mapping_table(result)
+        matched = table[table["status"] == "matched"]
+        assert matched.iloc[0]["data_match"] == True  # noqa: E712
+
+    def test_empty_result(self) -> None:
+        """Empty matches produce empty table."""
+        result = replace(
+            _DEFAULT_RESULT,
+            column_matches=[],
+            column_comparisons=[],
+            unmatched_gt_columns=[],
+            unmatched_pred_columns=[],
+        )
+        table = build_column_mapping_table(result)
+        assert len(table) == 0
+
+
+class TestBuildCategoryMappingTable:
+    """Tests for build_category_mapping_table function."""
+
+    def test_identity_mapping(self) -> None:
+        """Categories with same name in gt and pred are status='identity'."""
+        result = replace(
+            _DEFAULT_RESULT,
+            column_comparisons=[
+                ColumnComparison(
+                    gt_column="color",
+                    pred_column="color",
+                    column_type=ColumnType.CATEGORICAL,
+                    categorical_comparison=CategoricalComparison(
+                        exact_match_rate=1.0,
+                        gt_categories={"red", "blue"},
+                        pred_categories={"red", "blue"},
+                        missing_categories=set(),
+                        extra_categories=set(),
+                        category_overlap_score=1.0,
+                        distribution_similarity=1.0,
+                        data_match=True,
+                        category_mapping={"red": "red", "blue": "blue"},
+                    ),
+                ),
+            ],
+        )
+        table = build_category_mapping_table(result)
+        assert all(table["status"] == "identity")
+
+    def test_remapped_categories(self) -> None:
+        """Categories with different names are status='remapped'."""
+        result = replace(
+            _DEFAULT_RESULT,
+            column_comparisons=[
+                ColumnComparison(
+                    gt_column="color",
+                    pred_column="colour",
+                    column_type=ColumnType.CATEGORICAL,
+                    categorical_comparison=CategoricalComparison(
+                        exact_match_rate=0.9,
+                        gt_categories={"red", "blue"},
+                        pred_categories={"Red", "Blue"},
+                        missing_categories=set(),
+                        extra_categories=set(),
+                        category_overlap_score=1.0,
+                        distribution_similarity=0.95,
+                        data_match=True,
+                        category_mapping={"Red": "red", "Blue": "blue"},
+                    ),
+                ),
+            ],
+        )
+        table = build_category_mapping_table(result)
+        remapped = table[table["status"] == "remapped"]
+        assert len(remapped) == 2
+
+    def test_unmatched_gt_categories(self) -> None:
+        """GT categories not in the mapping appear as unmatched_gt."""
+        result = replace(
+            _DEFAULT_RESULT,
+            column_comparisons=[
+                ColumnComparison(
+                    gt_column="color",
+                    pred_column="color",
+                    column_type=ColumnType.CATEGORICAL,
+                    categorical_comparison=CategoricalComparison(
+                        exact_match_rate=0.7,
+                        gt_categories={"red", "blue", "green"},
+                        pred_categories={"red", "blue"},
+                        missing_categories={"green"},
+                        extra_categories=set(),
+                        category_overlap_score=0.67,
+                        distribution_similarity=0.8,
+                        data_match=False,
+                        category_mapping={"red": "red", "blue": "blue"},
+                    ),
+                ),
+            ],
+        )
+        table = build_category_mapping_table(result)
+        unmatched_gt = table[table["status"] == "unmatched_gt"]
+        assert len(unmatched_gt) == 1
+        assert unmatched_gt.iloc[0]["gt_category"] == "green"
+        assert unmatched_gt.iloc[0]["pred_category"] == ""
+
+    def test_unmatched_pred_categories(self) -> None:
+        """Pred categories not in the mapping appear as unmatched_pred."""
+        result = replace(
+            _DEFAULT_RESULT,
+            column_comparisons=[
+                ColumnComparison(
+                    gt_column="color",
+                    pred_column="color",
+                    column_type=ColumnType.CATEGORICAL,
+                    categorical_comparison=CategoricalComparison(
+                        exact_match_rate=0.7,
+                        gt_categories={"red", "blue"},
+                        pred_categories={"red", "blue", "yellow"},
+                        missing_categories=set(),
+                        extra_categories={"yellow"},
+                        category_overlap_score=0.67,
+                        distribution_similarity=0.8,
+                        data_match=False,
+                        category_mapping={"red": "red", "blue": "blue"},
+                    ),
+                ),
+            ],
+        )
+        table = build_category_mapping_table(result)
+        unmatched_pred = table[table["status"] == "unmatched_pred"]
+        assert len(unmatched_pred) == 1
+        assert unmatched_pred.iloc[0]["pred_category"] == "yellow"
+        assert unmatched_pred.iloc[0]["gt_category"] == ""
+
+    def test_numeric_columns_skipped(self) -> None:
+        """Numeric-only comparisons produce no category mapping rows."""
+        table = build_category_mapping_table(_DEFAULT_RESULT)
+        assert len(table) == 0
+
+    def test_no_comparisons(self) -> None:
+        """Empty comparisons produce empty table."""
+        result = replace(_DEFAULT_RESULT, column_comparisons=[])
+        table = build_category_mapping_table(result)
+        assert len(table) == 0
