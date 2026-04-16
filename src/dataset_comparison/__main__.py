@@ -69,7 +69,7 @@ def get_arg_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--numerical-data-match-threshold",
         type=float,
-        default=0.0,
+        default=0.0001,
         help="Numerical data match threshold (default: 0.0).",
     )
     parser.add_argument(
