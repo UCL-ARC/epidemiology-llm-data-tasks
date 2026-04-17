@@ -1,72 +1,8 @@
 task_id: 1
 task_type: data_cleaning_r
-override: |
-  You have access to raw survey datasets on a cohort study followed up at multiple ages. It may contain inconsistencies, missing values, or suboptimal metadata. Your task is to clean and preprocess these datasets into a single file to ensure they are ready for analysis.
+append: |
+  Task-specific instructions:
+  - Create one consolidated variable named `eth`.
+  - Derive `eth` from all available ethnicity measures across sweeps, prioritising the earliest valid substantive response and using later responses only as fallback.
+  - Output only `NSID` and `eth`.
   
-  Follow all instructions:
-
-  1. **File Loading**:
-     - Ensure when you load the input files you append the dir "data/input/" this is where they are stored.
-     - Load each dataset into a separate object and merge using full_join by the ID variable.
-     - The input files are tab-delimited (.tab) text files. Use `readr::read_delim()` with `delim = "\t"` to load them. 
-     - Load each file explicitly by name from the metadata.
-
-
-  2. **Variable Naming Conventions**:
-     - Use the exact ID variable name from source data (e.g., NSID) - do NOT create or rename to generic "id".
-     - All variable names must be short, descriptive, and lowercase.
-     - Common abbreviations: eth = ethnicity, lang = language, sori = sexual orientation, partnr = partnership/marital status, reg = region, educaim = educational aims, educ = educational qualifications, ecoact = economic activity, nssec = occupational class, inc = income, imd = area deprivation, hown = housing tenure.
-     - For age-specific variables: append age as numeric suffix (e.g., eth14 = ethnicity at age 14).
-
-  3. **Standard Missing-Value Codes**:
-     Use these codes for ALL variables:
-     - -9 = Refusal
-     - -8 = Don't know/insufficient information
-     - -1 = Item not applicable
-     - -3 = Not asked at the fieldwork stage/participated/interviewed
-     - -2 = Schedule not applicable
-     - Any Null value to be coded as -3 (not asked/interviewed) to distinguish from explicit missing codes.
-
-  4. **Response Category Harmonization**:
-     - When the SAME construct is measured across ages with DIFFERENT response categories, harmonize them into a common coding scheme.
-     - Create age-specific variables that ALL use the SAME conceptual categories where possible.
-     - Where harmonization is not possible (e.g., substantially different instruments like income bands), provide multiple variables with clearly labelled, age-specific categories.
-     - Preserve as much conceptual detail as possible while maintaining comparability across ages.
-
-  5. **Missing Value Code Harmonization**:
-     - Convert wave-specific negative codes (e.g., -999, -998, -997, -94, -92, -91, -99) to the standard missing-value codes defined in instruction 3.
-     - Multiple wave-specific codes may map to the same standard code.
-     - Follow exact mappings provided in metadata.
-
-  6. **Time-Invariant vs Time-Varying Characteristics**:
-     - For **time-invariant** or stable characteristics (e.g., sex, ethnicity):
-       * Create a single consolidated variable.
-       * Prioritisation strategy depends on the variable:
-         - For characteristics expected to be stable and established early (e.g., ethnicity): prioritise the earliest valid response.
-         - For characteristics that may be corrected or updated over time (e.g., sex): prioritise the most recent valid response.
-       * Only use positive values in the prioritisation logic; include missing codes as fallback values when no positive values exist.
-
-  7. **Factor Variables and Labels**:
-     - When recoding categorical variables, use factor variables with explicit labels for both valid categories and all missing value codes to preserve metadata.
-
-  8. **Package Requirements**:
-     - Use ONLY standard R packages: haven, dplyr, purrr, labelled, readr.
-     - Load packages at the start of the script using library().
-
-  9. **Output Requirements**:
-     - Your R script must output one single cleaned csv named data/output/cleaned_data.csv.
-
-  10. **Variables to Include in Output**:
-      - Include the ID variable from source data.
-      - Explicitly output only the derived variables that were created during the cleaning process.
-      - Do NOT include intermediate wave-specific variables unless they are the final output.
-
-  11. **Execution**:
-      - You must run your R script after generating it.
-      - IMPORTANT: If your R script fails, read the error message carefully, fix the script, and try again. Never return an error message as your final answer.
-
-  Produce your script in R.
-  
-  Here is the appropriate metadata for the task:
-
-  {metadata}

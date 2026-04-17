@@ -1,6 +1,7 @@
 """Agents for epidemiology LLM data tasks."""
 
 # utils imports
+import argparse
 import json
 import os
 import re
@@ -23,6 +24,24 @@ from smolagents import tool as stool  # renamed to avoid conflict - teehee
 from smolagents.tools import Tool
 
 from src.r_code_agent import create_r_code_agent
+
+PROMPT_VARIANT_TASK_FILES = {
+    "brief": Path("./ground_truth/tasks_brief.yml"),
+    "detailed": Path("./ground_truth/tasks_detailed.yml"),
+}
+
+
+def load_task_templates(tasks_path: Path) -> list[dict]:
+    """Load task templates from a prompt-definition YAML file."""
+    with tasks_path.open() as f:
+        data = yaml.safe_load(f)
+
+    tasks = data.get("tasks", [])
+    if not isinstance(tasks, list):
+        msg = f"Invalid task template file: {tasks_path}"
+        raise ValueError(msg)
+
+    return tasks
 
 
 # TO DO: When more frameworks are supported be more specific here
@@ -219,6 +238,28 @@ if __name__ == "__main__":
     # This is to demo how the pipeline would/could work
     from .tools import produce_and_execute_r
 
+    parser = argparse.ArgumentParser(description="Run sample tasks with prompt variants.")
+    parser.add_argument(
+        "--prompt-variant",
+        choices=sorted(PROMPT_VARIANT_TASK_FILES),
+        default="brief",
+        help="Base prompt variant to use for task assembly.",
+    )
+    parser.add_argument(
+        "--tasks-file",
+        type=Path,
+        default=None,
+        help="Explicit prompt-definition YAML file to use instead of --prompt-variant.",
+    )
+    parser.add_argument(
+        "--samples",
+        type=int,
+        nargs="+",
+        default=[9, 16],
+        help="Sample IDs to run (default: 9 16).",
+    )
+    args = parser.parse_args()
+
     # --- Ollama (via LiteLLM) ---
     model_id = "gemma3:4b"
     model_name = f"ollama_chat/{model_id}"
@@ -246,9 +287,9 @@ if __name__ == "__main__":
         temperature=0.8,
     )
 
-    tasks_path = Path("./ground_truth/tasks.yml")
-    with tasks_path.open() as f:
-        tasks = yaml.safe_load(f)["tasks"]
+    tasks_path = args.tasks_file or PROMPT_VARIANT_TASK_FILES[args.prompt_variant]
+    logger.info(f"Using task templates from: {tasks_path}")
+    tasks = load_task_templates(tasks_path)
 
     ground_truth_dir = Path("./ground_truth")
     test_dirs = sorted(
@@ -270,8 +311,7 @@ if __name__ == "__main__":
             raise FileNotFoundError(msg)
         return match
 
-    test_dirs = [get_sample_dir(x) for x in [9, 16]]
-    # test_dirs = [get_sample_dir(x) for x in [14, 16]]
+    test_dirs = [get_sample_dir(x) for x in args.samples]
 
     for i in range(2):
         logger.info(f"\n\n=== Agent Run {i+1} ===")
@@ -282,30 +322,30 @@ if __name__ == "__main__":
             with task_path.open() as f:
                 task = yaml.safe_load(f)
 
+            task_type = task.get("task_type", "unknown")
+            task_data = next(
+                (item for item in tasks if item.get("task_type") == task_type), None
+            )
+
+            if task_data is None:
+                logger.warning(f"No task data found for type: {task_type}")
+                continue
+
+            prompt_template = task_data["prompt"]
+            append = task.get("append", "").strip()
             override = task.get("override", None)
-
-            # TO DO: add examples of override usage in ground_truth
-            if override:
-                prompt = override
-
-            else:
-                task_type = task.get("task_type", "unknown")
-                # Get  the first item where key1 equals val
-                task_data = next(
-                    (item for item in tasks if item.get("task_type") == task_type), None
-                )
-
-                if task_data is None:
-                    logger.warning(f"No task data found for type: {task_type}")
-                    continue
-
-                prompt = task_data["prompt"]
 
             metadata_path = Path(test_dir) / "metadata.json"
             with metadata_path.open() as f:
                 metadata = json.load(f)
 
-            prompt = prompt.format(metadata=metadata)
+            if override and not append:
+                logger.warning(
+                    f"{task_path} uses deprecated 'override'; prefer sample-level 'append'."
+                )
+                prompt = override.format(metadata=metadata)
+            else:
+                prompt = prompt_template.format(metadata=metadata, append=append)
 
             # Run agent with context
             result = agent.forward(

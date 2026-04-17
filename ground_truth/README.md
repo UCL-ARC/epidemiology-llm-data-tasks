@@ -5,6 +5,15 @@ To create a new sample copy `sample_template` and rename it using the pattern
 `sample<number>_<topic>`, then edit `metadata.json`, `task.yml` and `rtruth.R`
 as required.
 
+Sample `task.yml` files should define the common `task_type` and can optionally
+add sample-specific prompt content via an `append` block.
+
+Prompt templates are available in:
+- `ground_truth/tasks_brief.yml`
+- `ground_truth/tasks_detailed.yml`
+
+The default compatibility template remains in `ground_truth/tasks.yml`.
+
 Each sample consists of 
 
 ```
