@@ -1,7 +1,9 @@
 ## Ground Truth Creation
 Running `initialise.sh` will build each ground truth set. We have avoided storing and sharing this data and opted for on demand recreation from the raw data. It is required to ensure that `../raw_data` is populated with associated data required for each sample.
 
-To create a new sample copy `sample_template` and edit `metadata.json`, `task.yml` and `rtruth.R` as required.
+To create a new sample copy `sample_template` and rename it using the pattern
+`sample<number>_<topic>`, then edit `metadata.json`, `task.yml` and `rtruth.R`
+as required.
 
 Each sample consists of 
 
