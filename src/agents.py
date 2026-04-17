@@ -3,6 +3,7 @@
 # utils imports
 import json
 import os
+import re
 import shutil
 import tempfile
 from abc import ABC, abstractmethod
@@ -254,12 +255,23 @@ if __name__ == "__main__":
         [
             p
             for p in ground_truth_dir.iterdir()
-            if p.is_dir() and p.name.startswith("sample") and p.name[6:].isdigit()
+            if p.is_dir() and re.match(r"sample\d+", p.name)
         ],
-        key=lambda p: int(p.name[6:]),
+        key=lambda p: int(re.search(r"sample(\d+)", p.name).group(1)),
     )
-    test_dirs = [Path(f"./ground_truth/sample{x}") for x in [9, 16]]
-    # test_dirs = [Path(f"./ground_truth/sample{x}") for x in [14, 16]]
+
+    def get_sample_dir(sample_id: int) -> Path:
+        match = next(
+            (p for p in test_dirs if re.search(r"sample(\d+)", p.name).group(1) == str(sample_id)),
+            None,
+        )
+        if match is None:
+            msg = f"No sample directory found for sample {sample_id}"
+            raise FileNotFoundError(msg)
+        return match
+
+    test_dirs = [get_sample_dir(x) for x in [9, 16]]
+    # test_dirs = [get_sample_dir(x) for x in [14, 16]]
 
     for i in range(2):
         logger.info(f"\n\n=== Agent Run {i+1} ===")

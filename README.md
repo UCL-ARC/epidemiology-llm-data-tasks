@@ -78,7 +78,7 @@ This project includes a small agent framework in `src/agents.py` that wraps exis
 
 - Runs with one or more Python **tools** (see `src/tools.py`, e.g. `produce_and_execute_r`).
 - Uses a **temporary working directory** per run:
-  - If you pass `context_path=Path("ground_truth/sample1")`, the agent copies that directory into `./tmp/smolagent_context/<sample1>/` and runs there.
+  - If you pass `context_path=Path("ground_truth/sample1_sex")`, the agent copies that directory into `./tmp/smolagent_context/<sample1_sex>/` and runs there.
   - If `context_path` is `None`, it just runs in the current working directory.
 - Returns a structured `AgentResult` (Pydantic model) with:
   - `result`: final LLM output
