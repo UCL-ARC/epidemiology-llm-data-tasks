@@ -198,6 +198,111 @@ def print_comparison_report(result: DataComparisonResult) -> None:  # noqa: PLR0
     console.rule("[bold blue]END REPORT[/bold blue]")
 
 
+def build_column_mapping_table(result: DataComparisonResult) -> pd.DataFrame:
+    """
+    Build a table showing gt→pred column mappings including unmapped columns.
+
+    Rows include:
+    - Every matched pair (gt_column ↔ pred_column) with match score and method.
+    - Every unmatched GT column (pred side blank).
+    - Every unmatched pred column (gt side blank).
+    """
+    rows: list[dict] = []
+
+    for m in result.column_matches:
+        comp = next(
+            (c for c in result.column_comparisons if c.gt_column == m.gt_column),
+            None,
+        )
+        rows.append(
+            {
+                "gt_column": m.gt_column,
+                "pred_column": m.pred_column if m.pred_column else "",
+                "match_score": round(m.score, 3) if m.score else None,
+                "match_method": m.method.value if m.method else "",
+                "data_match": comp.data_match if comp else None,
+                "status": "matched" if m.pred_column else "unmatched_gt",
+            }
+        )
+
+    # Add unmatched pred columns not already represented
+    matched_pred = {m.pred_column for m in result.column_matches if m.pred_column}
+    rows.extend(
+        {
+            "gt_column": "",
+            "pred_column": col,
+            "match_score": None,
+            "match_method": "",
+            "data_match": None,
+            "status": "unmatched_pred",
+        }
+        for col in result.unmatched_pred_columns
+        if col not in matched_pred
+    )
+
+    return pd.DataFrame(rows)
+
+
+def build_category_mapping_table(result: DataComparisonResult) -> pd.DataFrame:
+    """
+    Build a table showing category value mappings for all categorical columns.
+
+    For each categorical comparison, rows include:
+    - Every mapped pair (pred_category → gt_category).
+    - Every unmapped GT category (pred side blank).
+    - Every unmapped pred category (gt side blank).
+    """
+    rows: list[dict] = []
+
+    for comp in result.column_comparisons:
+        cat = comp.categorical_comparison
+        if cat is None:
+            continue
+
+        # category_mapping is {pred_value: gt_value}
+        mapping = cat.category_mapping
+        mapped_gt_values = set(mapping.values())
+        mapped_pred_values = set(mapping.keys())
+
+        # Mapped pairs
+        for pred_val, gt_val in sorted(mapping.items()):
+            rows.append(
+                {
+                    "gt_column": comp.gt_column,
+                    "pred_column": comp.pred_column,
+                    "gt_category": gt_val,
+                    "pred_category": pred_val,
+                    "status": "identity" if gt_val == pred_val else "remapped",
+                }
+            )
+
+        # Unmapped GT categories
+        rows.extend(
+            {
+                "gt_column": comp.gt_column,
+                "pred_column": comp.pred_column,
+                "gt_category": gt_val,
+                "pred_category": "",
+                "status": "unmatched_gt",
+            }
+            for gt_val in sorted(cat.gt_categories - mapped_gt_values)
+        )
+
+        # Unmapped pred categories
+        rows.extend(
+            {
+                "gt_column": comp.gt_column,
+                "pred_column": comp.pred_column,
+                "gt_category": "",
+                "pred_category": pred_val,
+                "status": "unmatched_pred",
+            }
+            for pred_val in sorted(cat.pred_categories - mapped_pred_values)
+        )
+
+    return pd.DataFrame(rows)
+
+
 def aggregate_comparison_results(  # noqa: PLR0915, PLR0912, C901
     results: list[tuple[str, DataComparisonResult, dict | None]],
 ) -> pd.DataFrame:

@@ -1,0 +1,7 @@
+{
+  "result": "The raw survey datasets were loaded from 'data/input/', merged using a full join on the 'NSID' variable, and processed according to the provided specifications. Parental economic activity variables for mothers and fathers across waves 1 to 4 (ages 14-17) were harmonized into a common detailed classification (full-time, part-time, unemployed, training, education, home, retired, sick/disabled, other) with standard missing-value codes (-9 for Refusal, -8 for Don't know, -3 for Not asked/Null, and -2 for Schedule error). The resulting variables were named according to the specified convention (e.g., ecoactdtma14, ecoactdtpa17). The final cleaned dataset containing only the NSID and these derived variables was saved to 'data/output/cleaned_data.csv'.",
+  "state": "success",
+  "time_taken": 32.069889068603516,
+  "steps": 3,
+  "token_usage": 14531
+}

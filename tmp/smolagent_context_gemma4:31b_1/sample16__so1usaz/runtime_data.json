@@ -1,0 +1,7 @@
+{
+  "result": "The household weekly income variables have been cleaned and harmonised according to the specified instructions. The continuous income variables for ages 14 and 15 were processed, banded into categorical factors, and missing values across all waves were mapped to the standard scheme (-9: Refusal, -8: Don't know, -3: Not asked, -2: Script error, -1: Not applicable). The final cleaned dataset containing NSID, incwhh14, incwhh15, incwhhcnt14, incwhhcnt15, incwhh16, and incwhh17 has been saved to data/output/cleaned_data.csv.",
+  "state": "success",
+  "time_taken": 53.43287992477417,
+  "steps": 3,
+  "token_usage": 14184
+}

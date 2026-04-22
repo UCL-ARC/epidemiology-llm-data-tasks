@@ -103,10 +103,12 @@ all_data <- all_data %>%
     )
   )
 
+final_eth <- all_data %>% select(NSID, eth_final)
+
 # Output the cleaned data
 dir.create("data/output", showWarnings = FALSE, recursive = TRUE)
-write_csv(all_data, "data/output/cleaned_data.csv")
+write_csv(final_eth, "data/output/cleaned_data.csv")
 
 cat("Data cleaning complete. Output saved to data/output/cleaned_data.csv\n")
-cat("Number of observations:", nrow(all_data), "\n")
-cat("Number of variables:", ncol(all_data), "\n")
+cat("Number of observations:", nrow(final_eth), "\n")
+cat("Number of variables:", ncol(final_eth), "\n")

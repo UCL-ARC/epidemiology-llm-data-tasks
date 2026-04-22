@@ -1,0 +1,7 @@
+{
+  "result": "The R script has been successfully executed, and the cleaned dataset containing the harmonized parental economic activity variables for ages 14, 15, 16, and 17 has been saved to data/output/cleaned_data.csv.",
+  "state": "success",
+  "time_taken": 57.32290005683899,
+  "steps": 3,
+  "token_usage": 14636
+}

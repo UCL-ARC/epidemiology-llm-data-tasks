@@ -1,9 +1,7 @@
 """Main data comparison orchestration."""
 
-import numpy as np
 import pandas as pd
 from loguru import logger
-from scipy.optimize import linear_sum_assignment
 
 from .column_matcher import ColumnMatcher
 from .comparisons import (
@@ -58,7 +56,6 @@ class DataComparator:
         """
         self.categorical_threshold = categorical_threshold
         self.categorical_match_threshold = categorical_match_threshold
-        # TO DO: rename as this data match threshold differes from the other
         self.column_data_match_threshold = column_data_match_threshold
         self.categorical_data_match_threshold = categorical_data_match_threshold
         self.numerical_data_match_threshold = numerical_data_match_threshold
@@ -234,49 +231,40 @@ class DataComparator:
 
                 similarity_matrix[gt_col][pred_col] = (score, method)
 
-        # Hungarian optimal assignment
-        score_matrix = np.array(
-            [
-                [
-                    similarity_matrix[gt_col][pred_col][0]
-                    for pred_col in unmatched_pred_columns
-                ]
-                for gt_col in unmatched_gt_columns
-            ]
-        )
-
-        row_ind, col_ind = linear_sum_assignment(-score_matrix)
-        assigned_gt = set(row_ind)
-
+        # Greedy matching
         data_matches: list[ColumnMatch] = []
+        available_pred_cols = set(unmatched_pred_columns)
 
-        for r, c in zip(row_ind, col_ind, strict=False):
-            score, method = similarity_matrix[unmatched_gt_columns[r]][
-                unmatched_pred_columns[c]
-            ]
-            if score >= self.column_data_match_threshold:
+        gt_best_scores = [
+            (gt_col, max(similarity_matrix[gt_col].values(), key=lambda x: x[0])[0])
+            for gt_col in unmatched_gt_columns
+            if similarity_matrix[gt_col]
+        ]
+        gt_sorted = sorted(gt_best_scores, key=lambda x: x[1], reverse=True)
+
+        for gt_col, _ in gt_sorted:
+            best_pred_col = None
+            best_score = 0.0
+            best_method = None
+
+            for pred_col in available_pred_cols:
+                score, method = similarity_matrix[gt_col].get(pred_col, (0.0, None))
+                if score > best_score:
+                    best_score = score
+                    best_pred_col = pred_col
+                    best_method = method
+
+            if best_score >= self.column_data_match_threshold and best_pred_col:
                 data_matches.append(
-                    ColumnMatch(
-                        unmatched_gt_columns[r],
-                        unmatched_pred_columns[c],
-                        score,
-                        method,
-                    )
+                    ColumnMatch(gt_col, best_pred_col, best_score, best_method)
                 )
+                available_pred_cols.remove(best_pred_col)
                 logger.info(
-                    f"Data matched '{unmatched_gt_columns[r]}' -> "
-                    f"'{unmatched_pred_columns[c]}' "
-                    f"(score={score:.3f})"
+                    f"Data matched '{gt_col}' -> '{best_pred_col}' "
+                    f"(score={best_score:.3f})"
                 )
             else:
-                data_matches.append(
-                    ColumnMatch(unmatched_gt_columns[r], None, score, None)
-                )
-
-        # GT columns with no assignment (only when n_gt > n_pred)
-        for r, gt_col in enumerate(unmatched_gt_columns):
-            if r not in assigned_gt:
-                data_matches.append(ColumnMatch(gt_col, None, 0.0, None))
+                data_matches.append(ColumnMatch(gt_col, None, best_score, None))
 
         return data_matches
 
