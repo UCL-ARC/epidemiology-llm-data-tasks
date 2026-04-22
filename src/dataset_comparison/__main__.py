@@ -8,7 +8,13 @@ from pathlib import Path
 import pandas as pd
 from loguru import logger
 
-from . import DataComparator, aggregate_comparison_results, print_comparison_report
+from . import (
+    DataComparator,
+    aggregate_comparison_results,
+    build_category_mapping_table,
+    build_column_mapping_table,
+    print_comparison_report,
+)
 
 
 def get_arg_parser() -> argparse.ArgumentParser:
@@ -18,9 +24,17 @@ def get_arg_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument(
         "model",
+        nargs="?",
         type=str,
+        default=None,
         help="Model name suffix for the context directory "
         "(e.g. '_qwen3.5:9b_3' → tmp/smolagent_context_qwen3.5:9b_3).",
+    )
+    parser.add_argument(
+        "--all",
+        action="store_true",
+        dest="run_all",
+        help="Run comparison for all smolagent_context_* directories in the base dir.",
     )
     parser.add_argument(
         "-v",
@@ -47,10 +61,10 @@ def get_arg_parser() -> argparse.ArgumentParser:
         help="Column name match threshold (default: 0.8).",
     )
     parser.add_argument(
-        "--data-match-threshold",
+        "--column-data-match-threshold",
         type=float,
         default=0.7,
-        help="Data match threshold (default: 0.7).",
+        help="Column data match threshold (default: 0.7).",
     )
     parser.add_argument(
         "--categorical-data-match-threshold",
@@ -61,7 +75,7 @@ def get_arg_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--numerical-data-match-threshold",
         type=float,
-        default=0.0,
+        default=0.0001,
         help="Numerical data match threshold (default: 0.0).",
     )
     parser.add_argument(
@@ -85,7 +99,7 @@ def get_arg_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def main(argv: list[str] | None = None) -> None:
+def main(argv: list[str] | None = None) -> None:  # noqa: PLR0915
     """Run comparison on sample data directories."""
     logger.remove()
 
@@ -95,56 +109,85 @@ def main(argv: list[str] | None = None) -> None:
     log_level = "DEBUG" if args.verbose else "INFO"
     logger.add(sys.stderr, level=log_level)
 
-    context_dir = args.base_dir / f"smolagent_context{args.model}"
+    if args.run_all:
+        context_dirs = sorted(
+            p
+            for p in args.base_dir.iterdir()
+            if p.is_dir() and p.name.startswith("smolagent_context")
+        )
+        if not context_dirs:
+            logger.error(f"No smolagent_context_* directories found in {args.base_dir}")
+            sys.exit(1)
+    elif args.model is not None:
+        context_dirs = [args.base_dir / f"smolagent_context{args.model}"]
+    else:
+        context_dirs = [args.base_dir / "smolagent_context"]
 
-    results = []
-
-    for output_dir in context_dir.glob("sample*/data/output"):
-        gt_file = output_dir / args.gt_filename
-        pred_file = output_dir / args.pred_filename
-
-        if not gt_file.exists() or not pred_file.exists():
-            logger.warning(f"Skipping {output_dir}: missing files")
+    for context_dir in context_dirs:
+        if not context_dir.exists():
+            logger.warning(f"Skipping missing directory: {context_dir}")
             continue
 
-        logger.info(f"\n\nProcessing: {output_dir}")
+        logger.info(f"\n{'='*60}")
+        logger.info(f"Processing context: {context_dir.name}")
+        logger.info(f"{'='*60}")
 
-        gt_df = pd.read_csv(gt_file, index_col=0)
-        pred_df = pd.read_csv(pred_file, index_col=0)
+        results = []
 
-        comparator = DataComparator(
-            categorical_threshold=args.categorical_threshold,
-            match_threshold=args.match_threshold,
-            data_match_threshold=args.data_match_threshold,
-            categorical_data_match_threshold=args.categorical_data_match_threshold,
-            numerical_data_match_threshold=args.numerical_data_match_threshold,
-            categorical_match_threshold=args.categorical_match_threshold,
-        )
+        for output_dir in context_dir.glob("sample*/data/output"):
+            gt_file = output_dir / args.gt_filename
+            pred_file = output_dir / args.pred_filename
 
-        result, output_df = comparator.compare(gt_df, pred_df)
-        print_comparison_report(result)
+            if not gt_file.exists() or not pred_file.exists():
+                logger.warning(f"Skipping {output_dir}: missing files")
+                continue
 
-        # save individual output
-        output_df.to_csv(output_dir / "comparison_output.csv")
+            logger.info(f"\n\nProcessing: {output_dir}")
 
-        # Load runtime metadata (tokens, steps, time)
-        runtime_file = output_dir.parent.parent / "runtime_data.json"
-        runtime_data = None
-        if runtime_file.exists():
-            with Path.open(runtime_file) as f:
-                runtime_data = json.load(f)
-        else:
-            logger.warning(f"No runtime_data.json found in {runtime_file.parent}")
+            gt_df = pd.read_csv(gt_file, index_col=0)
+            pred_df = pd.read_csv(pred_file, index_col=0)
 
-        results.append((output_dir.parent.parent.name, result, runtime_data))
+            comparator = DataComparator(
+                categorical_threshold=args.categorical_threshold,
+                match_threshold=args.match_threshold,
+                column_data_match_threshold=args.column_data_match_threshold,
+                categorical_data_match_threshold=args.categorical_data_match_threshold,
+                numerical_data_match_threshold=args.numerical_data_match_threshold,
+                categorical_match_threshold=args.categorical_match_threshold,
+            )
 
-    # Generate and save aggregate summary
-    if results:
-        summary_df = aggregate_comparison_results(results)
+            result, output_df = comparator.compare(gt_df, pred_df)
+            print_comparison_report(result)
 
-        output_path = context_dir / "comparison_summary.csv"
-        summary_df.to_csv(output_path, index=False)
-        logger.info(f"\nSummary saved to: {output_path}")
+            # save individual output
+            output_df.to_csv(output_dir / "comparison_output.csv")
+
+            # save column and category mapping tables
+            col_map_df = build_column_mapping_table(result)
+            col_map_df.to_csv(output_dir / "column_mapping.csv", index=False)
+
+            cat_map_df = build_category_mapping_table(result)
+            if len(cat_map_df) != 0:
+                cat_map_df.to_csv(output_dir / "category_mapping.csv", index=False)
+
+            # Load runtime metadata (tokens, steps, time)
+            runtime_file = output_dir.parent.parent / "runtime_data.json"
+            runtime_data = None
+            if runtime_file.exists():
+                with Path.open(runtime_file) as f:
+                    runtime_data = json.load(f)
+            else:
+                logger.warning(f"No runtime_data.json found in {runtime_file.parent}")
+
+            results.append((output_dir.parent.parent.name, result, runtime_data))
+
+        # Generate and save aggregate summary
+        if results:
+            summary_df = aggregate_comparison_results(results)
+
+            output_path = context_dir / "comparison_summary.csv"
+            summary_df.to_csv(output_path, index=False)
+            logger.info(f"\nSummary saved to: {output_path}")
 
 
 if __name__ == "__main__":

@@ -260,8 +260,4 @@ def compute_categorical_similarity(
         gt_series, pred_series, categorical_match_threshold
     )
 
-    return (
-        0.5 * comparison.exact_match_rate
-        + 0.3 * comparison.distribution_similarity
-        + 0.2 * comparison.category_overlap_score
-    )
+    return comparison.exact_match_rate
