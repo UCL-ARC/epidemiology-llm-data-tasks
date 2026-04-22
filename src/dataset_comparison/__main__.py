@@ -121,7 +121,7 @@ def main(argv: list[str] | None = None) -> None:  # noqa: PLR0915
     elif args.model is not None:
         context_dirs = [args.base_dir / f"smolagent_context{args.model}"]
     else:
-        context_dirs = [args.base_dir / f"smolagent_context{args.model}"]
+        context_dirs = [args.base_dir / "smolagent_context"]
 
     for context_dir in context_dirs:
         if not context_dir.exists():
@@ -167,7 +167,8 @@ def main(argv: list[str] | None = None) -> None:  # noqa: PLR0915
             col_map_df.to_csv(output_dir / "column_mapping.csv", index=False)
 
             cat_map_df = build_category_mapping_table(result)
-            cat_map_df.to_csv(output_dir / "category_mapping.csv", index=False)
+            if len(cat_map_df) != 0:
+                cat_map_df.to_csv(output_dir / "category_mapping.csv", index=False)
 
             # Load runtime metadata (tokens, steps, time)
             runtime_file = output_dir.parent.parent / "runtime_data.json"

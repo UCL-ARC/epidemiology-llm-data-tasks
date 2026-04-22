@@ -151,7 +151,7 @@ class SmolAgent(Agent):
             model_id=self.model_name,
             api_key=self.api_key,
             temperature=self.temperature,
-            num_ctx=128000,
+            # num_ctx=128000,
         )
         if self.agent_type == "code":
             return create_r_code_agent(
