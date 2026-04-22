@@ -1,0 +1,7 @@
+{
+  "result": "The datasets have been successfully loaded, merged, and preprocessed according to the specified requirements. The economic activity variables for ages 17, 18, 19, 20, 25, and 32 were harmonized into a common coding scheme (collapsed), and detailed adult versions were preserved for ages 18, 25, and 32. Missing values were standardized, and all processed variables were converted to factors. The final cleaned dataset containing NSID and the harmonized/detailed variables has been saved to data/output/cleaned_data.csv.",
+  "state": "success",
+  "time_taken": 64.95984983444214,
+  "steps": 3,
+  "token_usage": 18166
+}

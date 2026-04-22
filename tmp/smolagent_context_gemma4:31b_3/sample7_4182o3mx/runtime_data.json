@@ -1,0 +1,7 @@
+{
+  "result": "The datasets have been loaded, merged by NSID, and harmonized across five waves (ages 17, 19, 20, 25, and 32) into a common six-category coding scheme (0 = NVQ 4–5, 1 = NVQ 1–3, 2 = None/entry level, 3 = Other, 4 = None of these qualifications, 5 = Not studying), including specified missing value codes. The final cleaned dataset containing NSID and the harmonized variables (educaim17, educaim19, educaim20, educaim25, educaim32) has been saved to data/output/cleaned_data.csv.",
+  "state": "success",
+  "time_taken": 227.09639286994934,
+  "steps": 4,
+  "token_usage": 63268
+}

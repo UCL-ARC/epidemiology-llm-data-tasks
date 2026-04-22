@@ -128,4 +128,3 @@ final_data <- select(final_data, NSID, ghq15, ghq17, ghq25, ghq32, ghqtl15, ghqt
 write_csv(final_data, "data/output/cleaned_data.csv")
 print(paste("Output written to data/output/cleaned_data.csv with", nrow(final_data), "rows and", ncol(final_data), "columns"))
 print("Variables:", names(final_data))
-}

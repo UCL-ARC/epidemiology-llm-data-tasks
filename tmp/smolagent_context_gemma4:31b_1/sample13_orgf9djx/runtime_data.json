@@ -1,0 +1,7 @@
+{
+  "result": "The parental NS-SEC occupational class variables have been cleaned and harmonised according to the specifications. The input files from waves 1 to 5 were loaded, merged by NSID, and the variables were renamed to nssecma14-18 and nssecpa14-18. Subcategories were collapsed to the 17-category NS-SEC classification, and missing value codes were harmonised (-999 to -2, -94 to -8, and -99, -98, NA to -3). All NS-SEC variables were converted to labelled factors. The final cleaned dataset containing only NSID and the harmonised NS-SEC variables was written to data/output/cleaned_data.csv.",
+  "state": "success",
+  "time_taken": 64.55649328231812,
+  "steps": 3,
+  "token_usage": 22055
+}

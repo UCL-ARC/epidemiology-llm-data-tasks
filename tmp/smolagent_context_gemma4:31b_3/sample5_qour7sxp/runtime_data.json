@@ -1,0 +1,7 @@
+{
+  "result": "The dataset has been cleaned and preprocessed according to the specified instructions. The input files were loaded from `data/input/`, merged by `NSID`, and marital status variables from Wave 6, 8, and 9 were harmonized into both detailed (`partnr19_detailed`, `partnr25_detailed`, `partnr32_detailed`) and collapsed (`partnr19`, `partnr25`, `partnr32`) versions. Missing values were mapped to the standard codes (-9, -8, -1, -3, -2, -7) as defined. The final output containing the ID and derived variables has been saved to `data/output/cleaned_data.csv`.",
+  "state": "success",
+  "time_taken": 119.9531569480896,
+  "steps": 4,
+  "token_usage": 25149
+}

@@ -1,0 +1,7 @@
+{
+  "result": "data/output/cleaned_data.csv",
+  "state": "success",
+  "time_taken": 451.3082139492035,
+  "steps": 7,
+  "token_usage": 196629
+}

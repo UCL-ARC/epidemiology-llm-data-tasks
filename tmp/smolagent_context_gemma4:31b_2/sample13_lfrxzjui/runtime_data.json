@@ -1,0 +1,7 @@
+{
+  "result": "The raw survey datasets were loaded from the specified directory, merged by NSID, and the parental NS-SEC variables were harmonised across five waves. Specifically, the variables were renamed to nssecma14-18 and nssecpa14-18, occupational classes were collapsed to their integer parts (1-17), and missing value codes were harmonised according to the provided rules (-999 to -2, -94 to -8, and -99/-98/NA to -3). The resulting variables were converted to labelled factors and the final dataset containing NSID and the 10 harmonised variables was written to data/output/cleaned_data.csv.",
+  "state": "success",
+  "time_taken": 106.36381006240845,
+  "steps": 4,
+  "token_usage": 39840
+}
