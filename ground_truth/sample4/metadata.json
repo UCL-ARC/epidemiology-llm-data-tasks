@@ -9,7 +9,8 @@
       "NSID": {
         "position": 1,
         "variable_label": "NSID - cohort member identifier",
-        "value_labels": {}
+        "value_labels": {},
+        "type": "string"
       }
     }
   },
@@ -23,7 +24,8 @@
       "NSID": {
         "position": 1,
         "variable_label": "NSID - cohort member identifier",
-        "value_labels": {}
+        "value_labels": {},
+        "type": "string"
       }
     }
   },
@@ -37,7 +39,8 @@
       "NSID": {
         "position": 1,
         "variable_label": "NSID - cohort member identifier",
-        "value_labels": {}
+        "value_labels": {},
+        "type": "string"
       },
       "W6SexualityYP": {
         "position": 577,
@@ -68,7 +71,8 @@
       "NSID": {
         "position": 1,
         "variable_label": "NSID - cohort member identifier",
-        "value_labels": {}
+        "value_labels": {},
+        "type": "string"
       },
       "W7SexualityYP": {
         "position": 652,
@@ -100,7 +104,8 @@
       "NSID": {
         "position": 1,
         "variable_label": "NSID - cohort member identifier",
-        "value_labels": {}
+        "value_labels": {},
+        "type": "string"
       },
       "W8SEXUALITY": {
         "position": 23,
@@ -130,7 +135,8 @@
       "NSID": {
         "position": 1,
         "variable_label": "NSID - cohort member identifier",
-        "value_labels": {}
+        "value_labels": {},
+        "type": "string"
       },
       "W9SORI": {
         "position": 1630,

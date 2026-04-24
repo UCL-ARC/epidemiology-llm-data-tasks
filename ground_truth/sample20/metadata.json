@@ -9,7 +9,8 @@
       "NSID": {
         "position": 1,
         "variable_label": "NSID - cohort member identifier",
-        "value_labels": {}
+        "value_labels": {},
+        "type": "string"
       },
       "W1alceverYP": {
         "position": 272,
@@ -78,7 +79,8 @@
       "NSID": {
         "position": 1,
         "variable_label": "NSID - cohort member identifier",
-        "value_labels": {}
+        "value_labels": {},
+        "type": "string"
       },
       "W2alceverYP": {
         "position": 452,
@@ -136,7 +138,8 @@
       "NSID": {
         "position": 1,
         "variable_label": "NSID - cohort member identifier",
-        "value_labels": {}
+        "value_labels": {},
+        "type": "string"
       },
       "W3alceverYP": {
         "position": 576,
@@ -188,7 +191,8 @@
       "NSID": {
         "position": 1,
         "variable_label": "NSID - cohort member identifier",
-        "value_labels": {}
+        "value_labels": {},
+        "type": "string"
       },
       "W4AlcEverYP": {
         "position": 884,
@@ -240,7 +244,8 @@
       "NSID": {
         "position": 1,
         "variable_label": "NSID - cohort member identifier",
-        "value_labels": {}
+        "value_labels": {},
+        "type": "string"
       },
       "W6AlcEverYP": {
         "position": 546,
@@ -292,7 +297,8 @@
       "NSID": {
         "position": 1,
         "variable_label": "NSID - cohort member identifier",
-        "value_labels": {}
+        "value_labels": {},
+        "type": "string"
       },
       "W7AlcEverYP": {
         "position": 616,
@@ -343,40 +349,25 @@
       "NSID": {
         "position": 1,
         "variable_label": "NSID - cohort member identifier",
-        "value_labels": {}
+        "value_labels": {},
+        "type": "string"
       },
-      "W8AUDIT2": {
-        "position": 42,
-        "variable_label": "How many drinks containing alcohol has on a typical day of drinking",
+        "W8AUDIT1": {
+        "position": 41,
+        "variable_label": "How often has had a drink containing alcohol",
         "type": "numeric",
         "measurement_level": "NOMINAL",
-        "user_missing_values": "-9.0 thru -8.0 and -1.0",
+        "user_missing_values": "-9.0 thru -1.0",
         "value_labels": {
           "-9.0": "Refused",
           "-8.0": "Don't know",
-          "-1.0": "Not applicable",
-          "1.0": "1-2 drinks",
-          "2.0": "3-4 drinks",
-          "3.0": "5-6 drinks",
-          "4.0": "7-9 drinks",
-          "5.0": "10 plus drinks"
-        }
-      },
-      "W8AUDIT6": {
-        "position": 43,
-        "variable_label": "How often had six or more drinks on one occasion in the past year",
-        "type": "numeric",
-        "measurement_level": "NOMINAL",
-        "user_missing_values": "-9.0 thru -8.0 and -1.0",
-        "value_labels": {
-          "-9.0": "Refused",
-          "-8.0": "Don't know",
+          "-3.0": "Not asked at fieldwork stage",
           "-1.0": "Not applicable",
           "1.0": "Never",
-          "2.0": "Less than monthly",
-          "3.0": "Monthly",
-          "4.0": "Weekly",
-          "5.0": "Daily, or almost daily"
+          "2.0": "Monthly or less",
+          "3.0": "2-4 times a month",
+          "4.0": "2-3 times a week",
+          "5.0": "4 or more times a week"
         }
       }
     }
@@ -391,7 +382,8 @@
       "NSID": {
         "position": 1,
         "variable_label": "NSID - cohort member identifier",
-        "value_labels": {}
+        "value_labels": {},
+        "type": "string"
       },
       "W9AUDIT1": {
         "position": 1582,
@@ -409,42 +401,6 @@
           "3.0": "2-4 times a month",
           "4.0": "2-3 times a week",
           "5.0": "4 or more times a week"
-        }
-      },
-      "W9AUDIT2": {
-        "position": 1583,
-        "variable_label": "How many drinks containing alcohol has on a typical day of drinking",
-        "type": "numeric",
-        "measurement_level": "NOMINAL",
-        "user_missing_values": "-9.0 thru -1.0",
-        "value_labels": {
-          "-9.0": "Refused",
-          "-8.0": "Don't know",
-          "-3.0": "Not asked at fieldwork stage",
-          "-1.0": "Not applicable",
-          "1.0": "1-2 drinks",
-          "2.0": "3-4 drinks",
-          "3.0": "5-6 drinks",
-          "4.0": "7-9 drinks",
-          "5.0": "10 or more drinks"
-        }
-      },
-      "W9AUDIT3": {
-        "position": 1584,
-        "variable_label": "How often had six or more drinks on one occasion in the past year",
-        "type": "numeric",
-        "measurement_level": "NOMINAL",
-        "user_missing_values": "-9.0 thru -1.0",
-        "value_labels": {
-          "-9.0": "Refused",
-          "-8.0": "Don't know",
-          "-3.0": "Not asked at fieldwork stage",
-          "-1.0": "Not applicable",
-          "1.0": "Never",
-          "2.0": "Less than monthly",
-          "3.0": "Monthly",
-          "4.0": "Weekly",
-          "5.0": "Daily, or almost daily"
         }
       }
     }

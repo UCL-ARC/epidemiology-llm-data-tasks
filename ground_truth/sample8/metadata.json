@@ -9,7 +9,8 @@
       "NSID": {
         "position": 1,
         "variable_label": "NSID - cohort member identifier",
-        "value_labels": {}
+        "value_labels": {},
+        "type": "string"
       }
     }
   },
@@ -23,7 +24,8 @@
       "NSID": {
         "position": 1,
         "variable_label": "NSID - cohort member identifier",
-        "value_labels": {}
+        "value_labels": {},
+        "type": "string"
       }
     }
   },
@@ -37,7 +39,8 @@
       "NSID": {
         "position": 1,
         "variable_label": "NSID - cohort member identifier",
-        "value_labels": {}
+        "value_labels": {},
+        "type": "string"
       },
       "W8VCQU0A": {
         "position": 409,
@@ -303,7 +306,8 @@
       "NSID": {
         "position": 1,
         "variable_label": "NSID - cohort member identifier",
-        "value_labels": {}
+        "value_labels": {},
+        "type": "string"
       },
       "W8DHANVQH": {
         "position": 31,
@@ -336,7 +340,8 @@
       "NSID": {
         "position": 1,
         "variable_label": "NSID - cohort member identifier",
-        "value_labels": {}
+        "value_labels": {},
+        "type": "string"
       },
       "W9ACQU0A": {
         "position": 1111,
@@ -1091,7 +1096,8 @@
       "NSID": {
         "position": 1,
         "variable_label": "NSID - cohort member identifier",
-        "value_labels": {}
+        "value_labels": {},
+        "type": "string"
       },
       "W9DANVQH": {
         "position": 32,

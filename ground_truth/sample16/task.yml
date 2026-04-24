@@ -1,5 +1,26 @@
 task_id: 1
-task_type: data_cleaning_r
+task_type: data_cleaning_r_plus
+additional_requirements: |
+   Household weekly income. Time-varying with non-uniform measurement:
+   continuous at ages 14–15, already-banded at ages 16–17.
+
+   Output exactly six variables plus NSID:
+   Banded (factor) at all ages.
+   Continuous (numeric) only at 14 and 15.
+
+   Ages 14–15 derive the same bands as in later ages and leave the continuous variable unchanged, except for missing value coding.
+
+   IMPORTANT: Wave-specific missing code mappings for this task:
+   1. Map raw wave-specific codes from their value_labels, including these
+      non-default mappings:
+      -3 ("Not yet paid", ages 14–15)       → -1
+      -1 ("Don't know", ages 14–15)         → -8
+      -992 ("No information - refused")     → -9
+      -996 ("No parent in household", 17)   → -3
+      Other codes follow Master Prompt defaults.
+   2. Only then, map remaining NAs to -3.
+   3. Only then, band the remaining positive values. A missing code must
+      never be banded as if it were income.
 override: |
   You have access to raw survey datasets from a longitudinal cohort study. Your task is to clean and harmonise household weekly income variables measured at multiple ages and output a single cleaned dataset.
 

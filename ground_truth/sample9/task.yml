@@ -1,5 +1,36 @@
 task_id: 1
-task_type: data_cleaning_r
+task_type: data_cleaning_r_plus
+additional_requirements: |
+   This task consolidates parental education. It is time-invariant:
+   produce a single consolidated variable per parent across waves.
+   Output exactly five variables one collapsed and one detailed for each parent, plus NSID.
+
+   Consolidated detailed education per parent,
+   drawn from the wave 1, 2, and 4 family background files. For each parent,
+   scan the three waves in order. Take the first positive value (1–20,
+   substantive qualification). If no positive value exists in any wave,
+   take the first negative code in the same order. If no value exists at
+   all, assign -3.
+
+   Harmonise wave-specific missing codes to the standard scheme BEFORE
+   consolidation, using per-variable value_labels from the metadata.
+
+   For collapsed variables 5-level NVQ per parent, derived from the
+   consolidated detailed variable. Map the 20 substantive detailed codes
+   into these tiers:
+   0 = NVQ 4–5: Higher Degree, First Degree, HE Diploma, HNC/HND/NVQ4
+   1 = NVQ 1–3: everything from teaching/nursing qualifications through
+         City & Guilds Part I / NVQ1 (the sub-degree range)
+   2 = Youth training / skill seekers (training below NVQ level)
+   3 = Qualification, level unspecified
+   4 = No qualification mentioned
+
+   Negative missing codes pass through unchanged. Only the positive codes
+   1–20 are remapped to 0–4.
+
+   The collapsed variable has exactly 5 substantive categories; the
+   detailed variable has 20. The collapsed is a lossy remapping of the
+   detailed — not a copy.
 override: |
   You have access to raw survey datasets from a longitudinal cohort study with repeated family background interviews. Your task is to clean and consolidate parental education variables only and produce a single cleaned file ready for analysis.
 
