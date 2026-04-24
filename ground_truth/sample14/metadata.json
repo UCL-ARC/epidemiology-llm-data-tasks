@@ -9,25 +9,26 @@
       "NSID": {
         "position": 1,
         "variable_label": "NSID - cohort member identifier",
-        "value_labels": {}
+        "value_labels": {},
+        "type": "string"
       },
-    "W9DTENURE": {
+      "W9DTENURE": {
         "position": 20,
         "variable_label": "DV: Housing Tenure",
         "type": "numeric",
         "measurement_level": "NOMINAL",
         "user_missing_values": "-8.0 thru None",
         "value_labels": {
-            "-8.0": "Insufficient information",
-            "1.0": "Own outright",
-            "2.0": "Own, buying with help of mortgage/loan",
-            "3.0": "Part rent, part mortgage (shared equity)",
-            "4.0": "Rent it",
-            "5.0": "Live rent-free, incl. relatives/friends",
-            "6.0": "Squatting",
-            "7.0": "Other"
+          "-8.0": "Insufficient information",
+          "1.0": "Own outright",
+          "2.0": "Own, buying with help of mortgage/loan",
+          "3.0": "Part rent, part mortgage (shared equity)",
+          "4.0": "Rent it",
+          "5.0": "Live rent-free, incl. relatives/friends",
+          "6.0": "Squatting",
+          "7.0": "Other"
         }
-    }
+      }
     }
   },
   "wave_four_lsype_family_background_2020.tab": {
@@ -40,7 +41,8 @@
       "NSID": {
         "position": 1,
         "variable_label": "NSID - cohort member identifier",
-        "value_labels": {}
+        "value_labels": {},
+        "type": "string"
       },
       "W4Hous12HH": {
         "position": 19,
@@ -76,7 +78,8 @@
       "NSID": {
         "position": 1,
         "variable_label": "NSID - cohort member identifier",
-        "value_labels": {}
+        "value_labels": {},
+        "type": "string"
       },
       "W3hous12HH": {
         "position": 18,
@@ -112,7 +115,8 @@
       "NSID": {
         "position": 1,
         "variable_label": "NSID - cohort member identifier",
-        "value_labels": {}
+        "value_labels": {},
+        "type": "string"
       },
       "W2Hous12HH": {
         "position": 12,
@@ -150,7 +154,8 @@
       "NSID": {
         "position": 1,
         "variable_label": "NSID - cohort member identifier",
-        "value_labels": {}
+        "value_labels": {},
+        "type": "string"
       },
       "W1hous12HH": {
         "position": 13,
@@ -175,7 +180,7 @@
       }
     }
   },
-    "ns8_2015_main_interview.tab": {
+  "ns8_2015_main_interview.tab": {
     "file_info": {
       "number_of_variables": 740,
       "number_of_cases": 7705,
@@ -185,7 +190,8 @@
       "NSID": {
         "position": 1,
         "variable_label": "NSID - cohort member identifier",
-        "value_labels": {}
+        "value_labels": {},
+        "type": "string"
       },
       "W8TENURE": {
         "position": 54,
@@ -197,8 +203,8 @@
           "-9.0": "Refused",
           "-8.0": "Don't know",
           "-1.0": "Not applicable",
-          "1.0": "Own – outright",
-          "2.0": "Own – buying with help of mortg or loan",
+          "1.0": "Own \u2013 outright",
+          "2.0": "Own \u2013 buying with help of mortg or loan",
           "3.0": "Part rent/mortgage (shared/equity own)",
           "4.0": "Rent inc Housing Ben/Lcl Housing Allow",
           "5.0": "Rent-free inc rels/friend exc squatting",
@@ -218,7 +224,8 @@
       "NSID": {
         "position": 1,
         "variable_label": "NSID - cohort member identifier",
-        "value_labels": {}
+        "value_labels": {},
+        "type": "string"
       },
       "W5Hous12HH": {
         "position": 11,
@@ -284,7 +291,8 @@
       "NSID": {
         "position": 1,
         "variable_label": "NSID - cohort member identifier",
-        "value_labels": {}
+        "value_labels": {},
+        "type": "string"
       },
       "W6Hous12YP": {
         "position": 646,
@@ -346,7 +354,8 @@
       "NSID": {
         "position": 1,
         "variable_label": "NSID - cohort member identifier",
-        "value_labels": {}
+        "value_labels": {},
+        "type": "string"
       },
       "W7Hous12YP": {
         "position": 703,
@@ -398,5 +407,4 @@
       }
     }
   }
-
 }

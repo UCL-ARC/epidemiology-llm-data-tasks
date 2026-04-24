@@ -9,6 +9,7 @@
       "NSID": {
         "position": 1,
         "variable_label": "NSID - cohort member identifier",
+        "type": "string",
         "value_labels": {}
       },
       "W1ethnic2YP": {
@@ -53,6 +54,7 @@
         "NSID": {
         "position": 1,
         "variable_label": "NSID - cohort member identifier",
+        "type": "string",
         "value_labels": {}
       },
       "W2ethnicYP": {
@@ -99,6 +101,7 @@
         "NSID": {
         "position": 1,
         "variable_label": "NSID - cohort member identifier",
+        "type": "string",
         "value_labels": {}
       },
       "w4ethnic2YP": {
@@ -140,6 +143,7 @@
       "NSID": {
         "position": 1,
         "variable_label": "NSID - cohort member identifier",
+        "type": "string",
         "value_labels": {}
       },
       "W8DETHN15": {
@@ -182,6 +186,7 @@
       "NSID": {
         "position": 1,
         "variable_label": "NSID - cohort member identifier",
+        "type": "string",
         "value_labels": {}
       },
       "W9DETHN15": {
