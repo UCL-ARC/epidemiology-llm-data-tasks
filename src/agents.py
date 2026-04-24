@@ -215,11 +215,10 @@ class SmolAgent(Agent):
 
 
 if __name__ == "__main__":
-    # This is to demo how the pipeline would/could work
     from .tools import produce_and_execute_r
 
     # --- Ollama (via LiteLLM) ---
-    model_id = "gemma4:e4b"
+    model_id = "gemma4:31b-cloud"
     model_name = f"ollama_chat/{model_id}"
     api_key = "ollama"
 
@@ -232,7 +231,10 @@ if __name__ == "__main__":
     # "tool_calling" → ToolCallingAgent (model calls produce_and_execute_r via JSON)
     agent_type: Literal["tool_calling", "code"] = "tool_calling"
 
-    # Tools are only needed for tool_calling mode
+    # Set to False to ignore per-sample overrides and always use
+    # the base prompt + additional_requirements
+    use_overrides: bool = False
+
     tools: list[Callable] = (
         [produce_and_execute_r] if agent_type == "tool_calling" else []
     )
@@ -258,8 +260,7 @@ if __name__ == "__main__":
         ],
         key=lambda p: int(p.name[6:]),
     )
-    # test_dirs = [Path(f"./ground_truth/sample{x}") for x in [4]]
-    # test_dirs = [Path(f"./ground_truth/sample{x}") for x in [14, 16]]
+    # test_dirs = [Path(f"./ground_truth/sample{x}") for x in [19]]
 
     for i in range(1):
         logger.info(f"\n\n=== Agent Run {i+1} ===")
@@ -270,36 +271,34 @@ if __name__ == "__main__":
             with task_path.open() as f:
                 task = yaml.safe_load(f)
 
+            metadata_path = Path(test_dir) / "metadata.json"
+            with metadata_path.open() as f:
+                metadata = json.load(f)
+
+            task_type = task.get("task_type", "unknown")
             override = task.get("override", None)
+            additional_requirements = task.get("additional_requirements", "")
 
-            # TO DO: add examples of override usage in ground_truth
-            if override:
+            if use_overrides and override:
                 prompt = override
-
             else:
-                task_type = task.get("task_type", "unknown")
-                # Get  the first item where key1 equals val
                 task_data = next(
                     (item for item in tasks if item.get("task_type") == task_type), None
                 )
-
                 if task_data is None:
                     logger.warning(f"No task data found for type: {task_type}")
                     continue
 
                 prompt = task_data["prompt"]
 
-            metadata_path = Path(test_dir) / "metadata.json"
-            with metadata_path.open() as f:
-                metadata = json.load(f)
+            prompt = prompt.format(
+                additional_requirements=additional_requirements, metadata=metadata
+            )
 
-            prompt = prompt.format(metadata=metadata)
-
-            # Run agent with context
             result = agent.forward(
                 prompt,
                 context_path=Path(test_dir),
-                persist_context=True,  # Set to True to inspect the temp directory
+                persist_context=True,
             )
 
             logger.info(f"\n=== Result for context: {test_dir} ===")

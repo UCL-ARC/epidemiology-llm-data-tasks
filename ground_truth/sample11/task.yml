@@ -1,5 +1,15 @@
 task_id: 1
-task_type: data_cleaning_r
+task_type: data_cleaning_r_plus
+additional_requirements: |
+   This task derives parental economic activity. Time-varying: produce
+   separate age-specific variables for each parent at each wave.
+
+   Output exactly eight derived variables plus NSID, one per parent per wave:
+
+   All waves use the same 9-category scheme — take the substantive codes in the metadata.
+
+   IMPORTANT: Wave-specific missing code mappings for this task:
+   - -99, -98, -996 all map to -3 (not asked at the fieldwork stage / not interviewed).
 override: |
   You have access to raw survey datasets on a cohort study followed up at multiple ages. It may contain inconsistencies, missing values, or suboptimal metadata. Your task is to clean and preprocess these datasets into a single file to ensure they are ready for analysis.
   

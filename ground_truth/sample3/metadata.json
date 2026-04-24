@@ -9,6 +9,7 @@
         "NSID": {
         "position": 1,
         "variable_label": "NSID - cohort member identifier",
+        "type": "string",
         "value_labels": {}
       }, 
       "W1englangYP": {
@@ -40,6 +41,7 @@
         "NSID": {
         "position": 1,
         "variable_label": "NSID - cohort member identifier",
+        "type": "string",
         "value_labels": {}
       },
       "W2EnglangYP": {
@@ -74,6 +76,7 @@
         "NSID": {
         "position": 1,
         "variable_label": "NSID - cohort member identifier",
+        "type": "string",
         "value_labels": {}
       },
       "W3englangHH": {
@@ -107,6 +110,7 @@
         "NSID": {
         "position": 1,
         "variable_label": "NSID - cohort member identifier",
+        "type": "string",
         "value_labels": {}
       }, 
       "W4EngLangHH": {
