@@ -9,7 +9,8 @@
       "NSID": {
         "position": 1,
         "variable_label": "NSID - cohort member identifier",
-        "value_labels": {}
+        "value_labels": {},
+        "type": "string"
       },
       "w4IncEstW": {
         "position": 408,
@@ -22,18 +23,18 @@
           "-99.0": "MP not interviewed",
           "-92.0": "Refused",
           "-1.0": "Don't know",
-          "1.0": "Up to £49",
-          "2.0": "£50 up to £99",
-          "3.0": "£100 up to £199",
-          "4.0": "£200 up to £299",
-          "5.0": "£300 up to £399",
-          "6.0": "£400 up to £499",
-          "7.0": "£500 up to £599",
-          "8.0": "£600 up to £699",
-          "9.0": "£700 up to £799",
-          "10.0": "£800 up to £899",
-          "11.0": "£900 up to £999",
-          "12.0": "£1,000 or more"
+          "1.0": "Up to \u00a349",
+          "2.0": "\u00a350 up to \u00a399",
+          "3.0": "\u00a3100 up to \u00a3199",
+          "4.0": "\u00a3200 up to \u00a3299",
+          "5.0": "\u00a3300 up to \u00a3399",
+          "6.0": "\u00a3400 up to \u00a3499",
+          "7.0": "\u00a3500 up to \u00a3599",
+          "8.0": "\u00a3600 up to \u00a3699",
+          "9.0": "\u00a3700 up to \u00a3799",
+          "10.0": "\u00a3800 up to \u00a3899",
+          "11.0": "\u00a3900 up to \u00a3999",
+          "12.0": "\u00a31,000 or more"
         }
       }
     }
@@ -48,7 +49,8 @@
       "NSID": {
         "position": 1,
         "variable_label": "NSID - cohort member identifier",
-        "value_labels": {}
+        "value_labels": {},
+        "type": "string"
       },
       "W3incestw": {
         "position": 123,
@@ -60,18 +62,18 @@
           "-99.0": "MP not interviewed",
           "-92.0": "Refused",
           "-1.0": "Don't know",
-          "1.0": "Up to £49",
-          "2.0": "£50 up to £99",
-          "3.0": "£100 up to £199",
-          "4.0": "£200 up to £299",
-          "5.0": "£300 up to £399",
-          "6.0": "£400 up to £499",
-          "7.0": "£500 up to £599",
-          "8.0": "£600 up to £699",
-          "9.0": "£700 up to £799",
-          "10.0": "£800 up to £899",
-          "11.0": "£900 up to £990",
-          "12.0": "£1,000 or more"
+          "1.0": "Up to \u00a349",
+          "2.0": "\u00a350 up to \u00a399",
+          "3.0": "\u00a3100 up to \u00a3199",
+          "4.0": "\u00a3200 up to \u00a3299",
+          "5.0": "\u00a3300 up to \u00a3399",
+          "6.0": "\u00a3400 up to \u00a3499",
+          "7.0": "\u00a3500 up to \u00a3599",
+          "8.0": "\u00a3600 up to \u00a3699",
+          "9.0": "\u00a3700 up to \u00a3799",
+          "10.0": "\u00a3800 up to \u00a3899",
+          "11.0": "\u00a3900 up to \u00a3990",
+          "12.0": "\u00a31,000 or more"
         }
       }
     }
@@ -86,7 +88,8 @@
       "NSID": {
         "position": 1,
         "variable_label": "NSID - cohort member identifier",
-        "value_labels": {}
+        "value_labels": {},
+        "type": "string"
       },
       "W2GrsswkHH": {
         "position": 882,
@@ -117,7 +120,8 @@
       "NSID": {
         "position": 1,
         "variable_label": "NSID - cohort member identifier",
-        "value_labels": {}
+        "value_labels": {},
+        "type": "string"
       },
       "W1GrsswkHH": {
         "position": 378,

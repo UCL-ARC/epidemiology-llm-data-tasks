@@ -1,5 +1,10 @@
 task_id: 1
-task_type: data_cleaning_r
+task_type: data_cleaning_r_plus
+additional_requirements: |
+   Taks is to derive area deprivation (IMD). Time-varying: produce separate age-specific
+   variables.
+
+   Output exactly three variables (one for each wave) plus NSID
 override: |
   You have access to raw survey datasets from a longitudinal cohort study followed up at multiple ages. The datasets include area deprivation scores measured at different ages, which may contain missing values, wave-specific missing codes, or inconsistent metadata. Your task is to clean and harmonise these deprivation score variables and output a single cleaned dataset ready for analysis.
 

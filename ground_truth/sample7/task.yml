@@ -1,5 +1,39 @@
 task_id: 1
-task_type: data_cleaning_r
+task_type: data_cleaning_r_plus
+additional_requirements: |
+   This task harmonises educational aims (qualifications currently being studied for).
+   This is a time-varying characteristic: produce separate age-specific variables
+
+   Harmonise all waves into this ordered 6-category scheme:
+   - 0 = NVQ 4–5 equivalent (higher / HE-level qualifications)
+   - 1 = NVQ 1–3 equivalent (lower / mid-level qualifications)
+   - 2 = None / entry level
+   - 3 = Other (level unknown or unclassifiable)
+   - 4 = None of these qualifications
+   - 5 = Not currently studying
+
+   Classify each wave's source variables by their label meanings in the metadata.
+   Write a separate case_when() per wave; do not assume numeric codes are consistent
+   across waves. At age 17 there are no NVQ 4–5 options — all substantive codes at
+   that age fall into categories 1–5.
+
+   For adult waves (ages 25 and 32), apply two-stage logic in order:
+   1. If the economic activity / education participation variable indicates the
+      respondent is not currently studying → category 5.
+   2. Otherwise, classify using the qualification indicator tick-boxes (both
+      academic and vocational families) in priority order: NVQ 4–5 ticked → 0;
+      else NVQ 1–3 ticked → 1; else entry-level → 2; else other → 3; else
+      "none of these" → 4.
+   3. Otherwise, map refusal and don't-know codes (from the activity variable or
+      dedicated refusal/DK indicator variables) to -9 and -8; all remaining
+      cases → -3.
+
+   Classify each qualification indicator variable by its qualification level per
+   the metadata labels.
+
+   IMPORTANT: Wave-specific missing code mappings for this task:
+   The same numeric code may not map to the same standard code across waves (e.g., -94 may indicate a
+   script error in one wave and insufficient information in another).
 override: |
   You have access to raw survey datasets on a cohort study followed up at multiple ages. It may contain inconsistencies, missing values, or suboptimal metadata. Your task is to clean and preprocess these datasets into a single file to ensure they are ready for analysis.
   

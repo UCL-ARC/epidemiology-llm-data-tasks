@@ -9,7 +9,8 @@
       "NSID": {
         "position": 1,
         "variable_label": "NSID - cohort member identifier",
-        "value_labels": {}
+        "value_labels": {},
+        "type": "string"
       },
       "W1hiqualmum": {
         "position": 347,
@@ -94,7 +95,8 @@
       "NSID": {
         "position": 1,
         "variable_label": "NSID - cohort member identifier",
-        "value_labels": {}
+        "value_labels": {},
+        "type": "string"
       },
       "W2hiqualmum": {
         "position": 849,
@@ -179,7 +181,8 @@
       "NSID": {
         "position": 1,
         "variable_label": "NSID - cohort member identifier",
-        "value_labels": {}
+        "value_labels": {},
+        "type": "string"
       },
       "w4hiqualmum": {
         "position": 411,

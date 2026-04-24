@@ -1,5 +1,14 @@
 task_id: 1
-task_type: data_cleaning_r
+task_type: data_cleaning_r_plus
+additional_requirements: |
+   Income bands. Not harmonised across waves: produce separate age-specific
+   variables even though the band categories happen to match.
+
+   Output exactly two derived variables (one from each wave) plus NSID:
+
+   Adopt the 16 substantive band labels directly from value_labels. The
+   source waves share the same band scheme, but do not merge the two
+   variables into a consolidated measure.
 override: |
   You have access to raw survey datasets from a longitudinal cohort study. Your task is to clean and harmonise income band variables measured at different ages and output a single cleaned dataset.
 

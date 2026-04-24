@@ -21,85 +21,102 @@ tasks:
       {metadata}
   - task_type: data_cleaning_r_plus
     prompt: |
-      task_id: 1
-task_type: data_cleaning_r
-override: |
-    You have access to raw survey datasets on a cohort study followed up at multiple ages. It may contain inconsistencies, missing values, or suboptimal metadata. Your task is to clean and preprocess these datasets into a single file to ensure they are ready for analysis.
-    
-    Follow all instructions:
+      You have access to raw survey datasets from a longitudinal cohort study followed at multiple ages. Your task is to clean and preprocess these datasets into a single analysis-ready file.
 
-    1. **File Loading**:
-      - Ensure when you load the input files you append the dir "data/input/" this is where they are stored.
-      - Load each dataset into a separate object and merge using full_join by the ID variable.
+      Follow all instructions:
 
-    2. **Variable Naming Conventions**:
-      - Use the exact ID variable name from source data (e.g., NSID) - do NOT create or rename to generic "id".
-      - All variable names must be short, descriptive, and lowercase.
-      - Common abbreviations: eth = ethnicity, lang = language, sori = sexual orientation, partnr = partnership/marital status, reg = region, educaim = educational aims, educ = educational qualifications, ecoact = economic activity, nssec = occupational class, inc = income, imd = area deprivation, hown = housing tenure.
-      - For age-specific variables: append age as numeric suffix (e.g., eth14, ecoact17, nssec25).
-      - For detailed adult versions: append "adu" before age suffix (e.g., ecoactadu25, partnradu32).
-      - For parental variables: include parent identifier and age (e.g., nssecma14 = mother's NS-SEC at age 14, nssecpa14 = father's NS-SEC at age 14).
+      1. **File Loading**:
+         - Load all input files from "data/input/" (prepend this path to every filename in the metadata).
+         - The files are tab-delimited (.tab) text files. Use `readr::read_delim()` with `delim = "\t"`.
+         - Load each file explicitly by name from the metadata into a separate object.
+         - Merge all datasets using `full_join` by the ID variable.
+         - Load ALL files listed in the metadata, even if a file contains only the ID variable — all files are needed to construct the complete cohort frame.
 
-    3. **Standard Missing-Value Codes**:
-      Use these codes for ALL variables:
-      - -9 = Refusal
-      - -8 = Don't know/insufficient information
-      - -1 = Item not applicable
-      - -3 = Not asked at the fieldwork stage/participated/interviewed
-      - -2 = Schedule not applicable/Script error/information lost
-      - (-7 = Prefer not to say, only if specified in metadata)
+      2. **ID Variable**:
+         - Use the exact ID variable name from the source data (e.g., NSID). Do NOT rename it to a generic name such as "id".
 
-    4. **Response Category Harmonization**:
-      - When the SAME construct is measured across ages with DIFFERENT response categories, harmonize them into a common coding scheme.
-      - Create age-specific variables that ALL use the SAME conceptual categories where possible.
-      - Where harmonization is not possible (e.g., substantially different instruments like income bands), provide multiple variables with clearly labelled, age-specific categories.
-      - Preserve as much conceptual detail as possible while maintaining comparability across ages.
+      3. **Standard Missing-Value Codes**:
+         Use these codes consistently for ALL variables:
+         - -9 = Refusal
+         - -8 = Don't know / insufficient information
+         - -7 = Prefer not to say (apply only where explicitly present in the source data or metadata)
+         - -3 = Not asked at the fieldwork stage / not interviewed
+         - -2 = Schedule not applicable / script error / information lost
+         - -1 = Item not applicable
+         - Recode all NA / Null values to -3 (not asked / not interviewed).
+         - NEVER collapse different missing-value meanings into the same code unless the metadata explicitly instructs it.
 
-    5. **Dual-Level Variables** (collapsed + detailed):
-      - For variables where later waves have more detailed categories than earlier waves, create both:
-        a. Collapsed harmonised variables with consistent categories across all ages to enable temporal comparisons.
-        b. Detailed age-specific variables that preserve the full granularity of later measurements for nuanced analysis.
+      4. **Missing Value Code Harmonisation**:
+         - Convert all wave-specific negative codes to the standard scheme using the label text in the metadata to determine the correct mapping.
+         - Common patterns (always verify against metadata):
+           * -999, -998, -997, -995 → -2
+           * -94 → -8
+           * -92 → -9
+           * -91 → -1
+           * -99 → -3
+           * -100, -97 → -3
 
-    6. **Missing Value Code Harmonization**:
-      - Convert wave-specific negative codes (e.g., -100, -97, -999, -998, -997, -995, -94, -92, -91, -99, -98, -996) to the standard missing-value codes defined in instruction 3.
-      - Multiple wave-specific codes may map to the same standard code.
-      - Follow exact mappings provided in metadata.
+      5. **Variable Naming**:
+         - All derived variable names must be short, descriptive, and lowercase.
+         - For age-specific variables: append the age as a numeric suffix (e.g., eth14, ecoact25).
+         - Common abbreviations: eth = ethnicity, lang = language, sori = sexual orientation,
+           partnr = partnership/marital status, reg = region, educaim = educational aims,
+           educ = educational qualifications, ecoact = economic activity, nssec = occupational class,
+           inc = income, imd = area deprivation, hown = housing tenure.
+         - For parental variables: include a parent identifier in the name
+           (e.g., nssecma14 = mother's NS-SEC at age 14; nssecpa14 = father's NS-SEC at age 14).
+         - For detailed adult versions where both collapsed and detailed forms are required:
+           append "adu" before the age suffix (e.g., ecoactadu25).
 
-    7. **Time-Invariant vs Time-Varying Characteristics**:
-      - For **time-invariant** or stable characteristics (e.g., sex, ethnicity, language spoken at home, parental education):
-        * Create a single consolidated variable.
-        * Prioritisation strategy depends on the variable:
-          - For characteristics expected to be stable and established early (e.g., ethnicity, language): prioritise the earliest valid response.
-          - For characteristics that may be corrected or updated over time (e.g., sex): prioritise the most recent valid response.
-        * Only use positive values in the prioritisation logic; include missing codes as fallback values when no positive values exist.
-      
-      - For **time-varying** characteristics (e.g., sexual orientation, relationship status, employment, economic activity, geographical location, NS-SEC, housing tenure):
-        * Retain age-specific variables rather than creating a single consolidated measure.
-        * Preserve temporal variation for longitudinal analysis.
+      6. **Time-Invariant vs Time-Varying Characteristics**:
+         - For **time-invariant** or stable characteristics (e.g., sex, ethnicity, language spoken at home):
+           * Create a single consolidated variable across waves.
+           * Prioritise the earliest valid positive response for characteristics established early (e.g., ethnicity, language).
+           * Prioritise the most recent valid positive response for characteristics that may be updated over time (e.g., sex).
+           * Only use positive values in prioritisation; fall back to missing codes when no positive value exists.
+         - For **time-varying** characteristics (e.g., economic activity, employment, relationship status, income, educational aims, occupational class, geographical location, area deprivation, mental health):
+           * Retain separate age-specific variables rather than consolidating.
+           * Preserve temporal variation for longitudinal analysis.
 
-    8. **Factor Variables and Labels**:
-      - When recoding categorical variables, use factor variables with explicit labels for both valid categories and all missing value codes to preserve metadata.
-      - For continuous variables (e.g., income, deprivation scores): use labelled() with labels only for missing codes.
+      7. **Response Category Harmonisation**:
+         - When the same construct is measured across ages with DIFFERENT response categories, harmonise into a common coding scheme.
+         - Map raw categories by LABEL MEANING, not by numeric code — the same integer can mean different things in different waves. Always check value_labels in the metadata before mapping.
+         - Each wave requires its own `case_when()` block; do not assume codes are consistent across waves.
+         - Simply remapping missing codes and passing raw integers through is NOT harmonisation.
+         - Where harmonisation is not possible (e.g., income bands with incompatible thresholds across ages), retain separate age-specific variables with clearly labelled categories.
+         - Response options indicating non-substantive answers (e.g., "Prefer not to say", "Don't want to answer") must be mapped to the appropriate standard missing-value code, NOT treated as substantive response categories.
 
-    9. **Package Requirements**:
-      - Use ONLY standard R packages: haven, dplyr, purrr, labelled, readr.
-      - Load packages at the start of the script using library().
+      8. **Dual-Level Variables (Collapsed + Detailed)**:
+         - Where later waves have more detailed response categories than earlier waves, create both:
+           a. A collapsed harmonised variable using consistent categories across all ages (for temporal comparison).
+           b. A detailed age-specific variable preserving the full granularity where it exists.
+         - Collapsed variables must have FEWER categories than detailed versions; they cannot be copies.
+         - Include both versions in the final output.
 
-    10. **Output Requirements**:
-        - Your R script must output one single cleaned csv named data/output/cleaned_data.csv.
-        - Use write_csv() or write.csv() with row.names = FALSE.
+      9. **Factor Variables and Labels**:
+         - Convert all categorical derived variables to labelled factor variables with explicit labels for both valid categories and all applicable missing-value codes.
+         - For continuous variables (e.g., income scores, deprivation scores, BMI): use `labelled::labelled()` with labels only for missing codes; retain valid values as numeric.
 
-    11. **Variables to Include in Output**:
-        - Include the ID variable from source data.
-        - Explicitly output only the derived variables that were created during the cleaning process.
-        - Do NOT include intermediate wave-specific variables unless they are the final output.
-        - Do NOT include raw source variables.
+      10. **Package Requirements**:
+          - Use ONLY: haven, dplyr, purrr, labelled, readr.
+          - Load all packages at the start of the script using `library()`.
 
-    12. **Execution**:
-        - You must run your R script after generating it.
+      11. **Output Requirements**:
+          - Write exactly one CSV named `data/output/cleaned_data.csv`.
+          - Use `write_csv()` or `write.csv(..., row.names = FALSE)`.
+          - Include the ID variable and only the final derived variables.
+          - Do NOT include raw source variables or intermediate wave-specific working variables.
 
-    Produce your script in R.
-    
-    Here is the appropriate metadata for the task:
+      12. **Execution**:
+          - You must run your R script after generating it.
+          - If the script fails, read the error carefully, fix it, and try again. Never return an error message as your final answer.
 
-    {metadata}
+      **Important** Additional requirements for this task:
+
+      {additional_requirements}
+
+      Produce your script in R.
+
+      Here is the appropriate metadata for the task:
+
+      {metadata}

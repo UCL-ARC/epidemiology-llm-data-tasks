@@ -36,9 +36,9 @@ alc_vars <- list(
   S7 = read_delim(file.path(data_path, "wave_seven_lsype_young_person_2020.tab"), show_col_types = FALSE) %>%
     select(NSID, alcever_S7 = W7AlcEverYP, alcfreq_S7 = W7AlcFreqYP),
   S8 = read_delim(file.path(data_path, "ns8_2015_self_completion.tab"), show_col_types = FALSE) %>%
-    select(NSID, audita25 = W8AUDIT1, auditb25 = W8AUDIT2, auditc25 = W8AUDIT6),
+    select(NSID, audita25 = W8AUDIT1),
   S9 = read_delim(file.path(data_path, "ns9_2022_main_interview.tab"), show_col_types = FALSE) %>%
-    select(NSID, audita32 = W9AUDIT1, auditb32 = W9AUDIT2, auditc32 = W9AUDIT3)
+    select(NSID, audita32 = W9AUDIT1)
 )
 
 # Merge all alcohol variables by NSID

@@ -1,32 +1,34 @@
 {
-"wave_one_lsype_young_person_2020.tab": {
+  "wave_one_lsype_young_person_2020.tab": {
     "file_info": {
-    "number_of_variables": 350,
-    "number_of_cases": 15760,
-    "description": "Sweep 1 (Age 14) Young Person Data File"
+      "number_of_variables": 350,
+      "number_of_cases": 15760,
+      "description": "Sweep 1 (Age 14) Young Person Data File"
     },
     "variables": {
-    "NSID": {
-    "position": 1,
-    "variable_label": "NSID - cohort member identifier",
-    "value_labels": {}
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {},
+        "type": "string"
+      }
     }
-    }
-    },
-"wave_four_lsype_young_person_2020.tab": {
+  },
+  "wave_four_lsype_young_person_2020.tab": {
     "file_info": {
-    "number_of_variables": 1049,
-    "number_of_cases": 11791,
-    "description": "Sweep 4 (Age 17) Young Person Data File"
+      "number_of_variables": 1049,
+      "number_of_cases": 11791,
+      "description": "Sweep 4 (Age 17) Young Person Data File"
     },
     "variables": {
-    "NSID": {
-    "position": 1,
-    "variable_label": "NSID - cohort member identifier",
-    "value_labels": {}
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {},
+        "type": "string"
+      }
     }
-    }
-},
+  },
   "wave_two_lsype_family_background_2020.tab": {
     "file_info": {
       "number_of_variables": 1030,
@@ -37,7 +39,8 @@
       "NSID": {
         "position": 1,
         "variable_label": "NSID - cohort member identifier",
-        "value_labels": {}
+        "value_labels": {},
+        "type": "string"
       },
       "urbind": {
         "position": 1027,
@@ -88,7 +91,8 @@
       "NSID": {
         "position": 1,
         "variable_label": "NSID - cohort member identifier",
-        "value_labels": {}
+        "value_labels": {},
+        "type": "string"
       },
       "urbind": {
         "position": 158,
@@ -139,7 +143,8 @@
       "NSID": {
         "position": 1,
         "variable_label": "NSID - cohort member identifier",
-        "value_labels": {}
+        "value_labels": {},
+        "type": "string"
       },
       "W8DGOR": {
         "position": 3,
@@ -178,7 +183,8 @@
       "NSID": {
         "position": 1,
         "variable_label": "NSID - cohort member identifier",
-        "value_labels": {}
+        "value_labels": {},
+        "type": "string"
       },
       "W9DRGN": {
         "position": 2,
@@ -217,7 +223,8 @@
       "NSID": {
         "position": 1,
         "variable_label": "NSID - cohort member identifier",
-        "value_labels": {}
+        "value_labels": {},
+        "type": "string"
       },
       "W9NATIONRES": {
         "position": 11,
