@@ -58,11 +58,7 @@ tasks:
 
       5. **Variable Naming**:
          - All derived variable names must be short, descriptive, and lowercase.
-         - For age-specific variables: append the age as a numeric suffix (e.g., eth14, ecoact25).
-         - Common abbreviations: eth = ethnicity, lang = language, sori = sexual orientation,
-           partnr = partnership/marital status, reg = region, educaim = educational aims,
-           educ = educational qualifications, ecoact = economic activity, nssec = occupational class,
-           inc = income, imd = area deprivation, hown = housing tenure.
+         - For age-specific variables: append the age as a numeric suffix (e.g., eth14 = ethnicity at age 14, ecoact25 = economic activity at age 25).
          - For parental variables: include a parent identifier in the name
            (e.g., nssecma14 = mother's NS-SEC at age 14; nssecpa14 = father's NS-SEC at age 14).
          - For detailed adult versions where both collapsed and detailed forms are required:

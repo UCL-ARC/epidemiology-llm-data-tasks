@@ -1,13 +1,20 @@
 task_id: 1
 task_type: data_cleaning_r_plus
 additional_requirements: |
-   This task involves deriving sexual orientation. This is a time-varying characteristic.
+  Derive time-varying sexual orientation variables named sori19, sori20, sori25, and sori32.
 
-   IMPORTANT: The same numeric code can represent different categories in different waves. Always check value_labels in the metadata — do NOT assume numeric codes are consistent across waves.
+  Coded as:
+   1 = Heterosexual/straight
+   2 = Gay/lesbian
+   3 = Bisexual
+   4 = Other
 
-   IMPORTANT: Wave-specific missing code mappings for this task:
-   - -97 (refused self-completion) → -9 (Refusal)
-   - -100 (declined sexual experience) → -9 (Refusal)
+  Missing data: for this task, map source -97 and -100 to -9, and map W9SORI source value 5 ("Prefer not to say") to -7.
+
+  Derivation logic: create sori19 from W6SexualityYP, sori20 from W7SexualityYP, sori25 from W8SEXUALITY, and sori32 from W9SORI; check each wave's value labels because the same numeric code can mean different things across waves.
+
+additional_requirements_lite: |
+  Derive time-varying sexual orientation variables named sori19, sori20, sori25, and sori32.
 override: |
   You have access to raw survey datasets on a cohort study followed up at multiple ages. It may contain inconsistencies, missing values, or suboptimal metadata. Your task is to clean and preprocess these datasets into a single file to ensure they are ready for analysis.
   

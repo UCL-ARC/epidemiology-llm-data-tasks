@@ -1,11 +1,14 @@
 task_id: 1
 task_type: data_cleaning_r_plus
 additional_requirements: |
-   This task harmonises partnership/marital status across multiple ages.
+  Derive time-varying partnership/marital status variables named partnr19, partnr25, partnr32, partnradu25, and partnradu32.
 
-   Apply the dual-level approach from instruction 8: produce collapsed
-   harmonised variables (partnrXX) for all ages, and detailed adult
-   versions (partnraduXX) for ages where the additional category detail.
+  Coded as collapsed harmonised categories for partnr19, partnr25, and partnr32, with detailed adult categories retained for partnradu25 and partnradu32.
+
+  Derivation logic: create partnr19 from W6MarStatYP, create detailed adult variables partnradu25 from W8DMARSTAT and partnradu32 from W9DMARSTAT, then collapse the detailed adult variables into comparable partnr25 and partnr32 categories.
+
+additional_requirements_lite: |
+  Derive time-varying partnership/marital status variables named partnr19, partnr25, partnr32, partnradu25, and partnradu32.
 override: |
   You have access to raw survey datasets on a cohort study followed up at multiple ages. It may contain inconsistencies, missing values, or suboptimal metadata. Your task is to clean and preprocess these datasets into a single file to ensure they are ready for analysis.
   
