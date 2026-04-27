@@ -56,7 +56,7 @@ tasks:
          - Base this decision on the construct, metadata labels, available waves, and additional requirements.
          - For stable or time-invariant constructs, create a consolidated variable when appropriate.
          - For time-varying constructs, retain separate age-specific or wave-specific variables when appropriate.
-         - If later waves contain more detailed response categories than earlier waves and the task requires comparability, create collapsed harmonised variables and also retain detailed variables where useful.
+         - If later waves contain more detailed response categories than earlier waves and the task requires comparability, create collapsed harmonised variables and also retain detailed variables where requested or needed to satisfy the requirements.
 
       5. **Variable Naming**
          - Use the output variable names requested in the additional requirements where provided.
