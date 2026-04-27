@@ -397,13 +397,6 @@ if __name__ == "__main__":
                     continue
 
                 prompt = task_data["prompt"]
-                if additional_requirements:
-                    prompt = prompt.replace(
-                        "{metadata}",
-                        "Additional task-specific requirements:",
-                        f"\n{additional_requirements}\n\n"
-                        "Here is the appropriate metadata for the task:\n{metadata}",
-                    )
 
             prompt = prompt.format(
                 metadata=metadata,
