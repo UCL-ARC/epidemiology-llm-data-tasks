@@ -27,7 +27,7 @@ additional_requirements: |
    Convert to a factor with levels 14, 15, 16, 17, 19, 20, 25, 32, 99,
    -8 and labels "Age 14" through "Age 32", "Never had alcohol",
    "Don't know/insufficient information".
-override:
+override: |
   You have access to raw survey datasets from a longitudinal cohort study. Your task is to derive a single variable indicating the earliest age at which a cohort member is known to have consumed alcohol, using data collected across multiple sweeps from age 14 to age 32.
 
   Follow all instructions:

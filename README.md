@@ -16,7 +16,11 @@ In order to test this, we employ an agentic framework, and evaluate its output g
 
 ## Workflow
 
-Here: something about the core components of this project, and how to run it. A diagram?
+The pipeline works as follows:
+
+1. **Ground truth** — each `ground_truth/sampleN/` directory contains a task definition (`task.yml`), dataset metadata (`metadata.json`), and a reference R script (`rtruth.R`) that produces the correct output.
+2. **Agent run** — `src/agents.py` reads `experiment.yml` (or CLI args), constructs a prompt from `ground_truth/tasks.yml` and the sample's metadata, then runs the LLM agent in an isolated temp directory under `tmp/`.
+3. **Evaluation** — `src/dataset_comparison/` compares the agent's output CSV against the ground truth CSV and reports per-column and aggregate accuracy metrics.
 
 ## Installation
 
@@ -70,15 +74,70 @@ Run uv run python -m src.initialise_ground_truth -i data/UKDA-5545-tab/tab/safeg
 
 ## Agents
 
-This project includes a small agent framework in `src/agents.py` that wraps existing agentic frameworks
+This project includes a small agent framework in `src/agents.py` that wraps existing agentic frameworks.
+
+### Running an experiment
+
+Experiments are configured via `experiment.yml` at the project root:
+
+```yaml
+model:
+  provider: ollama              # ollama | huggingface
+  model_id: gemma4:31b
+  temperature: 0.8
+
+agent:
+  type: tool_calling            # tool_calling | code
+
+experiment:
+  runs: 1                       # number of times to repeat the full sample loop
+  use_overrides: false          # if true, use per-sample override prompts where present
+  persist_context: true         # if true, keep the temp working directory after each run
+  samples:                      # list of sample numbers to run; leave empty [] to run all
+    - 1
+```
+
+Run with the default config:
+
+```sh
+uv run python3 -m src.agents
+```
+
+Point to a different config file (useful for running multiple experiments):
+
+```sh
+uv run python3 -m src.agents --config experiments/qwen_run.yml
+```
+
+Any config field can be overridden via CLI args without editing the YAML:
+
+```sh
+# Override model and run 3 times across samples 1, 2, 3
+uv run python3 -m src.agents --model_id qwen3.5:9b --runs 3 --samples 1 2 3
+
+# Use HuggingFace instead of Ollama (reads HF_TOKEN from environment)
+uv run python3 -m src.agents --provider huggingface --model_id Qwen/Qwen3-30B-A3B-Instruct-2507
+
+# Use per-sample override prompts and discard temp directories after each run
+uv run python3 -m src.agents --use_overrides --no_persist_context
+```
+
+CLI args always take precedence over `experiment.yml`. Run `uv run python3 -m src.agents --help` for the full list of options.
+
+### Prompt construction
+
+For each sample, the prompt is built as follows:
+
+- If `use_overrides: true` and the sample's `task.yml` contains an `override` key, that prompt is used verbatim (with `{metadata}` interpolated).
+- Otherwise, the base prompt is taken from `ground_truth/tasks.yml` by matching `task_type`. If the sample's `task.yml` has `additional_requirements`, these are injected into the base prompt before the metadata block.
 
 ### SmolAgent
 
-`SmolAgent` is a thin wrapper around `ToolCallingAgent` that:
+`SmolAgent` is a thin wrapper around `ToolCallingAgent` (or `CodeAgent` for `type: code`) that:
 
 - Runs with one or more Python **tools** (see `src/tools.py`, e.g. `produce_and_execute_r`).
 - Uses a **temporary working directory** per run:
-  - If you pass `context_path=Path("ground_truth/sample1")`, the agent copies that directory into `./tmp/smolagent_context/<sample1>/` and runs there.
+  - If you pass `context_path=Path("ground_truth/sample1")`, the agent copies that directory into `./tmp/smolagent_context/<sample1_hash>/` and runs there.
   - If `context_path` is `None`, it just runs in the current working directory.
 - Returns a structured `AgentResult` (Pydantic model) with:
   - `result`: final LLM output
