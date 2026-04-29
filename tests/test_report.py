@@ -1,11 +1,11 @@
-"""Tests for dataset_comparison report module."""
+"""Tests for tabmatch report module."""
 
 from dataclasses import replace
 
 import pandas as pd
 import pytest
 
-from src.dataset_comparison.models import (
+from src.tabmatch.models import (
     CategoricalComparison,
     ColumnComparison,
     ColumnMatch,
@@ -15,7 +15,7 @@ from src.dataset_comparison.models import (
     MatchMethod,
     NumericComparison,
 )
-from src.dataset_comparison.report import (
+from src.tabmatch.report import (
     aggregate_comparison_results,
     build_category_mapping_table,
     build_column_mapping_table,

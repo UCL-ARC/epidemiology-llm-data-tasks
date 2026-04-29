@@ -4,14 +4,14 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from src.dataset_comparison.comparisons import (
+from src.tabmatch.comparisons import (
     compare_categorical,
     compare_numeric,
     compute_categorical_similarity,
     compute_numeric_similarity,
     infer_column_type,
 )
-from src.dataset_comparison.models import ColumnType
+from src.tabmatch.models import ColumnType
 
 
 class TestInferColumnType:
