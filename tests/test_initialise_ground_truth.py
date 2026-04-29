@@ -214,10 +214,10 @@ class TestGetAndSortTaskDirs:
 class TestMain:
     """Test main function."""
 
-    @patch("src.initialise_ground_truth.run_r_script")
-    @patch("src.initialise_ground_truth.copy_raw_data")
-    @patch("src.initialise_ground_truth.load_metadata")
-    @patch("src.initialise_ground_truth.get_and_sort_task_dirs")
+    @patch("scripts.initialise_ground_truth.run_r_script")
+    @patch("scripts.initialise_ground_truth.copy_raw_data")
+    @patch("scripts.initialise_ground_truth.load_metadata")
+    @patch("scripts.initialise_ground_truth.get_and_sort_task_dirs")
     @patch("argparse.ArgumentParser.parse_args")
     def test_main_success(
         self, mock_args, mock_get_dirs, mock_load_metadata, mock_copy_data, mock_run_r
@@ -246,7 +246,7 @@ class TestMain:
         mock_copy_data.assert_called_once()
         mock_run_r.assert_called_once()
 
-    @patch("src.initialise_ground_truth.get_and_sort_task_dirs")
+    @patch("scripts.initialise_ground_truth.get_and_sort_task_dirs")
     @patch("argparse.ArgumentParser.parse_args")
     def test_main_no_tasks(self, mock_args, mock_get_dirs):
         """Test main execution with no task directories."""
@@ -263,10 +263,10 @@ class TestMain:
 
         mock_get_dirs.assert_called_once()
 
-    @patch("src.initialise_ground_truth.run_r_script")
-    @patch("src.initialise_ground_truth.copy_raw_data")
-    @patch("src.initialise_ground_truth.load_metadata")
-    @patch("src.initialise_ground_truth.get_and_sort_task_dirs")
+    @patch("scripts.initialise_ground_truth.run_r_script")
+    @patch("scripts.initialise_ground_truth.copy_raw_data")
+    @patch("scripts.initialise_ground_truth.load_metadata")
+    @patch("scripts.initialise_ground_truth.get_and_sort_task_dirs")
     @patch("argparse.ArgumentParser.parse_args")
     def test_main_metadata_failure(
         self, mock_args, mock_get_dirs, mock_load_metadata, mock_copy_data, mock_run_r
@@ -289,10 +289,10 @@ class TestMain:
         mock_copy_data.assert_not_called()
         mock_run_r.assert_not_called()
 
-    @patch("src.initialise_ground_truth.run_r_script")
-    @patch("src.initialise_ground_truth.copy_raw_data")
-    @patch("src.initialise_ground_truth.load_metadata")
-    @patch("src.initialise_ground_truth.get_and_sort_task_dirs")
+    @patch("scripts.initialise_ground_truth.run_r_script")
+    @patch("scripts.initialise_ground_truth.copy_raw_data")
+    @patch("scripts.initialise_ground_truth.load_metadata")
+    @patch("scripts.initialise_ground_truth.get_and_sort_task_dirs")
     @patch("argparse.ArgumentParser.parse_args")
     def test_main_copy_failure(
         self, mock_args, mock_get_dirs, mock_load_metadata, mock_copy_data, mock_run_r
@@ -315,10 +315,10 @@ class TestMain:
         # Should not proceed to run R script
         mock_run_r.assert_not_called()
 
-    @patch("src.initialise_ground_truth.run_r_script")
-    @patch("src.initialise_ground_truth.copy_raw_data")
-    @patch("src.initialise_ground_truth.load_metadata")
-    @patch("src.initialise_ground_truth.get_and_sort_task_dirs")
+    @patch("scripts.initialise_ground_truth.run_r_script")
+    @patch("scripts.initialise_ground_truth.copy_raw_data")
+    @patch("scripts.initialise_ground_truth.load_metadata")
+    @patch("scripts.initialise_ground_truth.get_and_sort_task_dirs")
     @patch("argparse.ArgumentParser.parse_args")
     def test_main_r_script_failure(
         self, mock_args, mock_get_dirs, mock_load_metadata, mock_copy_data, mock_run_r

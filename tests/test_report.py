@@ -1,4 +1,4 @@
-"""Tests for dataset_comparison report module."""
+"""Tests for tabmatch report module."""
 
 from dataclasses import replace
 

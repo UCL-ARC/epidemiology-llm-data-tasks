@@ -1,4 +1,4 @@
-"""Tests for dataset_comparison __main__ module."""
+"""Tests for tabmatch __main__ module."""
 
 from pathlib import Path
 from unittest.mock import MagicMock, patch
@@ -60,11 +60,11 @@ def _make_result() -> DataComparisonResult:
 class TestMain:
     """Tests for the main() CLI entry point."""
 
-    @patch("src.dataset_comparison.__main__.json.load")
-    @patch("src.dataset_comparison.__main__.print_comparison_report")
-    @patch("src.dataset_comparison.__main__.aggregate_comparison_results")
-    @patch("src.dataset_comparison.__main__.DataComparator")
-    @patch("src.dataset_comparison.__main__.pd.read_csv")
+    @patch("src.tabmatch.__main__.json.load")
+    @patch("src.tabmatch.__main__.print_comparison_report")
+    @patch("src.tabmatch.__main__.aggregate_comparison_results")
+    @patch("src.tabmatch.__main__.DataComparator")
+    @patch("src.tabmatch.__main__.pd.read_csv")
     def test_main_processes_tasks(
         self,
         mock_read_csv: MagicMock,
@@ -108,7 +108,7 @@ class TestMain:
         mock_comparator.compare.assert_called_once()
         mock_print_report.assert_called_once_with(result)
 
-    @patch("src.dataset_comparison.__main__.DataComparator")
+    @patch("src.tabmatch.__main__.DataComparator")
     def test_main_skips_missing_files(
         self,
         mock_comparator_cls: MagicMock,
@@ -126,7 +126,7 @@ class TestMain:
 
         mock_comparator_cls.return_value.compare.assert_not_called()
 
-    @patch("src.dataset_comparison.__main__.DataComparator")
+    @patch("src.tabmatch.__main__.DataComparator")
     def test_main_no_tasks_found(
         self,
         mock_comparator_cls: MagicMock,
