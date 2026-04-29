@@ -6,8 +6,8 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from src.dataset_comparison.data_comparator import DataComparator
-from src.dataset_comparison.models import (
+from src.tabmatch.data_comparator import DataComparator
+from src.tabmatch.models import (
     ColumnComparison,
     ColumnMatch,
     ColumnType,

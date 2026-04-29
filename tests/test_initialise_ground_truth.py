@@ -3,7 +3,7 @@
 from pathlib import Path
 from unittest.mock import Mock, mock_open, patch
 
-from src.initialise_ground_truth import (
+from scripts.initialise_ground_truth import (
     copy_raw_data,
     get_and_sort_task_dirs,
     load_metadata,
