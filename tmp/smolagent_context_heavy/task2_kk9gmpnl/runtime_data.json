@@ -1,0 +1,7 @@
+{
+  "result": "The raw survey datasets were cleaned and preprocessed into a single analysis-ready file. A consolidated variable `eth` was derived using the earliest valid positive response (categories 1-16) from the source variables `W1ethnic2YP`, `W2ethnicYP`, `w4ethnic2YP`, `W8DETHN15`, and `W9DETHN15`. Missing values were harmonized according to the provided standard scheme, and the final output containing `NSID` and `eth` was saved to `data/output/cleaned_data.csv`.",
+  "state": "success",
+  "time_taken": 313.14422392845154,
+  "steps": 4,
+  "token_usage": 29816
+}

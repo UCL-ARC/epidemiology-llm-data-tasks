@@ -1,0 +1,7 @@
+{
+  "result": "The datasets have been cleaned and preprocessed into a single analysis-ready file. Educational qualification variables `educ25`, `educ32` (5-level NVQ scheme), `educadtl32` (detailed academic), and `educvdtl32` (detailed vocational) were derived using the metadata and the provided requirements. The final output is saved as `data/output/cleaned_data.csv`.",
+  "state": "success",
+  "time_taken": 164.8528392314911,
+  "steps": 4,
+  "token_usage": 54817
+}

@@ -1,0 +1,7 @@
+{
+  "result": "The partnership/marital status data has been harmonised across waves (Age 19, 25, and 32). Collapsed variables (`partnr19`, `partnr25`, `partnr32`) were created for cross-wave comparability, and detailed adult versions (`partnradu25`, `partnradu32`) were retained for waves with more granular categories. Missing values were standardised according to the provided scheme (-9 for refusal, -8 for don't know, etc.), and the final dataset was saved to `data/output/cleaned_data.csv`.",
+  "state": "success",
+  "time_taken": 114.47615814208984,
+  "steps": 4,
+  "token_usage": 27570
+}

@@ -1,0 +1,7 @@
+{
+  "result": "The data has been successfully preprocessed and cleaned. The time-varying NS-SEC occupational class variables (nssec17, nssec18, nssec19, nssec20, nssec25, and nssec32) were derived by loading the relevant wave files, merging them by NSID, harmonising missing values according to the standard scheme, collapsing detailed response categories into a consistent operational scheme, and applying the appropriate factor labels. The final analysis-ready file is saved at `data/output/cleaned_data.csv`.",
+  "state": "success",
+  "time_taken": 267.7668731212616,
+  "steps": 4,
+  "token_usage": 35658
+}

@@ -1,6 +1,6 @@
 """
 Script to rebuild experiment data directories in tmp/ by copying raw input data
-and re-running R scripts (rtruth.R and rpred.R) for each sample.
+and re-running R scripts (rtruth.R and rpred.R) for each task.
 
 This recreates the data/input/ and data/output/ directories that are excluded
 from version control via .gitignore.
@@ -46,10 +46,10 @@ def get_arg_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument(
         "-s",
-        "--sample",
+        "--task",
         type=int,
         default=None,
-        help="Filter to a specific sample number (e.g. 4 for sample4_*).",
+        help="Filter to a specific task number (e.g. 4 for task4_*).",
     )
     parser.add_argument(
         "-v",
@@ -77,17 +77,17 @@ def load_metadata(metadata_path: Path) -> dict:
     return metadata
 
 
-def copy_raw_data(input_dir: Path, sample_input_dir: Path, metadata: dict) -> list:
+def copy_raw_data(input_dir: Path, task_input_dir: Path, metadata: dict) -> list:
     """
     Copy raw data files based on metadata keys.
 
     Returns a list of filenames that could not be copied.
     """
     failed_files = []
-    Path.mkdir(sample_input_dir, parents=True, exist_ok=True)
+    Path.mkdir(task_input_dir, parents=True, exist_ok=True)
     for file_name in metadata:
         src_file = input_dir / file_name
-        dest_file = sample_input_dir / file_name
+        dest_file = task_input_dir / file_name
         if not src_file.exists():
             logger.error(
                 f"Missing input file: [cyan]{file_name}[/cyan] "
@@ -144,36 +144,34 @@ def get_model_run_dirs(tmp_dir: Path, model_filter: str | None) -> list[Path]:
     return model_dirs
 
 
-def get_sample_dirs(model_run_dir: Path, sample_filter: int | None) -> list[Path]:
-    """Get and sort sample directories within a model-run directory."""
-    sample_dirs = [
+def get_task_dirs(model_run_dir: Path, task_filter: int | None) -> list[Path]:
+    """Get and sort task directories within a model-run directory."""
+    task_dirs = [
         d
         for d in model_run_dir.iterdir()
-        if d.is_dir() and re.match(r"sample\d+", d.name)
+        if d.is_dir() and re.match(r"task\d+", d.name)
     ]
 
-    def extract_sample_number(dir_path: Path) -> int:
-        match = re.search(r"sample(\d+)", dir_path.name)
+    def extract_task_number(dir_path: Path) -> int:
+        match = re.search(r"task(\d+)", dir_path.name)
         return int(match.group(1)) if match else 0
 
-    sample_dirs.sort(key=extract_sample_number)
+    task_dirs.sort(key=extract_task_number)
 
-    if sample_filter is not None:
-        sample_dirs = [
-            d for d in sample_dirs if extract_sample_number(d) == sample_filter
-        ]
+    if task_filter is not None:
+        task_dirs = [d for d in task_dirs if extract_task_number(d) == task_filter]
 
-    return sample_dirs
+    return task_dirs
 
 
-def process_sample(
-    sample_dir: Path,
+def process_task(
+    task_dir: Path,
     input_dir: Path,
     *,
     verbose: bool,
 ) -> bool:
     """
-    Process a single sample directory: copy inputs, run R scripts.
+    Process a single task directory: copy inputs, run R scripts.
 
     Returns True if all steps succeeded.
     """
@@ -183,10 +181,10 @@ def process_sample(
         console=console,
         refresh_per_second=4,
     ):
-        metadata = load_metadata(sample_dir / "metadata.json")
+        metadata = load_metadata(task_dir / "metadata.json")
 
     if not metadata:
-        logger.error(f"Failed to load metadata for {sample_dir.name}")
+        logger.error(f"Failed to load metadata for {task_dir.name}")
         return False
 
     # --- Copy raw input data ---
@@ -195,22 +193,22 @@ def process_sample(
         console=console,
         refresh_per_second=4,
     ):
-        sample_input_dir = sample_dir / "data" / "input"
-        failed_files = copy_raw_data(input_dir, sample_input_dir, metadata)
+        task_input_dir = task_dir / "data" / "input"
+        failed_files = copy_raw_data(input_dir, task_input_dir, metadata)
 
     if failed_files:
         logger.error(
             f"Missing {len(failed_files)} input file(s) for "
-            f"{sample_dir.name}: {', '.join(failed_files)}",
+            f"{task_dir.name}: {', '.join(failed_files)}",
         )
         return False
 
     # --- Ensure output directory exists ---
-    output_dir = sample_dir / "data" / "output"
+    output_dir = task_dir / "data" / "output"
     Path.mkdir(output_dir, parents=True, exist_ok=True)
 
     # --- Run rtruth.R → cleaned_data.csv ---
-    rtruth_path = sample_dir / "rtruth.R"
+    rtruth_path = task_dir / "rtruth.R"
     with Live(
         Spinner("dots", text="Running rtruth.R..."),
         console=console,
@@ -219,11 +217,11 @@ def process_sample(
         rtruth_success = run_r_script(rtruth_path, verbose=verbose)
 
     if not rtruth_success:
-        logger.error(f"rtruth.R failed for {sample_dir.name}")
+        logger.error(f"rtruth.R failed for {task_dir.name}")
         return False
 
     # --- Run rpred.R → output.csv ---
-    rpred_path = sample_dir / "rpred.R"
+    rpred_path = task_dir / "rpred.R"
     with Live(
         Spinner("dots", text="Running rpred.R..."),
         console=console,
@@ -232,28 +230,28 @@ def process_sample(
         rpred_success = run_r_script(rpred_path, verbose=verbose)
 
     if not rpred_success:
-        logger.warning(f"rpred.R failed for {sample_dir.name} (LLM-generated script)")
+        logger.warning(f"rpred.R failed for {task_dir.name} (LLM-generated script)")
 
     return True
 
 
 def main() -> None:
-    """Rebuild experiment data for each sample in tmp/."""
+    """Rebuild experiment data for each task in tmp/."""
     parser = get_arg_parser()
     args = parser.parse_args()
 
     input_dir: Path = args.input_dir
     tmp_dir: Path = args.tmp_dir
     model_filter: str | None = args.model
-    sample_filter: int | None = args.sample
+    task_filter: int | None = args.task
     verbose: bool = args.verbose
 
     logger.info(f"Rebuilding experiment data from: [cyan]{input_dir}[/cyan]")
     logger.info(f"Scanning experiments in: [cyan]{tmp_dir}[/cyan]")
     if model_filter:
         logger.info(f"Model filter: [yellow]{model_filter}[/yellow]")
-    if sample_filter is not None:
-        logger.info(f"Sample filter: [yellow]sample{sample_filter}[/yellow]")
+    if task_filter is not None:
+        logger.info(f"Task filter: [yellow]task{task_filter}[/yellow]")
 
     # --- Discover model-run directories ---
     model_dirs = get_model_run_dirs(tmp_dir, model_filter)
@@ -271,35 +269,35 @@ def main() -> None:
         logger.info(f"Model run: [green]{model_dir.name}[/green]")
         logger.info(f"{'='*60}")
 
-        sample_dirs = get_sample_dirs(model_dir, sample_filter)
-        if not sample_dirs:
-            logger.warning(f"No matching sample directories in {model_dir.name}")
+        task_dirs = get_task_dirs(model_dir, task_filter)
+        if not task_dirs:
+            logger.warning(f"No matching task directories in {model_dir.name}")
             continue
 
-        for sample_dir in sample_dirs:
-            logger.info(f"  Processing: [cyan]{sample_dir.name}[/cyan]")
-            success = process_sample(sample_dir, input_dir, verbose=verbose)
+        for task_dir in task_dirs:
+            logger.info(f"  Processing: [cyan]{task_dir.name}[/cyan]")
+            success = process_task(task_dir, input_dir, verbose=verbose)
             if success:
-                logger.success(f"  ✓ {sample_dir.name}")
-                succeeded.append(f"{model_dir.name}/{sample_dir.name}")
+                logger.success(f"  ✓ {task_dir.name}")
+                succeeded.append(f"{model_dir.name}/{task_dir.name}")
             else:
-                logger.error(f"  ✗ {sample_dir.name}")
-                failed.append(f"{model_dir.name}/{sample_dir.name}")
+                logger.error(f"  ✗ {task_dir.name}")
+                failed.append(f"{model_dir.name}/{task_dir.name}")
 
     # --- Summary ---
     total = len(succeeded) + len(failed)
     logger.info(f"\n{'='*60}")
     logger.info("REBUILD SUMMARY")
     logger.info(f"{'='*60}")
-    logger.info(f"Total samples processed: {total}")
+    logger.info(f"Total tasks processed: {total}")
     logger.success(f"Succeeded: {len(succeeded)}")
 
     if failed:
         logger.error(f"Failed: {len(failed)}")
-        for sample in failed:
-            logger.error(f"  - {sample}")
+        for task in failed:
+            logger.error(f"  - {task}")
     else:
-        logger.success("\nAll samples rebuilt successfully!")
+        logger.success("\nAll tasks rebuilt successfully!")
 
 
 if __name__ == "__main__":

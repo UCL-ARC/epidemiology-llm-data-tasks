@@ -1,0 +1,7 @@
+{
+  "result": "The raw survey datasets were cleaned and preprocessed into a single analysis-ready file. I loaded the five longitudinal wave files, merged them by NSID, and derived ten age-specific variables (nssecma14, nssecpa14, nssecma15, nssecpa15, nssecma16, nssecpa16, nssecma17, nssecpa17, nssecma18, nssecpa18) for parental NS-SEC occupational class. Fractional sub-category codes were collapsed to their major categories (1-17), and wave-specific missing codes (including -98 mapping to -3) were harmonized to the standard missing-value scheme. The final processed data, containing only NSID and the ten derived variables, was written to `data/output/cleaned_data.csv`.",
+  "state": "success",
+  "time_taken": 87.51430678367615,
+  "steps": 3,
+  "token_usage": 24284
+}

@@ -252,22 +252,22 @@ def _parse_args() -> argparse.Namespace:
         "--runs", type=int, help="Number of repeat runs (overrides config)"
     )
     parser.add_argument(
-        "--samples",
+        "--tasks",
         type=int,
         nargs="+",
-        help="Sample numbers to run, e.g. --samples 1 2 3 (overrides config)",
+        help="Task numbers to run, e.g. --tasks 1 2 3 (overrides config)",
     )
     parser.add_argument(
         "--use_overrides",
         action="store_true",
         default=None,
-        help="Use per-sample override prompts where present (overrides config)",
+        help="Use per-task override prompts where present (overrides config)",
     )
     parser.add_argument(
         "--no_overrides",
         dest="use_overrides",
         action="store_false",
-        help="Ignore per-sample override prompts (overrides config)",
+        help="Ignore per-task override prompts (overrides config)",
     )
     parser.add_argument(
         "--persist_context",
@@ -318,7 +318,7 @@ if __name__ == "__main__":
         if args.persist_context is not None
         else exp_cfg.get("persist_context", True)
     )
-    sample_numbers = args.samples or exp_cfg.get("samples", [])
+    task_numbers = args.tasks or exp_cfg.get("tasks", [])
 
     api_key: str | None = None
     # Resolve model name and API key per provider
@@ -335,7 +335,7 @@ if __name__ == "__main__":
     logger.info(
         f"Config: provider={provider}, model={model_id}, agent_type={agent_type}, "
         f"temperature={temperature}, runs={runs}, use_overrides={use_overrides}, "
-        f"persist_context={persist_context}, samples={sample_numbers or 'all'}"
+        f"persist_context={persist_context}, tasks={task_numbers or 'all'}"
     )
 
     tools: list[Callable] = (
@@ -359,13 +359,13 @@ if __name__ == "__main__":
         [
             p
             for p in ground_truth_dir.iterdir()
-            if p.is_dir() and p.name.startswith("sample") and p.name[6:].isdigit()
+            if p.is_dir() and p.name.startswith("task") and p.name[4:].isdigit()
         ],
-        key=lambda p: int(p.name[6:]),
+        key=lambda p: int(p.name[4:]),
     )
     test_dirs = (
-        [Path(f"./ground_truth/sample{x}") for x in sample_numbers]
-        if sample_numbers
+        [Path(f"./ground_truth/task{x}") for x in task_numbers]
+        if task_numbers
         else all_dirs
     )
 

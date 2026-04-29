@@ -1,0 +1,7 @@
+{
+  "result": "The task has been completed. The raw survey datasets were loaded, merged by NSID, and the parental economic activity variables (ecoactma14, ecoactpa14, ecoactma15, ecoactpa15, ecoactma16, ecoactpa16, ecoactma17, and ecoactpa17) were derived. Missing values were harmonised according to the provided metadata and standard mapping rules, and response categories were standardised across waves. The final cleaned dataset was written to `data/output/cleaned_data.csv`.",
+  "state": "success",
+  "time_taken": 50.13787484169006,
+  "steps": 3,
+  "token_usage": 15574
+}

@@ -1,0 +1,7 @@
+{
+  "result": "The R script was successfully executed. It loaded the four longitudinal cohort survey datasets, merged them by NSID, and harmonised the parental economic activity variables (mother and father) for waves 1 through 4 (ages 14-17) according to the specified mapping rules. The final dataset, containing NSID and the eight derived variables (`ecoactma14`, `ecoactpa14`, `ecoactma15`, `ecoactpa15`, `ecoactma16`, `ecoactpa16`, `ecoactma17`, `ecoactpa17`) with their respective factor labels, was written to `data/output/cleaned_data.csv`.",
+  "state": "success",
+  "time_taken": 220.28831005096436,
+  "steps": 3,
+  "token_usage": 15847
+}

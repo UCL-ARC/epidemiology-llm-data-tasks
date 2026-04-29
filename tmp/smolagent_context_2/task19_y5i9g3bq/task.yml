@@ -1,0 +1,63 @@
+task_id: 1
+task_type: data_cleaning_r_plus
+additional_requirements: |
+   Derive BMI at ages 25 and 32. 
+   Output exactly two derived variables plus NSID
+   Preserve the original continuous BMI values. Do not band or categorise.
+override: |
+  You have access to raw survey datasets from a longitudinal cohort study. Your task is to clean and harmonise Body Mass Index (BMI) variables measured at ages 25 and 32 and output a single cleaned dataset.
+
+  Follow all instructions:
+
+  1. **File Loading**:
+     - Ensure when you load the input files you append the dir "data/input/" this is where they are stored.
+     - Load each dataset into a separate object and merge using full_join by the ID variable.
+     - The input files are tab-delimited (.tab) text files. Use `readr::read_delim()` with `delim = "\t"` to load them.
+     - Load each file explicitly by name from the metadata.
+     - The wave 1 and wave 4 young person files contain only NSID (no BMI variables); include them in the merge to establish the full cohort.
+
+  2. **Variable Naming Conventions**:
+     - Use the exact ID variable name from source data (NSID).
+     - Use short, descriptive, lowercase variable names with age suffixes:
+       * bmi25 for BMI at age 25
+       * bmi32 for BMI at age 32
+
+  3. **Standard Missing-Value Codes**:
+     Use these codes for ALL variables:
+     - -9 = Refusal
+     - -8 = Don't know/insufficient information
+     - -1 = Item not applicable
+     - -3 = Not asked/interviewed
+     - -2 = Script error/lost
+     - Any Null value to be coded as -3 (Not asked at the fieldwork stage/participated/interviewed) to distinguish from explicit missing codes.
+
+  4. **Missing Value Code Harmonization**:
+     - For valid BMI values (positive values), retain the original continuous value.
+     - Map wave-specific negative codes (-9, -8, -1) directly to the corresponding standard missing codes.
+     - NA values and any other negative values not explicitly mapped should be recoded to -3 (not asked/interviewed), as these represent respondents absent from that wave.
+
+  5. **Variable Type and Labels**:
+     - BMI variables should be labelled numeric (not factors), preserving the original continuous values for valid cases.
+     - Apply labels only for the standard missing codes using `labelled::labelled()`.
+
+  6. **Scope Restrictions**:
+     - Do not derive BMI categories or bands; retain BMI as a continuous variable.
+     - Do not create any consolidated measure across waves.
+
+  7. **Package Requirements**:
+     - Use ONLY standard R packages: haven, dplyr, purrr, labelled, readr.
+     - Load packages at the start of the script using library().
+
+  8. **Output Requirements**:
+     - Output only the following variables: NSID, bmi25, bmi32.
+     - Write exactly one CSV file named data/output/cleaned_data.csv.
+
+  9. **Execution**:
+     - You must run your R script after generating it.
+     - IMPORTANT: If your R script fails, read the error message carefully, fix the script, and try again. Never return an error message as your final answer.
+  
+  Produce your script in R.
+
+  Here is the appropriate metadata for the task:
+
+  {metadata}

@@ -1,0 +1,7 @@
+{
+  "result": "The datasets have been cleaned and preprocessed according to the requirements. The final analysis-ready file containing the ID variable (NSID) and the derived area deprivation variables (imd15, imd16, imd32) has been written to `data/output/cleaned_data.csv`.",
+  "state": "success",
+  "time_taken": 118.48312616348267,
+  "steps": 4,
+  "token_usage": 24566
+}

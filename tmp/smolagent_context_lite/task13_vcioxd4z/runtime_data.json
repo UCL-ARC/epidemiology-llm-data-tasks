@@ -1,0 +1,7 @@
+{
+  "result": "The data has been successfully cleaned and preprocessed. The parental NS-SEC occupational class variables (nssecma14, nssecpa14, nssecma15, nssecpa15, nssecma16, nssecpa16, nssecma17, nssecpa17, nssecma18, and nssecpa18) were derived from the five longitudinal waves, with missing values harmonised according to the provided metadata and standard codes. The final analysis-ready file has been saved to `data/output/cleaned_data.csv`.",
+  "state": "success",
+  "time_taken": 69.33987808227539,
+  "steps": 3,
+  "token_usage": 25693
+}

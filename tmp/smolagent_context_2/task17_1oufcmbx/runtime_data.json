@@ -1,0 +1,7 @@
+{
+  "result": "The area deprivation (IMD) variables have been processed and cleaned. The final dataset contains the NSID and three age-specific variables: imd15 (Age 15), imd16 (Age 16), and imd32 (Age 32). Missing values were harmonized according to the standard scheme (-8 for insufficient information, -2 for script errors/lost information, and -3 for NA/not interviewed). The cleaned data has been saved to `data/output/cleaned_data.csv`.",
+  "state": "success",
+  "time_taken": 211.16281986236572,
+  "steps": 5,
+  "token_usage": 36243
+}

@@ -18,8 +18,8 @@ In order to test this, we employ an agentic framework, and evaluate its output g
 
 The pipeline works as follows:
 
-1. **Ground truth** — each `ground_truth/sampleN/` directory contains a task definition (`task.yml`), dataset metadata (`metadata.json`), and a reference R script (`rtruth.R`) that produces the correct output.
-2. **Agent run** — `src/agents.py` reads `experiment.yml` (or CLI args), constructs a prompt from `ground_truth/tasks.yml` and the sample's metadata, then runs the LLM agent in an isolated temp directory under `tmp/`.
+1. **Ground truth** — each `ground_truth/taskN/` directory contains a task definition (`task.yml`), dataset metadata (`metadata.json`), and a reference R script (`rtruth.R`) that produces the correct output.
+2. **Agent run** — `src/agents.py` reads `experiment.yml` (or CLI args), constructs a prompt from `ground_truth/tasks.yml` and the task's metadata, then runs the LLM agent in an isolated temp directory under `tmp/`.
 3. **Evaluation** — `src/dataset_comparison/` compares the agent's output CSV against the ground truth CSV and reports per-column and aggregate accuracy metrics.
 
 ## Installation
@@ -90,10 +90,10 @@ agent:
   type: tool_calling            # tool_calling | code
 
 experiment:
-  runs: 1                       # number of times to repeat the full sample loop
-  use_overrides: false          # if true, use per-sample override prompts where present
+  runs: 1                       # number of times to repeat the full task loop
+  use_overrides: false          # if true, use per-task override prompts where present
   persist_context: true         # if true, keep the temp working directory after each run
-  samples:                      # list of sample numbers to run; leave empty [] to run all
+  tasks:                        # list of task numbers to run; leave empty [] to run all
     - 1
 ```
 
@@ -112,13 +112,13 @@ uv run python3 -m src.agents --config experiments/qwen_run.yml
 Any config field can be overridden via CLI args without editing the YAML:
 
 ```sh
-# Override model and run 3 times across samples 1, 2, 3
-uv run python3 -m src.agents --model_id qwen3.5:9b --runs 3 --samples 1 2 3
+# Override model and run 3 times across tasks 1, 2, 3
+uv run python3 -m src.agents --model_id qwen3.5:9b --runs 3 --tasks 1 2 3
 
 # Use HuggingFace instead of Ollama (reads HF_TOKEN from environment)
 uv run python3 -m src.agents --provider huggingface --model_id Qwen/Qwen3-30B-A3B-Instruct-2507
 
-# Use per-sample override prompts and discard temp directories after each run
+# Use per-task override prompts and discard temp directories after each run
 uv run python3 -m src.agents --use_overrides --no_persist_context
 ```
 
@@ -126,10 +126,10 @@ CLI args always take precedence over `experiment.yml`. Run `uv run python3 -m sr
 
 ### Prompt construction
 
-For each sample, the prompt is built as follows:
+For each task, the prompt is built as follows:
 
-- If `use_overrides: true` and the sample's `task.yml` contains an `override` key, that prompt is used verbatim (with `{metadata}` interpolated).
-- Otherwise, the base prompt is taken from `ground_truth/tasks.yml` by matching `task_type`. If the sample's `task.yml` has `additional_requirements`, these are injected into the base prompt before the metadata block.
+- If `use_overrides: true` and the task's `task.yml` contains an `override` key, that prompt is used verbatim (with `{metadata}` interpolated).
+- Otherwise, the base prompt is taken from `ground_truth/tasks.yml` by matching `task_type`. If the task's `task.yml` has `additional_requirements`, these are injected into the base prompt before the metadata block.
 
 ### SmolAgent
 
@@ -137,7 +137,7 @@ For each sample, the prompt is built as follows:
 
 - Runs with one or more Python **tools** (see `src/tools.py`, e.g. `produce_and_execute_r`).
 - Uses a **temporary working directory** per run:
-  - If you pass `context_path=Path("ground_truth/sample1")`, the agent copies that directory into `./tmp/smolagent_context/<sample1_hash>/` and runs there.
+  - If you pass `context_path=Path("ground_truth/task1")`, the agent copies that directory into `./tmp/smolagent_context/<task1_hash>/` and runs there.
   - If `context_path` is `None`, it just runs in the current working directory.
 - Returns a structured `AgentResult` (Pydantic model) with:
   - `result`: final LLM output
@@ -158,7 +158,7 @@ The `src/dataset_comparison/` module compares agent-generated output CSVs agains
 2. **Column matching** — ground truth columns are matched to predicted columns by name.
 3. **Data-based fallback matching** — any columns that could not be matched by name are matched by data similarity.
 4. **Per-column comparison** — each matched column pair is compared using type-appropriate metrics.
-5. **Reporting** — results are printed per-sample and aggregated across experiments.
+5. **Reporting** — results are printed per-task and aggregated across experiments.
 
 ### Column Matching (`column_matcher.py`)
 
@@ -220,13 +220,13 @@ A column is a **data match** if `exact_match_rate >= categorical_data_match_thre
 | `NumericComparison` | Full numeric metrics for one column pair |
 | `CategoricalComparison` | Full categorical metrics for one column pair, including the category mapping used |
 | `ColumnComparison` | Wraps one matched pair with its numeric or categorical comparison |
-| `DataComparisonResult` | Full result for one sample: join completeness, all column matches and comparisons, unmatched columns, task completion percentage |
+| `DataComparisonResult` | Full result for one task: join completeness, all column matches and comparisons, unmatched columns, task completion percentage |
 
 ### Reporting and Aggregate Metrics (`report.py`)
 
-`print_comparison_report()` prints a per-sample rich-formatted report covering join completeness, column match table, and per-column metric tables.
+`print_comparison_report()` prints a per-task rich-formatted report covering join completeness, column match table, and per-column metric tables.
 
-`aggregate_comparison_results()` aggregates across multiple samples into a summary dataframe and prints an aggregate metrics table. Key aggregate metrics are:
+`aggregate_comparison_results()` aggregates across multiple tasks into a summary dataframe and prints an aggregate metrics table. Key aggregate metrics are:
 
 | Metric | Definition |
 |--------|------------|
@@ -239,11 +239,11 @@ Where TP = matched column with data match, FP = matched column without data matc
 
 ## Experiment Data
 
-Experiment outputs live under `tmp/`. The `data/` directories within each sample (containing raw `.tab` inputs and generated `.csv` outputs) are excluded from version control to keep the repository lightweight. All other experiment files — R scripts, task definitions, metadata, and summaries — are tracked.
+Experiment outputs live under `tmp/`. The `data/` directories within each task (containing raw `.tab` inputs and generated `.csv` outputs) are excluded from version control to keep the repository lightweight. All other experiment files — R scripts, task definitions, metadata, and summaries — are tracked.
 
 ### Rebuilding experiment data
 
-After cloning, use `src/rebuild_experiments.py` to regenerate the `data/input/` and `data/output/` directories for each experiment sample. This copies raw `.tab` files from your local data directory and re-runs the R scripts (`rtruth.R` and `rpred.R`) to produce `cleaned_data.csv` and `output.csv`.
+After cloning, use `src/rebuild_experiments.py` to regenerate the `data/input/` and `data/output/` directories for each experiment task. This copies raw `.tab` files from your local data directory and re-runs the R scripts (`rtruth.R` and `rpred.R`) to produce `cleaned_data.csv` and `output.csv`.
 
 ```sh
 # Rebuild all experiments (requires raw data in data/input/)
@@ -252,11 +252,11 @@ python -m src.rebuild_experiments
 # Rebuild only a specific model's experiments
 python -m src.rebuild_experiments --model "qwen3.5:9b"
 
-# Rebuild a specific sample across all models
-python -m src.rebuild_experiments --sample 4
+# Rebuild a specific task across all models
+python -m src.rebuild_experiments --task 4
 
 # Combine filters and enable verbose R output
-python -m src.rebuild_experiments --model "qwen3.5:9b_1" --sample 13 -v
+python -m src.rebuild_experiments --model "qwen3.5:9b_1" --task 13 -v
 
 # Use a custom raw data directory
 python -m src.rebuild_experiments -i data/UKDA-5545-tab/tab/safeguarded_eul
@@ -267,5 +267,5 @@ python -m src.rebuild_experiments -i data/UKDA-5545-tab/tab/safeguarded_eul
 | `-i`, `--input_dir` | `data/input` | Directory containing raw `.tab` data files |
 | `-t`, `--tmp_dir` | `tmp` | Root directory of experiment outputs |
 | `-m`, `--model` | all | Filter by model name substring (e.g. `qwen3.5:9b`, `devstral-small-2:24b_2`) |
-| `-s`, `--sample` | all | Filter by sample number (e.g. `4`) |
+| `-s`, `--task` | all | Filter by task number (e.g. `4`) |
 | `-v`, `--verbose` | off | Print R script stdout |

@@ -1,0 +1,7 @@
+{
+  "result": "The GHQ-12 mental health scores have been derived from waves 2, 4, 8, and 9. For each wave, both item-summed scores (ghqtl15, ghqtl17, ghqtl25, ghqtl32) and pre-derived total scores (ghq15, ghq17, ghq25, ghq32) were calculated. Item-summed scores follow the logic: -3 if all items are NA, -8 if any item is negative, and the sum otherwise. Pre-derived scores were harmonised to standard missing-value codes, with specific mappings for waves 2 and 4 (-97, -92 to -9). The final dataset containing the NSID and these eight variables has been saved to `data/output/cleaned_data.csv`.",
+  "state": "success",
+  "time_taken": 194.19481778144836,
+  "steps": 4,
+  "token_usage": 52357
+}

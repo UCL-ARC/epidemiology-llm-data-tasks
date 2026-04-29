@@ -20,7 +20,7 @@ from . import (
 def get_arg_parser() -> argparse.ArgumentParser:
     """Create and return the argument parser."""
     parser = argparse.ArgumentParser(
-        description="Run dataset comparison on sample data directories.",
+        description="Run dataset comparison on task data directories.",
     )
     parser.add_argument(
         "model",
@@ -100,7 +100,7 @@ def get_arg_parser() -> argparse.ArgumentParser:
 
 
 def main(argv: list[str] | None = None) -> None:  # noqa: PLR0915
-    """Run comparison on sample data directories."""
+    """Run comparison on task data directories."""
     logger.remove()
 
     parser = get_arg_parser()
@@ -134,7 +134,7 @@ def main(argv: list[str] | None = None) -> None:  # noqa: PLR0915
 
         results = []
 
-        for output_dir in context_dir.glob("sample*/data/output"):
+        for output_dir in context_dir.glob("task*/data/output"):
             gt_file = output_dir / args.gt_filename
             pred_file = output_dir / args.pred_filename
 

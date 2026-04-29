@@ -1,0 +1,7 @@
+{
+  "result": "The parental education data has been successfully cleaned and preprocessed. The process involved loading the family background datasets from waves 1, 2, and 4, merging them by NSID, and harmonising wave-specific missing codes into a standard scheme. For each parent, a consolidated detailed variable was created by scanning waves 1, 2, and 4 in order, prioritizing the first positive substantive qualification (1-20) and falling back to the first negative missing code. From these detailed variables, collapsed 5-level NVQ variables were derived according to the specified mapping. The final output contains exactly five variables (NSID, mum_collapsed, mum_detailed, dad_collapsed, dad_detailed) and is saved as `data/output/cleaned_data.csv`.",
+  "state": "success",
+  "time_taken": 56.26832318305969,
+  "steps": 3,
+  "token_usage": 16399
+}

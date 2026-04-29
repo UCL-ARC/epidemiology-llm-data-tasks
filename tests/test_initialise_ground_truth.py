@@ -5,7 +5,7 @@ from unittest.mock import Mock, mock_open, patch
 
 from src.initialise_ground_truth import (
     copy_raw_data,
-    get_and_sort_sample_dirs,
+    get_and_sort_task_dirs,
     load_metadata,
     main,
     run_r_script,
@@ -64,14 +64,14 @@ class TestCopyRawData:
     def test_copy_raw_data_success(self, mock_file, mock_mkdir):
         """Test successful file copying."""
         input_dir = Path("input")
-        sample_input_dir = Path("sample/input")
+        task_input_dir = Path("task/input")
         metadata = {"file1.csv": "data", "file2.txt": "data"}
 
-        failed_files = copy_raw_data(input_dir, sample_input_dir, metadata)
+        failed_files = copy_raw_data(input_dir, task_input_dir, metadata)
 
         assert failed_files == []
         # The function calls mkdir with the path and exist_ok=True
-        mock_mkdir.assert_called_with(sample_input_dir, exist_ok=True, parents=True)
+        mock_mkdir.assert_called_with(task_input_dir, exist_ok=True, parents=True)
         assert mock_file.call_count == 4  # 2 files x 2 opens each (read + write)
 
     @patch("pathlib.Path.mkdir")
@@ -80,10 +80,10 @@ class TestCopyRawData:
         """Test file copying when source file doesn't exist."""
         mock_file.side_effect = FileNotFoundError()
         input_dir = Path("input")
-        sample_input_dir = Path("sample/input")
+        task_input_dir = Path("task/input")
         metadata = {"missing_file.csv": "data"}
 
-        failed_files = copy_raw_data(input_dir, sample_input_dir, metadata)
+        failed_files = copy_raw_data(input_dir, task_input_dir, metadata)
 
         assert failed_files == ["missing_file.csv"]
 
@@ -93,10 +93,10 @@ class TestCopyRawData:
         """Test file copying with permission error."""
         mock_file.side_effect = PermissionError()
         input_dir = Path("input")
-        sample_input_dir = Path("sample/input")
+        task_input_dir = Path("task/input")
         metadata = {"file1.csv": "data"}
 
-        failed_files = copy_raw_data(input_dir, sample_input_dir, metadata)
+        failed_files = copy_raw_data(input_dir, task_input_dir, metadata)
 
         assert failed_files == ["file1.csv"]
 
@@ -111,13 +111,13 @@ class TestRunRScript:
             returncode=0, stdout="Script executed successfully", stderr=""
         )
 
-        r_script_path = Path("sample1/rtruth.R")
+        r_script_path = Path("task1/rtruth.R")
         result = run_r_script(r_script_path, verbose=True)
 
         assert result is True
         mock_run.assert_called_once_with(
             ["Rscript", "rtruth.R"],
-            cwd=Path("sample1"),
+            cwd=Path("task1"),
             capture_output=True,
             text=True,
             check=False,
@@ -128,7 +128,7 @@ class TestRunRScript:
         """Test R script execution failure."""
         mock_run.return_value = Mock(returncode=1, stdout="", stderr="Error in script")
 
-        r_script_path = Path("sample1/rtruth.R")
+        r_script_path = Path("task1/rtruth.R")
         result = run_r_script(r_script_path, verbose=False)
 
         assert result is False
@@ -138,7 +138,7 @@ class TestRunRScript:
         """Test R script execution with exception."""
         mock_run.side_effect = Exception("Subprocess error")
 
-        r_script_path = Path("sample1/rtruth.R")
+        r_script_path = Path("task1/rtruth.R")
         result = run_r_script(r_script_path, verbose=False)
 
         assert result is False
@@ -148,67 +148,67 @@ class TestRunRScript:
         """Test R script execution with verbose output."""
         mock_run.return_value = Mock(returncode=0, stdout="Verbose output", stderr="")
 
-        r_script_path = Path("sample1/rtruth.R")
+        r_script_path = Path("task1/rtruth.R")
         result = run_r_script(r_script_path, verbose=True)
 
         assert result is True
 
 
-class TestGetAndSortSampleDirs:
-    """Test get_and_sort_sample_dirs function."""
+class TestGetAndSortTaskDirs:
+    """Test get_and_sort_task_dirs function."""
 
     @patch("pathlib.Path.iterdir")
-    def test_get_and_sort_sample_dirs_success(self, mock_iterdir):
-        """Test successful sample directory sorting."""
+    def test_get_and_sort_task_dirs_success(self, mock_iterdir):
+        """Test successful task directory sorting."""
         mock_dirs = []
-        for name in ["sample10", "sample2", "sample1", "other_dir"]:
+        for name in ["task10", "task2", "task1", "other_dir"]:
             mock_dir = Mock(spec=Path)
-            mock_dir.name = name  # Set as actual string, not Mock
+            mock_dir.name = name
             mock_dirs.append(mock_dir)
 
         mock_iterdir.return_value = mock_dirs
 
         ground_truth_dir = Path("ground_truth")
-        result = get_and_sort_sample_dirs(ground_truth_dir)
+        result = get_and_sort_task_dirs(ground_truth_dir)
 
-        # Should return sample directories sorted by number
-        expected_names = ["sample1", "sample2", "sample10"]
+        # Should return task directories sorted by number
+        expected_names = ["task1", "task2", "task10"]
         result_names = [d.name for d in result]
         assert result_names == expected_names
 
     @patch("pathlib.Path.iterdir")
-    def test_get_and_sort_sample_dirs_no_samples(self, mock_iterdir):
-        """Test when no sample directories exist."""
+    def test_get_and_sort_task_dirs_no_tasks(self, mock_iterdir):
+        """Test when no task directories exist."""
         mock_dirs = []
-        for name in ["other_dir", "not_sample"]:
+        for name in ["other_dir", "not_task"]:
             mock_dir = Mock(spec=Path)
-            mock_dir.name = name  # Set as actual string
+            mock_dir.name = name
             mock_dirs.append(mock_dir)
 
         mock_iterdir.return_value = mock_dirs
 
         ground_truth_dir = Path("ground_truth")
-        result = get_and_sort_sample_dirs(ground_truth_dir)
+        result = get_and_sort_task_dirs(ground_truth_dir)
 
         assert result == []
 
     @patch("pathlib.Path.iterdir")
-    def test_get_and_sort_sample_dirs_malformed_names(self, mock_iterdir):
-        """Test with malformed sample directory names."""
+    def test_get_and_sort_task_dirs_malformed_names(self, mock_iterdir):
+        """Test with malformed task directory names."""
         mock_dirs = []
-        for name in ["sample", "sample1", "sampleabc"]:
+        for name in ["task", "task1", "taskabc"]:
             mock_dir = Mock(spec=Path)
-            mock_dir.name = name  # Set as actual string
+            mock_dir.name = name
             mock_dirs.append(mock_dir)
 
         mock_iterdir.return_value = mock_dirs
 
         ground_truth_dir = Path("ground_truth")
-        result = get_and_sort_sample_dirs(ground_truth_dir)
+        result = get_and_sort_task_dirs(ground_truth_dir)
 
-        # Should only return properly formatted sample directories
+        # Should only return properly formatted task directories
         assert len(result) == 1
-        assert result[0].name == "sample1"
+        assert result[0].name == "task1"
 
 
 class TestMain:
@@ -217,7 +217,7 @@ class TestMain:
     @patch("src.initialise_ground_truth.run_r_script")
     @patch("src.initialise_ground_truth.copy_raw_data")
     @patch("src.initialise_ground_truth.load_metadata")
-    @patch("src.initialise_ground_truth.get_and_sort_sample_dirs")
+    @patch("src.initialise_ground_truth.get_and_sort_task_dirs")
     @patch("argparse.ArgumentParser.parse_args")
     def test_main_success(
         self, mock_args, mock_get_dirs, mock_load_metadata, mock_copy_data, mock_run_r
@@ -231,7 +231,7 @@ class TestMain:
         )
 
         # Use real Path objects instead of mocks
-        mock_get_dirs.return_value = [Path("ground_truth/sample1")]
+        mock_get_dirs.return_value = [Path("ground_truth/task1")]
 
         mock_load_metadata.return_value = {"file1.csv": "data"}
         mock_copy_data.return_value = []  # No failed files
@@ -246,10 +246,10 @@ class TestMain:
         mock_copy_data.assert_called_once()
         mock_run_r.assert_called_once()
 
-    @patch("src.initialise_ground_truth.get_and_sort_sample_dirs")
+    @patch("src.initialise_ground_truth.get_and_sort_task_dirs")
     @patch("argparse.ArgumentParser.parse_args")
-    def test_main_no_samples(self, mock_args, mock_get_dirs):
-        """Test main execution with no sample directories."""
+    def test_main_no_tasks(self, mock_args, mock_get_dirs):
+        """Test main execution with no task directories."""
         mock_args.return_value = Mock(
             input_dir=Path("input"),
             ground_truth_dir=Path("ground_truth"),
@@ -266,7 +266,7 @@ class TestMain:
     @patch("src.initialise_ground_truth.run_r_script")
     @patch("src.initialise_ground_truth.copy_raw_data")
     @patch("src.initialise_ground_truth.load_metadata")
-    @patch("src.initialise_ground_truth.get_and_sort_sample_dirs")
+    @patch("src.initialise_ground_truth.get_and_sort_task_dirs")
     @patch("argparse.ArgumentParser.parse_args")
     def test_main_metadata_failure(
         self, mock_args, mock_get_dirs, mock_load_metadata, mock_copy_data, mock_run_r
@@ -279,7 +279,7 @@ class TestMain:
         )
 
         # Use real Path objects instead of mocks
-        mock_get_dirs.return_value = [Path("ground_truth/sample1")]
+        mock_get_dirs.return_value = [Path("ground_truth/task1")]
 
         mock_load_metadata.return_value = {}  # Empty metadata (failure)
 
@@ -292,7 +292,7 @@ class TestMain:
     @patch("src.initialise_ground_truth.run_r_script")
     @patch("src.initialise_ground_truth.copy_raw_data")
     @patch("src.initialise_ground_truth.load_metadata")
-    @patch("src.initialise_ground_truth.get_and_sort_sample_dirs")
+    @patch("src.initialise_ground_truth.get_and_sort_task_dirs")
     @patch("argparse.ArgumentParser.parse_args")
     def test_main_copy_failure(
         self, mock_args, mock_get_dirs, mock_load_metadata, mock_copy_data, mock_run_r
@@ -305,7 +305,7 @@ class TestMain:
         )
 
         # Use real Path objects instead of mocks
-        mock_get_dirs.return_value = [Path("ground_truth/sample1")]
+        mock_get_dirs.return_value = [Path("ground_truth/task1")]
 
         mock_load_metadata.return_value = {"file1.csv": "data"}
         mock_copy_data.return_value = ["file1.csv"]  # Failed file
@@ -318,7 +318,7 @@ class TestMain:
     @patch("src.initialise_ground_truth.run_r_script")
     @patch("src.initialise_ground_truth.copy_raw_data")
     @patch("src.initialise_ground_truth.load_metadata")
-    @patch("src.initialise_ground_truth.get_and_sort_sample_dirs")
+    @patch("src.initialise_ground_truth.get_and_sort_task_dirs")
     @patch("argparse.ArgumentParser.parse_args")
     def test_main_r_script_failure(
         self, mock_args, mock_get_dirs, mock_load_metadata, mock_copy_data, mock_run_r
@@ -331,7 +331,7 @@ class TestMain:
         )
 
         # Use real Path objects instead of mocks
-        mock_get_dirs.return_value = [Path("ground_truth/sample1")]
+        mock_get_dirs.return_value = [Path("ground_truth/task1")]
 
         mock_load_metadata.return_value = {"file1.csv": "data"}
         mock_copy_data.return_value = []  # No failed files

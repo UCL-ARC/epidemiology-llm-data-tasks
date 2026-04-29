@@ -1,0 +1,7 @@
+{
+  "result": "The dataset has been cleaned and preprocessed according to the specifications. Detailed housing tenure variables (hownteen14-hownteen20) and collapsed harmonised variables (hown14-hown32) were derived from the longitudinal survey data. All source files were loaded, merged by NSID, and missing values were harmonised using the standard mapping scheme (-9 for refusal, -8 for don't know, -7 for prefer not to say, -3 for not asked/NA, -2 for schedule not applicable/lost, and -1 for not applicable). The final output containing the ID variable and the derived tenure variables is saved as `data/output/cleaned_data.csv`.",
+  "state": "success",
+  "time_taken": 616.3489558696747,
+  "steps": 5,
+  "token_usage": 83092
+}

@@ -1,0 +1,95 @@
+task_id: 1
+task_type: data_cleaning_r_plus
+additional_requirements: |
+  Derive time-varying geographical location variables named regub15, regub16, regov15, regov16, regor25, regor32, and regint32.
+  Coded as: regub15/regub16 use urban-rural categories 1-8; regov15/regov16 use English government office region categories 1-9; regor25/regor32 use UK region categories 1-12; regint32 is 1 = In the UK and 2 = Abroad.
+  Missing data: for this task, map source -94 to -2, and map source value 13 in W8DGOR/W9DRGN ("Unknown due to faulty/missing postcode") to -2.
+  Derivation logic: create regub15/regov15 from W2 urbind/gor, regub16/regov16 from W3 urbind/gor, regor25 from W8DGOR, regor32 from W9DRGN, and regint32 from W9NATIONRES by collapsing England/Scotland/Wales/Northern Ireland to 1 and Outside UK/unknown to 2.
+additional_requirements_lite: |
+  Derive time-varying geographical location variables named regub15, regub16, regov15, regov16, regor25, regor32, and regint32.
+override: |
+  You have access to raw survey datasets on a cohort study followed up at multiple ages. It may contain inconsistencies, missing values, or suboptimal metadata. Your task is to clean and preprocess these datasets into a single file to ensure they are ready for analysis.
+  
+  Follow all instructions:
+
+  1. **File Loading**:
+     - Ensure when you load the input files you append the dir "data/input/" this is where they are stored.
+     - Load each dataset into a separate object and merge using full_join by the ID variable.
+     - The input files are tab-delimited (.tab) text files. Use `readr::read_delim()` with `delim = "\t"` to load them. 
+     - Load each file explicitly by name from the metadata.
+     
+  2. **Variable Naming Conventions**:
+     - Use the exact ID variable name from source data (e.g., NSID) - do NOT create or rename to generic "id".
+     - All variable names must be short, descriptive, and lowercase.
+     - Common abbreviations: eth = ethnicity, lang = language, sori = sexual orientation, partnr = partnership/marital status, reg = region, educaim = educational aims, educ = educational qualifications, ecoact = economic activity, nssec = occupational class, inc = income, imd = area deprivation, hown = housing tenure.
+     - For age-specific variables: append age as numeric suffix (e.g., regov15 = government office region at age 15).
+     - Use prefixes to distinguish different aspects of the same concept (e.g., regub = urban/rural classification, regov = government office region, regor = geographical region, regint = international residence status).
+
+  3. **Standard Missing-Value Codes**:
+     Use these codes for ALL variables:
+     - -9 = Refusal
+     - -8 = Don't know/insufficient information
+     - -1 = Item not applicable
+     - -3 = Not asked at the fieldwork stage/participated/interviewed
+     - -2 = Schedule not applicable/Script error/information lost
+     - -7 = Prefer not to say
+     - Any Null value to be coded as -3 (Not asked at the fieldwork stage/participated/interviewed) to distinguish from explicit missing codes.
+
+  4. **Response Category Harmonization**:
+     - When the SAME construct is measured across ages with DIFFERENT response categories, harmonize them into a common coding scheme.
+     - Create age-specific variables that ALL use the SAME conceptual categories where possible.
+     - Where harmonization is not possible (e.g., substantially different instruments like income bands), provide multiple variables with clearly labelled, age-specific categories.
+     - Preserve as much conceptual detail as possible while maintaining comparability across ages.
+
+  5. **Dual-Level Variables** (collapsed + detailed):
+     - For variables where later waves have more detailed categories than earlier waves (e.g., marital status that distinguishes civil partnerships in later waves but not earlier ones), create both:
+       a. Collapsed harmonised variables with consistent categories across all ages to enable temporal comparisons.
+       b. Detailed age-specific variables that preserve the full granularity of later measurements for nuanced analysis.
+
+  6. **Variables Measuring Related but Distinct Concepts**:
+     - For variables measuring related but distinct geographical concepts (e.g., urban/rural classification, government office region, country of residence), retain all age-specific measures rather than attempting to harmonise across different geographical dimensions.
+
+  7. **Derived Categorical Variables**:
+     - When creating derived categorical variables from more detailed measures (e.g., collapsing multiple location categories into a binary UK/abroad indicator), apply the transformation consistently and convert the result to a labeled factor.
+
+  8. **Missing Value Code Harmonization**:
+     - Convert wave-specific negative codes (e.g., -100, -97, -999, -998, -997, -995, -94, -92, -91, -99) to the standard missing-value codes defined in instruction 3.
+     - Multiple wave-specific codes may map to the same standard code (e.g., -100 and -97 may both map to -3).
+     - Follow exact mappings provided in metadata.
+
+  9. **Time-Invariant vs Time-Varying Characteristics**:
+     - For **time-invariant** or stable characteristics (e.g., sex, ethnicity, language spoken at home):
+       * Create a single consolidated variable.
+       * Prioritisation strategy depends on the variable:
+         - For characteristics expected to be stable and established early (e.g., ethnicity, language): prioritise the earliest valid response.
+         - For characteristics that may be corrected or updated over time (e.g., sex): prioritise the most recent valid response.
+       * Only use positive values in the prioritisation logic; include missing codes as fallback values when no positive values exist.
+     
+     - For **time-varying** characteristics (e.g., sexual orientation, relationship status, employment, geographical location):
+       * Retain age-specific variables rather than creating a single consolidated measure.
+       * Preserve temporal variation for longitudinal analysis.
+
+  10. **Factor Variables and Labels**:
+      - When recoding categorical variables, use factor variables with explicit labels for both valid categories and all missing value codes to preserve metadata.
+
+  11. **Package Requirements**:
+      - Use ONLY standard R packages: haven, dplyr, purrr, labelled, readr.
+      - Load packages at the start of the script using library().
+
+  12. **Output Requirements**:
+      - Your R script must output one single cleaned csv named data/output/cleaned_data.csv.
+
+  13. **Variables to Include in Output**:
+      - Include the ID variable from source data.
+      - Explicitly output only the derived variables that were created during the cleaning process.
+      - Do NOT include intermediate wave-specific variables unless they are the final output.
+
+  14. **Execution**:
+      - You must run your R script after generating it.
+      - IMPORTANT: If your R script fails, read the error message carefully, fix the script, and try again. Never return an error message as your final answer.
+
+  Produce your script in R.
+  
+  Here is the appropriate metadata for the task:
+
+  {metadata}

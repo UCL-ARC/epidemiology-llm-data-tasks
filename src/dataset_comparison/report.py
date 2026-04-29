@@ -307,14 +307,14 @@ def aggregate_comparison_results(  # noqa: PLR0915, PLR0912, C901
     results: list[tuple[str, DataComparisonResult, dict | None]],
 ) -> pd.DataFrame:
     """
-    Aggregate comparison results across multiple samples into a summary dataframe.
+    Aggregate comparison results across multiple tasks into a summary dataframe.
 
     Args:
-        results: List of (sample_name, DataComparisonResult, runtime_data) tuples.
+        results: List of (task_name, DataComparisonResult, runtime_data) tuples.
             runtime_data is an optional dict with keys: token_usage, steps, time_taken.
 
     Returns:
-        DataFrame with aggregated metrics for each sample plus an overall aggregate row.
+        DataFrame with aggregated metrics for each task plus an overall aggregate row.
 
     """
     results_summary = []
@@ -324,7 +324,7 @@ def aggregate_comparison_results(  # noqa: PLR0915, PLR0912, C901
     all_categorical_exact_match: list[float] = []
     all_categorical_overlap: list[float] = []
 
-    for sample_name, result, runtime_data in results:
+    for task_name, result, runtime_data in results:
         # Count columns
         matched_cols = sum(1 for m in result.column_matches if m.pred_column)
         unmatched_gt_cols = len(result.unmatched_gt_columns)
@@ -407,7 +407,7 @@ def aggregate_comparison_results(  # noqa: PLR0915, PLR0912, C901
 
         results_summary.append(
             {
-                "sample": sample_name,
+                "task": task_name,
                 "gt_rows": result.join_completeness.gt_row_count,
                 "pred_rows": result.join_completeness.pred_row_count,
                 "joined_rows": result.join_completeness.joined_row_count,
@@ -497,7 +497,7 @@ def aggregate_comparison_results(  # noqa: PLR0915, PLR0912, C901
         )
 
         aggregate_row = {
-            "sample": "AGGREGATE",
+            "task": "AGGREGATE",
             "gt_rows": summary_df["gt_rows"].sum(),
             "pred_rows": summary_df["pred_rows"].sum(),
             "joined_rows": summary_df["joined_rows"].sum(),

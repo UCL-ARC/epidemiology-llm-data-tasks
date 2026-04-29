@@ -1,0 +1,7 @@
+{
+  "result": "The data has been successfully cleaned and preprocessed. The target variables `sori19`, `sori20`, `sori25`, and `sori32` were derived from their respective source variables (`W6SexualityYP`, `W7SexualityYP`, `W8SEXUALITY`, `W9SORI`), harmonized according to the standard missing-value scheme, and formatted as labeled factors. The final output containing the ID variable (`NSID`) and these derived variables has been written to `data/output/cleaned_data.csv`.",
+  "state": "success",
+  "time_taken": 130.47688603401184,
+  "steps": 3,
+  "token_usage": 14436
+}
