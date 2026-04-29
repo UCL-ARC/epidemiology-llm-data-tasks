@@ -6,8 +6,8 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from src.dataset_comparison.data_comparator import DataComparator
-from src.dataset_comparison.models import (
+from src.tabmatch.data_comparator import DataComparator
+from src.tabmatch.models import (
     ColumnComparison,
     ColumnMatch,
     ColumnType,
@@ -20,7 +20,7 @@ from src.dataset_comparison.models import (
 class TestDataComparatorInit:
     """Tests for DataComparator initialization."""
 
-    @patch("src.dataset_comparison.data_comparator.ColumnMatcher")
+    @patch("src.tabmatch.data_comparator.ColumnMatcher")
     def test_init_default_params(self, mock_column_matcher: MagicMock) -> None:
         """Test initialization with default parameters."""
         comparator = DataComparator()
@@ -34,7 +34,7 @@ class TestDataComparatorInit:
             match_threshold=0.5,
         )
 
-    @patch("src.dataset_comparison.data_comparator.ColumnMatcher")
+    @patch("src.tabmatch.data_comparator.ColumnMatcher")
     def test_init_custom_params(self, mock_column_matcher: MagicMock) -> None:
         """Test initialization with custom parameters."""
         comparator = DataComparator(
@@ -58,7 +58,7 @@ class TestDataComparatorInit:
 class TestCheckJoinCompleteness:
     """Tests for _check_join_completeness method."""
 
-    @patch("src.dataset_comparison.data_comparator.ColumnMatcher")
+    @patch("src.tabmatch.data_comparator.ColumnMatcher")
     def test_identical_indices(self, mock_column_matcher: MagicMock) -> None:
         """Test join completeness with identical indices."""
         comparator = DataComparator()
@@ -78,7 +78,7 @@ class TestCheckJoinCompleteness:
         assert completeness.pred_duplicate_keys == 0
         assert len(joined_df) == 3
 
-    @patch("src.dataset_comparison.data_comparator.ColumnMatcher")
+    @patch("src.tabmatch.data_comparator.ColumnMatcher")
     def test_missing_keys_in_pred(self, mock_column_matcher: MagicMock) -> None:
         """Test when pred is missing some keys from GT."""
         comparator = DataComparator()
@@ -97,7 +97,7 @@ class TestCheckJoinCompleteness:
         assert completeness.extra_in_pred == 0
         assert completeness.join_completeness_score == 0.5
 
-    @patch("src.dataset_comparison.data_comparator.ColumnMatcher")
+    @patch("src.tabmatch.data_comparator.ColumnMatcher")
     def test_extra_keys_in_pred(self, mock_column_matcher: MagicMock) -> None:
         """Test when pred has extra keys not in GT."""
         comparator = DataComparator()
@@ -116,7 +116,7 @@ class TestCheckJoinCompleteness:
         assert completeness.extra_in_pred == 2
         assert completeness.join_completeness_score == 1.0  # All GT keys found
 
-    @patch("src.dataset_comparison.data_comparator.ColumnMatcher")
+    @patch("src.tabmatch.data_comparator.ColumnMatcher")
     def test_no_overlapping_keys(self, mock_column_matcher: MagicMock) -> None:
         """Test when there are no overlapping keys."""
         comparator = DataComparator()
@@ -131,7 +131,7 @@ class TestCheckJoinCompleteness:
         assert completeness.extra_in_pred == 2
         assert completeness.join_completeness_score == 0.0
 
-    @patch("src.dataset_comparison.data_comparator.ColumnMatcher")
+    @patch("src.tabmatch.data_comparator.ColumnMatcher")
     def test_duplicate_keys_in_gt(self, mock_column_matcher: MagicMock) -> None:
         """Test detection of duplicate keys in GT."""
         comparator = DataComparator()
@@ -144,7 +144,7 @@ class TestCheckJoinCompleteness:
         assert completeness.gt_duplicate_keys == 1
         assert completeness.has_duplicates is True
 
-    @patch("src.dataset_comparison.data_comparator.ColumnMatcher")
+    @patch("src.tabmatch.data_comparator.ColumnMatcher")
     def test_duplicate_keys_in_pred(self, mock_column_matcher: MagicMock) -> None:
         """Test detection of duplicate keys in pred."""
         comparator = DataComparator()
@@ -157,7 +157,7 @@ class TestCheckJoinCompleteness:
         assert completeness.pred_duplicate_keys == 1
         assert completeness.has_duplicates is True
 
-    @patch("src.dataset_comparison.data_comparator.ColumnMatcher")
+    @patch("src.tabmatch.data_comparator.ColumnMatcher")
     def test_empty_gt_dataframe(self, mock_column_matcher: MagicMock) -> None:
         """Test with empty GT dataframe."""
         comparator = DataComparator()
@@ -171,7 +171,7 @@ class TestCheckJoinCompleteness:
         assert completeness.joined_row_count == 0
         assert completeness.join_completeness_score == 0.0
 
-    @patch("src.dataset_comparison.data_comparator.ColumnMatcher")
+    @patch("src.tabmatch.data_comparator.ColumnMatcher")
     def test_joined_df_has_suffixes(self, mock_column_matcher: MagicMock) -> None:
         """Test that joined dataframe has correct column suffixes."""
         comparator = DataComparator()
@@ -188,7 +188,7 @@ class TestCheckJoinCompleteness:
 class TestCompareColumnPair:
     """Tests for _compare_column_pair method."""
 
-    @patch("src.dataset_comparison.data_comparator.ColumnMatcher")
+    @patch("src.tabmatch.data_comparator.ColumnMatcher")
     def test_numeric_column_comparison(self, mock_column_matcher: MagicMock) -> None:
         """Test comparison of numeric columns."""
         comparator = DataComparator(categorical_threshold=5)
@@ -209,7 +209,7 @@ class TestCompareColumnPair:
         assert result.categorical_comparison is None
         assert result.numeric_comparison.rmse == pytest.approx(0.1, abs=0.01)
 
-    @patch("src.dataset_comparison.data_comparator.ColumnMatcher")
+    @patch("src.tabmatch.data_comparator.ColumnMatcher")
     def test_categorical_column_comparison(
         self, mock_column_matcher: MagicMock
     ) -> None:
@@ -232,7 +232,7 @@ class TestCompareColumnPair:
         assert result.numeric_comparison is None
         assert result.categorical_comparison.exact_match_rate == 1.0
 
-    @patch("src.dataset_comparison.data_comparator.ColumnMatcher")
+    @patch("src.tabmatch.data_comparator.ColumnMatcher")
     def test_different_column_names(self, mock_column_matcher: MagicMock) -> None:
         """Test comparison when GT and pred have different column names."""
         comparator = DataComparator(categorical_threshold=5)
@@ -249,7 +249,7 @@ class TestCompareColumnPair:
         assert result.gt_column == "age"
         assert result.pred_column == "years"
 
-    @patch("src.dataset_comparison.data_comparator.ColumnMatcher")
+    @patch("src.tabmatch.data_comparator.ColumnMatcher")
     def test_columns_without_suffix(self, mock_column_matcher: MagicMock) -> None:
         """Test when columns don't have _gt/_pred suffix."""
         comparator = DataComparator(categorical_threshold=5)
@@ -271,7 +271,7 @@ class TestCompareColumnPair:
 class TestDataMatchColumns:
     """Tests for _data_match_columns method."""
 
-    @patch("src.dataset_comparison.data_comparator.ColumnMatcher")
+    @patch("src.tabmatch.data_comparator.ColumnMatcher")
     def test_empty_unmatched_lists(self, mock_column_matcher: MagicMock) -> None:
         """Test with empty unmatched column lists."""
         comparator = DataComparator()
@@ -284,7 +284,7 @@ class TestDataMatchColumns:
         result = comparator._data_match_columns(joined_df, ["a"], [])
         assert result == []
 
-    @patch("src.dataset_comparison.data_comparator.ColumnMatcher")
+    @patch("src.tabmatch.data_comparator.ColumnMatcher")
     def test_numeric_data_matching(self, mock_column_matcher: MagicMock) -> None:
         """Test data matching for numeric columns."""
         comparator = DataComparator(
@@ -308,7 +308,7 @@ class TestDataMatchColumns:
         assert result[0].method == MatchMethod.DATA_NUMERIC
         assert result[0].score == pytest.approx(1.0, abs=0.01)
 
-    @patch("src.dataset_comparison.data_comparator.ColumnMatcher")
+    @patch("src.tabmatch.data_comparator.ColumnMatcher")
     def test_categorical_data_matching(self, mock_column_matcher: MagicMock) -> None:
         """Test data matching for categorical columns."""
         comparator = DataComparator(
@@ -330,7 +330,7 @@ class TestDataMatchColumns:
         assert result[0].pred_column == "pred_col"
         assert result[0].method == MatchMethod.DATA_CATEGORICAL
 
-    @patch("src.dataset_comparison.data_comparator.ColumnMatcher")
+    @patch("src.tabmatch.data_comparator.ColumnMatcher")
     def test_incompatible_types_no_match(self, mock_column_matcher: MagicMock) -> None:
         """Test that incompatible types don't match."""
         comparator = DataComparator(
@@ -353,7 +353,7 @@ class TestDataMatchColumns:
         assert result[0].pred_column is None
         assert result[0].method is None
 
-    @patch("src.dataset_comparison.data_comparator.ColumnMatcher")
+    @patch("src.tabmatch.data_comparator.ColumnMatcher")
     def test_below_threshold_no_match(self, mock_column_matcher: MagicMock) -> None:
         """Test that low similarity scores don't produce matches."""
         comparator = DataComparator(
@@ -376,7 +376,7 @@ class TestDataMatchColumns:
         assert len(result) == 1
         assert result[0].pred_column is None
 
-    @patch("src.dataset_comparison.data_comparator.ColumnMatcher")
+    @patch("src.tabmatch.data_comparator.ColumnMatcher")
     def test_greedy_matching_best_first(self, mock_column_matcher: MagicMock) -> None:
         """Test that greedy matching assigns best matches first."""
         comparator = DataComparator(
@@ -406,7 +406,7 @@ class TestDataMatchColumns:
 class TestCompare:
     """Tests for compare method."""
 
-    @patch("src.dataset_comparison.data_comparator.ColumnMatcher")
+    @patch("src.tabmatch.data_comparator.ColumnMatcher")
     def test_requires_named_index_gt(self, mock_column_matcher: MagicMock) -> None:
         """Test that GT dataframe must have named index."""
         comparator = DataComparator()
@@ -419,7 +419,7 @@ class TestCompare:
         ):
             comparator.compare(gt_df, pred_df)
 
-    @patch("src.dataset_comparison.data_comparator.ColumnMatcher")
+    @patch("src.tabmatch.data_comparator.ColumnMatcher")
     def test_requires_named_index_pred(self, mock_column_matcher: MagicMock) -> None:
         """Test that pred dataframe must have named index."""
         comparator = DataComparator()
@@ -430,7 +430,7 @@ class TestCompare:
         with pytest.raises(ValueError, match="Predicted dataframe must have an index"):
             comparator.compare(gt_df, pred_df)
 
-    @patch("src.dataset_comparison.data_comparator.ColumnMatcher")
+    @patch("src.tabmatch.data_comparator.ColumnMatcher")
     def test_full_comparison_identical_data(
         self, mock_column_matcher: MagicMock
     ) -> None:
@@ -471,7 +471,7 @@ class TestCompare:
         assert result.unmatched_gt_columns == []
         assert result.unmatched_pred_columns == []
 
-    @patch("src.dataset_comparison.data_comparator.ColumnMatcher")
+    @patch("src.tabmatch.data_comparator.ColumnMatcher")
     def test_comparison_with_unmatched_columns(
         self, mock_column_matcher: MagicMock
     ) -> None:
@@ -511,7 +511,7 @@ class TestCompare:
         assert len(result.unmatched_pred_columns) == 1
         assert "col_x" in result.unmatched_pred_columns
 
-    @patch("src.dataset_comparison.data_comparator.ColumnMatcher")
+    @patch("src.tabmatch.data_comparator.ColumnMatcher")
     def test_data_matching_enabled(self, mock_column_matcher: MagicMock) -> None:
         """Test that data matching is used when enabled."""
         mock_matcher_instance = MagicMock()
@@ -543,7 +543,7 @@ class TestCompare:
         assert len(matched_cols) == 1
         assert matched_cols[0].method == MatchMethod.DATA_NUMERIC
 
-    @patch("src.dataset_comparison.data_comparator.ColumnMatcher")
+    @patch("src.tabmatch.data_comparator.ColumnMatcher")
     def test_data_matching_disabled(self, mock_column_matcher: MagicMock) -> None:
         """Test that data matching is not used when disabled."""
         mock_matcher_instance = MagicMock()
@@ -576,7 +576,7 @@ class TestCompare:
 class TestIntegration:
     """Integration tests for DataComparator."""
 
-    @patch("src.dataset_comparison.data_comparator.ColumnMatcher")
+    @patch("src.tabmatch.data_comparator.ColumnMatcher")
     def test_end_to_end_comparison(self, mock_column_matcher: MagicMock) -> None:
         """Test end-to-end comparison workflow."""
         mock_matcher_instance = MagicMock()
