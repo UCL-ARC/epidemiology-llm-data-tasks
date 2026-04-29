@@ -6,7 +6,7 @@ from unittest.mock import Mock, patch
 from src.rebuild_experiments import (
     copy_raw_data,
     get_model_run_dirs,
-    get_sample_dirs,
+    get_task_dirs,
     load_metadata,
     run_r_script,
 )
@@ -50,43 +50,43 @@ class TestCopyRawData:
     """Tests for copy_raw_data."""
 
     def test_copies_files_successfully(self, tmp_path):
-        """Should copy matching input files to sample directory."""
+        """Should copy matching input files to task directory."""
         input_dir = tmp_path / "input"
         input_dir.mkdir()
         (input_dir / "data.tab").write_text("col1\n1")
 
-        sample_dir = tmp_path / "sample_input"
+        task_dir = tmp_path / "task_input"
 
         metadata = {"data.tab": {"info": "test"}}
-        failed = copy_raw_data(input_dir, sample_dir, metadata)
+        failed = copy_raw_data(input_dir, task_dir, metadata)
 
         assert failed == []
-        assert (sample_dir / "data.tab").exists()
-        assert (sample_dir / "data.tab").read_text() == "col1\n1"
+        assert (task_dir / "data.tab").exists()
+        assert (task_dir / "data.tab").read_text() == "col1\n1"
 
     def test_reports_missing_files(self, tmp_path):
         """Should return filenames that don't exist in input dir."""
         input_dir = tmp_path / "input"
         input_dir.mkdir()
 
-        sample_dir = tmp_path / "sample_input"
+        task_dir = tmp_path / "task_input"
 
         metadata = {"missing.tab": {"info": "test"}}
-        failed = copy_raw_data(input_dir, sample_dir, metadata)
+        failed = copy_raw_data(input_dir, task_dir, metadata)
 
         assert failed == ["missing.tab"]
 
-    def test_creates_sample_dir(self, tmp_path):
-        """Should create sample input directory if it doesn't exist."""
+    def test_creates_task_dir(self, tmp_path):
+        """Should create task input directory if it doesn't exist."""
         input_dir = tmp_path / "input"
         input_dir.mkdir()
         (input_dir / "data.tab").write_text("ok")
 
-        sample_dir = tmp_path / "deeply" / "nested" / "sample_input"
+        task_dir = tmp_path / "deeply" / "nested" / "task_input"
         metadata = {"data.tab": {}}
-        copy_raw_data(input_dir, sample_dir, metadata)
+        copy_raw_data(input_dir, task_dir, metadata)
 
-        assert sample_dir.exists()
+        assert task_dir.exists()
 
 
 class TestRunRScript:
@@ -190,41 +190,41 @@ class TestGetModelRunDirs:
         assert dirs[0].name < dirs[1].name
 
 
-class TestGetSampleDirs:
-    """Tests for get_sample_dirs."""
+class TestGetTaskDirs:
+    """Tests for get_task_dirs."""
 
-    def test_finds_sample_dirs(self, tmp_path):
-        """Should find directories matching sample[d+] pattern."""
-        (tmp_path / "sample1").mkdir()
-        (tmp_path / "sample2").mkdir()
+    def test_finds_task_dirs(self, tmp_path):
+        """Should find directories matching task[d+] pattern."""
+        (tmp_path / "task1").mkdir()
+        (tmp_path / "task2").mkdir()
         (tmp_path / "other").mkdir()
 
-        dirs = get_sample_dirs(tmp_path, None)
+        dirs = get_task_dirs(tmp_path, None)
         assert len(dirs) == 2
 
-    def test_sorts_by_sample_number(self, tmp_path):
-        """Should sort by numeric sample number."""
-        (tmp_path / "sample10").mkdir()
-        (tmp_path / "sample2").mkdir()
-        (tmp_path / "sample1").mkdir()
+    def test_sorts_by_task_number(self, tmp_path):
+        """Should sort by numeric task number."""
+        (tmp_path / "task10").mkdir()
+        (tmp_path / "task2").mkdir()
+        (tmp_path / "task1").mkdir()
 
-        dirs = get_sample_dirs(tmp_path, None)
+        dirs = get_task_dirs(tmp_path, None)
         names = [d.name for d in dirs]
-        assert names == ["sample1", "sample2", "sample10"]
+        assert names == ["task1", "task2", "task10"]
 
-    def test_filters_by_sample_number(self, tmp_path):
-        """Should filter to specific sample number."""
-        (tmp_path / "sample1").mkdir()
-        (tmp_path / "sample2").mkdir()
-        (tmp_path / "sample3").mkdir()
+    def test_filters_by_task_number(self, tmp_path):
+        """Should filter to specific task number."""
+        (tmp_path / "task1").mkdir()
+        (tmp_path / "task2").mkdir()
+        (tmp_path / "task3").mkdir()
 
-        dirs = get_sample_dirs(tmp_path, 2)
+        dirs = get_task_dirs(tmp_path, 2)
         assert len(dirs) == 1
-        assert dirs[0].name == "sample2"
+        assert dirs[0].name == "task2"
 
-    def test_returns_empty_when_no_samples(self, tmp_path):
-        """Should return empty list when no sample dirs exist."""
+    def test_returns_empty_when_no_tasks(self, tmp_path):
+        """Should return empty list when no task dirs exist."""
         (tmp_path / "other").mkdir()
 
-        dirs = get_sample_dirs(tmp_path, None)
+        dirs = get_task_dirs(tmp_path, None)
         assert dirs == []

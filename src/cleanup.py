@@ -1,4 +1,4 @@
-"""Utility to clean up incomplete smolagent outputs and report missing samples."""
+"""Utility to clean up incomplete smolagent outputs and report missing tasks."""
 
 import shutil
 import sys
@@ -10,38 +10,38 @@ from loguru import logger
 def main(*, delete_data: bool = False) -> None:  # noqa: PLR0912, C901
     """Identify incomplete smolagent outputs and optionally delete them."""
     context_root = Path("./tmp/smolagent_context")
-    all_sample_ids = list(range(1, 21))
+    all_task_ids = list(range(1, 21))
 
     if not context_root.exists():
         logger.warning(f"Context root does not exist: {context_root}")
-        logger.info(f"samples_to_run = {all_sample_ids}")
+        logger.info(f"tasks_to_run = {all_task_ids}")
         return
 
-    # Map sample_id -> list of output dirs (there may be multiple from retries)
-    sample_dirs: dict[int, list[Path]] = {sid: [] for sid in all_sample_ids}
+    # Map task_id -> list of output dirs (there may be multiple from retries)
+    task_dirs: dict[int, list[Path]] = {sid: [] for sid in all_task_ids}
 
     for p in context_root.iterdir():
         if not p.is_dir():
             continue
         name = p.name
-        # Dirs look like "sample5_abc123"
-        if not name.startswith("sample"):
+        # Dirs look like "task5_abc123"
+        if not name.startswith("task"):
             continue
-        # Extract sample id between "sample" and "_"
-        underscore_idx = name.find("_", 6)
-        id_part = name[6:underscore_idx] if underscore_idx != -1 else name[6:]
+        # Extract task id between "task" and "_"
+        underscore_idx = name.find("_", 4)
+        id_part = name[4:underscore_idx] if underscore_idx != -1 else name[4:]
         if id_part.isdigit():
-            sample_dirs[int(id_part)].append(p)
+            task_dirs[int(id_part)].append(p)
 
     incomplete_dirs: list[Path] = []
     complete_dirs: list[Path] = []
-    missing_samples: list[int] = []
+    missing_tasks: list[int] = []
 
-    for sid in all_sample_ids:
-        dirs = sorted(sample_dirs[sid], key=lambda p: p.stat().st_mtime)
+    for sid in all_task_ids:
+        dirs = sorted(task_dirs[sid], key=lambda p: p.stat().st_mtime)
 
         if not dirs:
-            missing_samples.append(sid)
+            missing_tasks.append(sid)
             continue
 
         for d in dirs:
@@ -62,8 +62,8 @@ def main(*, delete_data: bool = False) -> None:  # noqa: PLR0912, C901
         for d in incomplete_dirs:
             logger.info(f"  ✗ {d}")
 
-    if missing_samples:
-        logger.info(f"\nMissing samples (no dirs at all): {missing_samples}")
+    if missing_tasks:
+        logger.info(f"\nMissing tasks (no dirs at all): {missing_tasks}")
 
     # Delete incomplete dirs
     if incomplete_dirs:
@@ -78,15 +78,15 @@ def main(*, delete_data: bool = False) -> None:  # noqa: PLR0912, C901
                 f"incomplete dir(s).",
             )
 
-    # Report which samples still need running (missing or have no complete dirs)
-    complete_sample_ids = set()
+    # Report which tasks still need running (missing or have no complete dirs)
+    complete_task_ids = set()
     for d in complete_dirs:
-        underscore_idx = d.name.find("_", 6)
-        id_part = d.name[6:underscore_idx] if underscore_idx != -1 else d.name[6:]
+        underscore_idx = d.name.find("_", 4)
+        id_part = d.name[4:underscore_idx] if underscore_idx != -1 else d.name[4:]
         if id_part.isdigit():
-            complete_sample_ids.add(int(id_part))
-    samples_to_run = sorted(set(all_sample_ids) - complete_sample_ids)
-    logger.info(f"\nsamples_to_run = {samples_to_run}")
+            complete_task_ids.add(int(id_part))
+    tasks_to_run = sorted(set(all_task_ids) - complete_task_ids)
+    logger.info(f"\ntasks_to_run = {tasks_to_run}")
 
 
 if __name__ == "__main__":

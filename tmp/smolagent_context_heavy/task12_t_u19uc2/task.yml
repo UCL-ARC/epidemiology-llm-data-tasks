@@ -1,0 +1,77 @@
+task_id: 1
+task_type: data_cleaning_r_plus
+additional_requirements: |
+  Derive time-varying NS-SEC occupational class variables named nssec17, nssec18, nssec19, nssec20, nssec25, and nssec32.
+  Derivation logic: the raw source variables use fractional sub-category codes (e.g., 3.1, 3.2, 12.4) that subdivide the 17 major NS-SEC categories. Collapse each fractional code to its major category by taking the integer part, then apply meaningful labels from the metadata.
+  For nssec25 (wave 8) only: when the concurrent economic activity variable (W8DACTIVITYC) indicates the respondent is in full-time education, assign category 15 (Full-time students) even if the raw NS-SEC code is missing or not classifiable.
+additional_requirements_lite: |
+  Derive time-varying NS-SEC occupational class variables named nssec17, nssec18, nssec19, nssec20, nssec25, and nssec32.
+override: |
+  You have access to raw survey datasets from a longitudinal cohort study followed up at multiple ages. Your task is to clean and harmonise NS-SEC occupational class variables only and produce a single cleaned file ready for analysis.
+
+  Follow all instructions:
+
+  1. **File Loading**:
+     - Ensure when you load the input files you append the dir "data/input/" this is where they are stored.
+     - Load each dataset into a separate object and merge using full_join by the ID variable.
+     - The input files are tab-delimited (.tab) text files. Use `readr::read_delim()` with `delim = "\t"` to load them. 
+     - Load each file explicitly by name from the metadata.
+     - Include the wave 1 file to ensure all NSIDs are present in the final output, even if wave 1 has no NS-SEC variable.
+
+  2. **Variable Naming Conventions**:
+     - Use the exact ID variable name from source data (NSID).
+     - Rename and retain only the following age-specific occupational class variables:
+       * nssec17, nssec18, nssec19, nssec20, nssec25, nssec32 using the convention nssec + age suffix.
+
+  3. **Missing Value Code Harmonization**:
+     - Harmonise all wave-specific negative missing codes to the standard scheme:
+       * -9 = Refusal
+       * -8 = Don't know/insufficient information
+       * -7 = Prefer not to say
+       * -3 = Not asked at the fieldwork stage/participated/interviewed
+       * -2 = Schedule not applicable/Script error/information lost
+       * -1 = Item not applicable
+     - Map each wave-specific code by its MEANING in the metadata (e.g., "Insufficient information" → -8, "Not applicable" → -1), not blanket to one value.
+     - Any Null value to be coded as -3 (Not asked at the fieldwork stage/participated/interviewed) to distinguish from explicit missing codes.
+     - Retain missing codes as explicit factor levels.
+
+  4. **NS-SEC Variable Processing**:
+     For each age-specific NS-SEC variable:
+     - The raw data uses detailed sub-categories with fractional codes (e.g., 3.1, 3.2, 12.4, 13.1). These are valid NS-SEC sub-categories — collapse them to their major category using floor() (e.g., 3.1 → 3, 12.7 → 12).
+     - After collapsing, accept only integer categories 1–17 as valid occupational classes.
+     - Recode NA to -3 (not asked/interviewed).
+     
+  5. **Special Derivation for Age 25**:
+     - At age 25, explicitly derive the full-time student category (15) using concurrent economic activity information.
+
+  6. **Classification Detail**:
+     - Retain detailed 17-category NS-SEC classifications at every age.
+     - Do not collapse, summarise, or harmonise across ages.
+
+  7. **Factor Variables and Labels**:
+     - Convert all NS-SEC variables to labelled factor variables with explicit labels for:
+       * Categories 1–17
+       * All standard missing codes
+
+  8. **Scope Restrictions**:
+     - Do not create any additional variables, harmonised summaries, or consolidated measures.
+
+  9. **Package Requirements**:
+     - Use ONLY standard R packages: haven, dplyr, purrr, labelled, readr.
+     - Load packages at the start of the script using library().
+
+  10. **Output Requirements**:
+      - Explicitly output only:
+        * NSID
+        * nssec17, nssec18, nssec19, nssec20, nssec25, nssec32
+      - Write exactly one CSV file named data/output/cleaned_data.csv.
+
+  11. **Execution**:
+      - You must run your R script after generating it.
+      - IMPORTANT: If your R script fails, read the error message carefully, fix the script, and try again. Never return an error message as your final answer.
+
+  Produce your script in R.
+  
+  Here is the appropriate metadata for the task:
+
+  {metadata}

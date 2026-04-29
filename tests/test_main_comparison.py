@@ -65,7 +65,7 @@ class TestMain:
     @patch("src.dataset_comparison.__main__.aggregate_comparison_results")
     @patch("src.dataset_comparison.__main__.DataComparator")
     @patch("src.dataset_comparison.__main__.pd.read_csv")
-    def test_main_processes_samples(
+    def test_main_processes_tasks(
         self,
         mock_read_csv: MagicMock,
         mock_comparator_cls: MagicMock,
@@ -74,10 +74,10 @@ class TestMain:
         mock_json_load: MagicMock,
         tmp_path: Path,
     ) -> None:
-        """Test main processes found sample directories."""
+        """Test main processes found task directories."""
         # Create real directory structure
         output_dir = (
-            tmp_path / f"smolagent_context{_MODEL_ARG}" / "sample1" / "data" / "output"
+            tmp_path / f"smolagent_context{_MODEL_ARG}" / "task1" / "data" / "output"
         )
         output_dir.mkdir(parents=True)
         (output_dir / "output.csv").write_text("id,a\n0,1\n1,2\n")
@@ -90,8 +90,8 @@ class TestMain:
         )
 
         # Mock CSV reading
-        sample_df = pd.DataFrame({"a": [1, 2]}, index=pd.Index([0, 1], name="id"))
-        mock_read_csv.return_value = sample_df
+        task_df = pd.DataFrame({"a": [1, 2]}, index=pd.Index([0, 1], name="id"))
+        mock_read_csv.return_value = task_df
 
         # Mock comparator
         mock_comparator = MagicMock()
@@ -116,7 +116,7 @@ class TestMain:
     ) -> None:
         """Test main skips directories with missing files."""
         output_dir = (
-            tmp_path / f"smolagent_context{_MODEL_ARG}" / "sample1" / "data" / "output"
+            tmp_path / f"smolagent_context{_MODEL_ARG}" / "task1" / "data" / "output"
         )
         output_dir.mkdir(parents=True)
         # Only create gt file, not pred file
@@ -127,12 +127,12 @@ class TestMain:
         mock_comparator_cls.return_value.compare.assert_not_called()
 
     @patch("src.dataset_comparison.__main__.DataComparator")
-    def test_main_no_samples_found(
+    def test_main_no_tasks_found(
         self,
         mock_comparator_cls: MagicMock,
         tmp_path: Path,
     ) -> None:
-        """Test main when no sample directories are found."""
+        """Test main when no task directories are found."""
         context_dir = tmp_path / f"smolagent_context{_MODEL_ARG}"
         context_dir.mkdir(parents=True)
 
