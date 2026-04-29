@@ -1,21 +1,11 @@
 task_id: 1
 task_type: data_cleaning_r_plus
 additional_requirements: |
-   This task harmonises NS-SEC occupational class. Time-varying: produce
-   separate age-specific variables.
-
-   Output exactly six derived variables - one for each wave - plus NSID:
-
-   The raw source variables use fractional sub-category
-   codes (e.g., 3.1, 3.2, 12.4, 13.5, 14.1) that subdivide the 17 major
-   NS-SEC categories. Collapse each fractional code to its major category
-   by taking the integer part. Then apply meaningful labels informed by the metadata.
-
-   For nssec25 (wave 8) only: when the respondent's concurrent economic
-   activity variable (W8DACTIVITYC) indicates they are in education, assign
-   category 15 (Full-time students) even if the raw NS-SEC code is missing
-   or not classifiable. This derivation captures full-time students
-   explicitly at age 25, where the source NS-SEC data does not.
+  Derive time-varying NS-SEC occupational class variables named nssec17, nssec18, nssec19, nssec20, nssec25, and nssec32.
+  Derivation logic: the raw source variables use fractional sub-category codes (e.g., 3.1, 3.2, 12.4) that subdivide the 17 major NS-SEC categories. Collapse each fractional code to its major category by taking the integer part, then apply meaningful labels from the metadata.
+  For nssec25 (wave 8) only: when the concurrent economic activity variable (W8DACTIVITYC) indicates the respondent is in full-time education, assign category 15 (Full-time students) even if the raw NS-SEC code is missing or not classifiable.
+additional_requirements_lite: |
+  Derive time-varying NS-SEC occupational class variables named nssec17, nssec18, nssec19, nssec20, nssec25, and nssec32.
 override: |
   You have access to raw survey datasets from a longitudinal cohort study followed up at multiple ages. Your task is to clean and harmonise NS-SEC occupational class variables only and produce a single cleaned file ready for analysis.
 

@@ -1,25 +1,17 @@
 task_id: 1
 task_type: data_cleaning_r_plus
 additional_requirements: |
-   Derive GHQ-12 mental health scores. Time-varying: produce separate age-specific
-   variables. Derived from waves 2 (age 15), 4 (age 17), 8 (age 25), and
-   9 (age 32).
-
-   Derive two sets of variables per wave:
-      - Item-summed GHQ-12 scores (ghqtlXX variables) 
-      - Pre-derived GHQ-12 total scores (ghqXX variables)
-
-   -  For each wave derive an item-summed GHQ scores (compute from the 12 item variables per wave):
-      Compute the sum score row-by-row using this logic:
-         - If all 12 items are NA → assign -3 (did not participate)
-         - Else if any item has a negative value → assign -8 (insufficient info)
-         - Else sum the 12 items (0–12 scale)
-
-   - For each wave derive pre-derived scores, harmonise missing codes by wave:
-     The source data contains pre-computed GHQ-12 scores for some sweeps. 
-     Harmonise these to the standard missing-value codes. Note waves 2/4 non-default mapping: -97 ("YP refused self completion")
-     and -92 ("Refused") → -9. Other codes follow defaults.
-
+  Derive GHQ-12 mental health variables at ages 15, 17, 25, and 32. Output eight variables plus NSID:
+    Item-summed scores:  ghqtl15, ghqtl17, ghqtl25, ghqtl32
+    Pre-derived scores:  ghq15, ghq17, ghq25, ghq32
+  For each item-summed variable, compute the sum across the 12 GHQ item variables for that wave:
+    - If all 12 items are NA → assign -3 (did not participate)
+    - If any item has a negative value → assign -8 (insufficient information)
+    - Otherwise → sum the 12 items (valid score range 0–12)
+  For each pre-derived variable, use the pre-computed GHQ-12 total provided in the source data and harmonise wave-specific negative codes to the standard scheme.
+  Missing data for pre-derived variables: at waves 2 and 4, -97 ("YP refused self completion") and -92 ("Refused") both map to -9; other codes follow defaults.
+additional_requirements_lite: |
+  Derive GHQ-12 mental health variables named ghqtl15, ghqtl17, ghqtl25, ghqtl32 (item-summed scores) and ghq15, ghq17, ghq25, ghq32 (pre-derived totals).
 override: |
   You have access to raw survey datasets from a longitudinal cohort study that collected mental health measures at multiple ages. Your task is to clean and derive psychological distress scores from the GHQ-12 (General Health Questionnaire, 12-item version) across four survey sweeps, producing a single analysis-ready file.
 

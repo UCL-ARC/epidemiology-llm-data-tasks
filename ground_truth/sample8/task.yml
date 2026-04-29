@@ -1,50 +1,19 @@
 task_id: 1
 task_type: data_cleaning_r_plus
 additional_requirements: |
-  This task derives four educational qualification variables and no others:
-  It is time-varying — keep them as separate age-specific variables.
-
-  5-level collapsed NVQ scheme (identical for educ25 and educ32):
+  Derive four educational qualification variables: educ25 and educ32 (collapsed 5-level NVQ scheme), educadtl32 (detailed academic qualifications at age 32), and educvdtl32 (detailed vocational qualifications at age 32).
+  Collapsed 5-level NVQ scheme for educ25 and educ32 (both must share identical factor structures, codes, and labels):
     0 = NVQ 4–5 equivalent
     1 = NVQ 1–3 equivalent
     2 = Entry level or no qualifications
-    3 = Other qualifications not mappable to NVQ framework
+    3 = Other qualifications not mappable to the NVQ framework
     4 = None of these qualifications
-
-  educ25 — combine the derived academic NVQ variable W8DHANVQH with the
-  W8VCQU* vocational tick-boxes. Classify each W8VCQU* by its
-  variable_label (e.g., "NVQ/SVQ - Level 3 - 5" and "HNC/HND" are tier 0;
-  "NVQ/SVQ - Level 1 - 2" is tier 1; "None of the above" is tier 4). When
-  sources indicate different tiers, retain the highest valid qualification.
-  Route the dedicated Don't know and Refused vocational tick-boxes to -8
-  and -9 respectively.
-
-  educ32 — combine W9DANVQH and W9DVNVQH using inclusive-OR; when both
-  are present, retain the higher. A missing code in one source must not
-  override a valid qualification in the other. Preserve the actual
-  negative code from the source variable rather than collapsing all
-  missing cases to -3. educ25 and educ32 must share identical factor
-  structures, codes, and labels.
-
-  educadtl32 — assign an integer code based on which W9ACQU* tick-box
-  equals 1, scanning in metadata order: code 1 for the first substantive
-  indicator, code 2 for the next, and so on. The three non-substantive
-  tick-boxes (Don't know, Refused, No answer) must NOT receive substantive
-  codes — they map to -8, -9, and -2 respectively. When all substantive
-  indicators equal 2 (No), assign the "None of these qualifications" code
-  (the integer after the last substantive code). When all indicators
-  equal -1, assign -1. When all are missing or -3, assign -3.
-
-  After the integer coding, convert to a factor whose levels are the
-  substantive integers plus the applicable missing codes, and whose labels
-  are the qualification descriptions taken from the metadata
-  variable_label field with the prefix "Academic qualifications gained - "
-  stripped, plus standard labels for the missing codes.
-
-  educvdtl32 — identical logic applied to W9VCQU*, stripping
-  "Vocational qualifications gained - ". Only Don't know and Refused apply
-  as non-substantive tick-boxes (no No-answer indicator exists for
-  vocational qualifications at this wave).
+  Derivation logic for educ25: combine the derived academic NVQ variable W8DHANVQH with the W8VCQU* vocational tick-box variables; use the metadata labels to classify each W8VCQU* to its NVQ tier; where sources indicate different tiers, retain the highest valid qualification; route the dedicated Don't know and Refused vocational tick-boxes to -8 and -9 respectively.
+  Derivation logic for educ32: combine W9DANVQH and W9DVNVQH; where both are present, retain the higher level; a missing code in one source must not override a valid qualification from the other; preserve the actual negative code from the source variable rather than collapsing all missing cases to -3.
+  Derivation logic for educadtl32: scan the W9ACQU* academic tick-box variables in metadata order; assign integer code 1 for the first substantive indicator, code 2 for the next, and so on; when all substantive indicators are No (2), assign the "None of these qualifications" code (the integer after the last substantive code); the three non-substantive tick-boxes (Don't know, Refused, No answer) map to -8, -9, and -2 respectively; all indicators -1 → -1; all missing or -3 → -3. After the integer coding, convert to a factor whose levels are the substantive integers plus the applicable missing codes, and whose labels are the qualification descriptions taken from the metadata variable_label field with the prefix "Academic qualifications gained - " stripped, plus standard labels for the missing codes.
+  Derivation logic for educvdtl32: identical logic applied to W9VCQU*, but only Don't know and Refused apply as non-substantive tick-boxes (no No-answer indicator exists for vocational qualifications); strip the prefix "Vocational qualifications gained - " from variable_label when deriving factor labels.
+additional_requirements_lite: |
+  Derive educational qualification variables named educ25, educ32 (5-level NVQ scheme), educadtl32 (detailed academic qualifications), and educvdtl32 (detailed vocational qualifications) at ages 25 and 32.
 
 override: |
   You have access to raw survey datasets from a longitudinal cohort study followed across multiple waves. 

@@ -1,32 +1,16 @@
 task_id: 1
 task_type: data_cleaning_r_plus
 additional_requirements: |
-   Derive a single variable alcfst: the earliest age at which the cohort
-   member is known to have consumed alcohol.
-
-   Output exactly one derived variable plus NSID.
-
-   Source indicator for drinking:
-   Waves 1–4, 6, 7: "ever had alcoholic drink" = Yes (code 1).
-   Wave 1 special rule: age 14 requires BOTH W1alceverYP = 1 AND
-      W1alcmonYP = 1.
-   Waves 8, 9: audit frequency value above "Never" (code 1).
-
-   Wave-to-age mapping: S1→14, S2→15, S3→16, S4→17, S6→19, S7→20,
-   S8→25, S9→32.
-
-   Derivation logic:
-   1. For each wave, identify a candidate age where drinking is
-      observed. Take the minimum across waves.
-   2. Never-drinker flag: 1 if all observed indicators show not-drinking
-      and none are missing; 0 if any indicator shows drinking; NA
-      otherwise.
-   3. Assign alcfst: earliest age if found; 99 if never-drinker = 1;
-      otherwise -8.
-
-   Convert to a factor with levels 14, 15, 16, 17, 19, 20, 25, 32, 99,
-   -8 and labels "Age 14" through "Age 32", "Never had alcohol",
-   "Don't know/insufficient information".
+  Derive a single variable named alcfst: the earliest age at which the cohort member is known to have consumed alcohol.
+  Source indicator for drinking:
+    Waves 1–4, 6, 7: "ever had alcoholic drink" = Yes (code 1).
+    Wave 1 special rule: age 14 requires BOTH W1alceverYP = 1 AND W1alcmonYP = 1.
+    Waves 8–9: AUDIT frequency value above "Never" (code 1).
+  Wave-to-age mapping: S1→14, S2→15, S3→16, S4→17, S6→19, S7→20, S8→25, S9→32.
+  Derivation logic: for each cohort member, find the minimum (earliest) age at which drinking is observed across all waves. If all observed indicators show not-drinking and none are missing, assign code 99 (never had alcohol). If no drinking is observed but at least one indicator is missing, assign -8 (don't know / insufficient information).
+  Coded as a factor with levels 14, 15, 16, 17, 19, 20, 25, 32, 99, -8 and labels "Age 14" through "Age 32", "Never had alcohol", "Don't know/insufficient information".
+additional_requirements_lite: |
+  Derive a single variable named alcfst representing the earliest age at which the cohort member is known to have consumed alcohol.
 override: |
   You have access to raw survey datasets from a longitudinal cohort study. Your task is to derive a single variable indicating the earliest age at which a cohort member is known to have consumed alcohol, using data collected across multiple sweeps from age 14 to age 32.
 
