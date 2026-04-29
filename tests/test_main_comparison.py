@@ -5,8 +5,8 @@ from unittest.mock import MagicMock, patch
 
 import pandas as pd
 
-from src.dataset_comparison.__main__ import main
-from src.dataset_comparison.models import (
+from src.tabmatch.__main__ import main
+from src.tabmatch.models import (
     ColumnComparison,
     ColumnMatch,
     ColumnType,
