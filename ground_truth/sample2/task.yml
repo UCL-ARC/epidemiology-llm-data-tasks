@@ -1,8 +1,11 @@
 task_id: 1
 task_type: data_cleaning_r_plus
 additional_requirements: |
-  Derive consolidated time-invariant variables for ethnicity.
-  - Prioritise the earliest valid positive response.
+  Derive one consolidated variable named eth.
+  Coded using the detailed ethnicity categories 1-16 from the source variables.
+  Derivation logic: use the earliest valid positive response first, starting with W1ethnic2YP, then falling back through W2ethnicYP, w4ethnic2YP, W8DETHN15, and W9DETHN15 in order.
+additional_requirements_lite: |
+  Derive one consolidated variable named eth.
 override: |
   You have access to raw survey datasets on a cohort study followed up at multiple ages. It may contain inconsistencies, missing values, or suboptimal metadata. Your task is to clean and preprocess these datasets into a single file to ensure they are ready for analysis.
   

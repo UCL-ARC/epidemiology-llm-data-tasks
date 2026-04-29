@@ -1,29 +1,17 @@
 task_id: 1
 task_type: data_cleaning_r_plus
 additional_requirements: |
-   This task harmonises parental NS-SEC occupational class. Time-varying
-   across waves but not consolidated: produce separate age-specific
-   variables per parent.
-
-   Output exactly ten derived variables - one for each parent per wave - plus NSID:
-
-   The raw source variables use fractional sub-category
-   codes (e.g., 3.1, 3.2, 12.4, 13.5, 14.1) that subdivide the 17 major
-   NS-SEC categories. Collapse each fractional code to its major category
-   by taking the integer part. Then apply meaningful labels informed by the metadata.
-
-   After collapsing, retain integers 1–17 as the substantive categories,
-   using the 17-category labels from the metadata (e.g., "Employers in
-   large organisations", "Higher managerial and administrative occupations",
-   through "Not classifiable for other reasons"). The scheme is identical
-   across all ten variables.
-   
-   IMPORTANT: Wave-specific missing code mappings for this task:
-   -98 ("Parent not present") → -3
-
-   At wave 5, the source variables measure the mother's or father's partner
-   rather than the biological parent; still assign to nssecma18 and
-   nssecpa18 respectively.
+  Derive time-varying parental NS-SEC occupational class variables. Output ten variables plus NSID, one for each parent at each of the five waves:
+    nssecma14, nssecpa14  (wave 1, age 14)
+    nssecma15, nssecpa15  (wave 2, age 15)
+    nssecma16, nssecpa16  (wave 3, age 16)
+    nssecma17, nssecpa17  (wave 4, age 17)
+    nssecma18, nssecpa18  (wave 5, age 18)
+  Derivation logic: the raw source variables use fractional sub-category codes (e.g., 3.1, 3.2, 12.4) that subdivide the 17 major NS-SEC categories. Collapse each fractional code to its major category by taking the integer part, then apply the 17-category labels from the metadata. The scheme is identical across all ten variables.
+  Missing data: -98 ("Parent not present") → -3.
+  Note: at wave 5, the source variables measure the mother’s or father’s partner rather than the biological parent; still assign to nssecma18 and nssecpa18 respectively.
+additional_requirements_lite: |
+  Derive time-varying parental NS-SEC occupational class variables named nssecma14, nssecpa14, nssecma15, nssecpa15, nssecma16, nssecpa16, nssecma17, nssecpa17, nssecma18, and nssecpa18.
 override: |
   You have access to raw survey datasets from a longitudinal cohort study. Your task is to clean and harmonise parental NS-SEC occupational class variables across waves and output a single cleaned dataset.
 

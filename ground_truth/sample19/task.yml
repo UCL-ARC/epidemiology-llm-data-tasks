@@ -1,9 +1,10 @@
 task_id: 1
 task_type: data_cleaning_r_plus
 additional_requirements: |
-   Derive BMI at ages 25 and 32. 
-   Output exactly two derived variables plus NSID
-   Preserve the original continuous BMI values. Do not band or categorise.
+  Derive two BMI variables named bmi25 and bmi32.
+  Preserve the original continuous BMI values — do not band or categorise. Apply standard missing value codes to negative source values, and map NA to -3.
+additional_requirements_lite: |
+  Derive BMI variables named bmi25 and bmi32.
 override: |
   You have access to raw survey datasets from a longitudinal cohort study. Your task is to clean and harmonise Body Mass Index (BMI) variables measured at ages 25 and 32 and output a single cleaned dataset.
 
