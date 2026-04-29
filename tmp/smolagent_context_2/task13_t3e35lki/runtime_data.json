@@ -1,0 +1,7 @@
+{
+  "result": "The parental NS-SEC occupational class variables have been harmonised and processed. The raw fractional codes were collapsed to their major categories (integers 1-17), and wave-specific missing codes (e.g., -98 for 'Parent not present') were mapped to the standard missing-value scheme (e.g., -3). The final dataset includes the ID variable (NSID) and ten age-specific derived variables: nssecma14, nssecpa14, nssecma15, nssecpa15, nssecma16, nssecpa16, nssecma17, nssecpa17, nssecma18, and nssecpa18, saved to data/output/cleaned_data.csv.",
+  "state": "success",
+  "time_taken": 163.80697584152222,
+  "steps": 4,
+  "token_usage": 41737
+}

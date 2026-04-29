@@ -1,0 +1,240 @@
+{
+  "wave_one_lsype_family_background_2020.tab": {
+    "file_info": {
+      "number_of_variables": 381,
+      "number_of_cases": 15760,
+      "description": "Sweep 1 (Age 14) Family Background Data File"
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {},
+        "type": "string"
+      },
+      "W1empsmum": {
+        "position": 302,
+        "variable_label": "DV: Employment status of mother",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-999.0": "Missing household information - lost",
+          "-99.0": "Mother not interviewed",
+          "-98.0": "Mother not present",
+          "-94.0": "Insufficient information",
+          "1.0": "Doing paid work for 30 or more hours a week",
+          "2.0": "Doing paid work for fewer than 30 hours a week",
+          "3.0": "Unemployed/ Looking for a job",
+          "4.0": "On a training course or scheme",
+          "5.0": "In full-time education/ at school",
+          "6.0": "Looking after the family/ household",
+          "7.0": "Retired from work altogether",
+          "8.0": "Sick/ disabled",
+          "9.0": "Other"
+        }
+      },
+      "W1empsdad": {
+        "position": 303,
+        "variable_label": "DV: Employment status of father",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-999.0": "Missing household information - lost",
+          "-99.0": "Father not interviewed",
+          "-98.0": "Father not present",
+          "-94.0": "Insufficient information",
+          "1.0": "Doing paid work for 30 or more hours a week",
+          "2.0": "Doing paid work for fewer than 30 hours a week",
+          "3.0": "Unemployed/ Looking for a job",
+          "4.0": "On a training course or scheme",
+          "5.0": "In full-time education/ at school",
+          "6.0": "Looking after the family/ household",
+          "7.0": "Retired from work altogether",
+          "8.0": "Sick/ disabled",
+          "9.0": "Other"
+        }
+      }
+    }
+  },
+  "wave_two_lsype_family_background_2020.tab": {
+    "file_info": {
+      "number_of_variables": 1030,
+      "number_of_cases": 13530,
+      "description": "Sweep 2 (Age 15) Family Background Data File"
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {},
+        "type": "string"
+      },
+      "W2empsmum": {
+        "position": 805,
+        "variable_label": "DV: Employment status of mother",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-999.0": "Missing household information - lost",
+          "-99.0": "Mother not interviewed",
+          "-98.0": "Mother not present",
+          "-94.0": "Insufficient information",
+          "1.0": "Doing paid work for 30 or more hours a week",
+          "2.0": "Doing paid work for fewer than 30 hours a week",
+          "3.0": "Unemployed/ Looking for a job",
+          "4.0": "On a training course or scheme",
+          "5.0": "In full-time education/ at school",
+          "6.0": "Looking after the family/ household",
+          "7.0": "Retired from work altogether",
+          "8.0": "Sick/ disabled",
+          "9.0": "Other"
+        }
+      },
+      "W2empsdad": {
+        "position": 804,
+        "variable_label": "DV: Employment status of father",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-999.0": "Missing household information - lost",
+          "-99.0": "Father not interviewed",
+          "-98.0": "Father not present",
+          "-94.0": "Insufficient information",
+          "1.0": "Doing paid work for 30 or more hours a week",
+          "2.0": "Doing paid work for fewer than 30 hours a week",
+          "3.0": "Unemployed/ Looking for a job",
+          "4.0": "On a training course or scheme",
+          "5.0": "In full-time education/ at school",
+          "6.0": "Looking after the family/ household",
+          "7.0": "Retired from work altogether",
+          "8.0": "Sick/ disabled",
+          "9.0": "Other"
+        }
+      }
+    }
+  },
+  "wave_three_lsype_family_background_2020.tab": {
+    "file_info": {
+      "number_of_variables": 161,
+      "number_of_cases": 12430,
+      "description": "Sweep 3 (Age 16) Family Background Data File"
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {},
+        "type": "string"
+      },
+      "W3empsmum": {
+        "position": 82,
+        "variable_label": "DV: Employment status of mother",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-999.0": "Missing household information - lost",
+          "-99.0": "Mother not interviewed",
+          "-98.0": "Mother not present",
+          "-94.0": "Insufficient information",
+          "1.0": "Doing paid work for 30 or more hours a week",
+          "2.0": "Doing paid work for fewer than 30 hours a week",
+          "3.0": "Unemployed/ Looking for a job",
+          "4.0": "On a training course or scheme",
+          "5.0": "In full-time education/ at school",
+          "6.0": "Looking after the family/ household",
+          "7.0": "Retired from work altogether",
+          "8.0": "Sick/ disabled",
+          "9.0": "Other"
+        }
+      },
+      "W3empsdad": {
+        "position": 81,
+        "variable_label": "DV: Employment status of father",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-999.0": "Missing household information - lost",
+          "-99.0": "Father not interviewed",
+          "-98.0": "Father not present",
+          "-94.0": "Insufficient information",
+          "1.0": "Doing paid work for 30 or more hours a week",
+          "2.0": "Doing paid work for fewer than 30 hours a week",
+          "3.0": "Unemployed/ Looking for a job",
+          "4.0": "On a training course or scheme",
+          "5.0": "In full-time education/ at school",
+          "6.0": "Looking after the family/ household",
+          "7.0": "Retired from work altogether",
+          "8.0": "Sick/ disabled",
+          "9.0": "Other"
+        }
+      }
+    }
+  },
+  "wave_four_lsype_family_background_2020.tab": {
+    "file_info": {
+      "number_of_variables": 422,
+      "number_of_cases": 11791,
+      "description": "Sweep 4 (Age 17) Family Background Data File"
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {},
+        "type": "string"
+      },
+      "w4empsmum": {
+        "position": 375,
+        "variable_label": "DV: Employment status of mother",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-999.0": "Missing household information",
+          "-99.0": "Mother not interviewed",
+          "-98.0": "Mother not present",
+          "-94.0": "Insufficient information",
+          "1.0": "Doing paid work for 30 or more hours a week",
+          "2.0": "Doing paid work for fewer than 30 hours a week",
+          "3.0": "Unemployed/ Looking for a job",
+          "4.0": "On a training course or scheme",
+          "5.0": "In full-time education/ at school",
+          "6.0": "Looking after the family/ household",
+          "7.0": "Retired from work altogether",
+          "8.0": "Sick/ disabled",
+          "9.0": "Other"
+        }
+      },
+      "w4empsdad": {
+        "position": 374,
+        "variable_label": "DV: Employment status of father",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-999.0": "Missing household information",
+          "-996.0": "No parent in household",
+          "-99.0": "Father not interviewed",
+          "-98.0": "Father not present",
+          "-94.0": "Insufficient information",
+          "-92.0": "Refusal",
+          "1.0": "Doing paid work for 30 or more hours a week",
+          "2.0": "Doing paid work for fewer than 30 hours a week",
+          "3.0": "Unemployed/ Looking for a job",
+          "4.0": "On a training course or scheme",
+          "5.0": "In full-time education/ at school",
+          "6.0": "Looking after the family/ household",
+          "7.0": "Retired from work altogether",
+          "8.0": "Sick/ disabled",
+          "9.0": "Other"
+        }
+      }
+    }
+  }
+}

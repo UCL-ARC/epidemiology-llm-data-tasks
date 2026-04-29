@@ -1,0 +1,7 @@
+{
+  "result": "The raw survey datasets have been preprocessed and cleaned. The ethnic group construct was derived by consolidating data across five waves (Wave 1, 2, 4, 8, and 9) using an earliest-valid-first prioritisation rule. Missing values were harmonised to a standard scheme (-9 for Refusal, -8 for Don't know/Insufficient, -7 for Prefer not to say, -3 for Not asked/NA, -2 for Schedule not applicable/lost, and -1 for Not applicable) based on metadata labels. The final consolidated variable `eth` was created as a labelled factor. The result has been saved to `data/output/cleaned_data.csv` containing the ID variable `NSID` and the derived variable `eth`.",
+  "state": "success",
+  "time_taken": 744.9096381664276,
+  "steps": 5,
+  "token_usage": 62244
+}

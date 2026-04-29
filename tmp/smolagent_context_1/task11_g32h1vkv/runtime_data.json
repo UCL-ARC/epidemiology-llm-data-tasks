@@ -1,0 +1,7 @@
+{
+  "result": "The parental economic activity variables have been successfully derived and cleaned across four waves. The input files were loaded, merged by NSID, and the variables W1empsmum, W1empsdad, W2empsmum, W2empsdad, W3empsmum, W3empsdad, w4empsmum, and w4empsdad were harmonised. Specifically, missing codes -99, -98, and -996 were mapped to -3, and other missing values were mapped according to the standard scheme (-999 to -2, -94 to -8, -92 to -9). The final dataset contains NSID and the eight derived variables (mum14, dad14, mum15, dad15, mum16, dad16, mum17, dad17) and is saved as data/output/cleaned_data.csv.",
+  "state": "success",
+  "time_taken": 135.87156200408936,
+  "steps": 6,
+  "token_usage": 62108
+}

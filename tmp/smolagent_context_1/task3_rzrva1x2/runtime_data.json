@@ -1,0 +1,7 @@
+{
+  "result": "The raw survey datasets have been successfully cleaned and preprocessed. The target construct 'English as main language' was derived from source variables W1englangYP, W2EnglangYP, W3englangHH, and W4EngLangHH. The output includes a consolidated variable eng_main (created using earliest-positive-first logic), and age-specific variables eng_14, eng_15, eng_16, and eng_17. All missing values were harmonised according to the provided standard scheme and specific task requirements (-94 mapped to -2, and -1 Don't know mapped to -8). The final analysis-ready file is saved as data/output/cleaned_data.csv.",
+  "state": "success",
+  "time_taken": 219.93377780914307,
+  "steps": 4,
+  "token_usage": 21299
+}

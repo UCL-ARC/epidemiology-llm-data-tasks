@@ -1,0 +1,7 @@
+{
+  "result": "The data has been cleaned and preprocessed according to the specifications. The partnership/marital status was harmonised across waves 6 (age 19), 8 (age 25), and 9 (age 32). Collapsed harmonised variables (`partnr19`, `partnr25`, `partnr32`) and detailed adult versions (`partnradu25`, `partnradu32`) were created, mapping source categories and missing-value codes to the standard scheme. The final dataset containing the ID variable (`NSID`) and these derived variables was saved to `data/output/cleaned_data.csv`.",
+  "state": "success",
+  "time_taken": 312.77704095840454,
+  "steps": 3,
+  "token_usage": 14998
+}

@@ -1,0 +1,7 @@
+{
+  "result": "The data has been cleaned and harmonised according to the specified requirements. The educational aims across different waves (ages 17, 19, 20, 25, and 32) were mapped to a consistent 6-category scheme (0: NVQ 4-5, 1: NVQ 1-3, 2: None/entry, 3: Other, 4: None of these, 5: Not studying), with standard missing-value codes applied. The final analysis-ready file containing the NSID and the age-specific variables (edu_17, edu_19, edu_20, edu_25, edu_32) has been saved to `data/output/cleaned_data.csv`.",
+  "state": "success",
+  "time_taken": 98.71643924713135,
+  "steps": 3,
+  "token_usage": 38290
+}

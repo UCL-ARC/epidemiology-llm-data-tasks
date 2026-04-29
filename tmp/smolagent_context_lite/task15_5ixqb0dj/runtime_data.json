@@ -1,0 +1,7 @@
+{
+  "result": "The survey datasets have been cleaned and preprocessed. The input files from `data/input/` were loaded, merged by `NSID`, and the target income band variables `inc25` (derived from `W8DINCB` in the Wave 8 file) and `inc32` (derived from `W9DINCB` in the Wave 9 file) were created. Missing values were harmonised according to the standard codes (-1 for 'Not applicable', -3 for 'Not asked/NA'), and the variables were converted into labelled factors. The final output containing only `NSID`, `inc25`, and `inc32` has been written to `data/output/cleaned_data.csv`.",
+  "state": "success",
+  "time_taken": 55.284369230270386,
+  "steps": 3,
+  "token_usage": 12106
+}

@@ -15,8 +15,8 @@ class TestCleanupMain:
         # Should not raise
         main(delete_data=False)
 
-    def test_no_sample_dirs(self, tmp_path, monkeypatch):
-        """Should report all samples as missing when dir is empty."""
+    def test_no_task_dirs(self, tmp_path, monkeypatch):
+        """Should report all tasks as missing when dir is empty."""
         context_root = tmp_path / "smolagent_context"
         context_root.mkdir()
 
@@ -28,9 +28,9 @@ class TestCleanupMain:
         context_root = tmp_path / "smolagent_context"
         context_root.mkdir()
 
-        sample_dir = context_root / "sample1_abc123"
-        (sample_dir / "data" / "output").mkdir(parents=True)
-        (sample_dir / "data" / "output" / "cleaned_data.csv").write_text("a,b\n1,2")
+        task_dir = context_root / "task1_abc123"
+        (task_dir / "data" / "output").mkdir(parents=True)
+        (task_dir / "data" / "output" / "cleaned_data.csv").write_text("a,b\n1,2")
 
         monkeypatch.setattr("src.cleanup.Path", lambda _: context_root)
         main(delete_data=False)
@@ -40,8 +40,8 @@ class TestCleanupMain:
         context_root = tmp_path / "smolagent_context"
         context_root.mkdir()
 
-        sample_dir = context_root / "sample2_xyz789"
-        sample_dir.mkdir()
+        task_dir = context_root / "task2_xyz789"
+        task_dir.mkdir()
 
         monkeypatch.setattr("src.cleanup.Path", lambda _: context_root)
         main(delete_data=False)
@@ -51,7 +51,7 @@ class TestCleanupMain:
         context_root = tmp_path / "smolagent_context"
         context_root.mkdir()
 
-        incomplete_dir = context_root / "sample3_del123"
+        incomplete_dir = context_root / "task3_del123"
         incomplete_dir.mkdir()
 
         monkeypatch.setattr("src.cleanup.Path", lambda _: context_root)
@@ -59,8 +59,8 @@ class TestCleanupMain:
 
         assert not incomplete_dir.exists()
 
-    def test_non_sample_dirs_ignored(self, tmp_path, monkeypatch):
-        """Should ignore directories that don't start with 'sample'."""
+    def test_non_task_dirs_ignored(self, tmp_path, monkeypatch):
+        """Should ignore directories that don't start with 'task'."""
         context_root = tmp_path / "smolagent_context"
         context_root.mkdir()
 
@@ -80,14 +80,14 @@ class TestCleanupMain:
         monkeypatch.setattr("src.cleanup.Path", lambda _: context_root)
         main(delete_data=False)
 
-    def test_sample_without_underscore(self, tmp_path, monkeypatch):
-        """Should handle sample dirs without underscore in name."""
+    def test_task_without_underscore(self, tmp_path, monkeypatch):
+        """Should handle task dirs without underscore in name."""
         context_root = tmp_path / "smolagent_context"
         context_root.mkdir()
 
-        sample_dir = context_root / "sample5"
-        (sample_dir / "data" / "output").mkdir(parents=True)
-        (sample_dir / "data" / "output" / "cleaned_data.csv").write_text("ok")
+        task_dir = context_root / "task5"
+        (task_dir / "data" / "output").mkdir(parents=True)
+        (task_dir / "data" / "output" / "cleaned_data.csv").write_text("ok")
 
         monkeypatch.setattr("src.cleanup.Path", lambda _: context_root)
         main(delete_data=False)
@@ -98,14 +98,14 @@ class TestCleanupMain:
         context_root.mkdir()
 
         # Complete
-        complete = context_root / "sample1_ok"
+        complete = context_root / "task1_ok"
         (complete / "data" / "output").mkdir(parents=True)
         (complete / "data" / "output" / "cleaned_data.csv").write_text("ok")
 
         # Incomplete
-        incomplete = context_root / "sample2_nope"
+        incomplete = context_root / "task2_nope"
         incomplete.mkdir()
 
-        # sample3-20 missing
+        # task3-20 missing
         monkeypatch.setattr("src.cleanup.Path", lambda _: context_root)
         main(delete_data=False)

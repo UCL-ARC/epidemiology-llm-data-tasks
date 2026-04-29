@@ -1,0 +1,7 @@
+{
+  "result": "The raw survey datasets have been cleaned and preprocessed into a single analysis-ready file. The parental NS-SEC occupational class variables for five waves (age 14 to 18) were derived by collapsing fractional sub-category codes to their major categories (1-17), mapping specific missing values (e.g., -98 to -3), and applying the standardized missing-value scheme. The final output containing NSID and the ten target variables (nssecma14, nssecpa14, nssecma15, nssecpa15, nssecma16, nssecpa16, nssecma17, nssecpa17, nssecma18, nssecpa18) has been written to `data/output/cleaned_data.csv`.",
+  "state": "success",
+  "time_taken": 204.2043912410736,
+  "steps": 3,
+  "token_usage": 24636
+}

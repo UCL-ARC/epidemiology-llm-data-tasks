@@ -1,0 +1,7 @@
+{
+  "result": "The raw survey datasets have been successfully cleaned and preprocessed. The time-varying educational aims variables (educaim17, educaim19, educaim20, educaim25, and educaim32) were derived by harmonizing response categories across waves, mapping them to a common scheme (Level 1, Level 2, Level 3, Level 4/5, Degree+, Not studying, and Other), and applying standard missing-value codes. The final output is saved as `data/output/cleaned_data.csv` containing the ID variable (NSID) and the five derived educational aims variables as labelled factors.",
+  "state": "success",
+  "time_taken": 619.7858498096466,
+  "steps": 6,
+  "token_usage": 140104
+}

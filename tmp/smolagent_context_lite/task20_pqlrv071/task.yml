@@ -1,0 +1,67 @@
+task_id: 1
+task_type: data_cleaning_r_plus
+additional_requirements: |
+  Derive a single variable named alcfst: the earliest age at which the cohort member is known to have consumed alcohol.
+  Source indicator for drinking:
+    Waves 1–4, 6, 7: "ever had alcoholic drink" = Yes (code 1).
+    Wave 1 special rule: age 14 requires BOTH W1alceverYP = 1 AND W1alcmonYP = 1.
+    Waves 8–9: AUDIT frequency value above "Never" (code 1).
+  Wave-to-age mapping: S1→14, S2→15, S3→16, S4→17, S6→19, S7→20, S8→25, S9→32.
+  Derivation logic: for each cohort member, find the minimum (earliest) age at which drinking is observed across all waves. If all observed indicators show not-drinking and none are missing, assign code 99 (never had alcohol). If no drinking is observed but at least one indicator is missing, assign -8 (don't know / insufficient information).
+  Coded as a factor with levels 14, 15, 16, 17, 19, 20, 25, 32, 99, -8 and labels "Age 14" through "Age 32", "Never had alcohol", "Don't know/insufficient information".
+additional_requirements_lite: |
+  Derive a single variable named alcfst representing the earliest age at which the cohort member is known to have consumed alcohol.
+override: |
+  You have access to raw survey datasets from a longitudinal cohort study. Your task is to derive a single variable indicating the earliest age at which a cohort member is known to have consumed alcohol, using data collected across multiple sweeps from age 14 to age 32.
+
+  Follow all instructions:
+
+  1. **File Loading**:
+     - Ensure when you load the input files you append the dir "data/input/" this is where they are stored.
+     - Load each dataset into a separate object and merge using full_join by the ID variable.
+     - The input files are tab-delimited (.tab) text files. Use `readr::read_delim()` with `delim = "\t"` to load them.
+     - Load each file explicitly by name from the metadata.
+
+  2. **Variable Selection**:
+     - From each file, select NSID and the alcohol-related variables listed in the metadata.
+     - Rename variables with short descriptive names and sweep/age suffixes upon loading.
+     - Note: W8AUDIT1 should also be loaded from the wave 8 self-completion file if present in the data, even though it is not in the metadata provided.
+
+  3. **Deriving "First Age of Alcohol Consumption" (alcfst)**:
+     - For each sweep, determine whether the cohort member was a known drinker at that age using the "ever had alcohol" or AUDIT frequency items in the metadata.
+     - **Special rule for age 14**: require BOTH the "ever had alcohol" variable = Yes AND the "had alcoholic drink in last 12 months" variable = Yes to count as a drinker at age 14.
+     - For the AUDIT frequency-of-drinking items at ages 25 and 32, a response above the "Never" category indicates current drinking.
+     - For each individual, find the minimum (earliest) age at which they were identified as a drinker.
+     - Derive a "never drinker" flag:
+       * Confirmed never drinker (1): ALL observed sweep indicators show never drinking and NONE are missing.
+       * Drinker (0): ANY sweep shows drinking.
+       * Unknown (NA): no sweeps show drinking but some indicators are missing.
+     - Assign the final alcfst variable:
+       * If a first age of drinking is found, use that age.
+       * If confirmed never drinker across all waves, assign code 99.
+       * Otherwise assign -8.
+
+  4. **Factor Variable and Labels**:
+     - Convert alcfst to a factor with levels for each observed age (14, 15, 16, 17, 19, 20, 25, 32), plus 99 = "Never had alcohol" and -8 = "Don't know/insufficient information".
+
+  5. **Scope Restrictions**:
+     - Do not derive drinking frequency, quantity, or any other alcohol measure beyond alcfst.
+     - Do not attempt to harmonise frequency scales across waves.
+
+  6. **Package Requirements**:
+     - Use ONLY standard R packages: haven, dplyr, purrr, labelled, readr, stringr.
+     - Load packages at the start of the script using library().
+
+  7. **Output Requirements**:
+     - Output only the following variables: NSID, alcfst.
+     - Write exactly one CSV file named data/output/cleaned_data.csv.
+
+  8. **Execution**:
+     - You must run your R script after generating it.
+     - IMPORTANT: If your R script fails, read the error message carefully, fix the script, and try again. Never return an error message as your final answer.
+
+  Produce your script in R.
+
+  Here is the appropriate metadata for the task:
+
+  {metadata}

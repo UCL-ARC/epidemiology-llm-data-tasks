@@ -1,0 +1,1045 @@
+{
+  "wave_one_lsype_young_person_2020.tab": {
+    "file_info": {
+      "number_of_variables": 350,
+      "number_of_cases": 15760,
+      "description": "Sweep 1 (Age 14) Young Person Data File"
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {},
+        "type": "string"
+      }
+    }
+  },
+  "wave_two_lsype_young_person_2020.tab": {
+    "file_info": {
+      "number_of_variables": 564,
+      "number_of_cases": 13530,
+      "description": "Sweep 2 (Age 15) Young Person Data File"
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {},
+        "type": "string"
+      },
+      "W2concenYP": {
+        "position": 460,
+        "variable_label": "YP: YP's recent concentration levels",
+        "type": "numeric",
+        "measurement_level": "ORDINAL",
+        "user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-998.0": "Interviewer missed question",
+          "-997.0": "Script error",
+          "-995.0": "Missing history section data - unexplained",
+          "-99.0": "YP not interviewed",
+          "-97.0": "YP refused self completion",
+          "-96.0": "YP using interpreter",
+          "-92.0": "Refused",
+          "-91.0": "Not applicable",
+          "-1.0": "Don't Know",
+          "1.0": "Better than usual",
+          "2.0": "Same as usual",
+          "3.0": "Less than usual",
+          "4.0": "Much less than usual"
+        }
+      },
+      "W2nosleepYP": {
+        "position": 461,
+        "variable_label": "YP: Whether YP has recently lost much sleep over worry",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-998.0": "Interviewer missed question",
+          "-997.0": "Script error",
+          "-995.0": "Missing history section data - unexplained",
+          "-99.0": "YP not interviewed",
+          "-97.0": "YP refused self completion",
+          "-96.0": "YP using interpreter",
+          "-92.0": "Refused",
+          "-91.0": "Not applicable",
+          "-1.0": "Don't Know",
+          "1.0": "Not at all",
+          "2.0": "No more than usual",
+          "3.0": "Rather more than usual",
+          "4.0": "Much more than usual"
+        }
+      },
+      "W2usefulYP": {
+        "position": 462,
+        "variable_label": "YP: How useful YP has felt recently",
+        "type": "numeric",
+        "measurement_level": "ORDINAL",
+        "user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-998.0": "Interviewer missed question",
+          "-997.0": "Script error",
+          "-995.0": "Missing history section data - unexplained",
+          "-99.0": "YP not interviewed",
+          "-97.0": "YP refused self completion",
+          "-96.0": "YP using interpreter",
+          "-92.0": "Refused",
+          "-91.0": "Not applicable",
+          "-1.0": "Don't Know",
+          "1.0": "More so than usual",
+          "2.0": "Same as usual",
+          "3.0": "Less useful than usual",
+          "4.0": "Much less useful"
+        }
+      },
+      "W2decideYP": {
+        "position": 463,
+        "variable_label": "YP: How capable of making decisions YP has felt recently",
+        "type": "numeric",
+        "measurement_level": "ORDINAL",
+        "user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-998.0": "Interviewer missed question",
+          "-997.0": "Script error",
+          "-995.0": "Missing history section data - unexplained",
+          "-99.0": "YP not interviewed",
+          "-97.0": "YP refused self completion",
+          "-96.0": "YP using interpreter",
+          "-92.0": "Refused",
+          "-91.0": "Not applicable",
+          "-1.0": "Don't Know",
+          "1.0": "More so than usual",
+          "2.0": "Same as usual",
+          "3.0": "Less so than usual",
+          "4.0": "Much less capable"
+        }
+      },
+      "W2strainYP": {
+        "position": 464,
+        "variable_label": "YP: How much constantly under strain YP has felt recently",
+        "type": "numeric",
+        "measurement_level": "ORDINAL",
+        "user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-998.0": "Interviewer missed question",
+          "-997.0": "Script error",
+          "-995.0": "Missing history section data - unexplained",
+          "-99.0": "YP not interviewed",
+          "-97.0": "YP refused self completion",
+          "-96.0": "YP using interpreter",
+          "-92.0": "Refused",
+          "-91.0": "Not applicable",
+          "-1.0": "Don't Know",
+          "1.0": "Not at all",
+          "2.0": "No more than usual",
+          "3.0": "Rather more than usual",
+          "4.0": "Much more than usual"
+        }
+      },
+      "W2difficYP": {
+        "position": 465,
+        "variable_label": "YP: How much YP has felt couldn't overcome their difficulties recently",
+        "type": "numeric",
+        "measurement_level": "ORDINAL",
+        "user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-998.0": "Interviewer missed question",
+          "-997.0": "Script error",
+          "-995.0": "Missing history section data - unexplained",
+          "-99.0": "YP not interviewed",
+          "-97.0": "YP refused self completion",
+          "-96.0": "YP using interpreter",
+          "-92.0": "Refused",
+          "-91.0": "Not applicable",
+          "-1.0": "Don't Know",
+          "1.0": "Not at all",
+          "2.0": "No more than usual",
+          "3.0": "Rather more than usual",
+          "4.0": "Much more than usual"
+        }
+      },
+      "W2activYP": {
+        "position": 466,
+        "variable_label": "YP: How much YP has been able to enjoy normal day-to-day activities recently",
+        "type": "numeric",
+        "measurement_level": "ORDINAL",
+        "user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-998.0": "Interviewer missed question",
+          "-997.0": "Script error",
+          "-995.0": "Missing history section data - unexplained",
+          "-99.0": "YP not interviewed",
+          "-97.0": "YP refused self completion",
+          "-96.0": "YP using interpreter",
+          "-92.0": "Refused",
+          "-91.0": "Not applicable",
+          "-1.0": "Don't Know",
+          "1.0": "More so than usual",
+          "2.0": "Same as usual",
+          "3.0": "Less so than usual",
+          "4.0": "Much less than usual"
+        }
+      },
+      "W2probsYP": {
+        "position": 467,
+        "variable_label": "YP: How YP has been able to face up to problems recently",
+        "type": "numeric",
+        "measurement_level": "ORDINAL",
+        "user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-998.0": "Interviewer missed question",
+          "-997.0": "Script error",
+          "-995.0": "Missing history section data - unexplained",
+          "-99.0": "YP not interviewed",
+          "-97.0": "YP refused self completion",
+          "-96.0": "YP using interpreter",
+          "-92.0": "Refused",
+          "-91.0": "Not applicable",
+          "-1.0": "Don't Know",
+          "1.0": "More so than usual",
+          "2.0": "Same as usual",
+          "3.0": "Less able than usual",
+          "4.0": "Much less able"
+        }
+      },
+      "W2depressYP": {
+        "position": 468,
+        "variable_label": "YP: How much YP has been feeling unhappy and depressed recently",
+        "type": "numeric",
+        "measurement_level": "ORDINAL",
+        "user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-998.0": "Interviewer missed question",
+          "-997.0": "Script error",
+          "-995.0": "Missing history section data - unexplained",
+          "-99.0": "YP not interviewed",
+          "-97.0": "YP refused self completion",
+          "-96.0": "YP using interpreter",
+          "-92.0": "Refused",
+          "-91.0": "Not applicable",
+          "-1.0": "Don't Know",
+          "1.0": "Not at all",
+          "2.0": "No more than usual",
+          "3.0": "Rather more than usual",
+          "4.0": "Much more than usual"
+        }
+      },
+      "W2noconfYP": {
+        "position": 469,
+        "variable_label": "YP: How much YP has been losing confidence in themselves recently",
+        "type": "numeric",
+        "measurement_level": "ORDINAL",
+        "user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-998.0": "Interviewer missed question",
+          "-997.0": "Script error",
+          "-995.0": "Missing history section data - unexplained",
+          "-99.0": "YP not interviewed",
+          "-97.0": "YP refused self completion",
+          "-96.0": "YP using interpreter",
+          "-92.0": "Refused",
+          "-91.0": "Not applicable",
+          "-1.0": "Don't Know",
+          "1.0": "Not at all",
+          "2.0": "No more than usual",
+          "3.0": "Rather more than usual",
+          "4.0": "Much more than usual"
+        }
+      },
+      "W2wthlessYP": {
+        "position": 470,
+        "variable_label": "YP: How much YP has been thinking of themselves as a worthless person recently",
+        "type": "numeric",
+        "measurement_level": "ORDINAL",
+        "user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-998.0": "Interviewer missed question",
+          "-997.0": "Script error",
+          "-995.0": "Missing history section data - unexplained",
+          "-99.0": "YP not interviewed",
+          "-97.0": "YP refused self completion",
+          "-96.0": "YP using interpreter",
+          "-92.0": "Refused",
+          "-91.0": "Not applicable",
+          "-1.0": "Don't Know",
+          "1.0": "Not at all",
+          "2.0": "No more than usual",
+          "3.0": "Rather more than usual",
+          "4.0": "Much more than usual"
+        }
+      },
+      "W2happyYP": {
+        "position": 471,
+        "variable_label": "YP: How much YP has been feeling reasonably happy recently",
+        "type": "numeric",
+        "measurement_level": "ORDINAL",
+        "user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-998.0": "Interviewer missed question",
+          "-997.0": "Script error",
+          "-995.0": "Missing history section data - unexplained",
+          "-99.0": "YP not interviewed",
+          "-97.0": "YP refused self completion",
+          "-96.0": "YP using interpreter",
+          "-92.0": "Refused",
+          "-91.0": "Not applicable",
+          "-1.0": "Don't Know",
+          "1.0": "More so than usual",
+          "2.0": "About the same as usual",
+          "3.0": "Less so than usual",
+          "4.0": "Much less than usual"
+        }
+      },
+      "W2ghq12scr": {
+        "position": 556,
+        "variable_label": "DV: Young person GHQ12 score - 12 point scale",
+        "type": "numeric",
+        "measurement_level": "SCALE",
+        "user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-99.0": "YP not interviewed",
+          "-97.0": "YP refused self completion",
+          "-96.0": "YP using interpreter",
+          "-92.0": "Refused"
+        }
+      }
+    }
+  },
+  "wave_four_lsype_young_person_2020.tab": {
+    "file_info": {
+      "number_of_variables": 1049,
+      "number_of_cases": 11791,
+      "description": "Sweep 4 (Age 17) Young Person Data File"
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {},
+        "type": "string"
+      },
+      "W4ConcenYP": {
+        "position": 805,
+        "variable_label": "YP: Whether YP has been able to concentrate on whatever doing recently",
+        "type": "numeric",
+        "measurement_level": "ORDINAL",
+        "user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-99.0": "YP not interviewed",
+          "-97.0": "YP refused self completion",
+          "-96.0": "YP using interpreter",
+          "-92.0": "Refused",
+          "-91.0": "Not applicable",
+          "-1.0": "Don't know",
+          "1.0": "Better than usual",
+          "2.0": "Same as usual",
+          "3.0": "Less than usual",
+          "4.0": "Much less than usual"
+        }
+      },
+      "W4NoSleepYP": {
+        "position": 806,
+        "variable_label": "YP: Whether YP recently lost much sleep over worry",
+        "type": "numeric",
+        "measurement_level": "ORDINAL",
+        "user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-99.0": "YP not interviewed",
+          "-97.0": "YP refused self completion",
+          "-96.0": "YP using interpreter",
+          "-92.0": "Refused",
+          "-91.0": "Not applicable",
+          "-1.0": "Don't know",
+          "1.0": "Not at all",
+          "2.0": "No more than usual",
+          "3.0": "Rather more than usual",
+          "4.0": "Much more than usual"
+        }
+      },
+      "W4UsefulYP": {
+        "position": 807,
+        "variable_label": "YP: Whether YP has felt they were playing a useful part in things recently",
+        "type": "numeric",
+        "measurement_level": "ORDINAL",
+        "user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-99.0": "YP not interviewed",
+          "-97.0": "YP refused self completion",
+          "-96.0": "YP using interpreter",
+          "-92.0": "Refused",
+          "-91.0": "Not applicable",
+          "-1.0": "Don't know",
+          "1.0": "More so than usual",
+          "2.0": "Same as usual",
+          "3.0": "Less useful than usual",
+          "4.0": "Much less useful"
+        }
+      },
+      "W4DecideYP": {
+        "position": 808,
+        "variable_label": "YP: Whether YP recently felt capable of making decisions about things",
+        "type": "numeric",
+        "measurement_level": "ORDINAL",
+        "user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-99.0": "YP not interviewed",
+          "-97.0": "YP refused self completion",
+          "-96.0": "YP using interpreter",
+          "-92.0": "Refused",
+          "-91.0": "Not applicable",
+          "-1.0": "Don't know",
+          "1.0": "More so than usual",
+          "2.0": "Same as usual",
+          "3.0": "Less capable than usual",
+          "4.0": "Much less capable"
+        }
+      },
+      "W4StrainYP": {
+        "position": 809,
+        "variable_label": "YP: Whether YP recently felt constantly under strain",
+        "type": "numeric",
+        "measurement_level": "ORDINAL",
+        "user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-99.0": "YP not interviewed",
+          "-97.0": "YP refused self completion",
+          "-96.0": "YP using interpreter",
+          "-92.0": "Refused",
+          "-91.0": "Not applicable",
+          "-1.0": "Don't know",
+          "1.0": "Not at all",
+          "2.0": "No more than usual",
+          "3.0": "Rather more than usual",
+          "4.0": "Much more than usual"
+        }
+      },
+      "W4DifficYP": {
+        "position": 810,
+        "variable_label": "YP: Whether YP recently felt couldn't overcome difficulties",
+        "type": "numeric",
+        "measurement_level": "ORDINAL",
+        "user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-99.0": "YP not interviewed",
+          "-97.0": "YP refused self completion",
+          "-96.0": "YP using interpreter",
+          "-92.0": "Refused",
+          "-91.0": "Not applicable",
+          "-1.0": "Don't know",
+          "1.0": "Not at all",
+          "2.0": "No more than usual",
+          "3.0": "Rather more than usual",
+          "4.0": "Much more than usual"
+        }
+      },
+      "W4ActivYP": {
+        "position": 811,
+        "variable_label": "YP: Whether YP recently been able to enjoy normal day to day activities",
+        "type": "numeric",
+        "measurement_level": "ORDINAL",
+        "user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-99.0": "YP not interviewed",
+          "-97.0": "YP refused self completion",
+          "-96.0": "YP using interpreter",
+          "-92.0": "Refused",
+          "-91.0": "Not applicable",
+          "-1.0": "Don't know",
+          "1.0": "More so than usual",
+          "2.0": "Same as usual",
+          "3.0": "Less so than usual",
+          "4.0": "Much less than usual"
+        }
+      },
+      "W4ProbsYP": {
+        "position": 812,
+        "variable_label": "YP: Whether YP recently been able to face up to problems",
+        "type": "numeric",
+        "measurement_level": "ORDINAL",
+        "user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-99.0": "YP not interviewed",
+          "-97.0": "YP refused self completion",
+          "-96.0": "YP using interpreter",
+          "-92.0": "Refused",
+          "-91.0": "Not applicable",
+          "-1.0": "Don't know",
+          "1.0": "More so than usual",
+          "2.0": "Same as usual",
+          "3.0": "Less able than usual",
+          "4.0": "Much less able than usual"
+        }
+      },
+      "W4DepressYP": {
+        "position": 813,
+        "variable_label": "YP: Whether YP recently felt unhappy or depressed",
+        "type": "numeric",
+        "measurement_level": "ORDINAL",
+        "user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-99.0": "YP not interviewed",
+          "-97.0": "YP refused self completion",
+          "-96.0": "YP using interpreter",
+          "-92.0": "Refused",
+          "-91.0": "Not applicable",
+          "-1.0": "Don't know",
+          "1.0": "Not at all",
+          "2.0": "No more than usual",
+          "3.0": "Rather more than usual",
+          "4.0": "Much more than usual"
+        }
+      },
+      "W4NoConfYP": {
+        "position": 814,
+        "variable_label": "YP: Whether YP recently been losing confidence in self",
+        "type": "numeric",
+        "measurement_level": "ORDINAL",
+        "user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-99.0": "YP not interviewed",
+          "-97.0": "YP refused self completion",
+          "-96.0": "YP using interpreter",
+          "-92.0": "Refused",
+          "-91.0": "Not applicable",
+          "-1.0": "Don't know",
+          "1.0": "Not at all",
+          "2.0": "No more than usual",
+          "3.0": "Rather more than usual",
+          "4.0": "Much more than usual"
+        }
+      },
+      "W4WthlessYP": {
+        "position": 815,
+        "variable_label": "YP: Whether YP has thought of themself as a worthless person recently",
+        "type": "numeric",
+        "measurement_level": "ORDINAL",
+        "user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-99.0": "YP not interviewed",
+          "-97.0": "YP refused self completion",
+          "-96.0": "YP using interpreter",
+          "-92.0": "Refused",
+          "-91.0": "Not applicable",
+          "-1.0": "Don't know",
+          "1.0": "Not at all",
+          "2.0": "No more than usual",
+          "3.0": "Rather more than usual",
+          "4.0": "Much more than usual"
+        }
+      },
+      "W4HappyYP": {
+        "position": 816,
+        "variable_label": "YP: Whether YP recently felt reasonably happy, all things considered",
+        "type": "numeric",
+        "measurement_level": "ORDINAL",
+        "user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-99.0": "YP not interviewed",
+          "-97.0": "YP refused self completion",
+          "-96.0": "YP using interpreter",
+          "-92.0": "Refused",
+          "-91.0": "Not applicable",
+          "-1.0": "Don't know",
+          "1.0": "More so than usual",
+          "2.0": "About the same as usual",
+          "3.0": "Less so than usual",
+          "4.0": "Much less than usual"
+        }
+      },
+      "W4ghq12scr": {
+        "position": 999,
+        "variable_label": "DV: Young person GHQ12 score - 12 point scale",
+        "type": "numeric",
+        "measurement_level": "SCALE",
+        "user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-99.0": "YP not interviewed",
+          "-97.0": "YP refused self completion",
+          "-96.0": "YP using interpreter",
+          "-92.0": "Refused"
+        }
+      }
+    }
+  },
+  "ns8_2015_self_completion.tab": {
+    "file_info": {
+      "number_of_variables": 111,
+      "number_of_cases": 7705,
+      "description": "Wave Eight Self-Completion Data File"
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {},
+        "type": "string"
+      },
+      "W8GHQ12_1": {
+        "position": 29,
+        "variable_label": "GHQ12: Concentrate on what doing",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-9.0 thru -8.0 and -1.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Don't know",
+          "-1.0": "Not applicable",
+          "1.0": "Better than usual",
+          "2.0": "Same as usual",
+          "3.0": "Less than usual",
+          "4.0": "Much less than usual"
+        }
+      },
+      "W8GHQ12_2": {
+        "position": 30,
+        "variable_label": "GHQ12: Lost sleep over worry",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-9.0 thru -8.0 and -1.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Don't know",
+          "-1.0": "Not applicable",
+          "1.0": "Not at all",
+          "2.0": "No more than usual",
+          "3.0": "Rather more than usual",
+          "4.0": "Much more than usual"
+        }
+      },
+      "W8GHQ12_3": {
+        "position": 31,
+        "variable_label": "GHQ12: Playing a useful part in things",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-9.0 thru -8.0 and -1.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Don't know",
+          "-1.0": "Not applicable",
+          "1.0": "More so than usual",
+          "2.0": "Same as usual",
+          "3.0": "Less useful than usual",
+          "4.0": "Much less useful"
+        }
+      },
+      "W8GHQ12_4": {
+        "position": 32,
+        "variable_label": "GHQ12: Capable of making decisions",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-9.0 thru -8.0 and -1.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Don't know",
+          "-1.0": "Not applicable",
+          "1.0": "More so than usual",
+          "2.0": "Same as usual",
+          "3.0": "Less so than usual",
+          "4.0": "Much less capable"
+        }
+      },
+      "W8GHQ12_5": {
+        "position": 33,
+        "variable_label": "GHQ12: Constantly under strain",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-9.0 thru -8.0 and -1.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Don't know",
+          "-1.0": "Not applicable",
+          "1.0": "Not at all",
+          "2.0": "No more than usual",
+          "3.0": "Rather more than usual",
+          "4.0": "Much more than usual"
+        }
+      },
+      "W8GHQ12_6": {
+        "position": 34,
+        "variable_label": "GHQ12: Can't overcome difficulties",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-9.0 thru -8.0 and -1.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Don't know",
+          "-1.0": "Not applicable",
+          "1.0": "Not at all",
+          "2.0": "No more than usual",
+          "3.0": "Rather more than usual",
+          "4.0": "Much more than usual"
+        }
+      },
+      "W8GHQ12_7": {
+        "position": 35,
+        "variable_label": "GHQ12: Enjoy day to day activities",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-9.0 thru -8.0 and -1.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Don't know",
+          "-1.0": "Not applicable",
+          "1.0": "More so than usual",
+          "2.0": "Same as usual",
+          "3.0": "Less so than usual",
+          "4.0": "Much less than usual"
+        }
+      },
+      "W8GHQ12_8": {
+        "position": 36,
+        "variable_label": "GHQ12: Face up to problems",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-9.0 thru -8.0 and -1.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Don't know",
+          "-1.0": "Not applicable",
+          "1.0": "More so than usual",
+          "2.0": "Same as usual",
+          "3.0": "Less able than usual",
+          "4.0": "Much less able"
+        }
+      },
+      "W8GHQ12_9": {
+        "position": 37,
+        "variable_label": "GHQ12: Unhappy or depressed",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-9.0 thru -8.0 and -1.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Don't know",
+          "-1.0": "Not applicable",
+          "1.0": "Not at all",
+          "2.0": "No more than usual",
+          "3.0": "Rather more than usual",
+          "4.0": "Much more than usual"
+        }
+      },
+      "W8GHQ12_10": {
+        "position": 38,
+        "variable_label": "GHQ12: Losing confidence in self",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-9.0 thru -8.0 and -1.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Don't know",
+          "-1.0": "Not applicable",
+          "1.0": "Not at all",
+          "2.0": "No more than usual",
+          "3.0": "Rather more than usual",
+          "4.0": "Much more than usual"
+        }
+      },
+      "W8GHQ12_11": {
+        "position": 39,
+        "variable_label": "GHQ12: Thinking of self as worthless",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-9.0 thru -8.0 and -1.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Don't know",
+          "-1.0": "Not applicable",
+          "1.0": "Not at all",
+          "2.0": "No more than usual",
+          "3.0": "Rather more than usual",
+          "4.0": "Much more than usual"
+        }
+      },
+      "W8GHQ12_12": {
+        "position": 40,
+        "variable_label": "GHQ12: Reasonably happy",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-9.0 thru -8.0 and -1.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Don't know",
+          "-1.0": "Not applicable",
+          "1.0": "More so than usual",
+          "2.0": "About the same as usual",
+          "3.0": "Less so than usual",
+          "4.0": "Much less than usual"
+        }
+      }
+    }
+  },
+  "ns8_2015_derived.tab": {
+    "file_info": {
+      "number_of_variables": 53,
+      "number_of_cases": 7705,
+      "description": "Wave Eight Derived Data File"
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {},
+        "type": "string"
+      },
+      "W8DGHQSC": {
+        "position": 53,
+        "variable_label": "DV: General Health Questionnaire (GHQ12) score (Goldberg & Williams,1988)",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-9.0 thru -8.0 and -1.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Insufficient information",
+          "-1.0": "Not applicable"
+        }
+      }
+    }
+  },
+  "ns9_2022_main_interview.tab": {
+    "file_info": {
+      "number_of_variables": 1805,
+      "number_of_cases": 7279,
+      "description": "Sweep 9 (Age 32) Main Interview Data File"
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {},
+        "type": "string"
+      },
+      "W9GHQ12_1": {
+        "position": 1557,
+        "variable_label": "GHQ12: Concentrate on what doing",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Don't know",
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Better than usual",
+          "2.0": "Same as usual",
+          "3.0": "Less than usual",
+          "4.0": "Much less than usual"
+        }
+      },
+      "W9GHQ12_2": {
+        "position": 1558,
+        "variable_label": "GHQ12: Lost sleep over worry",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Don't know",
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Not at all",
+          "2.0": "No more than usual",
+          "3.0": "Rather more than usual",
+          "4.0": "Much more than usual"
+        }
+      },
+      "W9GHQ12_3": {
+        "position": 1559,
+        "variable_label": "GHQ12: Playing a useful part in things",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Don't know",
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "More so than usual",
+          "2.0": "Same as usual",
+          "3.0": "Less useful than usual",
+          "4.0": "Much less useful"
+        }
+      },
+      "W9GHQ12_4": {
+        "position": 1560,
+        "variable_label": "GHQ12: Capable of making decisions",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Don't know",
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "More so than usual",
+          "2.0": "Same as usual",
+          "3.0": "Less so than usual",
+          "4.0": "Much less capable"
+        }
+      },
+      "W9GHQ12_5": {
+        "position": 1561,
+        "variable_label": "GHQ12: Felt constantly under strain",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Don't know",
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Not at all",
+          "2.0": "No more than usual",
+          "3.0": "Rather more than usual",
+          "4.0": "Much more than usual"
+        }
+      },
+      "W9GHQ12_6": {
+        "position": 1562,
+        "variable_label": "GHQ12: Felt couldn't overcome difficulties",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Don't know",
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Not at all",
+          "2.0": "No more than usual",
+          "3.0": "Rather more than usual",
+          "4.0": "Much more than usual"
+        }
+      },
+      "W9GHQ12_7": {
+        "position": 1563,
+        "variable_label": "GHQ12: Enjoy day to day activities",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Don't know",
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "More so than usual",
+          "2.0": "Same as usual",
+          "3.0": "Less so than usual",
+          "4.0": "Much less than usual"
+        }
+      },
+      "W9GHQ12_8": {
+        "position": 1564,
+        "variable_label": "GHQ12: Face up to problems",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Don't know",
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "More so than usual",
+          "2.0": "Same as usual",
+          "3.0": "Less so than usual",
+          "4.0": "Much less able"
+        }
+      },
+      "W9GHQ12_9": {
+        "position": 1565,
+        "variable_label": "GHQ12: Felt unhappy or depressed",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Don't know",
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Not at all",
+          "2.0": "No more than usual",
+          "3.0": "Rather more than usual",
+          "4.0": "Much more than usual"
+        }
+      },
+      "W9GHQ12_10": {
+        "position": 1566,
+        "variable_label": "GHQ12: Losing confidence in self",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Don't know",
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Not at all",
+          "2.0": "No more than usual",
+          "3.0": "Rather more than usual",
+          "4.0": "Much more than usual"
+        }
+      },
+      "W9GHQ12_11": {
+        "position": 1567,
+        "variable_label": "GHQ12: Thinking of self as worthless",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Don't know",
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "Not at all",
+          "2.0": "No more than usual",
+          "3.0": "Rather more than usual",
+          "4.0": "Much more than usual"
+        }
+      },
+      "W9GHQ12_12": {
+        "position": 1568,
+        "variable_label": "GHQ12: Felt reasonably happy",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-9.0 thru -1.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Don't know",
+          "-3.0": "Not asked at fieldwork stage",
+          "-1.0": "Not applicable",
+          "1.0": "More so than usual",
+          "2.0": "Same as usual",
+          "3.0": "Less so than usual",
+          "4.0": "Much less than usual"
+        }
+      }
+    }
+  },
+  "ns9_2022_derived_variables.tab": {
+    "file_info": {
+      "number_of_variables": 68,
+      "number_of_cases": 7279,
+      "description": "Sweep 9 (Age 32) Derived Variables Data File"
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {},
+        "type": "string"
+      },
+      "W9DGHQSC": {
+        "position": 55,
+        "variable_label": "DV: General Health Questionnaire (GHQ12) score (Goldberg & Williams,1988)",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-1.0 thru -8.0 and -9.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Insufficient information",
+          "-1.0": "Not applicable"
+        }
+      }
+    }
+  }
+}

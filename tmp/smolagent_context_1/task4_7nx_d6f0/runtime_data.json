@@ -1,0 +1,7 @@
+{
+  "result": "The sexual orientation variables have been cleaned and harmonised across waves. Data from sweeps 6 (age 19), 7 (age 20), 8, and 9 (age 32) were processed using the specified missing-value mappings (e.g., -97 and -100 to -9). A consolidated `sexual_orientation` variable was created using a most-recent-valid-first approach, and age-specific variables (`sexual_orientation_19`, `sexual_orientation_20`, `sexual_orientation_w8`, `sexual_orientation_32`) were retained. The final dataset, containing only the ID and these derived variables as labelled factors, was saved to `data/output/cleaned_data.csv`.",
+  "state": "success",
+  "time_taken": 201.55249905586243,
+  "steps": 3,
+  "token_usage": 15482
+}

@@ -151,8 +151,8 @@ if __name__ == "__main__":
     model_name = f"ollama_chat/{model_id}"
     api_key = "ollama"
 
-    for truth_path_str in Path("tmp/smolagent_context").glob("sample*/rtruth.R"):
-        logger.info(f"Processing sample: {truth_path_str.parent.name}")
+    for truth_path_str in Path("tmp/smolagent_context").glob("task*/rtruth.R"):
+        logger.info(f"Processing task: {truth_path_str.parent.name}")
         code_file1 = Path(truth_path_str)
         code_file2 = code_file1.with_name("rpred.R")
         tool = CodeComparisonTool(

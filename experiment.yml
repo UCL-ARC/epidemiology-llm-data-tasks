@@ -13,7 +13,7 @@ agent:
   type: tool_calling            # tool_calling | code
 
 experiment:
-  runs: 1                       # number of times to repeat the full sample loop
-  use_overrides: false          # if true, use per-sample override prompts where present
+  runs: 1                       # number of times to repeat the full task loop
+  use_overrides: false          # if true, use per-task override prompts where present
   persist_context: true         # if true, keep the temp working directory after each run
-  samples:                      # list of sample numbers to run; leave empty [] to run all                   
+  tasks:                        # list of task numbers to run; leave empty [] to run all                   
