@@ -1,0 +1,82 @@
+task_id: 1
+task_type: data_cleaning_r_plus
+name: housing_tenure
+additional_requirements: |
+  Derive two families of housing tenure variables:
+    Detailed (8-category): hownteen14, hownteen15, hownteen16, hownteen17, hownteen18, hownteen19, hownteen20 — adolescent waves only.
+    Collapsed (6-category): hown14, hown15, hown16, hown17, hown18, hown19, hown20, hown25, hown32 — all nine waves.
+  Detailed 8-category scheme: adopt directly from the value labels of the waves 1–4 source variables.
+  Collapsed 6-category scheme: merge the three rental categories (Council, Housing Association, private) into a single "Rent it" category; "Some other arrangement" becomes "Other"; all other categories pass through 1-to-1.
+  Derivation logic by wave group:
+    Waves 1–4: single source variable per wave; copy substantive codes into the detailed hownteenXX variable and collapse to hownXX.
+    Waves 5–7: three source variables per wave (type, owned-subtype, rented-subtype); read subtypes in priority — owned-subtype before rented-subtype — mapping by label meaning; "Some other arrangement" from any source → 8; if no substantive path fires, preserve the specific missing code from the subtype variables; do not treat tenure type codes 1 or 2 as substantive values — they only route to the subtype questions.
+    Waves 8–9: single source variable per wave; both Squatting and Other collapse to 6.
+  Missing data: in waves 1–7, source code -1 labelled "Don't know" maps to -8; in waves 8–9, -1 retains its standard meaning (item not applicable).
+additional_requirements_lite: |
+  Derive detailed housing tenure variables hownteen14 through hownteen20 and collapsed housing tenure variables hown14 through hown32.
+override: |
+   You have access to raw survey datasets on a cohort study followed up at multiple ages. Your task is to clean and preprocess these datasets into a single file ready for analysis.
+
+   Follow these instructions precisely:
+
+   1. **File Loading**:
+      - Ensure when you load the input files you append the dir "data/input/" this is where they are stored.
+      - Load each dataset into a separate object and merge using full_join by the ID variable.
+      - The input files are tab-delimited (.tab) text files. Use `readr::read_delim()` with `delim = "\t"` to load them.
+      - Load each file explicitly by name from the metadata.
+
+   2. **Variable Naming Conventions**:
+      - Use the exact ID variable name from source data (e.g., NSID) - do NOT create or rename to generic "id".
+      - All variable names must be short, descriptive, and lowercase.
+
+   3. **Variable Derivation**:
+      - After merging, create **all derived variables**.
+      - Create one detailed adolescent variable per age wave present in the metadata, named `hownteen[age]` (e.g., `hownteen14` for age 14), preserving full granularity where available.
+      - Then create one collapsed, harmonized variable per age wave, named `hown[age]` (e.g., `hown14` for age 14). Also create `hown25` and `hown32` for the adult waves.
+      - Do not create additional adult detailed variables (no `hownadtl25` or `hownadtl32`).
+
+   4. **Handling Multiple Indicators**:
+      - Some waves split tenure across multiple variables: a type variable (Owned/Rented/Other) and separate sub-type variables for owned and rented properties.
+      - When combining these into a single 8-category variable, determine each sub-type code's target category by matching its label text to the unified label scheme defined in section 6 — do not map by numeric code directly, as the sub-type numbering restarts at 1 within each type and does not correspond to positions in the unified scheme.
+
+   5. **Standard Missing-Value Codes**:
+      Use the following standard codes consistently:
+      - -9 = Refusal
+      - -8 = Don't know/insufficient information
+      - -1 = Item not applicable
+      - -3 = Not asked/participated/interviewed
+      - -2 = Script error/information lost
+      - Any Null value to be coded as -3 (Not asked at the fieldwork stage/participated/interviewed) to distinguish from explicit missing codes.
+      - Determine the correct standard code for each wave-specific missing value from its label in the metadata: codes describing lost, erroneous, or missing data map to -2; codes describing non-participation or non-interview map to -3.
+
+   6. **Factor Variables and Labels**:
+      - For detailed adolescent variables (`hownteen[age]`), use long descriptive labels, e.g.:
+      "Owned outright", "Being bought on a mortgage/bank loan", "Shared ownership (owns & rents property)", "Rented from a Council or New Town", "Rented from a Housing Association", "Rented privately", "Rent free", "Some other arrangement", "Item not applicable", "Script error/information lost", "Not asked at the fieldwork stage/participated/interviewed", "Don't know/insufficient information", "Refusal".
+      - For collapsed variables (`hown[age]`, `hown25`, `hown32`), use descriptive labels like:
+      "Owned outright", "Owned, buying with help of mortgage/loan", "Part rent, part mortgage", "Rent it", "live rent-free", "Other", "Item not applicable", "Script error/information lost", "Not asked at the fieldwork stage/participated/interviewed", "Don't know/insufficient information", "Refusal".
+
+   7. **General Processing Rules**:
+      - Merge first, recode later.
+      - Process all waves and ages present in the metadata.
+      - Follow metadata precisely for mappings, variable names, and missing value codes.
+
+   8. **Package Requirements**:
+      - Required packages: haven, dplyr, purrr, labelled, readr.
+      - Load packages at the start of the script using library().
+
+   9. **Output Requirements**:
+      - Write the cleaned dataset to a single CSV using base R: `write.csv(cleaned_data, "data/output/cleaned_data.csv", row.names = FALSE)`.
+
+   10. **Variables to Include in Output**:
+      - Keep only NSID, all collapsed age-specific variables (`hown14`, `hown15`, `hown16`, `hown17`, `hown18`, `hown19`, `hown20`, `hown25`, `hown32`), and all detailed adolescent variables (`hownteen14`, `hownteen15`, `hownteen16`, `hownteen17`, `hownteen18`, `hownteen19`, `hownteen20`).
+      - Do not include raw source variables (e.g., W5Hous12BHH).
+
+   11. **Execution**:
+      - You must run your R script after generating it.
+      - IMPORTANT: If your R script fails, read the error message carefully, fix the script, and try again. Never return an error message as your final answer.
+
+   Produce your script in R.
+
+   Here is the appropriate metadata for the task:
+
+   {metadata}

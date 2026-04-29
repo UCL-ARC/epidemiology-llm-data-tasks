@@ -66,7 +66,7 @@ class TestInitialiseContext:
         dir1.name = "dir1"
 
         context_path = Mock(spec=Path)
-        context_path.name = "sample_context"
+        context_path.name = "task_context"
         # Make context_path.iterdir() yield our fake items
         context_path.iterdir.return_value = [file1, dir1]
 
@@ -89,7 +89,7 @@ class TestInitialiseContext:
         base.temp_root = Path("./tmp/test_context_root")
 
         context_path = Mock(spec=Path)
-        context_path.name = "sample_context"
+        context_path.name = "task_context"
         # No files/dirs to copy; we only care about the rmtree branch here
         context_path.iterdir.return_value = []
 
@@ -111,7 +111,7 @@ class TestExecutionContext:
         """With context_path, should chdir into temp dir and clean it up by default."""
         base = DummyAgent()
         base.temp_root = tmp_path / "agent_contexts"
-        temp_dir = tmp_path / "agent_contexts" / "sample"
+        temp_dir = tmp_path / "agent_contexts" / "task"
         mock_init_ctx.return_value = temp_dir
 
         # Ensure temp_dir exists so cleanup path is exercised
@@ -136,7 +136,7 @@ class TestExecutionContext:
         """When persist=True, temp dir should not be removed."""
         base = DummyAgent()
         base.temp_root = tmp_path / "agent_contexts"
-        temp_dir = tmp_path / "agent_contexts" / "sample"
+        temp_dir = tmp_path / "agent_contexts" / "task"
         mock_init_ctx.return_value = temp_dir
 
         temp_dir.mkdir(parents=True, exist_ok=True)
