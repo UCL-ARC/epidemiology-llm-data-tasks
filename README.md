@@ -103,29 +103,29 @@ experiment:
 Run with the default config:
 
 ```sh
-uv run python3 -m src.agents
+python scripts/run_experiment.py
 ```
 
 Point to a different config file (useful for running multiple experiments):
 
 ```sh
-uv run python3 -m src.agents --config experiments/qwen_run.yml
+python scripts/run_experiment.py --config experiments/qwen_run.yml
 ```
 
 Any config field can be overridden via CLI args without editing the YAML:
 
 ```sh
 # Override model and run 3 times across tasks 1, 2, 3
-uv run python3 -m src.agents --model_id qwen3.5:9b --runs 3 --tasks 1 2 3
+python scripts/run_experiment.py --model_id qwen3.5:9b --runs 3 --tasks 1 2 3
 
 # Use HuggingFace instead of Ollama (reads HF_TOKEN from environment)
-uv run python3 -m src.agents --provider huggingface --model_id Qwen/Qwen3-30B-A3B-Instruct-2507
+python scripts/run_experiment.py --provider huggingface --model_id Qwen/Qwen3-30B-A3B-Instruct-2507
 
 # Use per-task override prompts and discard temp directories after each run
-uv run python3 -m src.agents --use_overrides --no_persist_context
+python scripts/run_experiment.py --use_overrides --no_persist_context
 ```
 
-CLI args always take precedence over `experiment.yml`. Run `uv run python3 -m src.agents --help` for the full list of options.
+CLI args always take precedence over `experiment.yml`. Run `python scripts/run_experiment.py --help` for the full list of options.
 
 ### Prompt construction
 
@@ -154,6 +154,24 @@ For each task, the prompt is built as follows:
 The `src/tabmatch/` module compares agent-generated output CSVs against ground truth CSVs. It is designed to be robust to the naming and encoding differences that LLM agents routinely introduce — mismatched column names, alternative category labels, and partial outputs — while remaining strict about semantic correctness.
 
 For full algorithmic details, see [`src/tabmatch/README.md`](src/tabmatch/README.md).
+
+### Running a comparison
+
+Compare a single model's experiment output:
+
+```sh
+python scripts/run_comparison.py <model>
+```
+
+where `<model>` is the suffix of the context directory (e.g. `_qwen3.5:9b_1` targets `tmp/smolagent_context_qwen3.5:9b_1`).
+
+Compare all experiment outputs in one go:
+
+```sh
+python scripts/run_comparison.py --all
+```
+
+Run `python scripts/run_comparison.py --help` for the full list of options.
 
 
 ## Experiment Data
