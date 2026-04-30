@@ -187,7 +187,7 @@ def main() -> None:  # noqa: PLR0915
 
             task_type = task.get("task_type", "unknown")
             override = task.get("override", None)
-            additional_requirements = task.get("additional_requirements_lite", "")
+            additional_requirements = task.get("additional_requirements", "")
 
             if use_overrides and override:
                 prompt = override
