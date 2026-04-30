@@ -299,7 +299,7 @@ if __name__ == "__main__":
     exp_cfg = cfg.get("experiment", {})
 
     provider = args.provider or model_cfg.get("provider", "ollama")
-    model_id = args.model_id or model_cfg.get("model_id", "gemma4:31b-cloud")
+    model_id = args.model_id or model_cfg.get("model_id", "gemma4:31b")
     temperature = (
         args.temperature
         if args.temperature is not None
