@@ -11,16 +11,18 @@ For a full description of the algorithm, see the [technical supplement](https://
 Compare a single model's experiment output:
 
 ```sh
-python -m src.tabmatch <model>
+python scripts/run_comparison.py <model>
 ```
 
-where `<model>` is the suffix of the context directory (e.g. `qwen3.5:9b_3` targets `tmp/smolagent_context_qwen3.5:9b_3`).
+where `<model>` is the suffix of the context directory (e.g. `_qwen3.5:9b_3` targets `tmp/smolagent_context_qwen3.5:9b_3`).
 
 Compare all experiment outputs:
 
 ```sh
-python -m src.tabmatch --all
+python scripts/run_comparison.py --all
 ```
+
+`python -m src.tabmatch` also works as an alias.
 
 ## Options
 
@@ -47,4 +49,4 @@ python -m src.tabmatch --all
 | `comparisons.py` | Column type inference and per-column comparison |
 | `models.py` | Pydantic result models |
 | `report.py` | `print_comparison_report()` and `aggregate_comparison_results()` |
-| `__main__.py` | CLI entry point |
+| `__main__.py` | Alias shim — delegates to `scripts/run_comparison.py` |
