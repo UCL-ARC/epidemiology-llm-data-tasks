@@ -1,9 +1,9 @@
-"""Tests for src/rebuild_experiments.py."""
+"""Tests for scripts/rebuild_experiments.py."""
 
 import json
 from unittest.mock import Mock, patch
 
-from src.rebuild_experiments import (
+from scripts.rebuild_experiments import (
     copy_raw_data,
     get_model_run_dirs,
     get_task_dirs,
@@ -97,7 +97,7 @@ class TestRunRScript:
         result = run_r_script(tmp_path / "nonexistent.R", verbose=False)
         assert result is False
 
-    @patch("src.rebuild_experiments.subprocess.run")
+    @patch("scripts.rebuild_experiments.subprocess.run")
     def test_returns_true_on_success(self, mock_run, tmp_path):
         """Should return True when script runs successfully."""
         script = tmp_path / "test.R"
@@ -108,7 +108,7 @@ class TestRunRScript:
         result = run_r_script(script, verbose=False)
         assert result is True
 
-    @patch("src.rebuild_experiments.subprocess.run")
+    @patch("scripts.rebuild_experiments.subprocess.run")
     def test_returns_false_on_failure(self, mock_run, tmp_path):
         """Should return False when script exits non-zero."""
         script = tmp_path / "test.R"
@@ -119,7 +119,7 @@ class TestRunRScript:
         result = run_r_script(script, verbose=False)
         assert result is False
 
-    @patch("src.rebuild_experiments.subprocess.run")
+    @patch("scripts.rebuild_experiments.subprocess.run")
     def test_verbose_logs_stdout(self, mock_run, tmp_path):
         """Should not fail when verbose=True and there's stdout."""
         script = tmp_path / "test.R"
@@ -130,7 +130,7 @@ class TestRunRScript:
         result = run_r_script(script, verbose=True)
         assert result is True
 
-    @patch("src.rebuild_experiments.subprocess.run")
+    @patch("scripts.rebuild_experiments.subprocess.run")
     def test_logs_stderr_warnings(self, mock_run, tmp_path):
         """Should handle stderr without failing."""
         script = tmp_path / "test.R"
@@ -141,7 +141,7 @@ class TestRunRScript:
         result = run_r_script(script, verbose=False)
         assert result is True
 
-    @patch("src.rebuild_experiments.subprocess.run")
+    @patch("scripts.rebuild_experiments.subprocess.run")
     def test_handles_exception(self, mock_run, tmp_path):
         """Should return False if subprocess raises exception."""
         script = tmp_path / "test.R"

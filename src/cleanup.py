@@ -1,16 +1,24 @@
 """Utility to clean up incomplete smolagent outputs and report missing tasks."""
 
+from __future__ import annotations
+
 import shutil
 import sys
-from pathlib import Path
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from pathlib import Path
+
 
 from loguru import logger
+
+from src.config import DATA_OUTPUT_DIR, PRED_FILENAME, SMOLAGENT_CONTEXT_ROOT, TASK_IDS
 
 
 def main(*, delete_data: bool = False) -> None:  # noqa: PLR0912, C901
     """Identify incomplete smolagent outputs and optionally delete them."""
-    context_root = Path("./tmp/smolagent_context")
-    all_task_ids = list(range(1, 21))
+    context_root = SMOLAGENT_CONTEXT_ROOT
+    all_task_ids = TASK_IDS
 
     if not context_root.exists():
         logger.warning(f"Context root does not exist: {context_root}")
@@ -45,7 +53,7 @@ def main(*, delete_data: bool = False) -> None:  # noqa: PLR0912, C901
             continue
 
         for d in dirs:
-            if (d / "data" / "output" / "cleaned_data.csv").exists():
+            if (d / DATA_OUTPUT_DIR / PRED_FILENAME).exists():
                 complete_dirs.append(d)
             else:
                 incomplete_dirs.append(d)
@@ -56,9 +64,7 @@ def main(*, delete_data: bool = False) -> None:  # noqa: PLR0912, C901
         logger.info(f"  ✓ {d}")
 
     if incomplete_dirs:
-        logger.info(
-            f"\nIncomplete dirs ({len(incomplete_dirs)}) — " f"no cleaned_data.csv:"
-        )
+        logger.info(f"\nIncomplete dirs ({len(incomplete_dirs)}) — no {PRED_FILENAME}:")
         for d in incomplete_dirs:
             logger.info(f"  ✗ {d}")
 
