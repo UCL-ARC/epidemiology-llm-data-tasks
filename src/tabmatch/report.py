@@ -303,6 +303,35 @@ def build_category_mapping_table(result: DataComparisonResult) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
+def _parse_runtime(
+    runtime_data: dict | None,
+) -> tuple[int | None, int | None, float | None]:
+    """
+    Extract scalar (token_usage, steps, time_taken) from a runtime_data dict.
+
+    Handles both the current RunResult format (token_usage dict, steps list,
+    timing.duration) and the legacy AgentResult format (int scalars, time_taken key).
+    """
+    if runtime_data is None:
+        return None, None, None
+
+    token_usage = runtime_data.get("token_usage")
+    if isinstance(token_usage, dict):
+        token_usage = token_usage.get("total_tokens")
+
+    steps = runtime_data.get("steps")
+    if isinstance(steps, list):
+        steps = len(steps)
+
+    time_taken = runtime_data.get("time_taken")
+    if time_taken is None:
+        timing = runtime_data.get("timing")
+        if isinstance(timing, dict):
+            time_taken = timing.get("duration")
+
+    return token_usage, steps, time_taken
+
+
 def aggregate_comparison_results(  # noqa: PLR0915, PLR0912, C901
     results: list[tuple[str, DataComparisonResult, dict | None]],
 ) -> pd.DataFrame:
@@ -311,7 +340,7 @@ def aggregate_comparison_results(  # noqa: PLR0915, PLR0912, C901
 
     Args:
         results: List of (task_name, DataComparisonResult, runtime_data) tuples.
-            runtime_data is an optional dict with keys: token_usage, steps, time_taken.
+            runtime_data is a dict from the RunResult serialisation (or None).
 
     Returns:
         DataFrame with aggregated metrics for each task plus an overall aggregate row.
@@ -325,6 +354,7 @@ def aggregate_comparison_results(  # noqa: PLR0915, PLR0912, C901
     all_categorical_overlap: list[float] = []
 
     for task_name, result, runtime_data in results:
+        token_usage, steps, time_taken = _parse_runtime(runtime_data)
         # Count columns
         matched_cols = sum(1 for m in result.column_matches if m.pred_column)
         unmatched_gt_cols = len(result.unmatched_gt_columns)
@@ -446,11 +476,9 @@ def aggregate_comparison_results(  # noqa: PLR0915, PLR0912, C901
                 "task_complete": result.task_completion_percentage == 100.0  # noqa: PLR2004
                 if result.task_completion_percentage is not None
                 else None,
-                "token_usage": runtime_data.get("token_usage")
-                if runtime_data
-                else None,
-                "steps": runtime_data.get("steps") if runtime_data else None,
-                "time_taken": runtime_data.get("time_taken") if runtime_data else None,
+                "token_usage": token_usage,
+                "steps": steps,
+                "time_taken": time_taken,
             }
         )
 

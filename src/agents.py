@@ -1,6 +1,7 @@
 """Agents for epidemiology LLM data tasks."""
 
 # utils imports
+import json
 import os
 import shutil
 import tempfile
@@ -117,6 +118,15 @@ class Agent(ABC):
                 logger.info(f"Persisted temporary context: {temp_dir}")
 
 
+def _strip_raw(obj: object) -> object:
+    """Recursively remove 'raw' keys from dicts to trim verbose API response objects."""
+    if isinstance(obj, dict):
+        return {k: _strip_raw(v) for k, v in obj.items() if k != "raw"}
+    if isinstance(obj, list):
+        return [_strip_raw(item) for item in obj]
+    return obj
+
+
 class SmolAgent(Agent):
     """Agent using smolagents with temporary directory context management."""
 
@@ -206,8 +216,10 @@ class SmolAgent(Agent):
                 token_usage=token_usage,
             )
 
-            # Save agent result metadata to the working directory
+            # Save full smolagents RunResult to the working directory
             result_path = working_dir / "runtime_data.json"
-            result_path.write_text(agent_result.model_dump_json(indent=2))
+            result_path.write_text(
+                json.dumps(_strip_raw(result.dict()), indent=2, default=str)
+            )
 
             return agent_result
