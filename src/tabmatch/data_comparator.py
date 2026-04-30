@@ -3,6 +3,17 @@
 import pandas as pd
 from loguru import logger
 
+from src.config import (
+    CATEGORICAL_MATCH_THRESHOLD,
+    CATEGORICAL_THRESHOLD,
+    COLUMN_DATA_MATCH_THRESHOLD,
+    CROSS_ENCODER_MODEL,
+    GT_SUFFIX,
+    JOIN_SUFFIXES,
+    MATCH_THRESHOLD,
+    PRED_SUFFIX,
+)
+
 from .column_matcher import ColumnMatcher
 from .comparisons import (
     compare_categorical,
@@ -30,13 +41,13 @@ class DataComparator:
 
     def __init__(  # NOQA: PLR0913
         self,
-        categorical_threshold: int = 20,
-        cross_encoder_model_name: str = "cross-encoder/stsb-roberta-base",
-        match_threshold: float = 0.5,
-        column_data_match_threshold: float = 0.7,
+        categorical_threshold: int = CATEGORICAL_THRESHOLD,
+        cross_encoder_model_name: str = CROSS_ENCODER_MODEL,
+        match_threshold: float = MATCH_THRESHOLD,
+        column_data_match_threshold: float = COLUMN_DATA_MATCH_THRESHOLD,
         categorical_data_match_threshold: float = 1.0,
         numerical_data_match_threshold: float = 0.0,
-        categorical_match_threshold: float = 0.8,
+        categorical_match_threshold: float = CATEGORICAL_MATCH_THRESHOLD,
     ) -> None:
         """
         Initialise the DataComparator.
@@ -99,7 +110,7 @@ class DataComparator:
             left_index=True,
             right_index=True,
             how="inner",
-            suffixes=("_gt", "_pred"),
+            suffixes=JOIN_SUFFIXES,
         )
 
         if len(gt_df) > 0:
@@ -135,11 +146,13 @@ class DataComparator:
     ) -> ColumnComparison:
         """Compare a single matched column pair in the joined dataframe."""
         gt_col_name = (
-            f"{gt_column}_gt" if f"{gt_column}_gt" in joined_df.columns else gt_column
+            f"{gt_column}{GT_SUFFIX}"
+            if f"{gt_column}{GT_SUFFIX}" in joined_df.columns
+            else gt_column
         )
         pred_col_name = (
-            f"{pred_column}_pred"
-            if f"{pred_column}_pred" in joined_df.columns
+            f"{pred_column}{PRED_SUFFIX}"
+            if f"{pred_column}{PRED_SUFFIX}" in joined_df.columns
             else pred_column
         )
 

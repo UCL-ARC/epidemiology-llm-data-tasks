@@ -10,6 +10,7 @@ import subprocess
 from pathlib import Path
 
 from logger.logger import Live, Spinner, console, logger
+from src.config import DATA_INPUT_DIR, R_TRUTH_SCRIPT
 
 
 def get_arg_parser() -> argparse.ArgumentParser:
@@ -155,7 +156,7 @@ def main() -> None:
             console=console,
             refresh_per_second=4,
         ):
-            task_input_dir = ground_truth_task / "data" / "input"
+            task_input_dir = ground_truth_task / DATA_INPUT_DIR
             failed_files = copy_raw_data(input_dir, task_input_dir, metadata)
 
         if failed_files:
@@ -169,7 +170,7 @@ def main() -> None:
             console=console,
             refresh_per_second=4,
         ):
-            r_script_path = ground_truth_task / "rtruth.R"
+            r_script_path = ground_truth_task / R_TRUTH_SCRIPT
             r_success = run_r_script(r_script_path, verbose=verbose)
 
         if not r_success:

@@ -4,7 +4,7 @@ name: region
 additional_requirements: |
   Derive time-varying geographical location variables named regub15, regub16, regov15, regov16, regor25, regor32, and regint32.
   Coded as: regub15/regub16 use urban-rural categories 1-8; regov15/regov16 use English government office region categories 1-9; regor25/regor32 use UK region categories 1-12; regint32 is 1 = In the UK and 2 = Abroad.
-  Missing data: for this task, map source -94 to -2, and map source value 13 in W8DGOR/W9DRGN ("Unknown due to faulty/missing postcode") to -2.
+  Missing data: for this task map source value 13 in W8DGOR/W9DRGN ("Unknown due to faulty/missing postcode") to -2.
   Derivation logic: create regub15/regov15 from W2 urbind/gor, regub16/regov16 from W3 urbind/gor, regor25 from W8DGOR, regor32 from W9DRGN, and regint32 from W9NATIONRES by collapsing England/Scotland/Wales/Northern Ireland to 1 and Outside UK/unknown to 2.
 additional_requirements_lite: |
   Derive time-varying geographical location variables named regub15, regub16, regov15, regov16, regor25, regor32, and regint32.
