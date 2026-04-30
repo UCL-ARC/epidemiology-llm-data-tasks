@@ -5,7 +5,7 @@ from unittest.mock import MagicMock, patch
 
 import pandas as pd
 
-from src.tabmatch.__main__ import main
+from scripts.run_comparison import main
 from src.tabmatch.models import (
     ColumnComparison,
     ColumnMatch,
@@ -60,11 +60,11 @@ def _make_result() -> DataComparisonResult:
 class TestMain:
     """Tests for the main() CLI entry point."""
 
-    @patch("src.tabmatch.__main__.json.load")
-    @patch("src.tabmatch.__main__.print_comparison_report")
-    @patch("src.tabmatch.__main__.aggregate_comparison_results")
-    @patch("src.tabmatch.__main__.DataComparator")
-    @patch("src.tabmatch.__main__.pd.read_csv")
+    @patch("scripts.run_comparison.json.load")
+    @patch("scripts.run_comparison.print_comparison_report")
+    @patch("scripts.run_comparison.aggregate_comparison_results")
+    @patch("scripts.run_comparison.DataComparator")
+    @patch("scripts.run_comparison.pd.read_csv")
     def test_main_processes_tasks(
         self,
         mock_read_csv: MagicMock,
@@ -108,7 +108,7 @@ class TestMain:
         mock_comparator.compare.assert_called_once()
         mock_print_report.assert_called_once_with(result)
 
-    @patch("src.tabmatch.__main__.DataComparator")
+    @patch("scripts.run_comparison.DataComparator")
     def test_main_skips_missing_files(
         self,
         mock_comparator_cls: MagicMock,
@@ -126,7 +126,7 @@ class TestMain:
 
         mock_comparator_cls.return_value.compare.assert_not_called()
 
-    @patch("src.tabmatch.__main__.DataComparator")
+    @patch("scripts.run_comparison.DataComparator")
     def test_main_no_tasks_found(
         self,
         mock_comparator_cls: MagicMock,
