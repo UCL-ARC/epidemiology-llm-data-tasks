@@ -22,6 +22,7 @@ from smolagents import CodeAgent, LiteLLMModel, ToolCallingAgent
 from smolagents import tool as stool  # renamed to avoid conflict - teehee
 from smolagents.tools import Tool
 
+from src.config import AGENT_CONTEXTS_ROOT, SMOLAGENT_CONTEXT_ROOT
 from src.r_code_agent import create_r_code_agent
 
 
@@ -42,7 +43,7 @@ class Agent(ABC):
     def __init__(self) -> None:
         """Initialise the Agent base class."""
         # Base temp directory root for all agents
-        self.temp_root = Path("./tmp/agent_contexts")
+        self.temp_root = AGENT_CONTEXTS_ROOT
 
     @abstractmethod
     def forward(self, *args, **kwargs) -> AgentResult:  # noqa: ANN002
@@ -133,7 +134,7 @@ class SmolAgent(Agent):
         """Initialise the SmolAgent with tools and model configuration."""
         super().__init__()
         # Override temp_root for SmolAgent
-        self.temp_root = Path("./tmp/smolagent_context")
+        self.temp_root = SMOLAGENT_CONTEXT_ROOT
 
         self.tools = self._initialise_tools(tools)
         self.model_name = model_name

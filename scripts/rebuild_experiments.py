@@ -13,6 +13,14 @@ import subprocess
 from pathlib import Path
 
 from logger.logger import Live, Spinner, console, logger
+from src.config import (
+    DATA_INPUT_DIR,
+    DATA_OUTPUT_DIR,
+    R_PRED_SCRIPT,
+    R_TRUTH_SCRIPT,
+    SMOLAGENT_CONTEXT_PREFIX,
+    TMP_DIR,
+)
 
 
 def get_arg_parser() -> argparse.ArgumentParser:
@@ -24,7 +32,7 @@ def get_arg_parser() -> argparse.ArgumentParser:
         "-i",
         "--input_dir",
         type=Path,
-        default=Path("data/input"),
+        default=Path(DATA_INPUT_DIR),
         help="Path to the directory containing the raw .tab data files. "
         "(default: data/input)",
     )
@@ -32,7 +40,7 @@ def get_arg_parser() -> argparse.ArgumentParser:
         "-t",
         "--tmp_dir",
         type=Path,
-        default=Path("tmp"),
+        default=TMP_DIR,
         help="Path to the tmp directory containing experiment outputs. "
         "(default: tmp)",
     )
@@ -137,7 +145,7 @@ def get_model_run_dirs(tmp_dir: Path, model_filter: str | None) -> list[Path]:
     model_dirs = sorted(
         d
         for d in tmp_dir.iterdir()
-        if d.is_dir() and d.name.startswith("smolagent_context_")
+        if d.is_dir() and d.name.startswith(f"{SMOLAGENT_CONTEXT_PREFIX}_")
     )
     if model_filter:
         model_dirs = [d for d in model_dirs if model_filter in d.name]
@@ -193,7 +201,7 @@ def process_task(
         console=console,
         refresh_per_second=4,
     ):
-        task_input_dir = task_dir / "data" / "input"
+        task_input_dir = task_dir / DATA_INPUT_DIR
         failed_files = copy_raw_data(input_dir, task_input_dir, metadata)
 
     if failed_files:
@@ -204,11 +212,11 @@ def process_task(
         return False
 
     # --- Ensure output directory exists ---
-    output_dir = task_dir / "data" / "output"
+    output_dir = task_dir / DATA_OUTPUT_DIR
     Path.mkdir(output_dir, parents=True, exist_ok=True)
 
     # --- Run rtruth.R → cleaned_data.csv ---
-    rtruth_path = task_dir / "rtruth.R"
+    rtruth_path = task_dir / R_TRUTH_SCRIPT
     with Live(
         Spinner("dots", text="Running rtruth.R..."),
         console=console,
@@ -221,7 +229,7 @@ def process_task(
         return False
 
     # --- Run rpred.R → output.csv ---
-    rpred_path = task_dir / "rpred.R"
+    rpred_path = task_dir / R_PRED_SCRIPT
     with Live(
         Spinner("dots", text="Running rpred.R..."),
         console=console,
