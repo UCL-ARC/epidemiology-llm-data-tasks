@@ -6,7 +6,7 @@
 model:
   # Ollama (via LiteLLM)
   provider: ollama              # ollama | huggingface
-  model_id: gemma4:31b
+  model_id: devstral-small-2:24b
   temperature: 0.8
 
 agent:
