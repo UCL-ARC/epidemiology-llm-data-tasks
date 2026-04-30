@@ -44,7 +44,7 @@ region_all <- region_all %>%
     c(regub15, regub16),
     ~ case_when(
       .x %in% 1:8 ~ .x,
-      .x == -94 ~ -2,
+      .x == -94 ~ -8,
       TRUE ~ -3
     )
   )) %>%
@@ -53,7 +53,7 @@ region_all <- region_all %>%
     c(regov15, regov16),
     ~ case_when(
       .x %in% 1:9 ~ .x,
-      .x == -94 ~ -2,
+      .x == -94 ~ -8,
       TRUE ~ -3
     )
   )) %>%
