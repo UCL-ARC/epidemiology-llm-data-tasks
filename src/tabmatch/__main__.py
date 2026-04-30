@@ -8,6 +8,18 @@ from pathlib import Path
 import pandas as pd
 from loguru import logger
 
+from src.config import (
+    CATEGORICAL_DATA_MATCH_THRESHOLD,
+    CATEGORICAL_MATCH_THRESHOLD,
+    CATEGORICAL_THRESHOLD,
+    COLUMN_DATA_MATCH_THRESHOLD,
+    GT_FILENAME,
+    NUMERICAL_DATA_MATCH_THRESHOLD,
+    PRED_FILENAME,
+    SMOLAGENT_CONTEXT_PREFIX,
+    TMP_DIR,
+)
+
 from . import (
     DataComparator,
     aggregate_comparison_results,
@@ -45,13 +57,13 @@ def get_arg_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--base-dir",
         type=Path,
-        default=Path("tmp"),
+        default=TMP_DIR,
         help="Base directory containing experiment outputs (default: tmp).",
     )
     parser.add_argument(
         "--categorical-threshold",
         type=int,
-        default=20,
+        default=CATEGORICAL_THRESHOLD,
         help="Max unique values to treat a column as categorical (default: 20).",
     )
     parser.add_argument(
@@ -63,37 +75,37 @@ def get_arg_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--column-data-match-threshold",
         type=float,
-        default=0.7,
+        default=COLUMN_DATA_MATCH_THRESHOLD,
         help="Column data match threshold (default: 0.7).",
     )
     parser.add_argument(
         "--categorical-data-match-threshold",
         type=float,
-        default=0.95,
+        default=CATEGORICAL_DATA_MATCH_THRESHOLD,
         help="Categorical data match threshold (default: 0.95).",
     )
     parser.add_argument(
         "--numerical-data-match-threshold",
         type=float,
-        default=0.0001,
-        help="Numerical data match threshold (default: 0.0).",
+        default=NUMERICAL_DATA_MATCH_THRESHOLD,
+        help="Numerical data match threshold (default: 0.0001).",
     )
     parser.add_argument(
         "--categorical-match-threshold",
         type=float,
-        default=0.8,
+        default=CATEGORICAL_MATCH_THRESHOLD,
         help="Categorical column match threshold (default: 0.8).",
     )
     parser.add_argument(
         "--gt-filename",
         type=str,
-        default="output.csv",
+        default=GT_FILENAME,
         help="Ground truth filename (default: output.csv).",
     )
     parser.add_argument(
         "--pred-filename",
         type=str,
-        default="cleaned_data.csv",
+        default=PRED_FILENAME,
         help="Predicted output filename (default: cleaned_data.csv).",
     )
     return parser
@@ -113,7 +125,7 @@ def main(argv: list[str] | None = None) -> None:  # noqa: PLR0915
         context_dirs = sorted(
             p
             for p in args.base_dir.iterdir()
-            if p.is_dir() and p.name.startswith("smolagent_context")
+            if p.is_dir() and p.name.startswith(SMOLAGENT_CONTEXT_PREFIX)
         )
         if not context_dirs:
             logger.error(f"No smolagent_context_* directories found in {args.base_dir}")
