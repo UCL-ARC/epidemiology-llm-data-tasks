@@ -86,7 +86,9 @@ class TestMain:
         # Create runtime_data.json
         runtime_dir = output_dir.parent.parent
         (runtime_dir / "runtime_data.json").write_text(
-            '{"token_usage": 100, "steps": 3, "time_taken": 1.5}'
+            '{"token_usage": {"input_tokens": 50, "output_tokens": 50,'
+            ' "total_tokens": 100},'
+            ' "steps": [{}, {}, {}], "timing": {"duration": 1.5}}'
         )
 
         # Mock CSV reading
