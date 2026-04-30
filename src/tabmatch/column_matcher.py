@@ -6,6 +6,8 @@ from jellyfish import levenshtein_distance
 from loguru import logger
 from sentence_transformers import CrossEncoder
 
+from src.config import CROSS_ENCODER_MODEL, MATCH_THRESHOLD
+
 from .models import ColumnMatch, MatchMethod
 
 
@@ -18,8 +20,8 @@ class ColumnMatcher:
 
     def __init__(
         self,
-        cross_encoder_model_name: str = "cross-encoder/stsb-roberta-base",
-        match_threshold: float = 0.5,
+        cross_encoder_model_name: str = CROSS_ENCODER_MODEL,
+        match_threshold: float = MATCH_THRESHOLD,
     ) -> None:
         """
         Initialise the ColumnMatcher.

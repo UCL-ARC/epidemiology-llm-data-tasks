@@ -9,8 +9,8 @@ class TestCleanupMain:
     def test_missing_context_root(self, tmp_path, monkeypatch):
         """Should log warning and return when context root doesn't exist."""
         monkeypatch.setattr(
-            "src.cleanup.Path",
-            lambda _: tmp_path / "nonexistent",
+            "src.cleanup.SMOLAGENT_CONTEXT_ROOT",
+            tmp_path / "nonexistent",
         )
         # Should not raise
         main(delete_data=False)
@@ -20,7 +20,7 @@ class TestCleanupMain:
         context_root = tmp_path / "smolagent_context"
         context_root.mkdir()
 
-        monkeypatch.setattr("src.cleanup.Path", lambda _: context_root)
+        monkeypatch.setattr("src.cleanup.SMOLAGENT_CONTEXT_ROOT", context_root)
         main(delete_data=False)
 
     def test_complete_dirs_detected(self, tmp_path, monkeypatch):
@@ -32,7 +32,7 @@ class TestCleanupMain:
         (task_dir / "data" / "output").mkdir(parents=True)
         (task_dir / "data" / "output" / "cleaned_data.csv").write_text("a,b\n1,2")
 
-        monkeypatch.setattr("src.cleanup.Path", lambda _: context_root)
+        monkeypatch.setattr("src.cleanup.SMOLAGENT_CONTEXT_ROOT", context_root)
         main(delete_data=False)
 
     def test_incomplete_dirs_detected(self, tmp_path, monkeypatch):
@@ -43,7 +43,7 @@ class TestCleanupMain:
         task_dir = context_root / "task2_xyz789"
         task_dir.mkdir()
 
-        monkeypatch.setattr("src.cleanup.Path", lambda _: context_root)
+        monkeypatch.setattr("src.cleanup.SMOLAGENT_CONTEXT_ROOT", context_root)
         main(delete_data=False)
 
     def test_delete_removes_incomplete_dirs(self, tmp_path, monkeypatch):
@@ -54,7 +54,7 @@ class TestCleanupMain:
         incomplete_dir = context_root / "task3_del123"
         incomplete_dir.mkdir()
 
-        monkeypatch.setattr("src.cleanup.Path", lambda _: context_root)
+        monkeypatch.setattr("src.cleanup.SMOLAGENT_CONTEXT_ROOT", context_root)
         main(delete_data=True)
 
         assert not incomplete_dir.exists()
@@ -67,7 +67,7 @@ class TestCleanupMain:
         other_dir = context_root / "other_dir"
         other_dir.mkdir()
 
-        monkeypatch.setattr("src.cleanup.Path", lambda _: context_root)
+        monkeypatch.setattr("src.cleanup.SMOLAGENT_CONTEXT_ROOT", context_root)
         main(delete_data=False)
 
     def test_files_in_root_ignored(self, tmp_path, monkeypatch):
@@ -77,7 +77,7 @@ class TestCleanupMain:
 
         (context_root / "some_file.txt").write_text("hello")
 
-        monkeypatch.setattr("src.cleanup.Path", lambda _: context_root)
+        monkeypatch.setattr("src.cleanup.SMOLAGENT_CONTEXT_ROOT", context_root)
         main(delete_data=False)
 
     def test_task_without_underscore(self, tmp_path, monkeypatch):
@@ -89,7 +89,7 @@ class TestCleanupMain:
         (task_dir / "data" / "output").mkdir(parents=True)
         (task_dir / "data" / "output" / "cleaned_data.csv").write_text("ok")
 
-        monkeypatch.setattr("src.cleanup.Path", lambda _: context_root)
+        monkeypatch.setattr("src.cleanup.SMOLAGENT_CONTEXT_ROOT", context_root)
         main(delete_data=False)
 
     def test_mixed_complete_incomplete_missing(self, tmp_path, monkeypatch):
@@ -107,5 +107,5 @@ class TestCleanupMain:
         incomplete.mkdir()
 
         # task3-20 missing
-        monkeypatch.setattr("src.cleanup.Path", lambda _: context_root)
+        monkeypatch.setattr("src.cleanup.SMOLAGENT_CONTEXT_ROOT", context_root)
         main(delete_data=False)

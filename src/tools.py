@@ -3,6 +3,8 @@
 import subprocess
 from pathlib import Path
 
+from src.config import R_PRED_SCRIPT
+
 
 def produce_and_execute_r(rscript: str) -> str:
     """
@@ -13,7 +15,7 @@ def produce_and_execute_r(rscript: str) -> str:
     rscript: The rscript to execute. This should be correct R.
 
     """
-    rscript_filename = Path("rpred.R")
+    rscript_filename = Path(R_PRED_SCRIPT)
     rscript_filename.write_text(rscript, encoding="utf-8")
 
     # TO DO: Handle potential security issues with subprocess
