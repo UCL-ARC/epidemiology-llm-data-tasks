@@ -21,7 +21,7 @@ tasks:
       {metadata}
   - task_type: data_cleaning_r_plus_old
     prompt: |
-      You have access to raw survey datasets from a longitudinal cohort study followed at multiple ages. Your task is to clean and preprocess these datasets into a single analysis-ready file.
+      You have access to raw survey datasets from a longitudinal cohort study, {cohort_name}, followed at multiple ages. Your task is to clean and preprocess these datasets into a single analysis-ready file.
 
       Follow all instructions:
 
