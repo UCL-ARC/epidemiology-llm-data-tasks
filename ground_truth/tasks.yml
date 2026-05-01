@@ -178,6 +178,7 @@ tasks:
             - `-1` = Item not applicable
          - Convert NA / Null values to `-3` unless the metadata or additional requirements indicate a more specific meaning.
          - Preserve distinct missing-value meanings; do not collapse different missing reasons together unless instructed.
+         - If a variable has valid negative values, use NA for missing values instead.
 
       7. **Missing Value Harmonisation**
          - Convert wave-specific negative codes to the standard missing-value scheme using the metadata label meaning.
