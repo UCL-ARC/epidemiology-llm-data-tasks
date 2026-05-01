@@ -122,7 +122,7 @@ tasks:
       {metadata}
   - task_type: data_cleaning_r_plus
     prompt: |
-      You have access to raw survey datasets from a longitudinal cohort study, {cohort_name}, followed at multiple ages. Your task is to clean and preprocess these datasets into a single cleaned file.
+      You have access to raw survey datasets from a longitudinal cohort study, {cohort_name}, followed at multiple ages (survey "sweeps"). Your task is to clean and preprocess these datasets into a single cleaned file.
 
       The metadata defines the files, source variables, labels, and missing-value meanings. Use the metadata and the additional requirements to infer the target construct, source variables, output structure, harmonisation procedure, and final variables.
 
