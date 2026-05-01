@@ -36,15 +36,16 @@ tasks:
          - Use the exact ID variable name from the source data (e.g., NSID). Do NOT rename it to a generic name such as "id".
 
       3. **Standard Missing-Value Codes**:
-         Use these codes consistently for ALL variables:
-         - -9 = Refusal
-         - -8 = Don't know / insufficient information
-         - -7 = Prefer not to say (apply only where explicitly present in the source data or metadata)
-         - -3 = Not asked at the fieldwork stage / not interviewed
-         - -2 = Schedule not applicable / script error / information lost
-         - -1 = Item not applicable
+         - Use these codes consistently for ALL variables:
+            - -9 = Refusal
+            - -8 = Don't know / insufficient information
+            - -7 = Prefer not to say
+            - -3 = Not asked at the fieldwork stage / not interviewed
+            - -2 = Schedule not applicable / script error / information lost
+            - -1 = Item not applicable
          - Recode all NA / Null values to -3 (not asked / not interviewed).
          - NEVER collapse different missing-value meanings into the same code unless the metadata explicitly instructs it.
+         - Only use "-7 = Prefer not to say" where explicitly present in the source data or metadata.
 
       4. **Missing Value Code Harmonisation**:
          - Convert all wave-specific negative codes to the standard scheme using the label text in the metadata to determine the correct mapping.
