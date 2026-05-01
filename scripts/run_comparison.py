@@ -1,4 +1,4 @@
-"""CLI entry point for dataset comparison."""
+"""Script to run dataset comparison on experiment output directories."""
 
 import argparse
 import json
@@ -19,8 +19,7 @@ from src.config import (
     SMOLAGENT_CONTEXT_PREFIX,
     TMP_DIR,
 )
-
-from . import (
+from src.tabmatch import (
     DataComparator,
     aggregate_comparison_results,
     build_category_mapping_table,
@@ -58,13 +57,14 @@ def get_arg_parser() -> argparse.ArgumentParser:
         "--base-dir",
         type=Path,
         default=TMP_DIR,
-        help="Base directory containing experiment outputs (default: tmp).",
+        help=f"Base directory containing experiment outputs (default: {TMP_DIR}).",
     )
     parser.add_argument(
         "--categorical-threshold",
         type=int,
         default=CATEGORICAL_THRESHOLD,
-        help="Max unique values to treat a column as categorical (default: 20).",
+        help=f"Max unique values to treat a column as categorical "
+        f"(default: {CATEGORICAL_THRESHOLD}).",
     )
     parser.add_argument(
         "--match-threshold",
@@ -76,37 +76,41 @@ def get_arg_parser() -> argparse.ArgumentParser:
         "--column-data-match-threshold",
         type=float,
         default=COLUMN_DATA_MATCH_THRESHOLD,
-        help="Column data match threshold (default: 0.7).",
+        help=f"Column data match threshold "
+        f"(default: {COLUMN_DATA_MATCH_THRESHOLD}).",
     )
     parser.add_argument(
         "--categorical-data-match-threshold",
         type=float,
         default=CATEGORICAL_DATA_MATCH_THRESHOLD,
-        help="Categorical data match threshold (default: 0.95).",
+        help=f"Categorical data match threshold "
+        f"(default: {CATEGORICAL_DATA_MATCH_THRESHOLD}).",
     )
     parser.add_argument(
         "--numerical-data-match-threshold",
         type=float,
         default=NUMERICAL_DATA_MATCH_THRESHOLD,
-        help="Numerical data match threshold (default: 0.0001).",
+        help=f"Numerical data match threshold "
+        f"(default: {NUMERICAL_DATA_MATCH_THRESHOLD}).",
     )
     parser.add_argument(
         "--categorical-match-threshold",
         type=float,
         default=CATEGORICAL_MATCH_THRESHOLD,
-        help="Categorical column match threshold (default: 0.8).",
+        help=f"Categorical column match threshold "
+        f"(default: {CATEGORICAL_MATCH_THRESHOLD}).",
     )
     parser.add_argument(
         "--gt-filename",
         type=str,
         default=GT_FILENAME,
-        help="Ground truth filename (default: output.csv).",
+        help=f"Ground truth filename (default: {GT_FILENAME}).",
     )
     parser.add_argument(
         "--pred-filename",
         type=str,
         default=PRED_FILENAME,
-        help="Predicted output filename (default: cleaned_data.csv).",
+        help=f"Predicted output filename (default: {PRED_FILENAME}).",
     )
     return parser
 
