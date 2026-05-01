@@ -11,7 +11,7 @@ additional_requirements: |
   Derivation logic: for each cohort member, find the minimum (earliest) age at which drinking is observed across all waves. If all observed indicators show not-drinking and none are missing, assign code 99 (never had alcohol). If no drinking is observed but at least one indicator is missing, assign -8 (don't know / insufficient information).
   Coded as a factor with levels 14, 15, 16, 17, 19, 20, 25, 32, 99, -8 and labels "Age 14" through "Age 32", "Never had alcohol", "Don't know/insufficient information".
 additional_requirements_lite: |
-  Derive a single variable named alcfst representing the earliest age at which the cohort member is known to have consumed alcohol.
+  Derive a single variable named alcfst representing the earliest age at which the cohort member is known to have consumed alcohol identifying if they also have never drunk alcohol.
 override: |
   You have access to raw survey datasets from a longitudinal cohort study. Your task is to derive a single variable indicating the earliest age at which a cohort member is known to have consumed alcohol, using data collected across multiple sweeps from age 14 to age 32.
 

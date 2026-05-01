@@ -12,7 +12,7 @@ additional_requirements: |
   For each pre-derived variable, use the pre-computed GHQ-12 total provided in the source data and harmonise wave-specific negative codes to the standard scheme.
   Missing data for pre-derived variables: at waves 2 and 4, -97 ("YP refused self completion") and -92 ("Refused") both map to -9; other codes follow defaults.
 additional_requirements_lite: |
-  Derive GHQ-12 mental health variables named ghqtl15, ghqtl17, ghqtl25, ghqtl32 (item-summed scores) and ghq15, ghq17, ghq25, ghq32 (pre-derived totals).
+  Derive item summed GHQ-12 mental health variables named ghqtl15, ghqtl17, ghqtl25, ghqtl32 (only summing if all values are non negative) and ghq15, ghq17, ghq25, ghq32 (pre-derived totals).
 override: |
   You have access to raw survey datasets from a longitudinal cohort study that collected mental health measures at multiple ages. Your task is to clean and derive psychological distress scores from the GHQ-12 (General Health Questionnaire, 12-item version) across four survey sweeps, producing a single analysis-ready file.
 
