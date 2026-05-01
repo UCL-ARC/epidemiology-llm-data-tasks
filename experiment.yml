@@ -16,6 +16,7 @@ experiment:
   runs: 1                       # number of times to repeat the full task loop
   use_overrides: false          # if true, use per-task override prompts where present
   persist_context: true         # if true, keep the temp working directory after each run
+<<<<<<< HEAD
   tasks:                        # list of task numbers to run; leave empty [] to run all
     - 7
     - 8
@@ -25,3 +26,7 @@ experiment:
     - 16
     - 18
     - 20
+=======
+  use_lite_requirements: false  # if true, use additional_requirements_lite from task.yml instead of additional_requirements
+  tasks:                        # list of task numbers to run; leave empty [] to run all                   
+>>>>>>> 1aac0aaa43cb19faba4aed743db3c45fde28db5c
