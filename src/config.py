@@ -18,6 +18,20 @@ SMOLAGENT_CONTEXT_PREFIX: str = "smolagent_context"
 #: Default top-level tmp directory
 TMP_DIR: Path = Path("tmp")
 
+# ---------------------------------------------------------------------------
+# Agent behaviour
+# ---------------------------------------------------------------------------
+
+#: smolagents verbosity level (0 = silent, 1 = normal, 2 = debug)
+AGENT_VERBOSITY_LEVEL: int = 0
+
+# ---------------------------------------------------------------------------
+# LLM retry configuration (for LiteLLMModel)
+# ---------------------------------------------------------------------------
+LLM_RETRY_CONFIG: dict = {
+    "num_retries": 3,  # Retry failed requests 3 times
+    "retry_after": 10,  # Wait 10 seconds before retrying
+}
 
 # ---------------------------------------------------------------------------
 # Task data structure (relative paths within a task directory)
