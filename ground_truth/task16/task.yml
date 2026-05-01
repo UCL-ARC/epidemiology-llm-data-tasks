@@ -16,7 +16,7 @@ additional_requirements: |
   2. Only then, remap remaining NAs to -3.
   3. Only then, band the remaining positive values. A missing code must never be banded as if it were income.
 additional_requirements_lite: |
-  Derive household weekly income variables named incwhh14, incwhh15, incwhh16, incwhh17 (banded) and incwhhcnt14, incwhhcnt15 (continuous).
+  Derive banded household weekly income variables at ages 14, 15, 16, 17 and also continuous variables at ages 14 and 15.
 override: |
   You have access to raw survey datasets from a longitudinal cohort study. Your task is to clean and harmonise household weekly income variables measured at multiple ages and output a single cleaned dataset.
 

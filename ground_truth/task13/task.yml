@@ -12,7 +12,7 @@ additional_requirements: |
   Missing data: -98 ("Parent not present") → -3.
   Note: at wave 5, the source variables measure the mother’s or father’s partner rather than the biological parent; still assign to nssecma18 and nssecpa18 respectively.
 additional_requirements_lite: |
-  Derive time-varying parental NS-SEC occupational class variables named nssecma14, nssecpa14, nssecma15, nssecpa15, nssecma16, nssecpa16, nssecma17, nssecpa17, nssecma18, and nssecpa18.
+  Derive time-varying parental NS-SEC occupational class variables named nssecma14, nssecpa14, nssecma15, nssecpa15, nssecma16, nssecpa16, nssecma17, nssecpa17, nssecma18, and nssecpa18 ensuring the categories are collapsed to their major NS-SEC category.
 override: |
   You have access to raw survey datasets from a longitudinal cohort study. Your task is to clean and harmonise parental NS-SEC occupational class variables across waves and output a single cleaned dataset.
 
