@@ -85,6 +85,19 @@ def _parse_args() -> argparse.Namespace:
         action="store_false",
         help="Delete temp working directories after runs (overrides config)",
     )
+    parser.add_argument(
+        "--use_lite_requirements",
+        action="store_true",
+        default=None,
+        help="Use additional_requirements_lite from task.yml instead of "
+        "the full additional_requirements (overrides config)",
+    )
+    parser.add_argument(
+        "--no_lite_requirements",
+        dest="use_lite_requirements",
+        action="store_false",
+        help="Use full additional_requirements (overrides config)",
+    )
     return parser.parse_args()
 
 
@@ -121,6 +134,11 @@ def main() -> None:  # noqa: PLR0915
         if args.persist_context is not None
         else exp_cfg.get("persist_context", True)
     )
+    use_lite_requirements = (
+        args.use_lite_requirements
+        if args.use_lite_requirements is not None
+        else exp_cfg.get("use_lite_requirements", False)
+    )
     task_numbers = args.tasks or exp_cfg.get("tasks", [])
 
     api_key: str | None = None
@@ -138,7 +156,8 @@ def main() -> None:  # noqa: PLR0915
     logger.info(
         f"Config: provider={provider}, model={model_id}, agent_type={agent_type}, "
         f"temperature={temperature}, runs={runs}, use_overrides={use_overrides}, "
-        f"persist_context={persist_context}, tasks={task_numbers or 'all'}"
+        f"persist_context={persist_context}, tasks={task_numbers or 'all'}, "
+        f"use_lite_requirements={use_lite_requirements}"
     )
 
     tools: list[Callable] = (
@@ -187,7 +206,12 @@ def main() -> None:  # noqa: PLR0915
 
             task_type = task.get("task_type", "unknown")
             override = task.get("override", None)
-            additional_requirements = task.get("additional_requirements", "")
+            additional_requirements = (
+                task.get("additional_requirements_lite")
+                or task.get("additional_requirements", "")
+                if use_lite_requirements
+                else task.get("additional_requirements", "")
+            )
 
             if use_overrides and override:
                 prompt = override
@@ -206,11 +230,15 @@ def main() -> None:  # noqa: PLR0915
                 additional_requirements=additional_requirements,
             )
 
-            result = agent.forward(
-                prompt,
-                context_path=Path(test_dir),
-                persist_context=persist_context,
-            )
+            try:
+                result = agent.forward(
+                    prompt,
+                    context_path=Path(test_dir),
+                    persist_context=persist_context,
+                )
+            except Exception:  # noqa: BLE001
+                logger.exception(f"Agent failed for context: {test_dir} — skipping")
+                continue
 
             logger.info(f"\n=== Result for context: {test_dir} ===")
             logger.info(result)

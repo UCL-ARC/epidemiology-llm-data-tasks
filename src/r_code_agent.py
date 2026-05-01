@@ -13,6 +13,8 @@ from smolagents.local_python_executor import CodeOutput, PythonExecutor
 from smolagents.models import Model
 from smolagents.tools import Tool
 
+from src.config import AGENT_VERBOSITY_LEVEL
+
 # ---------------------------------------------------------------------------
 # R Executor
 # ---------------------------------------------------------------------------
@@ -171,10 +173,11 @@ _R_PROMPT_TEMPLATES: dict[str, Any] = {
 # ---------------------------------------------------------------------------
 
 
-def create_r_code_agent(
+def create_r_code_agent(  # noqa: PLR0913
     model: Model,
     tools: list[Tool] | None = None,
     timeout: int = 300,
+    verbosity_level: int = AGENT_VERBOSITY_LEVEL,
     *,
     stream_outputs: bool = False,
     return_full_result: bool = False,
@@ -202,4 +205,5 @@ def create_r_code_agent(
         prompt_templates=_R_PROMPT_TEMPLATES,
         stream_outputs=stream_outputs,
         return_full_result=return_full_result,
+        verbosity_level=verbosity_level,
     )
