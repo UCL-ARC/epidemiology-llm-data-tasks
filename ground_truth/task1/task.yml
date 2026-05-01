@@ -7,10 +7,10 @@ additional_requirements: |
   Coded as:
    1 = Male
    2 = Female
-  Derivation logic: use the most recent valid response first, prioritising W9DSEX; if W9DSEX is missing, fall back through the earlier sweep sex variables from oldest to newest.
+  Derivation logic: use the most recent valid response first (variable `W9DSEX`); if W9DSEX is missing, fall back through the earlier sweeps sex variables from earliest (i.e., the first sweep) to most recent.
   
 additional_requirements_lite: |
-    Derive one consolidated variable named sex. 
+    Derive one consolidated variable named sex containing information on the cohort member's sex. 
 override: |
   You have access to raw survey datasets on a cohort study followed up at multiple ages. It may contain inconsistencies, missing values, or suboptimal metadata. Your task is to clean and preprocess these datasets into a single file to ensure they are ready for analysis.
   
