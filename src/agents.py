@@ -20,7 +20,12 @@ from smolagents import CodeAgent, LiteLLMModel, ToolCallingAgent
 from smolagents import tool as stool  # renamed to avoid conflict - teehee
 from smolagents.tools import Tool
 
-from src.config import AGENT_CONTEXTS_ROOT, SMOLAGENT_CONTEXT_ROOT
+from src.config import (
+    AGENT_CONTEXTS_ROOT,
+    AGENT_VERBOSITY_LEVEL,
+    LLM_RETRY_CONFIG,
+    SMOLAGENT_CONTEXT_ROOT,
+)
 from src.r_code_agent import create_r_code_agent
 
 
@@ -158,6 +163,8 @@ class SmolAgent(Agent):
         """Initialise the agent with the specified model and tools."""
         llm_model = LiteLLMModel(
             model_id=self.model_name,
+            num_retries=LLM_RETRY_CONFIG["num_retries"],
+            retry_after=LLM_RETRY_CONFIG["retry_after"],
             api_key=self.api_key,
             temperature=self.temperature,
             # num_ctx=128000,
@@ -168,12 +175,14 @@ class SmolAgent(Agent):
                 tools=self.tools,
                 stream_outputs=False,
                 return_full_result=True,
+                verbosity_level=AGENT_VERBOSITY_LEVEL,
             )
         return ToolCallingAgent(
             model=llm_model,
             tools=self.tools,
             stream_outputs=False,
             return_full_result=True,
+            verbosity_level=AGENT_VERBOSITY_LEVEL,
         )
 
     def forward(
@@ -198,7 +207,7 @@ class SmolAgent(Agent):
         with self._execution_context(
             context_path, persist=persist_context
         ) as working_dir:
-            logger.info(f"Running agent with prompt: {prompt}")
+            logger.info("Running agent...")
 
             # Run the agent
             result = self.agent.run(prompt)
