@@ -12,7 +12,7 @@ additional_requirements: |
     4 = No qualification mentioned
   Derivation logic: for each parent, scan waves 1, 2, and 4 in order; take the first positive value (codes 1–20); if no positive value exists, take the first negative code in the same wave order; if no value exists at all, assign -3. Harmonise wave-specific missing codes to the standard scheme before consolidation. Derive the collapsed NVQ variables from the consolidated detailed variables — they are a lossy remapping of the detailed, not a copy.
 additional_requirements_lite: |
-  Derive consolidated parental education variables named educdtlma and educdtlpa (detailed, 20-category) and educma and educpa (5-level NVQ) for mother and father respectively.
+  Derive consolidated parental education variables named educdtlma and educdtlpa (detailed, 20-category) and educma and educpa (5-level NVQ) for mother and father respectively. NVQ categories can be collapsed if necessary and additional categories specified if needed to accommodate non-NVQ/no qualifications.
 override: |
   You have access to raw survey datasets from a longitudinal cohort study with repeated family background interviews. Your task is to clean and consolidate parental education variables only and produce a single cleaned file ready for analysis.
 

@@ -7,7 +7,7 @@ additional_requirements: |
   Missing data: for this task, map source -94 to -2 and source -1 labelled "Don't know" to -8.
   Derivation logic: use the earliest valid positive response first, starting with W1englangYP, then falling back through W2EnglangYP, W3englangHH, and W4EngLangHH in order.
 additional_requirements_lite: |
-  Derive one consolidated variable named lang.
+  Derive one consolidated variable named lang containing information on languages spoken by the cohort member.
 override: |
   You have access to raw survey datasets on a cohort study followed up at multiple ages. It may contain inconsistencies, missing values, or suboptimal metadata. Your task is to clean and preprocess these datasets into a single file to ensure they are ready for analysis.
   

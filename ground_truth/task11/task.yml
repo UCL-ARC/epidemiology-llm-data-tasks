@@ -8,9 +8,10 @@ additional_requirements: |
     ecoactma16, ecoactpa16  (wave 3, age 16)
     ecoactma17, ecoactpa17  (wave 4, age 17)
   All eight variables use the same 9-category scheme — take the substantive codes and labels directly from the value labels in the metadata.
+  Mother's economic activity variables should use the ecoactma* prefix, and father's economic activity variables should use the ecoactpa* prefix.
   Missing data: -99, -98, and -996 all map to -3 (not asked at the fieldwork stage / not interviewed).
 additional_requirements_lite: |
-  Derive time-varying parental economic activity variables named ecoactma14, ecoactpa14, ecoactma15, ecoactpa15, ecoactma16, ecoactpa16, ecoactma17, and ecoactpa17.
+  Derive time-varying parental economic activity variables (mother and father separately) named ecoactma14, ecoactpa14, ecoactma15, ecoactpa15, ecoactma16, ecoactpa16, ecoactma17, and ecoactpa17.
 override: |
   You have access to raw survey datasets on a cohort study followed up at multiple ages. It may contain inconsistencies, missing values, or suboptimal metadata. Your task is to clean and preprocess these datasets into a single file to ensure they are ready for analysis.
   
