@@ -2,8 +2,8 @@ task_id: 1
 task_type: data_cleaning_r_plus
 name: income_yp
 additional_requirements: |
-  Derive two income band variables named inc25 and inc32.
-  Coded using the 16 substantive band categories taken directly from the value labels in the metadata. The source waves share the same band scheme but do not merge them into a consolidated variable — keep them as separate age-specific variables.
+  Derive two time-varying income band variables named inc25 and inc32.
+  Coded using the 16 substantive band categories taken directly from the value labels in the metadata. Though the source sweeps share the same band scheme, do not merge them into a consolidated variable — in other words, keep them as separate age-specific variables.
 additional_requirements_lite: |
   Derive income band variables named inc25 and inc32.
 override: |

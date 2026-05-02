@@ -126,7 +126,7 @@ tasks:
 
       The metadata defines the files, source variables, labels, and missing-value meanings. Use the metadata and the additional requirements to infer the target construct, source variables, output structure, harmonisation procedure, and final variables.
 
-      Follow all instructions. Where these are in conflict, prioritise the additional requirements over the general guidance. Where the general guidance is in conflict with itself, prioritise later points over earlier points.
+      Follow all instructions. Where these are in conflict, prioritise the additional requirements over the general guidance.
 
       **General Guidance:**
 
@@ -165,8 +165,8 @@ tasks:
          - For detailed adult versions where both collapsed and detailed forms are needed, append `adu` before the age suffix. 
             - Here `adu` means "adult detailed": it marks a more granular adult-wave variable that is retained alongside the collapsed harmonised adult variable.
             - Example: `partnr25` is the collapsed harmonised adult variable at age 25, while `partnradu25` is the detailed adult version at age 25.
-         - Keep only final derived variables in the output, not raw source variables or intermediate working variables.
          - Do not use raw source variables as output variables. If no cleaning is required to make the output variable, create a copy of the raw source variable.
+         - Keep only final derived variables in the output, not raw source variables or intermediate working variables.
 
       6. **Standard Missing-Value Codes**
          -  Use these codes consistently for derived variables:

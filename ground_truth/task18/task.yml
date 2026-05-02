@@ -3,8 +3,8 @@ task_type: data_cleaning_r_plus
 name: ghq
 additional_requirements: |
   Derive GHQ-12 mental health variables at ages 15, 17, 25, and 32. Output eight variables plus NSID:
-    Item-summed scores:  ghqtl15, ghqtl17, ghqtl25, ghqtl32
-    Pre-derived scores:  ghq15, ghq17, ghq25, ghq32
+    Item-summed Likert scores:  ghqtl15, ghqtl17, ghqtl25, ghqtl32
+    Pre-derived Caseness scores:  ghq15, ghq17, ghq25, ghq32
   For each item-summed variable, compute the sum across the 12 GHQ item variables for that wave:
     - If all 12 items are NA → assign -3 (did not participate)
     - If any item has a negative value → assign -8 (insufficient information)
@@ -12,7 +12,7 @@ additional_requirements: |
   For each pre-derived variable, use the pre-computed GHQ-12 total provided in the source data and harmonise wave-specific negative codes to the standard scheme.
   Missing data for pre-derived variables: at waves 2 and 4, -97 ("YP refused self completion") and -92 ("Refused") both map to -9; other codes follow defaults.
 additional_requirements_lite: |
-  Derive item summed GHQ-12 mental health variables named ghqtl15, ghqtl17, ghqtl25, ghqtl32 (only summing if all values are non negative) and ghq15, ghq17, ghq25, ghq32 (pre-derived totals).
+  Derive item summed GHQ-12 Likert scores mental health variables named ghqtl15, ghqtl17, ghqtl25, ghqtl32 (only summing if all values are non negative) and GHQ-12 Caseness scores named ghq15, ghq17, ghq25, ghq32 (using pre-derived variables).
 override: |
   You have access to raw survey datasets from a longitudinal cohort study that collected mental health measures at multiple ages. Your task is to clean and derive psychological distress scores from the GHQ-12 (General Health Questionnaire, 12-item version) across four survey sweeps, producing a single analysis-ready file.
 
