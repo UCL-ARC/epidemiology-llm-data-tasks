@@ -3,17 +3,17 @@ task_type: data_cleaning_r_plus
 name: housing_tenure
 additional_requirements: |
   Derive two families of housing tenure variables:
-    Detailed (8-category): hownteen14, hownteen15, hownteen16, hownteen17, hownteen18, hownteen19, hownteen20 — adolescent waves only.
-    Collapsed (6-category): hown14, hown15, hown16, hown17, hown18, hown19, hown20, hown25, hown32 — all nine waves.
-  Detailed 8-category scheme: adopt directly from the value labels of the waves 1–4 source variables.
+    Detailed (8-category): hownteen14, hownteen15, hownteen16, hownteen17, hownteen18, hownteen19, hownteen20 — adolescent sweeps only.
+    Collapsed (6-category): hown14, hown15, hown16, hown17, hown18, hown19, hown20, hown25, hown32 — all nine sweeps.
+  Detailed 8-category scheme: adopt directly from the value labels of the sweeps 1–4 source variables.
   Collapsed 6-category scheme: merge the three rental categories (Council, Housing Association, private) into a single "Rent it" category; "Some other arrangement" becomes "Other"; all other categories pass through 1-to-1.
-  Derivation logic by wave group:
-    Waves 1–4: single source variable per wave; copy substantive codes into the detailed hownteenXX variable and collapse to hownXX.
-    Waves 5–7: three source variables per wave (type, owned-subtype, rented-subtype); read subtypes in priority — owned-subtype before rented-subtype — mapping by label meaning; "Some other arrangement" from any source → 8; if no substantive path fires, preserve the specific missing code from the subtype variables; do not treat tenure type codes 1 or 2 as substantive values — they only route to the subtype questions.
-    Waves 8–9: single source variable per wave; both Squatting and Other collapse to 6.
-  Missing data: in waves 1–7, source code -1 labelled "Don't know" maps to -8; in waves 8–9, -1 retains its standard meaning (item not applicable).
+  Derivation logic by sweep group:
+    Sweeps 1–4: single source variable per sweep; copy substantive codes into the detailed hownteenXX variable and collapse to hownXX.
+    Sweeps 5–7: three source variables per sweep (type, owned-subtype, rented-subtype); read subtypes in priority — owned-subtype before rented-subtype — mapping by label meaning; "Some other arrangement" from any source → 8; if no substantive path fires, preserve the specific missing code from the subtype variables; do not treat tenure type codes 1 or 2 as substantive values — they only route to the subtype questions.
+    Sweeps 8–9: single source variable per sweep; both Squatting and Other collapse to 6.
+  Missing data: in sweeps 1–7, source code -1 labelled "Don't know" maps to -8; in sweeps 8–9, -1 retains its standard meaning (item not applicable).
 additional_requirements_lite: |
-  Derive detailed housing tenure variables hownteen14 through hownteen20 and collapsed housing tenure variables hown14 through hown32.
+  Derive detailed time-varying housing tenure variables from ages 14-20 with prefix hownteen and collapsed time-varying housing tenure variables from ages 14-32 with the prefix hown. For the collapsed variables, merge the three rental categories into a single "Rent it" category.
 override: |
    You have access to raw survey datasets on a cohort study followed up at multiple ages. Your task is to clean and preprocess these datasets into a single file ready for analysis.
 
