@@ -220,3 +220,4 @@ tmp/**/data/
 exploration/*
 
 .vscode/
+.Renviron
