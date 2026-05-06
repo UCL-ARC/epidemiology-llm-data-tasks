@@ -52,11 +52,3 @@ experiment:
 
   # Tasks to run. Comment out or leave empty ([]) to run all tasks.
   tasks:
-    - 7
-    - 8
-    - 9
-    - 12
-    - 13
-    - 16
-    - 18
-    - 20
