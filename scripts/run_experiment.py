@@ -37,10 +37,11 @@ def _parse_args() -> argparse.Namespace:
         help="Path to experiment YAML config (default: ./experiment.yml)",
     )
     parser.add_argument("--model_id", type=str, help="Model ID (overrides config)")
+    parser.add_argument("--ground_truth_dir", type=Path, help="Ground truth directory (overrides config)")
     parser.add_argument(
         "--provider",
         type=str,
-        choices=["ollama", "huggingface"],
+        choices=["ollama", "huggingface", "vllm"],
         help="Model provider (overrides config)",
     )
     parser.add_argument(
@@ -110,6 +111,7 @@ def main() -> None:  # noqa: PLR0915
 
     # Apply CLI overrides (only when explicitly provided)
     model_cfg = cfg.get("model", {})
+    api_base = model_cfg.get("api_base", None) 
     agent_cfg = cfg.get("agent", {})
     exp_cfg = cfg.get("experiment", {})
 
@@ -141,6 +143,11 @@ def main() -> None:  # noqa: PLR0915
     )
     task_numbers = args.tasks or exp_cfg.get("tasks", [])
 
+    ground_truth_dir = Path(
+    args.ground_truth_dir
+    or exp_cfg.get("ground_truth_dir", "./ground_truth")
+    )
+
     api_key: str | None = None
     # Resolve model name and API key per provider
     if provider == "ollama":
@@ -149,6 +156,11 @@ def main() -> None:  # noqa: PLR0915
     elif provider == "huggingface":
         model_name = f"huggingface/{model_id}"
         api_key = os.environ.get("HF_TOKEN")
+    elif provider == "vllm":
+        model_name = f"openai/{model_id}"
+        api_key = os.environ.get("VLLM_API_KEY", "EMPTY")
+        if api_base:
+            os.environ["OPENAI_API_BASE"] = api_base
     else:
         msg = f"Unknown provider: {provider}"
         raise ValueError(msg)
@@ -172,11 +184,10 @@ def main() -> None:  # noqa: PLR0915
         temperature=temperature,
     )
 
-    tasks_path = Path("./ground_truth/tasks.yml")
+    tasks_path = ground_truth_dir / "tasks.yml"
     with tasks_path.open() as f:
         tasks = yaml.safe_load(f)["tasks"]
 
-    ground_truth_dir = Path("./ground_truth")
     all_dirs = sorted(
         [
             p

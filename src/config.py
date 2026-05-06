@@ -7,16 +7,16 @@ from pathlib import Path
 # ---------------------------------------------------------------------------
 
 #: Root of all temporary agent execution contexts
-AGENT_CONTEXTS_ROOT: Path = Path("tmp/agent_contexts")
+AGENT_CONTEXTS_ROOT: Path = Path("../rdss-volume/tmp/agent_contexts")
 
 #: Root of smolagent experiment output directories (single-run, no model suffix)
-SMOLAGENT_CONTEXT_ROOT: Path = Path("tmp/smolagent_context")
+SMOLAGENT_CONTEXT_ROOT: Path = Path("../rdss-volume/tmp/smolagent_context")
 
 #: Prefix shared by all smolagent context directory names (used with startswith)
 SMOLAGENT_CONTEXT_PREFIX: str = "smolagent_context"
 
 #: Default top-level tmp directory
-TMP_DIR: Path = Path("tmp")
+TMP_DIR: Path = Path("../rdss-volume/tmp")
 
 # ---------------------------------------------------------------------------
 # Agent behaviour
