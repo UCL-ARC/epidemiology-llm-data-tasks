@@ -37,7 +37,9 @@ def _parse_args() -> argparse.Namespace:
         help="Path to experiment YAML config (default: ./experiment.yml)",
     )
     parser.add_argument("--model_id", type=str, help="Model ID (overrides config)")
-    parser.add_argument("--ground_truth_dir", type=Path, help="Ground truth directory (overrides config)")
+    parser.add_argument("--ground_truth_dir", type=Path,
+                        help="Ground truth directory (overrides config)"
+    )
     parser.add_argument(
         "--provider",
         type=str,
