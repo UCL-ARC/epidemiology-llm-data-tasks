@@ -37,8 +37,10 @@ def _parse_args() -> argparse.Namespace:
         help="Path to experiment YAML config (default: ./experiment.yml)",
     )
     parser.add_argument("--model_id", type=str, help="Model ID (overrides config)")
-    parser.add_argument("--ground_truth_dir", type=Path,
-                        help="Ground truth directory (overrides config)"
+    parser.add_argument(
+        "--ground_truth_dir",
+        type=Path,
+        help="Ground truth directory (overrides config)",
     )
     parser.add_argument(
         "--provider",
@@ -113,7 +115,7 @@ def main() -> None:  # noqa: PLR0915
 
     # Apply CLI overrides (only when explicitly provided)
     model_cfg = cfg.get("model", {})
-    api_base = model_cfg.get("api_base", None) 
+    api_base = model_cfg.get("api_base", None)
     agent_cfg = cfg.get("agent", {})
     exp_cfg = cfg.get("experiment", {})
 
@@ -146,8 +148,7 @@ def main() -> None:  # noqa: PLR0915
     task_numbers = args.tasks or exp_cfg.get("tasks", [])
 
     ground_truth_dir = Path(
-    args.ground_truth_dir
-    or exp_cfg.get("ground_truth_dir", "./ground_truth")
+        args.ground_truth_dir or exp_cfg.get("ground_truth_dir", "./ground_truth")
     )
 
     api_key: str | None = None
