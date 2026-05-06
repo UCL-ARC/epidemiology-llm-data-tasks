@@ -14,6 +14,7 @@ from src.config import (
     CATEGORICAL_THRESHOLD,
     COLUMN_DATA_MATCH_THRESHOLD,
     GT_FILENAME,
+    MATCH_THRESHOLD,
     NUMERICAL_DATA_MATCH_THRESHOLD,
     PRED_FILENAME,
     SMOLAGENT_CONTEXT_PREFIX,
@@ -69,7 +70,7 @@ def get_arg_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--match-threshold",
         type=float,
-        default=0.8,
+        default=MATCH_THRESHOLD,
         help="Column name match threshold (default: 0.8).",
     )
     parser.add_argument(
