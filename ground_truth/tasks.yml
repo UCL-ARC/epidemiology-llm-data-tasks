@@ -39,12 +39,9 @@ tasks:
       5. **Variable Naming**
          - Use the output variable names requested in the additional requirements where provided.
          - Otherwise, choose short, descriptive, lowercase names.
-         - For age-specific variables, append the age as a numeric suffix. 
+         - For age-specific variables, append the age as a numeric suffix.
             - Infer from the variable and file metadata which age to use for the suffix.
-
-         - For detailed adult versions where both collapsed and detailed forms are needed, append `adu` before the age suffix. 
-            - Here `adu` means "adult detailed": it marks a more granular adult-wave variable that is retained alongside the collapsed harmonised adult variable.
-            - Example: `partnr25` is the collapsed harmonised adult variable at age 25, while `partnradu25` is the detailed adult version at age 25.
+            - Where both collapsed and detailed forms are needed, a descriptive infix is typically added before the age suffix (e.g., `partnradu25` for the detailed adult version alongside `partnr25`). Follow the exact names in the additional requirements.
          - Do not use raw source variables as output variables. If no cleaning is required to make the output variable, create a copy of the raw source variable.
          - Keep only final derived variables in the output, not raw source variables or intermediate working variables.
 
