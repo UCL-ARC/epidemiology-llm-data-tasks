@@ -3,7 +3,7 @@
 tasks:
   - task_type: data_cleaning_r_plus
     prompt: |
-      You have access to raw survey datasets from a longitudinal cohort study, {cohort_name}, followed at multiple ages (survey "sweeps"). Your task is to clean and preprocess these datasets into a single cleaned file.
+      You have access to raw survey datasets from a longitudinal cohort study, {cohort_name}, followed at multiple ages (survey "waves" or "sweeps"). Your task is to clean and preprocess these datasets into a single cleaned file.
 
       The metadata defines the files, source variables, labels, and missing-value meanings. Use the metadata and the additional requirements to infer the target construct, source variables, output structure, harmonisation procedure, and final variables.
 
@@ -25,22 +25,23 @@ tasks:
          - Use the additional requirements to identify the construct and required output variable names.
          - Use metadata for the files and the variables to identify all relevant source variables for that construct.
          - If a file is listed in the metadata, load it and include it in the merge frame.
+         - tasks will require using multiple datasets containing different waves (ages), use this mapping to identify the relevant age for each variable: wave1→14, wave2→15, wave3→16, wave4→17, wave6→19, wave7→20, wave8→25, wave9→32.
 
       4. **Decide the Output Structure**
          - The two primary structures are:
-           a. **One consolidated variable** — a single value per person across all sweeps. Used for stable or time-invariant constructs such as sex, ethnicity, or language.
+           a. **One consolidated variable** — a single value per person across all waves. Used for stable or time-invariant constructs such as sex, ethnicity, or language.
            b. **Separate wave-specific variables** — one variable per person per wave, named with an age suffix. Use for time-varying constructs such as economic activity, partnership status, or income.
-         - Base this decision on the construct, metadata labels, available sweeps, and additional requirements.
+         - Base this decision on the construct, metadata labels, available waves, and additional requirements.
          - Where the same construct applies to multiple subjects (e.g., mother and father), create parallel sets of variables — one per subject — following the same a/b structure.
-         - If sweeps have different levels of response detail and comparability is required, create both collapsed harmonised variables (consistent categories across sweeps) and detailed wave-specific variables.
+         - If waves have different levels of response detail and comparability is required, create both collapsed harmonised variables (consistent categories across waves) and detailed wave-specific variables.
          - If the task requires variables measuring genuinely distinct dimensions of the same construct — not just different levels of detail — create a separate variable per dimension. Examples: academic vs vocational qualifications; item-summed vs caseness scores.
 
       5. **Variable Naming**
-         - Wave-to-age mapping: wave1→14, wave2→15, wave3→16, wave4→17, wave6→19, wave7→20, wave8→25, wave9→32.
          - Use the output variable names requested in the additional requirements where provided.
          - Otherwise, choose short, descriptive, lowercase names.
          - For age-specific variables, append the age as a numeric suffix. 
             - Infer from the variable and file metadata which age to use for the suffix.
+
          - For detailed adult versions where both collapsed and detailed forms are needed, append `adu` before the age suffix. 
             - Here `adu` means "adult detailed": it marks a more granular adult-wave variable that is retained alongside the collapsed harmonised adult variable.
             - Example: `partnr25` is the collapsed harmonised adult variable at age 25, while `partnradu25` is the detailed adult version at age 25.
