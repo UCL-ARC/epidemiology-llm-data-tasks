@@ -1,28 +1,54 @@
 # Experiment configuration for agents.py
-# Run with: uv run python3 -m src.agents
-# Or with a custom config: uv run python3 -m src.agents --config path/to/experiment.yml
-# Any field can also be overridden via CLI args, e.g. --model_id gemma4:31b --runs 3
+# Run with: uv run python scripts/run_experiment.py
+# Or with a custom config: uv run python scripts/run_experiment.py --config path/to/experiment.yml
+# Any field can also be overridden via CLI args, e.g. --model_id mymodel --runs 3
 
 model:
-  # Ollama (via LiteLLM)
-  provider: ollama              # ollama | huggingface
-  model_id: gemma4:31b-cloud           # Ollama model name (e.g., gemma4:31b)
+  # Provider: controls how LiteLLM routes the request
+  #   vllm       — OpenAI-compatible endpoint (set api_base below)
+  #   ollama     — local Ollama server (api_base not needed)
+  #   huggingface — HuggingFace Inference API (set HF_TOKEN env var)
+  provider: vllm
+
+  # Model ID passed in the request body.
+  # For vllm: use the exact served model name (check with: curl <api_base>/models)
+  # For ollama: use the Ollama model tag, e.g. gemma4:31b
+  # For huggingface: use the HF repo ID, e.g. Qwen/Qwen3-30B-A3B-Instruct-2507
+  model_id: /mnt/models/models-m-nixon/qwen3-5-35b
+
+  # vllm only: base URL of the OpenAI-compatible endpoint (must end in /v1)
+  # Not needed for ollama or huggingface
+  api_base: http://qwen3-5-35b-vllm-predictor.kubeflow-m-nixon.svc.cluster.local/v1
+
+  # Sampling temperature — higher = more creative, lower = more deterministic
+  # Recommended range: 0.0–1.0. Use 0.0 for fully deterministic output.
   temperature: 0.8
 
 agent:
-  type: tool_calling            # tool_calling | code
+  # Agent architecture used by smolagents:
+  #   tool_calling — structured tool-use (recommended for most tasks)
+  #   code         — agent writes and executes Python directly
+  type: tool_calling
 
 experiment:
-  runs: 1                       # number of times to repeat the full task loop
-  use_overrides: false          # if true, use the "override" field from each task; otherwise use "additional_requirements_lite"
-  use_lite_requirements: true       
-  persist_context: true         # if true, keep the temp working directory after each run
-  tasks:                        # list of task numbers to run; leave empty [] to run all
-    - 7
-    - 8
-    - 9
-    - 12
-    - 13
-    - 16
-    - 18
-    - 20
+  # Number of times to repeat the full task loop (for variance estimation)
+  runs: 1
+
+  # If true, use the "override" field from each task.yml as the prompt.
+  # If false, use the base prompt from ground_truth/tasks.yml + additional_requirements.
+  use_overrides: false
+
+  # If true, use additional_requirements_lite from task.yml (shorter prompt).
+  # If false, use the full additional_requirements.
+  use_lite_requirements: true
+
+  # Path to the ground truth directory. Defaults to ./ground_truth if omitted.
+  # Override to point at a different volume or location.
+  ground_truth_dir: "../rdss-volume/ground_truth"
+
+  # If true, keep the temp working directory (tmp/smolagent_context/<task_hash>/) after each run.
+  # Set to false to save disk space — directories are deleted after each task completes.
+  persist_context: true
+
+  # Tasks to run. Comment out or leave empty ([]) to run all tasks.
+  tasks:
