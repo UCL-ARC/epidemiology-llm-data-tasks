@@ -27,18 +27,16 @@ tasks:
          - If a file is listed in the metadata, load it and include it in the merge frame.
 
       4. **Decide the Output Structure**
-         - Decide whether the construct should be represented as:
-           a. one consolidated variable across waves, meaning one final value per person,
-           b. separate age-specific or wave-specific variables,
-           c. both collapsed and detailed variables, or
-           d. multiple related but distinct variables.
-         - Base this decision on the construct, metadata labels, available waves, and additional requirements.
-         - For stable or time-invariant constructs, create a consolidated variable when appropriate.
-         - For time-varying constructs, retain separate age-specific or wave-specific variables when appropriate.
-         - If later waves contain more detailed response categories than earlier waves and the task requires comparability, create collapsed harmonised variables and also retain detailed variables where requested or needed to satisfy the requirements.
+         - The two primary structures are:
+           a. **One consolidated variable** — a single value per person across all sweeps. Used for stable or time-invariant constructs such as sex, ethnicity, or language.
+           b. **Separate wave-specific variables** — one variable per person per wave, named with an age suffix. Use for time-varying constructs such as economic activity, partnership status, or income.
+         - Base this decision on the construct, metadata labels, available sweeps, and additional requirements.
+         - Where the same construct applies to multiple subjects (e.g., mother and father), create parallel sets of variables — one per subject — following the same a/b structure.
+         - If sweeps have different levels of response detail and comparability is required, create both collapsed harmonised variables (consistent categories across sweeps) and detailed wave-specific variables.
+         - If the task requires variables measuring genuinely distinct dimensions of the same construct — not just different levels of detail — create a separate variable per dimension. Examples: academic vs vocational qualifications; item-summed vs caseness scores.
 
       5. **Variable Naming**
-         - Sweep-to-age mapping: S1→14, S2→15, S3→16, S4→17, S6→19, S7→20, S8→25, S9→32.
+         - Wave-to-age mapping: wave1→14, wave2→15, wave3→16, wave4→17, wave6→19, wave7→20, wave8→25, wave9→32.
          - Use the output variable names requested in the additional requirements where provided.
          - Otherwise, choose short, descriptive, lowercase names.
          - For age-specific variables, append the age as a numeric suffix. 
