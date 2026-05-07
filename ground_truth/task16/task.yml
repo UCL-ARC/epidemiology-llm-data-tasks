@@ -5,9 +5,9 @@ additional_requirements: |
   Derive six household weekly income variables plus NSID:
     Banded (factor):     incwhh14, incwhh15, incwhh16, incwhh17
     Continuous (numeric): incwhhcnt14, incwhhcnt15
-  At ages 14 and 15 the source data provides continuous income values; band these into the same scheme used in the later banded waves, and also retain the continuous values (except for missing value recoding). At ages 16 and 17 the source data already provides banded values; use these directly.
+  At ages 14 and 15 the source data provides continuous income values; band these into the same scheme used in the later banded sweeps, and also retain the continuous values (except for missing value recoding). At ages 16 and 17 the source data already provides banded values; use these directly.
   Missing data — apply mappings in this order:
-  1. Map raw wave-specific codes from their value_labels, including these non-default mappings:
+  1. Map raw sweep-specific codes from their value_labels, including these non-default mappings:
        -3 ("Not yet paid", ages 14–15)       → -1
        -1 ("Don't know", ages 14–15)         → -8
        -992 ("No information - refused")     → -9
