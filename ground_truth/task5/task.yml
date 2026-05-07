@@ -3,7 +3,7 @@ task_type: data_cleaning_r_plus
 name: partnership
 additional_requirements: |
   Derive time-varying partnership/marital status variables named partnr19, partnr25, partnr32, partnradu25, and partnradu32.
-  Coded as collapsed harmonised categories for partnr19, partnr25, and partnr32, with detailed adult categories retained for partnradu25 and partnradu32.
+  Coded as collapsed harmonised categories for partnr19, partnr25, and partnr32, with detailed adult categories also retained for partnradu25 and partnradu32.
   Derivation logic: create partnr19 from W6MarStatYP, create detailed adult variables partnradu25 from W8DMARSTAT and partnradu32 from W9DMARSTAT, then collapse the detailed adult variables into comparable partnr25 and partnr32 categories.
 additional_requirements_lite: |
   Derive time-varying partnership/marital status variables named partnr19, partnr25, partnr32, partnradu25, and partnradu32.

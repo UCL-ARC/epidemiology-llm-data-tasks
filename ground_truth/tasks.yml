@@ -122,18 +122,20 @@ tasks:
       {metadata}
   - task_type: data_cleaning_r_plus
     prompt: |
-      You have access to raw survey datasets from a longitudinal cohort study followed at multiple ages. Your task is to clean and preprocess these datasets into a single analysis-ready file.
+      You have access to raw survey datasets from a longitudinal cohort study, {cohort_name}, followed at multiple ages (survey "sweeps"). Your task is to clean and preprocess these datasets into a single cleaned file.
 
-      The metadata defines the files, source variables, labels, and missing-value meanings. Use the metadata and the additional requirements to infer the target construct, source variables, output structure, harmonisation, and final variables.
+      The metadata defines the files, source variables, labels, and missing-value meanings. Use the metadata and the additional requirements to infer the target construct, source variables, output structure, harmonisation procedure, and final variables.
 
-      Follow all instructions. Where the additional requirements specify a choice, follow them exactly; otherwise decide using the guidance below.
+      Follow all instructions. Where these are in conflict, prioritise the additional requirements over the general guidance.
+
+      **General Guidance:**
 
       1. **File Loading**
          - Load all input files from `data/input/` by prepending this path to every filename in the metadata.
          - The input files are tab-delimited `.tab` files. Use `readr::read_delim()` with `delim = "\t"`.
          - Load each file explicitly by name from the metadata into a separate object.
          - Merge datasets using `full_join` by the source ID variable.
-         - Load all files listed in the metadata, including files that contain only the ID variable, so the full cohort frame is preserved.
+         - Load all files listed in the metadata, including files that contain only the ID variable, so the full cohort data frame is preserved.
 
       2. **ID Variable**
          - Use the exact ID variable name from the source data, such as `NSID`.
@@ -141,9 +143,8 @@ tasks:
 
       3. **Identify the Target Variables**
          - Use the additional requirements to identify the construct and required output variable names.
-         - Use the metadata labels and filenames to identify all relevant source variables for that construct.
-         - Do not include unrelated source variables in the final output.
-         - If a file is listed in the metadata but contains only the ID variable, load it and include it in the merge frame, but do not create an output variable from it unless the task requires one.
+         - Use metadata for the files and the variables to identify all relevant source variables for that construct.
+         - If a file is listed in the metadata, load it and include it in the merge frame, but do not create an output variable from it unless the task requires one.
 
       4. **Decide the Output Structure**
          - Decide whether the construct should be represented as:
@@ -159,21 +160,25 @@ tasks:
       5. **Variable Naming**
          - Use the output variable names requested in the additional requirements where provided.
          - Otherwise, choose short, descriptive, lowercase names.
-         - For age-specific variables, append the age as a numeric suffix.
-         - For detailed adult versions where both collapsed and detailed forms are needed, append `adu` before the age suffix. Here `adu` means "adult detailed": it marks a more granular adult-wave variable that is retained alongside the collapsed harmonised adult variable.
-         - Example: `partnr25` is the collapsed harmonised adult variable at age 25, while `partnradu25` is the detailed adult version at age 25.
+         - For age-specific variables, append the age as a numeric suffix. 
+            - Infer from the variable and file metadata which age to use for the suffix.
+         - For detailed adult versions where both collapsed and detailed forms are needed, append `adu` before the age suffix. 
+            - Here `adu` means "adult detailed": it marks a more granular adult-wave variable that is retained alongside the collapsed harmonised adult variable.
+            - Example: `partnr25` is the collapsed harmonised adult variable at age 25, while `partnradu25` is the detailed adult version at age 25.
+         - Do not use raw source variables as output variables. If no cleaning is required to make the output variable, create a copy of the raw source variable.
          - Keep only final derived variables in the output, not raw source variables or intermediate working variables.
 
       6. **Standard Missing-Value Codes**
-         Use these codes consistently for derived variables:
-         - `-9` = Refusal
-         - `-8` = Don't know / insufficient information
-         - `-7` = Prefer not to say
-         - `-3` = Not asked at the fieldwork stage / not interviewed
-         - `-2` = Schedule not applicable / script error / information lost
-         - `-1` = Item not applicable
+         -  Use these codes consistently for derived variables:
+            - `-9` = Refusal
+            - `-8` = Don't know / insufficient information
+            - `-7` = Prefer not to say
+            - `-3` = Not asked at the fieldwork stage / not interviewed
+            - `-2` = Schedule not applicable / script error / information lost
+            - `-1` = Item not applicable
          - Convert NA / Null values to `-3` unless the metadata or additional requirements indicate a more specific meaning.
          - Preserve distinct missing-value meanings; do not collapse different missing reasons together unless instructed.
+         - If a variable has valid negative values, use NA for missing values instead.
 
       7. **Missing Value Harmonisation**
          - Convert wave-specific negative codes to the standard missing-value scheme using the metadata label meaning.
@@ -191,7 +196,7 @@ tasks:
          - Harmonised variables should use the same response categories, codes, and labels across waves.
          - If source variables already have identical meanings and categories, preserve those categories.
          - If one source variable has more detailed categories than another, reduce or collapse the more detailed categories only as much as needed to match the less detailed measure.
-         - Preserve as much substantive detail as possible while making the harmonised variables comparable.
+         - Preserve as much substantive detail as possible while making the harmonised variables comparable and also meeting the additional requirements specified for the task.
          - Map categories by label meaning, not by raw numeric code; the same numeric code can represent different categories in different waves.
          - Check `value_labels` for each source variable before mapping categories, and use wave-specific recoding logic where category meanings differ by wave.
          - If categories cannot be made comparable without losing important meaning, keep separate clearly labelled variables instead of forcing harmonisation.
@@ -212,7 +217,7 @@ tasks:
           - Ensure variables intended for comparison across waves use consistent codes and labels.
 
       11. **Allowed Packages**
-          - Use only these packages: `haven`, `dplyr`, `purrr`, `labelled`, `readr`.
+          - Besides Base R functions, use only these packages: `haven`, `dplyr`, `tidyr`, `purrr`, `labelled`, `readr`.
           - Load packages at the start of the script using `library()`.
 
       12. **Output Requirements**
