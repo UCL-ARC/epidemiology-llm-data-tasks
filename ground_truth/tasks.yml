@@ -131,14 +131,13 @@ tasks:
       **General Guidance:**
 
       1. **File Loading**
-         - Load all input files from `data/input/` by prepending this path to every filename in the metadata.
+         - For each file listed in the metadata, load it from `data/input/` by prepending this path to the filename. Load every file in the metadata, including files that contain only the ID variable, so the full cohort frame is preserved.
          - The input files are tab-delimited `.tab` files. Use `readr::read_delim()` with `delim = "\t"`.
-         - Load each file explicitly by name from the metadata into a separate object.
+         - Load each file explicitly by name into a separate object.
          - Merge datasets using `full_join` by the source ID variable.
-         - Load all files listed in the metadata, including files that contain only the ID variable, so the full cohort data frame is preserved.
 
       2. **ID Variable**
-         - Use the exact ID variable name from the source data, such as `NSID`.
+         - Use the exact ID variable name from the source datasets `NSID`.
          - Do not rename the ID variable to a generic name such as `id`.
 
       3. **Identify the Target Variables**
