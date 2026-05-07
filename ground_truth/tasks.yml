@@ -24,7 +24,7 @@ tasks:
       3. **Identify the Target Variables**
          - Use the additional requirements to identify the construct and required output variable names.
          - Use metadata for the files and the variables to identify all relevant source variables for that construct.
-         - If a file is listed in the metadata, load it and include it in the merge frame, but do not create an output variable from it unless the task requires one.
+         - If a file is listed in the metadata, load it and include it in the merge frame.
 
       4. **Decide the Output Structure**
          - Decide whether the construct should be represented as:
