@@ -19,7 +19,7 @@ class TestColumnMatcherInit:
         matcher = ColumnMatcher()
 
         mock_cross_encoder.assert_called_once_with("cross-encoder/stsb-roberta-base")
-        assert matcher.match_threshold == 0.5
+        assert matcher.match_threshold == 0.9
 
     @patch("src.tabmatch.column_matcher.CrossEncoder")
     def test_init_custom_params(self, mock_cross_encoder: MagicMock) -> None:
