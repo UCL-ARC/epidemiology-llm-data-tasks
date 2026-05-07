@@ -80,7 +80,7 @@ CROSS_ENCODER_MODEL: str = "cross-encoder/stsb-roberta-base"
 CATEGORICAL_THRESHOLD: int = 20
 
 #: Minimum similarity score for a column-name match to be accepted (ColumnMatcher)
-MATCH_THRESHOLD: float = 0.5
+MATCH_THRESHOLD: float = 0.9
 
 #: Minimum data-similarity score for a column pair to be considered a candidate match
 COLUMN_DATA_MATCH_THRESHOLD: float = 0.7
