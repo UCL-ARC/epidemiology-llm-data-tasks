@@ -31,7 +31,7 @@ class TestDataComparatorInit:
 
         mock_column_matcher.assert_called_once_with(
             cross_encoder_model_name="cross-encoder/stsb-roberta-base",
-            match_threshold=0.5,
+            match_threshold=0.9,
         )
 
     @patch("src.tabmatch.data_comparator.ColumnMatcher")
