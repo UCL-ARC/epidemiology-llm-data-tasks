@@ -38,6 +38,7 @@ tasks:
          - If later waves contain more detailed response categories than earlier waves and the task requires comparability, create collapsed harmonised variables and also retain detailed variables where requested or needed to satisfy the requirements.
 
       5. **Variable Naming**
+         - Sweep-to-age mapping: S1→14, S2→15, S3→16, S4→17, S6→19, S7→20, S8→25, S9→32.
          - Use the output variable names requested in the additional requirements where provided.
          - Otherwise, choose short, descriptive, lowercase names.
          - For age-specific variables, append the age as a numeric suffix. 
