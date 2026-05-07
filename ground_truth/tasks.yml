@@ -25,7 +25,7 @@ tasks:
          - Use the additional requirements to identify the construct and required output variable names.
          - Use metadata for the files and the variables to identify all relevant source variables for that construct.
          - If a file is listed in the metadata, load it and include it in the merge frame.
-         - Tasks will require using multiple datasets containing different waves (ages), use this mapping to identify the relevant age for each variable: wave1→14, wave2→15, wave3→16, wave4→17, wave6→19, wave7→20, wave8→25, wave9→32.
+         - Tasks will require using multiple datasets containing different waves (ages). Use this mapping to identify the relevant age for each variable: wave1→14, wave2→15, wave3→16, wave4→17, wave6→19, wave7→20, wave8→25, wave9→32.
 
       4. **Decide the Output Structure**
          - The two primary structures are:
@@ -46,7 +46,7 @@ tasks:
          - Keep only final derived variables in the output, not raw source variables or intermediate working variables.
 
       6. **Standard Missing-Value Codes**
-         -  Use these codes consistently for derived variables:
+         - Use these codes consistently for derived variables:
             - `-9` = Refusal
             - `-8` = Don't know / insufficient information
             - `-7` = Prefer not to say
