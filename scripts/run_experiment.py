@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 from typing import TYPE_CHECKING, Literal
 
 if TYPE_CHECKING:
@@ -16,6 +17,7 @@ import yaml
 from loguru import logger
 
 from src.agents import SmolAgent
+from src.config import SMOLAGENT_CONTEXT_PREFIX, TMP_DIR
 from src.tools import produce_and_execute_r
 
 
@@ -206,6 +208,8 @@ def main() -> None:  # noqa: PLR0915
     )
 
     for i in range(runs):
+        safe_model_id = re.sub(r"[^\w]", "_", model_id.rsplit("/", 1)[-1])
+        agent.temp_root = TMP_DIR / f"{SMOLAGENT_CONTEXT_PREFIX}_{safe_model_id}_{i+1}"
         logger.info(f"\n\n=== Agent Run {i+1} ===")
         for test_dir in test_dirs:
             logger.info(f"\n=== Testing with context: {test_dir} ===")
