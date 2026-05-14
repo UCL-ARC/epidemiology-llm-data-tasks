@@ -112,12 +112,13 @@ class TestRunRScript:
         )
 
         r_script_path = Path("task1/rtruth.R")
-        result = run_r_script(r_script_path, verbose=True)
+        working_dir = Path("task1")
+        result = run_r_script(r_script_path, working_dir, verbose=True)
 
         assert result is True
         mock_run.assert_called_once_with(
-            ["Rscript", "rtruth.R"],
-            cwd=Path("task1"),
+            ["Rscript", str(r_script_path.resolve())],
+            cwd=working_dir,
             capture_output=True,
             text=True,
             check=False,
@@ -129,7 +130,7 @@ class TestRunRScript:
         mock_run.return_value = Mock(returncode=1, stdout="", stderr="Error in script")
 
         r_script_path = Path("task1/rtruth.R")
-        result = run_r_script(r_script_path, verbose=False)
+        result = run_r_script(r_script_path, Path("task1"), verbose=False)
 
         assert result is False
 
@@ -139,7 +140,7 @@ class TestRunRScript:
         mock_run.side_effect = Exception("Subprocess error")
 
         r_script_path = Path("task1/rtruth.R")
-        result = run_r_script(r_script_path, verbose=False)
+        result = run_r_script(r_script_path, Path("task1"), verbose=False)
 
         assert result is False
 
@@ -149,7 +150,7 @@ class TestRunRScript:
         mock_run.return_value = Mock(returncode=0, stdout="Verbose output", stderr="")
 
         r_script_path = Path("task1/rtruth.R")
-        result = run_r_script(r_script_path, verbose=True)
+        result = run_r_script(r_script_path, Path("task1"), verbose=True)
 
         assert result is True
 
@@ -227,6 +228,7 @@ class TestMain:
         mock_args.return_value = Mock(
             input_dir=Path("input"),
             ground_truth_dir=Path("ground_truth"),
+            output_dir=None,
             verbose=False,
         )
 
@@ -253,6 +255,7 @@ class TestMain:
         mock_args.return_value = Mock(
             input_dir=Path("input"),
             ground_truth_dir=Path("ground_truth"),
+            output_dir=None,
             verbose=False,
         )
 
@@ -275,6 +278,7 @@ class TestMain:
         mock_args.return_value = Mock(
             input_dir=Path("input"),
             ground_truth_dir=Path("ground_truth"),
+            output_dir=None,
             verbose=False,
         )
 
@@ -301,6 +305,7 @@ class TestMain:
         mock_args.return_value = Mock(
             input_dir=Path("input"),
             ground_truth_dir=Path("ground_truth"),
+            output_dir=None,
             verbose=False,
         )
 
@@ -327,6 +332,7 @@ class TestMain:
         mock_args.return_value = Mock(
             input_dir=Path("input"),
             ground_truth_dir=Path("ground_truth"),
+            output_dir=None,
             verbose=False,
         )
 
