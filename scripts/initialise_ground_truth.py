@@ -28,8 +28,16 @@ def get_arg_parser() -> argparse.ArgumentParser:
         "-g",
         "--ground_truth_dir",
         type=Path,
-        help="Path to the directory where the ground truth data will be stored.",
+        help="Path to the directory containing task definitions (metadata, R scripts).",
         default=Path("ground_truth"),
+    )
+    parser.add_argument(
+        "-o",
+        "--output_dir",
+        type=Path,
+        help="Path to the directory where the ground truth data will be saved. "
+        "Defaults to --ground_truth_dir if not specified.",
+        default=None,
     )
     parser.add_argument(
         "-v",
@@ -78,12 +86,12 @@ def copy_raw_data(input_dir: Path, task_input_dir: Path, metadata: dict) -> list
     return failed_files
 
 
-def run_r_script(r_script_path: Path, *, verbose: bool) -> bool:
-    """Run R script via subprocess."""
+def run_r_script(r_script_path: Path, working_dir: Path, *, verbose: bool) -> bool:
+    """Run R script via subprocess from the given working directory."""
     try:
         result = subprocess.run(  # noqa: S603
-            ["Rscript", r_script_path.name],  # noqa: S607
-            cwd=r_script_path.parent,
+            ["Rscript", str(r_script_path.resolve())],  # noqa: S607
+            cwd=working_dir,
             capture_output=True,
             text=True,
             check=False,
@@ -125,16 +133,24 @@ def main() -> None:
 
     input_dir: Path = args.input_dir
     ground_truth_dir: Path = args.ground_truth_dir
+    output_dir: Path = (
+        args.output_dir if args.output_dir is not None else ground_truth_dir
+    )
     verbose: bool = args.verbose
     failed_tasks = []
 
     logger.info(f"Initialising ground truth using data from: [cyan]{input_dir}[/cyan]")
-    logger.info(f"Ground truth data will be stored in: [cyan]{ground_truth_dir}[/cyan]")
+    logger.info(
+        f"Ground truth task definitions read from: [cyan]{ground_truth_dir}[/cyan]"
+    )
+    logger.info(f"Ground truth data will be saved to: [cyan]{output_dir}[/cyan]")
 
     task_dirs = get_and_sort_task_dirs(ground_truth_dir)
 
     for ground_truth_task in task_dirs:
         logger.info(f"Processing: [green]{ground_truth_task}[/green]")
+
+        output_task_dir = output_dir / ground_truth_task.name
 
         # --- Load metadata ---
         with Live(
@@ -156,7 +172,7 @@ def main() -> None:
             console=console,
             refresh_per_second=4,
         ):
-            task_input_dir = ground_truth_task / DATA_INPUT_DIR
+            task_input_dir = output_task_dir / DATA_INPUT_DIR
             failed_files = copy_raw_data(input_dir, task_input_dir, metadata)
 
         if failed_files:
@@ -171,7 +187,7 @@ def main() -> None:
             refresh_per_second=4,
         ):
             r_script_path = ground_truth_task / R_TRUTH_SCRIPT
-            r_success = run_r_script(r_script_path, verbose=verbose)
+            r_success = run_r_script(r_script_path, output_task_dir, verbose=verbose)
 
         if not r_success:
             logger.error(f"R script failed for {ground_truth_task}")
