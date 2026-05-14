@@ -5,6 +5,7 @@ from unittest.mock import Mock, mock_open, patch
 
 from scripts.initialise_ground_truth import (
     copy_raw_data,
+    copy_tasks_yml,
     get_and_sort_task_dirs,
     load_metadata,
     main,
@@ -212,16 +213,55 @@ class TestGetAndSortTaskDirs:
         assert result[0].name == "task1"
 
 
+class TestCopyTasksYml:
+    """Test copy_tasks_yml function."""
+
+    @patch("pathlib.Path.mkdir")
+    @patch("pathlib.Path.open", new_callable=mock_open, read_data=b"tasks: []")
+    def test_copy_tasks_yml_success(self, mock_file, mock_mkdir):
+        """Test successful tasks.yml copy."""
+        result = copy_tasks_yml(Path("ground_truth"), Path("output"))
+
+        assert result is True
+        mock_mkdir.assert_called_once()
+        assert mock_file.call_count == 2  # one read, one write
+
+    @patch("pathlib.Path.mkdir")
+    @patch("pathlib.Path.open")
+    def test_copy_tasks_yml_missing_file(self, mock_file, mock_mkdir):
+        """Test tasks.yml copy when source file is missing."""
+        mock_file.side_effect = FileNotFoundError()
+        result = copy_tasks_yml(Path("ground_truth"), Path("output"))
+
+        assert result is False
+
+    @patch("pathlib.Path.mkdir")
+    @patch("pathlib.Path.open")
+    def test_copy_tasks_yml_permission_error(self, mock_file, mock_mkdir):
+        """Test tasks.yml copy with a permission error."""
+        mock_file.side_effect = PermissionError()
+        result = copy_tasks_yml(Path("ground_truth"), Path("output"))
+
+        assert result is False
+
+
 class TestMain:
     """Test main function."""
 
+    @patch("scripts.initialise_ground_truth.copy_tasks_yml")
     @patch("scripts.initialise_ground_truth.run_r_script")
     @patch("scripts.initialise_ground_truth.copy_raw_data")
     @patch("scripts.initialise_ground_truth.load_metadata")
     @patch("scripts.initialise_ground_truth.get_and_sort_task_dirs")
     @patch("argparse.ArgumentParser.parse_args")
     def test_main_success(
-        self, mock_args, mock_get_dirs, mock_load_metadata, mock_copy_data, mock_run_r
+        self,
+        mock_args,
+        mock_get_dirs,
+        mock_load_metadata,
+        mock_copy_data,
+        mock_run_r,
+        mock_copy_yml,
     ):
         """Test successful main execution."""
         # Setup mocks
@@ -235,6 +275,7 @@ class TestMain:
         # Use real Path objects instead of mocks
         mock_get_dirs.return_value = [Path("ground_truth/task1")]
 
+        mock_copy_yml.return_value = True
         mock_load_metadata.return_value = {"file1.csv": "data"}
         mock_copy_data.return_value = []  # No failed files
         mock_run_r.return_value = True
@@ -243,14 +284,16 @@ class TestMain:
         main()
 
         # Verify calls
+        mock_copy_yml.assert_called_once()
         mock_get_dirs.assert_called_once()
         mock_load_metadata.assert_called_once()
         mock_copy_data.assert_called_once()
         mock_run_r.assert_called_once()
 
+    @patch("scripts.initialise_ground_truth.copy_tasks_yml")
     @patch("scripts.initialise_ground_truth.get_and_sort_task_dirs")
     @patch("argparse.ArgumentParser.parse_args")
-    def test_main_no_tasks(self, mock_args, mock_get_dirs):
+    def test_main_no_tasks(self, mock_args, mock_get_dirs, mock_copy_yml):
         """Test main execution with no task directories."""
         mock_args.return_value = Mock(
             input_dir=Path("input"),
@@ -259,20 +302,29 @@ class TestMain:
             verbose=False,
         )
 
+        mock_copy_yml.return_value = True
         mock_get_dirs.return_value = []
 
         # Should complete without error
         main()
 
+        mock_copy_yml.assert_called_once()
         mock_get_dirs.assert_called_once()
 
+    @patch("scripts.initialise_ground_truth.copy_tasks_yml")
     @patch("scripts.initialise_ground_truth.run_r_script")
     @patch("scripts.initialise_ground_truth.copy_raw_data")
     @patch("scripts.initialise_ground_truth.load_metadata")
     @patch("scripts.initialise_ground_truth.get_and_sort_task_dirs")
     @patch("argparse.ArgumentParser.parse_args")
     def test_main_metadata_failure(
-        self, mock_args, mock_get_dirs, mock_load_metadata, mock_copy_data, mock_run_r
+        self,
+        mock_args,
+        mock_get_dirs,
+        mock_load_metadata,
+        mock_copy_data,
+        mock_run_r,
+        mock_copy_yml,
     ):
         """Test main execution with metadata loading failure."""
         mock_args.return_value = Mock(
@@ -285,6 +337,7 @@ class TestMain:
         # Use real Path objects instead of mocks
         mock_get_dirs.return_value = [Path("ground_truth/task1")]
 
+        mock_copy_yml.return_value = True
         mock_load_metadata.return_value = {}  # Empty metadata (failure)
 
         main()
@@ -293,13 +346,20 @@ class TestMain:
         mock_copy_data.assert_not_called()
         mock_run_r.assert_not_called()
 
+    @patch("scripts.initialise_ground_truth.copy_tasks_yml")
     @patch("scripts.initialise_ground_truth.run_r_script")
     @patch("scripts.initialise_ground_truth.copy_raw_data")
     @patch("scripts.initialise_ground_truth.load_metadata")
     @patch("scripts.initialise_ground_truth.get_and_sort_task_dirs")
     @patch("argparse.ArgumentParser.parse_args")
     def test_main_copy_failure(
-        self, mock_args, mock_get_dirs, mock_load_metadata, mock_copy_data, mock_run_r
+        self,
+        mock_args,
+        mock_get_dirs,
+        mock_load_metadata,
+        mock_copy_data,
+        mock_run_r,
+        mock_copy_yml,
     ):
         """Test main execution with file copying failure."""
         mock_args.return_value = Mock(
@@ -312,6 +372,7 @@ class TestMain:
         # Use real Path objects instead of mocks
         mock_get_dirs.return_value = [Path("ground_truth/task1")]
 
+        mock_copy_yml.return_value = True
         mock_load_metadata.return_value = {"file1.csv": "data"}
         mock_copy_data.return_value = ["file1.csv"]  # Failed file
 
@@ -320,13 +381,20 @@ class TestMain:
         # Should not proceed to run R script
         mock_run_r.assert_not_called()
 
+    @patch("scripts.initialise_ground_truth.copy_tasks_yml")
     @patch("scripts.initialise_ground_truth.run_r_script")
     @patch("scripts.initialise_ground_truth.copy_raw_data")
     @patch("scripts.initialise_ground_truth.load_metadata")
     @patch("scripts.initialise_ground_truth.get_and_sort_task_dirs")
     @patch("argparse.ArgumentParser.parse_args")
     def test_main_r_script_failure(
-        self, mock_args, mock_get_dirs, mock_load_metadata, mock_copy_data, mock_run_r
+        self,
+        mock_args,
+        mock_get_dirs,
+        mock_load_metadata,
+        mock_copy_data,
+        mock_run_r,
+        mock_copy_yml,
     ):
         """Test main execution with R script failure."""
         mock_args.return_value = Mock(
@@ -339,6 +407,7 @@ class TestMain:
         # Use real Path objects instead of mocks
         mock_get_dirs.return_value = [Path("ground_truth/task1")]
 
+        mock_copy_yml.return_value = True
         mock_load_metadata.return_value = {"file1.csv": "data"}
         mock_copy_data.return_value = []  # No failed files
         mock_run_r.return_value = False  # R script failure
