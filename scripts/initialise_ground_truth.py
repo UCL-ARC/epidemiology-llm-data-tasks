@@ -6,6 +6,7 @@ running R scripts.
 import argparse
 import json
 import re
+import shutil
 import subprocess
 from pathlib import Path
 
@@ -64,6 +65,19 @@ def load_metadata(metadata_path: Path) -> dict:
         return {}
 
     return metadata
+
+
+def copy_task_dir(src_task_dir: Path, output_task_dir: Path) -> bool:
+    """
+    Copy the task directory skeleton (scripts, config, empty
+    data dirs) to the output location.
+    """
+    try:
+        shutil.copytree(src_task_dir, output_task_dir, dirs_exist_ok=True)
+    except Exception as e:  # noqa: BLE001
+        logger.error(f"Error copying task directory {src_task_dir}: {e}")
+        return False
+    return True
 
 
 def copy_tasks_yml(ground_truth_dir: Path, output_dir: Path) -> bool:
@@ -140,7 +154,7 @@ def get_and_sort_task_dirs(ground_truth_dir: Path) -> list:
     return task_dirs
 
 
-def main() -> None:
+def main() -> None:  # noqa: PLR0915
     """Initialise ground truth data for each task."""
     parser = get_arg_parser()
     args = parser.parse_args()
@@ -177,6 +191,21 @@ def main() -> None:
         logger.info(f"Processing: [green]{ground_truth_task}[/green]")
 
         output_task_dir = output_dir / ground_truth_task.name
+
+        # --- Copy task directory skeleton (only when writing to a separate
+        # output dir) ---
+        if output_task_dir != ground_truth_task:
+            with Live(
+                Spinner("dots", text="Copying task directory..."),
+                console=console,
+                refresh_per_second=4,
+            ):
+                task_dir_copied = copy_task_dir(ground_truth_task, output_task_dir)
+
+            if not task_dir_copied:
+                logger.error(f"Failed to copy task directory for {ground_truth_task}")
+                failed_tasks.append(ground_truth_task)
+                continue
 
         # --- Load metadata ---
         with Live(

@@ -5,6 +5,7 @@ from unittest.mock import Mock, mock_open, patch
 
 from scripts.initialise_ground_truth import (
     copy_raw_data,
+    copy_task_dir,
     copy_tasks_yml,
     get_and_sort_task_dirs,
     load_metadata,
@@ -213,6 +214,28 @@ class TestGetAndSortTaskDirs:
         assert result[0].name == "task1"
 
 
+class TestCopyTaskDir:
+    """Test copy_task_dir function."""
+
+    @patch("shutil.copytree")
+    def test_copy_task_dir_success(self, mock_copytree):
+        """Test successful task directory copy."""
+        result = copy_task_dir(Path("ground_truth/task1"), Path("output/task1"))
+
+        assert result is True
+        mock_copytree.assert_called_once_with(
+            Path("ground_truth/task1"), Path("output/task1"), dirs_exist_ok=True
+        )
+
+    @patch("shutil.copytree")
+    def test_copy_task_dir_error(self, mock_copytree):
+        """Test task directory copy with an error."""
+        mock_copytree.side_effect = OSError("Permission denied")
+        result = copy_task_dir(Path("ground_truth/task1"), Path("output/task1"))
+
+        assert result is False
+
+
 class TestCopyTasksYml:
     """Test copy_tasks_yml function."""
 
@@ -249,6 +272,7 @@ class TestMain:
     """Test main function."""
 
     @patch("scripts.initialise_ground_truth.copy_tasks_yml")
+    @patch("scripts.initialise_ground_truth.copy_task_dir")
     @patch("scripts.initialise_ground_truth.run_r_script")
     @patch("scripts.initialise_ground_truth.copy_raw_data")
     @patch("scripts.initialise_ground_truth.load_metadata")
@@ -261,6 +285,7 @@ class TestMain:
         mock_load_metadata,
         mock_copy_data,
         mock_run_r,
+        mock_copy_task_dir,
         mock_copy_yml,
     ):
         """Test successful main execution."""
@@ -276,6 +301,7 @@ class TestMain:
         mock_get_dirs.return_value = [Path("ground_truth/task1")]
 
         mock_copy_yml.return_value = True
+        mock_copy_task_dir.return_value = True
         mock_load_metadata.return_value = {"file1.csv": "data"}
         mock_copy_data.return_value = []  # No failed files
         mock_run_r.return_value = True
@@ -283,7 +309,8 @@ class TestMain:
         # Run main
         main()
 
-        # Verify calls
+        # copy_task_dir is skipped: output resolves to the same dir as the source task
+        mock_copy_task_dir.assert_not_called()
         mock_copy_yml.assert_called_once()
         mock_get_dirs.assert_called_once()
         mock_load_metadata.assert_called_once()
@@ -291,9 +318,54 @@ class TestMain:
         mock_run_r.assert_called_once()
 
     @patch("scripts.initialise_ground_truth.copy_tasks_yml")
+    @patch("scripts.initialise_ground_truth.copy_task_dir")
+    @patch("scripts.initialise_ground_truth.run_r_script")
+    @patch("scripts.initialise_ground_truth.copy_raw_data")
+    @patch("scripts.initialise_ground_truth.load_metadata")
     @patch("scripts.initialise_ground_truth.get_and_sort_task_dirs")
     @patch("argparse.ArgumentParser.parse_args")
-    def test_main_no_tasks(self, mock_args, mock_get_dirs, mock_copy_yml):
+    def test_main_success_separate_output_dir(
+        self,
+        mock_args,
+        mock_get_dirs,
+        mock_load_metadata,
+        mock_copy_data,
+        mock_run_r,
+        mock_copy_task_dir,
+        mock_copy_yml,
+    ):
+        """Test successful main execution with a separate output directory."""
+        mock_args.return_value = Mock(
+            input_dir=Path("input"),
+            ground_truth_dir=Path("ground_truth"),
+            output_dir=Path("output"),
+            verbose=False,
+        )
+
+        mock_get_dirs.return_value = [Path("ground_truth/task1")]
+
+        mock_copy_yml.return_value = True
+        mock_copy_task_dir.return_value = True
+        mock_load_metadata.return_value = {"file1.csv": "data"}
+        mock_copy_data.return_value = []
+        mock_run_r.return_value = True
+
+        main()
+
+        # copy_task_dir is called because output_task_dir != source task dir
+        mock_copy_task_dir.assert_called_once()
+        mock_copy_yml.assert_called_once()
+        mock_load_metadata.assert_called_once()
+        mock_copy_data.assert_called_once()
+        mock_run_r.assert_called_once()
+
+    @patch("scripts.initialise_ground_truth.copy_tasks_yml")
+    @patch("scripts.initialise_ground_truth.copy_task_dir")
+    @patch("scripts.initialise_ground_truth.get_and_sort_task_dirs")
+    @patch("argparse.ArgumentParser.parse_args")
+    def test_main_no_tasks(
+        self, mock_args, mock_get_dirs, mock_copy_task_dir, mock_copy_yml
+    ):
         """Test main execution with no task directories."""
         mock_args.return_value = Mock(
             input_dir=Path("input"),
@@ -303,6 +375,7 @@ class TestMain:
         )
 
         mock_copy_yml.return_value = True
+        mock_copy_task_dir.return_value = True
         mock_get_dirs.return_value = []
 
         # Should complete without error
@@ -312,6 +385,7 @@ class TestMain:
         mock_get_dirs.assert_called_once()
 
     @patch("scripts.initialise_ground_truth.copy_tasks_yml")
+    @patch("scripts.initialise_ground_truth.copy_task_dir")
     @patch("scripts.initialise_ground_truth.run_r_script")
     @patch("scripts.initialise_ground_truth.copy_raw_data")
     @patch("scripts.initialise_ground_truth.load_metadata")
@@ -324,6 +398,7 @@ class TestMain:
         mock_load_metadata,
         mock_copy_data,
         mock_run_r,
+        mock_copy_task_dir,
         mock_copy_yml,
     ):
         """Test main execution with metadata loading failure."""
@@ -338,6 +413,7 @@ class TestMain:
         mock_get_dirs.return_value = [Path("ground_truth/task1")]
 
         mock_copy_yml.return_value = True
+        mock_copy_task_dir.return_value = True
         mock_load_metadata.return_value = {}  # Empty metadata (failure)
 
         main()
@@ -347,6 +423,7 @@ class TestMain:
         mock_run_r.assert_not_called()
 
     @patch("scripts.initialise_ground_truth.copy_tasks_yml")
+    @patch("scripts.initialise_ground_truth.copy_task_dir")
     @patch("scripts.initialise_ground_truth.run_r_script")
     @patch("scripts.initialise_ground_truth.copy_raw_data")
     @patch("scripts.initialise_ground_truth.load_metadata")
@@ -359,6 +436,7 @@ class TestMain:
         mock_load_metadata,
         mock_copy_data,
         mock_run_r,
+        mock_copy_task_dir,
         mock_copy_yml,
     ):
         """Test main execution with file copying failure."""
@@ -373,6 +451,7 @@ class TestMain:
         mock_get_dirs.return_value = [Path("ground_truth/task1")]
 
         mock_copy_yml.return_value = True
+        mock_copy_task_dir.return_value = True
         mock_load_metadata.return_value = {"file1.csv": "data"}
         mock_copy_data.return_value = ["file1.csv"]  # Failed file
 
@@ -382,6 +461,7 @@ class TestMain:
         mock_run_r.assert_not_called()
 
     @patch("scripts.initialise_ground_truth.copy_tasks_yml")
+    @patch("scripts.initialise_ground_truth.copy_task_dir")
     @patch("scripts.initialise_ground_truth.run_r_script")
     @patch("scripts.initialise_ground_truth.copy_raw_data")
     @patch("scripts.initialise_ground_truth.load_metadata")
@@ -394,6 +474,7 @@ class TestMain:
         mock_load_metadata,
         mock_copy_data,
         mock_run_r,
+        mock_copy_task_dir,
         mock_copy_yml,
     ):
         """Test main execution with R script failure."""
@@ -408,6 +489,7 @@ class TestMain:
         mock_get_dirs.return_value = [Path("ground_truth/task1")]
 
         mock_copy_yml.return_value = True
+        mock_copy_task_dir.return_value = True
         mock_load_metadata.return_value = {"file1.csv": "data"}
         mock_copy_data.return_value = []  # No failed files
         mock_run_r.return_value = False  # R script failure
@@ -418,3 +500,40 @@ class TestMain:
         mock_load_metadata.assert_called_once()
         mock_copy_data.assert_called_once()
         mock_run_r.assert_called_once()
+
+    @patch("scripts.initialise_ground_truth.copy_tasks_yml")
+    @patch("scripts.initialise_ground_truth.copy_task_dir")
+    @patch("scripts.initialise_ground_truth.run_r_script")
+    @patch("scripts.initialise_ground_truth.copy_raw_data")
+    @patch("scripts.initialise_ground_truth.load_metadata")
+    @patch("scripts.initialise_ground_truth.get_and_sort_task_dirs")
+    @patch("argparse.ArgumentParser.parse_args")
+    def test_main_task_dir_copy_failure(
+        self,
+        mock_args,
+        mock_get_dirs,
+        mock_load_metadata,
+        mock_copy_data,
+        mock_run_r,
+        mock_copy_task_dir,
+        mock_copy_yml,
+    ):
+        """Test main execution when copying the task directory fails."""
+        mock_args.return_value = Mock(
+            input_dir=Path("input"),
+            ground_truth_dir=Path("ground_truth"),
+            output_dir=Path("output"),  # separate dir so copy_task_dir is invoked
+            verbose=False,
+        )
+
+        mock_get_dirs.return_value = [Path("ground_truth/task1")]
+
+        mock_copy_yml.return_value = True
+        mock_copy_task_dir.return_value = False  # Task dir copy failure
+
+        main()
+
+        # Should not proceed to load metadata, copy data, or run R script
+        mock_load_metadata.assert_not_called()
+        mock_copy_data.assert_not_called()
+        mock_run_r.assert_not_called()
