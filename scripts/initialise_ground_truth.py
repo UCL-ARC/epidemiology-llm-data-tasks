@@ -66,6 +66,20 @@ def load_metadata(metadata_path: Path) -> dict:
     return metadata
 
 
+def copy_tasks_yml(ground_truth_dir: Path, output_dir: Path) -> bool:
+    """Copy tasks.yml from the ground truth directory to the output directory."""
+    src = ground_truth_dir / "tasks.yml"
+    dest = output_dir / "tasks.yml"
+    try:
+        Path.mkdir(output_dir, parents=True, exist_ok=True)
+        with Path.open(src, "rb") as s, Path.open(dest, "wb") as d:
+            d.write(s.read())
+    except Exception as e:  # noqa: BLE001
+        logger.error(f"Error copying tasks.yml: {e}")
+        return False
+    return True
+
+
 def copy_raw_data(input_dir: Path, task_input_dir: Path, metadata: dict) -> list:
     """Copy raw data files based on metadata."""
     failed_files = []
@@ -146,6 +160,18 @@ def main() -> None:
     logger.info(f"Ground truth data will be saved to: [cyan]{output_dir}[/cyan]")
 
     task_dirs = get_and_sort_task_dirs(ground_truth_dir)
+
+    # --- Copy tasks.yml ---
+    with Live(
+        Spinner("dots", text="Copying tasks.yml..."),
+        console=console,
+        refresh_per_second=4,
+    ):
+        tasks_yml_copied = copy_tasks_yml(ground_truth_dir, output_dir)
+
+    if not tasks_yml_copied:
+        logger.error("Failed to copy tasks.yml — aborting.")
+        return
 
     for ground_truth_task in task_dirs:
         logger.info(f"Processing: [green]{ground_truth_task}[/green]")
