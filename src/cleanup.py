@@ -2,22 +2,18 @@
 
 from __future__ import annotations
 
+import argparse
 import shutil
-import sys
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from pathlib import Path
-
+from pathlib import Path
 
 from loguru import logger
 
 from src.config import DATA_OUTPUT_DIR, PRED_FILENAME, SMOLAGENT_CONTEXT_ROOT, TASK_IDS
 
 
-def main(*, delete_data: bool = False) -> None:  # noqa: PLR0912, C901
+def main(*, delete_data: bool = False, context_root: Path | None = None) -> None:  # noqa: PLR0912, C901
     """Identify incomplete smolagent outputs and optionally delete them."""
-    context_root = SMOLAGENT_CONTEXT_ROOT
+    context_root = context_root if context_root is not None else SMOLAGENT_CONTEXT_ROOT
     all_task_ids = TASK_IDS
 
     if not context_root.exists():
@@ -96,5 +92,21 @@ def main(*, delete_data: bool = False) -> None:  # noqa: PLR0912, C901
 
 
 if __name__ == "__main__":
-    delete = "--delete" in sys.argv
-    main(delete_data=delete)
+    parser = argparse.ArgumentParser(
+        description="Clean up incomplete smolagent outputs."
+    )
+    parser.add_argument(
+        "--delete",
+        action="store_true",
+        help="Delete incomplete output directories.",
+    )
+    parser.add_argument(
+        "-d",
+        "--context_dir",
+        type=Path,
+        default=None,
+        help="Path to the model/context directory to clean up. "
+        f"Defaults to {SMOLAGENT_CONTEXT_ROOT}.",
+    )
+    _args = parser.parse_args()
+    main(delete_data=_args.delete, context_root=_args.context_dir)
