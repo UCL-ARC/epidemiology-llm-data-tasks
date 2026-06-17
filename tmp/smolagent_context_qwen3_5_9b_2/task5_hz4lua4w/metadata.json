@@ -1,0 +1,136 @@
+{
+  "wave_one_lsype_young_person_2020.tab": {
+    "file_info": {
+      "number_of_variables": 350,
+      "number_of_cases": 15760,
+      "description": "Sweep 1 (Age 14) Young Person Data File"
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "type": "string",
+        "value_labels": {}
+      }
+    }
+  },
+  "wave_four_lsype_young_person_2020.tab": {
+    "file_info": {
+      "number_of_variables": 1049,
+      "number_of_cases": 11791,
+      "description": "Sweep 4 (Age 17) Young Person Data File"
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "type": "string",
+        "value_labels": {}
+      }
+    }
+  },
+  "wave_six_lsype_young_person_2020.tab": {
+    "file_info": {
+      "number_of_variables": 760,
+      "number_of_cases": 9791,
+      "description": "Sweep 6 (Age 19) Young Person Data File"
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "type": "string",
+        "value_labels": {}
+      },
+      "W6MarStatYP": {
+        "position": 570,
+        "variable_label": "YP: Marital status",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-997.0": "Script error",
+          "-97.0": "Respondent declined self completion",
+          "-92.0": "Refused",
+          "-91.0": "Not applicable",
+          "-1.0": "Don't know",
+          "1.0": "Single, that is never married",
+          "2.0": "Married",
+          "3.0": "Separated",
+          "4.0": "Divorced",
+          "5.0": "Widowed"
+        }
+      }
+    }
+  },
+  "ns8_2015_derived.tab": {
+    "file_info": {
+      "number_of_variables": 53,
+      "number_of_cases": 7705,
+      "description": "Wave Eight Derived Data File"
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "type": "string",
+        "value_labels": {}
+      },
+      "W8DMARSTAT": {
+        "position": 10,
+        "variable_label": "DV: Legal marital status",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-9.0 thru -8.0 and -1.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Insufficient information",
+          "-1.0": "Not applicable",
+          "1.0": "Single and never married or in a CP",
+          "2.0": "Married",
+          "3.0": "Separated but still legally married",
+          "4.0": "Divorced",
+          "5.0": "Widowed",
+          "6.0": "A Civil Partner",
+          "7.0": "Separated but still legally in a CP",
+          "8.0": "A former Civil Partner",
+          "9.0": "A surviving Civil Partner"
+        }
+      }
+    }
+  },
+  "ns9_2022_derived_variables.tab": {
+    "file_info": {
+      "number_of_variables": 68,
+      "number_of_cases": 7279,
+      "description": "Age 32 (Sweep 9) Derived Variables Data File"
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "type": "string",
+        "value_labels": {}
+      },
+      "W9DMARSTAT": {
+        "position": 16,
+        "variable_label": "DV: Legal marital status",
+        "type": "numeric",
+        "measurement_level": "NOMINAL",
+        "user_missing_values": "-8.0 thru -9.0",
+        "value_labels": {
+          "-9.0": "Refused",
+          "-8.0": "Insufficient information",
+          "1.0": "Single that is never married or never in a Civil Partnership",
+          "2.0": "Married",
+          "3.0": "Divorced",
+          "4.0": "Legally separated",
+          "5.0": "Widowed",
+          "6.0": "A Civil Partner in a legally recognised Civil Partnership",
+          "7.0": "A former Civil Partner (where Civil Partnership legally dissolved)",
+          "8.0": "A surviving Civil Partner (where Civil Partner has died)"
+        }
+      }
+    }
+  }
+}

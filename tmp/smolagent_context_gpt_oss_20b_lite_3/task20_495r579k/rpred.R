@@ -1,0 +1,1 @@
+library(readr); df <- read_delim('data/input/wave_one_lsype_young_person_2020.tab', delim='\t', col_types = cols(), na = c('')); print(colnames(df)[1:10]);

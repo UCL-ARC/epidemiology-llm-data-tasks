@@ -8,13 +8,13 @@ model:
   #   vllm       — OpenAI-compatible endpoint (set api_base below)
   #   ollama     — local Ollama server (api_base not needed)
   #   huggingface — HuggingFace Inference API (set HF_TOKEN env var)
-  provider: vllm
+  provider: ollama
 
   # Model ID passed in the request body.
   # For vllm: use the exact served model name (check with: curl <api_base>/models)
   # For ollama: use the Ollama model tag, e.g. gemma4:31b
   # For huggingface: use the HF repo ID, e.g. Qwen/Qwen3-30B-A3B-Instruct-2507
-  model_id: /mnt/models/models-m-nixon/qwen3-5-35b
+  model_id: gpt-oss:20b-cloud
 
   # vllm only: base URL of the OpenAI-compatible endpoint (must end in /v1)
   # Not needed for ollama or huggingface
@@ -44,7 +44,7 @@ experiment:
 
   # Path to the ground truth directory. Defaults to ./ground_truth if omitted.
   # Override to point at a different volume or location.
-  ground_truth_dir: "../rdss-volume/ground_truth"
+  ground_truth_dir: "ground_truth"
 
   # If true, keep the temp working directory (tmp/smolagent_context/<task_hash>/) after each run.
   # Set to false to save disk space — directories are deleted after each task completes.
@@ -52,3 +52,4 @@ experiment:
 
   # Tasks to run. Comment out or leave empty ([]) to run all tasks.
   tasks:
+    - 2
