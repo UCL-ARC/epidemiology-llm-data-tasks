@@ -1,0 +1,13 @@
+library(readr);library(dplyr);library(tidyr);library(purrr);library(labelled);
+input_dir <- 'data/input/';
+output_dir <- 'data/output/';
+wave_one <- read_delim(file.path(input_dir,'wave_one_lsype_young_person_2020.tab'), delim='\t', col_types=cols());
+wave_four <- read_delim(file.path(input_dir,'wave_four_lsype_young_person_2020.tab'), delim='\t', col_types=cols());
+ns8 <- read_delim(file.path(input_dir,'ns8_2015_derived.tab'), delim='\t', col_types=cols());
+ns9 <- read_delim(file.path(input_dir,'ns9_2022_derived_variables.tab'), delim='\t', col_types=cols());
+merged <- wave_one %>% full_join(wave_four, by='NSID') %>% full_join(ns8, by='NSID') %>% full_join(ns9, by='NSID');
+merged <- merged %>% mutate(W8DINCB=as.numeric(W8DINCB), W9DINCB=as.numeric(W9DINCB));
+merged <- merged %>% mutate(inc25=case_when(is.na(W8DINCB) ~ -3L, W8DINCB==-1.0 ~ -1L, TRUE ~ as.integer(W8DINCB)), inc32=case_when(is.na(W9DINCB) ~ -3L, W9DINCB==-1.0 ~ -1L, TRUE ~ as.integer(W9DINCB)));
+output_data <- merged %>% select(NSID, inc25, inc32);
+write_csv(output_data, file.path(output_dir, 'cleaned_data.csv'));
+cat('Cleaning complete. Output written to', file.path(output_dir,'cleaned_data.csv'));

@@ -1,0 +1,7 @@
+library(readr)
+output <- read_csv('data/output/cleaned_data.csv')
+print(head(output, 10))
+cat('\nColumn names:\n')
+print(names(output))
+cat('\nVariable types:\n')
+str(output)

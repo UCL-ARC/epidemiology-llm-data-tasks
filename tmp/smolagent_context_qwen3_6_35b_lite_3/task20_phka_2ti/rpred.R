@@ -1,0 +1,8 @@
+library(readr)
+out <- read_csv("data/output/cleaned_data.csv", show_col_types = FALSE)
+cat("Number of rows:", nrow(out), "\n")
+cat("Number of columns:", ncol(out), "\n")
+cat("First 10 rows:\n")
+print(head(out, 10))
+cat("\nValue table for alcfst:\n")
+print(table(out$alcfst, useNA = "ifany"))

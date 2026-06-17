@@ -1,0 +1,1 @@
+file.exists('data/output/cleaned_data.csv')

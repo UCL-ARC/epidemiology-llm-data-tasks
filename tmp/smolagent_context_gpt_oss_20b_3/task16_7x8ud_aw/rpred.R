@@ -1,0 +1,1 @@
+if (file.exists('data/output/cleaned_data.csv')) {print('file exists') } else {print('file missing') }
