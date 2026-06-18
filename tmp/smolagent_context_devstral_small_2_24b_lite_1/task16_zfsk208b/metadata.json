@@ -1,0 +1,145 @@
+{
+  "wave_four_lsype_family_background_2020.tab": {
+    "file_info": {
+      "number_of_variables": 422,
+      "number_of_cases": 11791,
+      "description": "Sweep 4 (Age 17) Family Background Data File"
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {},
+        "type": "string"
+      },
+      "w4IncEstW": {
+        "position": 408,
+        "variable_label": "DV: Total gross weekly income for main parent (and partner)",
+        "type": "numeric",
+        "measurement_level": "SCALE",
+        "user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-996.0": "No parent in household",
+          "-99.0": "MP not interviewed",
+          "-92.0": "Refused",
+          "-1.0": "Don't know",
+          "1.0": "Up to \u00a349",
+          "2.0": "\u00a350 up to \u00a399",
+          "3.0": "\u00a3100 up to \u00a3199",
+          "4.0": "\u00a3200 up to \u00a3299",
+          "5.0": "\u00a3300 up to \u00a3399",
+          "6.0": "\u00a3400 up to \u00a3499",
+          "7.0": "\u00a3500 up to \u00a3599",
+          "8.0": "\u00a3600 up to \u00a3699",
+          "9.0": "\u00a3700 up to \u00a3799",
+          "10.0": "\u00a3800 up to \u00a3899",
+          "11.0": "\u00a3900 up to \u00a3999",
+          "12.0": "\u00a31,000 or more"
+        }
+      }
+    }
+  },
+  "wave_three_lsype_family_background_2020.tab": {
+    "file_info": {
+      "number_of_variables": 161,
+      "number_of_cases": 12430,
+      "description": "Sweep 3 (Age 16) Family Background Data File"
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {},
+        "type": "string"
+      },
+      "W3incestw": {
+        "position": 123,
+        "variable_label": "DV: Total income from work, benefits, and anything else for respondent (and partner) (Weekly)",
+        "type": "numeric",
+        "measurement_level": "SCALE",
+        "user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-99.0": "MP not interviewed",
+          "-92.0": "Refused",
+          "-1.0": "Don't know",
+          "1.0": "Up to \u00a349",
+          "2.0": "\u00a350 up to \u00a399",
+          "3.0": "\u00a3100 up to \u00a3199",
+          "4.0": "\u00a3200 up to \u00a3299",
+          "5.0": "\u00a3300 up to \u00a3399",
+          "6.0": "\u00a3400 up to \u00a3499",
+          "7.0": "\u00a3500 up to \u00a3599",
+          "8.0": "\u00a3600 up to \u00a3699",
+          "9.0": "\u00a3700 up to \u00a3799",
+          "10.0": "\u00a3800 up to \u00a3899",
+          "11.0": "\u00a3900 up to \u00a3990",
+          "12.0": "\u00a31,000 or more"
+        }
+      }
+    }
+  },
+  "wave_two_lsype_family_background_2020.tab": {
+    "file_info": {
+      "number_of_variables": 1030,
+      "number_of_cases": 13530,
+      "description": "Sweep 2 (Age 15) Family Background Data File"
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {},
+        "type": "string"
+      },
+      "W2GrsswkHH": {
+        "position": 882,
+        "variable_label": "DV: Gross weekly salary of HH (edited)",
+        "type": "numeric",
+        "measurement_level": "SCALE",
+        "user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-999.0": "Missing in error",
+          "-992.0": "No information - work status questions refused",
+          "-99.0": "HH not interviewed",
+          "-94.0": "insufficient information",
+          "-92.0": "Refused",
+          "-91.0": "Not applicable",
+          "-3.0": "Not yet paid",
+          "-1.0": "Don't know"
+        }
+      }
+    }
+  },
+  "wave_one_lsype_family_background_2020.tab": {
+    "file_info": {
+      "number_of_variables": 381,
+      "number_of_cases": 15760,
+      "description": "Sweep 1 (Age 14) Family Background Data File"
+    },
+    "variables": {
+      "NSID": {
+        "position": 1,
+        "variable_label": "NSID - cohort member identifier",
+        "value_labels": {},
+        "type": "string"
+      },
+      "W1GrsswkHH": {
+        "position": 378,
+        "variable_label": "DV: Gross weekly salary of HH (edited)",
+        "type": "numeric",
+        "measurement_level": "SCALE",
+        "user_missing_values": "-999.0 thru -1.0",
+        "value_labels": {
+          "-999.0": "Missing in error",
+          "-992.0": "No information - work status questions refused",
+          "-99.0": "HH not interviewed",
+          "-94.0": "Insufficent information",
+          "-92.0": "Refused",
+          "-91.0": "Not applicable",
+          "-3.0": "Not yet paid",
+          "-1.0": "Don't know"
+        }
+      }
+    }
+  }
+}

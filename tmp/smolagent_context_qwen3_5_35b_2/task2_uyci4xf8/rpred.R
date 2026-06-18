@@ -1,0 +1,6 @@
+library(readr)
+output <- read_csv("data/output/cleaned_data.csv")
+print(head(output))
+print(str(output))
+cat("Total records:", nrow(output), "\n")
+cat("Unique eth values:", length(unique(output$eth)), "\n")
