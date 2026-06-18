@@ -2,6 +2,7 @@
 
 import argparse
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -113,7 +114,54 @@ def get_arg_parser() -> argparse.ArgumentParser:
         default=PRED_FILENAME,
         help=f"Predicted output filename (default: {PRED_FILENAME}).",
     )
+    parser.add_argument(
+        "--gt-null-list",
+        type=Path,
+        default=Path("exploration/data/all_null_value_summary.csv"),
+        help=(
+            "CSV file containing a 'null_value' column used to mask ground truth nulls "
+            "during per-column comparison. When a GT value "
+            "matches an entry in this list, "
+            "both the GT and paired prediction values are set to NaN for that row. "
+            "(default: exploration/data/all_null_value_summary.csv)."
+        ),
+    )
     return parser
+
+
+def normalize_null_token(value: object) -> str:
+    """Normalize tokens so data values can be matched to null-list entries."""
+    if pd.isna(value):
+        return "<na>"
+
+    text = str(value).strip().replace("\u2019", "'")
+    text = re.sub(r"\s+", " ", text)
+
+    # Normalize simple float-int formatting differences (e.g. -1.0 -> -1).
+    if re.fullmatch(r"-?\d+\.0", text):
+        text = text[:-2]
+
+    return text.lower()
+
+
+def load_gt_null_values(null_list_path: Path) -> set[str]:
+    """Load normalized null values from the generated null-summary CSV."""
+    if not null_list_path.exists():
+        logger.warning(f"GT null list not found: {null_list_path}")
+        return set()
+
+    null_df = pd.read_csv(null_list_path)
+    if "null_value" not in null_df.columns:
+        logger.warning(
+            f"GT null list missing 'null_value' column: {null_list_path}",
+        )
+        return set()
+
+    null_values = {
+        normalize_null_token(v) for v in null_df["null_value"].dropna().tolist()
+    }
+    logger.info(f"Loaded {len(null_values)} GT null values from {null_list_path}")
+    return null_values
 
 
 def main(argv: list[str] | None = None) -> None:  # noqa: PLR0915
@@ -125,6 +173,8 @@ def main(argv: list[str] | None = None) -> None:  # noqa: PLR0915
 
     log_level = "DEBUG" if args.verbose else "INFO"
     logger.add(sys.stderr, level=log_level)
+
+    gt_null_values = load_gt_null_values(args.gt_null_list)
 
     if args.run_all:
         context_dirs = sorted(
@@ -171,6 +221,7 @@ def main(argv: list[str] | None = None) -> None:  # noqa: PLR0915
                 categorical_data_match_threshold=args.categorical_data_match_threshold,
                 numerical_data_match_threshold=args.numerical_data_match_threshold,
                 categorical_match_threshold=args.categorical_match_threshold,
+                gt_null_values=gt_null_values,
             )
 
             result, output_df = comparator.compare(gt_df, pred_df)

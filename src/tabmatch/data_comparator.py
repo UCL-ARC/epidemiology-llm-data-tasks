@@ -1,5 +1,7 @@
 """Main data comparison orchestration."""
 
+import re
+
 import pandas as pd
 from loguru import logger
 
@@ -32,6 +34,21 @@ from .models import (
 )
 
 
+def _normalize_null_token(value: object) -> str:
+    """Normalize tokens so data values can be matched to null-list entries."""
+    if pd.isna(value):
+        return "<na>"
+
+    text = str(value).strip().replace("\u2019", "'")
+    text = re.sub(r"\s+", " ", text)
+
+    # Normalize simple float-int formatting differences (e.g. -1.0 -> -1).
+    if re.fullmatch(r"-?\d+\.0", text):
+        text = text[:-2]
+
+    return text.lower()
+
+
 class DataComparator:
     """
     Compare data between ground truth and predicted dataframes.
@@ -48,6 +65,7 @@ class DataComparator:
         categorical_data_match_threshold: float = 1.0,
         numerical_data_match_threshold: float = 0.0,
         categorical_match_threshold: float = CATEGORICAL_MATCH_THRESHOLD,
+        gt_null_values: set[str] | None = None,
     ) -> None:
         """
         Initialise the DataComparator.
@@ -63,6 +81,8 @@ class DataComparator:
             numerical_data_match_threshold: Minimum score for numeric data match,
             i.e. will we report a match 0 implies every row matches.
             categorical_match_threshold: Minimum score for category mapping.
+            gt_null_values: Set of normalized ground truth null values to mask
+            during column comparison.
 
         """
         self.categorical_threshold = categorical_threshold
@@ -70,6 +90,7 @@ class DataComparator:
         self.column_data_match_threshold = column_data_match_threshold
         self.categorical_data_match_threshold = categorical_data_match_threshold
         self.numerical_data_match_threshold = numerical_data_match_threshold
+        self.gt_null_values = gt_null_values or set()
         self.column_matcher = ColumnMatcher(
             cross_encoder_model_name=cross_encoder_model_name,
             match_threshold=match_threshold,
@@ -138,6 +159,52 @@ class DataComparator:
 
         return completeness, joined_df
 
+    def _mask_null_values(
+        self,
+        gt_series: pd.Series,
+        pred_series: pd.Series,
+    ) -> tuple[pd.Series, pd.Series, int]:
+        """
+        Mask rows where GT values match null list in both GT and pred series.
+
+        For rows where the normalized GT value is in the null_values set,
+        set both GT and pred to NaN. This preserves row counts while marking
+        null comparisons as invalid.
+
+        Args:
+            gt_series: Ground truth series.
+            pred_series: Predicted series.
+
+        Returns:
+            Tuple of (masked_gt_series, masked_pred_series, num_masked_rows).
+
+        """
+        if not self.gt_null_values:
+            return gt_series, pred_series, 0
+
+        # Normalize GT values and create mask for nulls
+        normalized_gt = gt_series.map(_normalize_null_token)
+        null_mask = normalized_gt.isin(self.gt_null_values)
+
+        num_masked = int(null_mask.sum())
+
+        if num_masked == 0:
+            return gt_series, pred_series, 0
+
+        # Create copies and mask with NaN
+        gt_masked = gt_series.copy()
+        pred_masked = pred_series.copy()
+
+        gt_masked[null_mask] = pd.NA
+        pred_masked[null_mask] = pd.NA
+
+        logger.debug(
+            f"Masked {num_masked} rows with GT null values "
+            f"in column pair comparison"
+        )
+
+        return gt_masked, pred_masked, num_masked
+
     def _compare_column_pair(
         self,
         joined_df: pd.DataFrame,
@@ -158,6 +225,16 @@ class DataComparator:
 
         gt_series = joined_df[gt_col_name]
         pred_series = joined_df[pred_col_name]
+
+        # Mask null values in both series before comparison
+        gt_series, pred_series, masked_count = self._mask_null_values(
+            gt_series, pred_series
+        )
+        if masked_count > 0:
+            logger.info(
+                f"Masked {masked_count} rows for column pair "
+                f"'{gt_column}' -> '{pred_column}'"
+            )
 
         col_type = infer_column_type(gt_series, pred_series, self.categorical_threshold)
 
@@ -369,8 +446,15 @@ class DataComparator:
                     else match.pred_column
                 )
 
-                output_df[f"{match.gt_column}_gt"] = joined_df[gt_col_name]
-                output_df[f"{match.gt_column}_pred"] = joined_df[pred_col_name]
+                # Mirror comparison-time masking in the output table so GT nulls
+                # and their paired predictions are visibly set to missing.
+                gt_output_series, pred_output_series, _ = self._mask_null_values(
+                    joined_df[gt_col_name],
+                    joined_df[pred_col_name],
+                )
+
+                output_df[f"{match.gt_column}_gt"] = gt_output_series
+                output_df[f"{match.gt_column}_pred"] = pred_output_series
             else:
                 # Unmatched GT columns - append with _unmatched suffix
                 gt_col_name = (

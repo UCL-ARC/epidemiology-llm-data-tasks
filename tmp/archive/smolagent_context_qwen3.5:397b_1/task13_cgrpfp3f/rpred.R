@@ -1,1 +1,0 @@
-library(readr); data <- read_csv("data/output/cleaned_data.csv", show_col_types = FALSE); cat("Rows:", nrow(data), "Columns:", ncol(data), "\n"); cat("Names:", paste(names(data), collapse = ", "), "\n")
