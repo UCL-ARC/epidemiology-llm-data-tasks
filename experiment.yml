@@ -14,7 +14,7 @@ model:
   # For vllm: use the exact served model name (check with: curl <api_base>/models)
   # For ollama: use the Ollama model tag, e.g. gemma4:31b
   # For huggingface: use the HF repo ID, e.g. Qwen/Qwen3-30B-A3B-Instruct-2507
-  model_id: gpt-oss:20b-cloud
+  model_id: gpt-oss:20b
 
   # vllm only: base URL of the OpenAI-compatible endpoint (must end in /v1)
   # Not needed for ollama or huggingface
@@ -52,4 +52,3 @@ experiment:
 
   # Tasks to run. Comment out or leave empty ([]) to run all tasks.
   tasks:
-    - 2
