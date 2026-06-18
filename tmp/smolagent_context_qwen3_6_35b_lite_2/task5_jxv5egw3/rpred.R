@@ -1,0 +1,12 @@
+# Verify the output file
+library(readr)
+output <- read_csv("data/output/cleaned_data.csv", show_col_types = FALSE)
+cat("Output file verification:\n")
+cat("Number of rows:", nrow(output), "\n")
+cat("Columns:", paste(names(output), collapse = ", "), "\n")
+print(head(output, 10))
+print(table(output$partnr19, useNA = "ifany"))
+print(table(output$partnr25, useNA = "ifany"))
+print(table(output$partnr32, useNA = "ifany"))
+print(table(output$partnradu25, useNA = "ifany"))
+print(table(output$partnradu32, useNA = "ifany"))

@@ -1,0 +1,5 @@
+library(readr)
+df <- read_csv("data/output/cleaned_data.csv", show_col_types = FALSE)
+print(head(df, 10))
+cat("\nDimensions:", nrow(df), "x", ncol(df), "\n")
+cat("Columns:", names(df), "\n")

@@ -1,0 +1,6 @@
+library(readr)
+df <- read_csv('data/output/cleaned_data.csv', show_col_types = FALSE)
+cat('First 10 rows:\n')
+print(head(df, 10))
+cat('\nSummary of sex variable:\n')
+print(table(df$sex, useNA = 'always'))
