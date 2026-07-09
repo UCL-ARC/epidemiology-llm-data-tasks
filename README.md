@@ -1,6 +1,6 @@
-# epidemiology-llm-data-tasks
+# Research Ready Bench
 
-Evaluation of open-weight LLMs for routine data cleaning and analysis tasks in epidemiology.
+Evaluation of open-weight LLMs for routine data preparation tasks in longitudinal cohort data to produce research ready datasets.
 
 ## tl;dr
 
