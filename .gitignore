@@ -216,6 +216,9 @@ ground_truth/*/data/input/*
 tmp/**/data/
 tmp/archive/**/data/
 !tmp/**/data/output/.gitkeep
+# Sensitive run artifacts that may contain respondent-level values
+tmp/**/runtime_data.json
+tmp/**/wave_*processed.csv
 .DS_Store
 
 exploration/*
