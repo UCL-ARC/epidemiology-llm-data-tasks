@@ -4,7 +4,7 @@
 
 The comparator works with any two pandas DataFrames. Both DataFrames must have a named index containing the primary key; the index names may differ, but their values are used to join the datasets. Duplicate keys are reported.
 
-Technical supplement forthcoming. See [demo.ipynb](demo.ipynb) for worked programmatic examples.
+[Technical Supplement](TECHNICAL.md). See [demo.ipynb](demo.ipynb) for worked programmatic examples.
 
 ## Programmatic use
 
