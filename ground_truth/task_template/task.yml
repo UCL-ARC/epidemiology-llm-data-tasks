@@ -1,0 +1,16 @@
+task_id: <task-number>
+task_type: data_cleaning_r_plus
+name: <short-lowercase-task-name>
+
+# Describe the required final variables, source information, coding, and derivation.
+additional_requirements: |
+  Replace this placeholder with the task-specific requirements.
+
+# Optional: used only when experiment.use_lite_requirements is true.
+# additional_requirements_lite: |
+#   Replace this placeholder with a shorter task-specific requirement.
+
+# Optional: used only when experiment.use_overrides is true.
+# The prompt must contain {metadata}; it may also contain {additional_requirements}.
+# override: |
+#   Replace this placeholder with a complete task-specific prompt.

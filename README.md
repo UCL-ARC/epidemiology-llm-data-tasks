@@ -1,208 +1,166 @@
 # Research Ready Bench
 
-Evaluation of open-weight LLMs for routine data preparation tasks in longitudinal cohort data to produce research ready datasets.
+Research Ready Bench evaluates open-weight LLMs on routine longitudinal-cohort data-preparation tasks. Each task asks an agent to write and execute R code that produces an analysis-ready dataset; the generated dataset is then compared with a human-curated ground truth.
 
-## tl;dr
+Although the included benchmark focuses on longitudinal cohort data preparation, the framework can be extended to any task whose expected output is a tabular dataset with a comparable ground truth.
 
-A substantial share of research time in health and social sciences is spent on repetitive data preparation — recoding survey responses, constructing composite indices, handling missingness, and merging datasets. This repo contains a benchmark and agentic framework to evaluate how well large language models (LLMs) can automate such tasks.
-
-To evaluate model outputs, we introduce **tabmatch** (`src/tabmatch/`): a novel approach for comparing LLM-generated tabular datasets against a ground truth that is robust to the naming and label differences LLMs routinely introduce, without requiring manual intervention. See [`src/tabmatch/README.md`](src/tabmatch/README.md) for full details.
-
-We are interested in the following metrics, in descending order of importance:
-
-1. **Accuracy** — how accurately does the model reproduce the target dataset?
-2. **Performance** — how fast and resource-efficiently does it do so?
+The repository also contains [tabmatch](src/tabmatch/README.md), a reusable Python comparator for tabular datasets whose column names or categorical labels differ.
 
 ## Workflow
 
-The pipeline works as follows:
+1. **Create ground truth.** Each [ground_truth](ground_truth/README.md) task contains metadata, a task specification, and an `rtruth.R` reference script. `scripts/initialise_ground_truth.py` copies the required raw `.tab` files and runs `rtruth.R` to produce `data/output/output.csv`.
+2. **Run an agent.** `scripts/run_experiment.py` reads `experiment.yml`, builds a prompt from `ground_truth/tasks.yml` and each task's metadata, then runs `SmolAgent` in an isolated context under `tmp/`. The agent must create `data/output/cleaned_data.csv`.
+3. **Evaluate outputs.** `scripts/run_comparison.py` uses `tabmatch` to compare `cleaned_data.csv` with `output.csv` and writes task-level mappings plus an aggregate summary.
 
-1. **Ground truth** — each `ground_truth/taskN/` directory contains a task definition (`task.yml`), dataset metadata (`metadata.json`), and a reference R script (`rtruth.R`) that produces the correct output.
-2. **Agent run** — `src/agents.py` reads `experiment.yml` (or CLI args), constructs a prompt from `ground_truth/tasks.yml` and the task's metadata, then runs the LLM agent in an isolated temp directory under `tmp/`.
-3. **Evaluation** — `src/tabmatch/` compares the agent's output CSV against the ground truth CSV and reports per-column and aggregate accuracy metrics.
+## Requirements
 
-## Installation
+- Python 3.13.5 or later, as declared in [pyproject.toml](pyproject.toml).
+- [uv](https://docs.astral.sh/uv) for Python dependency management.
+- R available as `Rscript` on `PATH`.
+- Access to the raw UK Data Service `.tab` files; they are not distributed with this repository.
+- One supported model provider:
+  - **Ollama:** a running local Ollama service with the selected model available.
+  - **Hugging Face:** `HF_TOKEN` in the environment.
+  - **vLLM:** an OpenAI-compatible endpoint; set `api_base` in `experiment.yml`. `VLLM_API_KEY` is optional and defaults to `EMPTY`.
 
-**NOTE**: Currently, this software is only supported on Ubuntu systems.
+The first comparison can download the cross-encoder model used for semantic column-name matching, so it needs network access and may take longer.
 
-### Installing & configuring `R`
+### Python environment
 
-This software writes and executes `R` code. For this purpose, you need R installed and ready to run. For this purpose, you can run `scripts/install_configure_r.sh`, which does everything for you.
-
-```shell
-chmod +x scripts/install_configure_r.sh
-sudo sh scripts/install_configure_r.sh
-```
-
-This will also install `renv`, used to manage R virtual environments. This is where this software will run R code, and install dependencies if required.
-
-### Installing `uv`
-
-[uv](https://docs.astral.sh/uv) is used for Python dependency management and managing virtual environments. You can install uv either using pipx or the uv installer script:
-
-```sh
-curl -LsSf https://astral.sh/uv/install.sh | sh
-```
-
-### Installing Dependencies
-
-Once uv is installed, install dependencies:
+Install `uv`, then create the environment and install the project dependencies from the repository root:
 
 ```sh
 uv sync
 ```
 
-### Activate your Python environment
+Run project commands with `uv run python`; activating `.venv` is optional.
+
+### R environment
+
+On Ubuntu, [scripts/install_configure_r.sh](scripts/install_configure_r.sh) installs R and the `renv` package:
 
 ```sh
-source .venv/bin/activate
+chmod +x scripts/install_configure_r.sh
+sudo sh scripts/install_configure_r.sh
 ```
 
-### Installing pre-commit hooks
+The script is Ubuntu-specific and does **not** install the R packages used by the reference scripts. On any platform, install R first and then install the required packages from CRAN:
 
-Install `pre-commit` locally (in your activated `venv`) to aid code consistency (if you're looking to contribute).
+```r
+install.packages(c(
+  "haven", "dplyr", "tidyr", "purrr", "here", "labelled", "readr", "stringr"
+), repos = "https://cloud.r-project.org")
+```
+
+> **Windows:** a tested setup guide is forthcoming. No Windows installation script is provided yet.
+
+### Optional contributor tooling
 
 ```sh
-pre-commit install
+uv run pre-commit install
 ```
 
-### Initialising ground truth data
+## Quick start
 
-Requires the corresponding raw data to be downloaded. Run:
+### 1. Initialise ground-truth data
+
+Point the initializer at the directory containing the raw `.tab` files. This writes inputs and reference outputs into each task directory by default:
 
 ```sh
-uv run python -m scripts.initialise_ground_truth -i data/UKDA-5545-tab/tab/safeguarded_eul
+uv run python -m scripts.initialise_ground_truth \
+  --input_dir data/UKDA-5545-tab/tab/safeguarded_eul
 ```
 
+See [ground_truth/README.md](ground_truth/README.md) for output-directory options and task-authoring guidance.
 
-## Agents
+### 2. Configure and run an experiment
 
-This project includes a small agent framework in `src/agents.py` that wraps existing agentic frameworks.
-
-### Running an experiment
-
-Experiments are configured via `experiment.yml` at the project root:
+[experiment.yml](experiment.yml) is the default configuration. The following is a minimal representative configuration:
 
 ```yaml
 model:
-  provider: ollama              # ollama | huggingface
-  model_id: gemma4:31b
+  provider: ollama             # ollama | huggingface | vllm
+  model_id: gpt-oss:20b
+  api_base: null               # required for vllm; must end in /v1
   temperature: 0.8
 
 agent:
-  type: tool_calling            # tool_calling | code
+  type: tool_calling           # tool_calling | code
 
 experiment:
-  runs: 1                       # number of times to repeat the full task loop
-  use_overrides: false          # if true, use per-task override prompts where present
-  persist_context: true         # if true, keep the temp working directory after each run
-  tasks:                        # list of task numbers to run; leave empty [] to run all
-    - 1
+  runs: 1
+  use_overrides: false
+  use_lite_requirements: true
+  ground_truth_dir: ground_truth
+  persist_context: true
+  tasks: [1]                   # [] runs every task
 ```
 
-Run with the default config:
+Run the configured tasks:
 
 ```sh
-python scripts/run_experiment.py
+uv run python scripts/run_experiment.py
 ```
 
-Point to a different config file (useful for running multiple experiments):
+Configuration values can be overridden without editing YAML:
 
 ```sh
-python scripts/run_experiment.py --config experiments/qwen_run.yml
+# Run tasks 1–3 three times with a different model.
+uv run python scripts/run_experiment.py --model_id qwen3.5:9b --runs 3 --tasks 1 2 3
+
+# Use Hugging Face; the command reads HF_TOKEN from the environment.
+uv run python scripts/run_experiment.py --provider huggingface --model_id Qwen/Qwen3-30B-A3B-Instruct-2507
+
+# Use task-specific override prompts and remove temporary contexts after completion.
+uv run python scripts/run_experiment.py --use_overrides --no_persist_context
 ```
 
-Any config field can be overridden via CLI args without editing the YAML:
+CLI arguments take precedence over `experiment.yml`. Run `uv run python scripts/run_experiment.py --help` for all options.
 
-```sh
-# Override model and run 3 times across tasks 1, 2, 3
-python scripts/run_experiment.py --model_id qwen3.5:9b --runs 3 --tasks 1 2 3
-
-# Use HuggingFace instead of Ollama (reads HF_TOKEN from environment)
-python scripts/run_experiment.py --provider huggingface --model_id Qwen/Qwen3-30B-A3B-Instruct-2507
-
-# Use per-task override prompts and discard temp directories after each run
-python scripts/run_experiment.py --use_overrides --no_persist_context
-```
-
-CLI args always take precedence over `experiment.yml`. Run `python scripts/run_experiment.py --help` for the full list of options.
+Each run creates `tmp/smolagent_context_<sanitised-model-id>_<run>/`. Each task context contains the copied task definition, generated `rpred.R`, runtime information, and its `data/` directory. Persisted contexts may be large because they include raw inputs.
 
 ### Prompt construction
 
-For each task, the prompt is built as follows:
+For each task, the runner either uses the task's `override` prompt (when `use_overrides` is enabled) or selects a base prompt from `ground_truth/tasks.yml` using `task_type`. It formats that prompt with the task `metadata.json` and either `additional_requirements` or `additional_requirements_lite`.
 
-- If `use_overrides: true` and the task's `task.yml` contains an `override` key, that prompt is used verbatim (with `{metadata}` interpolated).
-- Otherwise, the base prompt is taken from `ground_truth/tasks.yml` by matching `task_type`. If the task's `task.yml` has `additional_requirements`, these are injected into the base prompt before the metadata block.
+## Compare experiment outputs
 
-### SmolAgent
-
-`SmolAgent` is a thin wrapper around `ToolCallingAgent` (or `CodeAgent` for `type: code`) that:
-
-- Runs with one or more Python **tools** (see `src/tools.py`, e.g. `produce_and_execute_r`).
-- Uses a **temporary working directory** per run:
-  - If you pass `context_path=Path("ground_truth/task1")`, the agent copies that directory into `./tmp/smolagent_context/<task1_hash>/` and runs there.
-  - If `context_path` is `None`, it just runs in the current working directory.
-- Returns a structured `AgentResult` (Pydantic model) with:
-  - `result`: final LLM output
-  - `state`: run status
-  - `time_taken`: duration in seconds
-  - `steps`: number of agent steps
-  - `token_usage`: total tokens used
-
-## Dataset Comparison
-
-The `src/tabmatch/` module compares agent-generated output CSVs against ground truth CSVs. It is designed to be robust to the naming and encoding differences that LLM agents routinely introduce — mismatched column names, alternative category labels, and partial outputs — while remaining strict about semantic correctness.
-
-For full algorithmic details, see [`src/tabmatch/README.md`](src/tabmatch/README.md).
-
-### Running a comparison
-
-Compare a single model's experiment output:
+Compare one model run by supplying the context-directory suffix. Model IDs are sanitised for directory names, so `gpt-oss:20b` becomes `gpt_oss_20b`:
 
 ```sh
-python scripts/run_comparison.py <model>
+uv run python scripts/run_comparison.py _gpt_oss_20b_1
 ```
 
-where `<model>` is the suffix of the context directory (e.g. `_qwen3.5:9b_1` targets `tmp/smolagent_context_qwen3.5:9b_1`).
-
-Compare all experiment outputs in one go:
+Or compare every `smolagent_context_*` directory under `tmp/`:
 
 ```sh
-python scripts/run_comparison.py --all
+uv run python scripts/run_comparison.py --all
 ```
 
-Run `python scripts/run_comparison.py --help` for the full list of options.
+The comparison writes `comparison_output.csv`, `column_mapping.csv`, and, when applicable, `category_mapping.csv` beside each task's outputs. It writes `comparison_summary.csv` at the model-run root. See [src/tabmatch/README.md](src/tabmatch/README.md) for comparison behavior and thresholds.
 
+## Rebuild archived experiment data
 
-## Experiment Data
-
-Experiment outputs live under `tmp/`. The `data/` directories within each task (containing raw `.tab` inputs and generated `.csv` outputs) are excluded from version control to keep the repository lightweight. All other experiment files — R scripts, task definitions, metadata, and summaries — are tracked.
-
-### Rebuilding experiment data
-
-After cloning, use `src/rebuild_experiments.py` to regenerate the `data/input/` and `data/output/` directories for each experiment task. This copies raw `.tab` files from your local data directory and re-runs the R scripts (`rtruth.R` and `rpred.R`) to produce `cleaned_data.csv` and `output.csv`.
+Raw task inputs and generated CSVs within `tmp/` are excluded from version control. If an archived experiment includes its R scripts and metadata but not its data directories, rebuild them from a local raw-data directory:
 
 ```sh
-# Rebuild all experiments (requires raw data in data/input/)
-python -m src.rebuild_experiments
+# Rebuild all archived experiment contexts using data/input by default.
+uv run python -m scripts.rebuild_experiments
 
-# Rebuild only a specific model's experiments
-python -m src.rebuild_experiments --model "qwen3.5:9b"
+# Rebuild a model's contexts or one task across contexts.
+uv run python -m scripts.rebuild_experiments --model "qwen3.5:9b"
+uv run python -m scripts.rebuild_experiments --task 4
 
-# Rebuild a specific task across all models
-python -m src.rebuild_experiments --task 4
-
-# Combine filters and enable verbose R output
-python -m src.rebuild_experiments --model "qwen3.5:9b_1" --task 13 -v
-
-# Use a custom raw data directory
-python -m src.rebuild_experiments -i data/UKDA-5545-tab/tab/safeguarded_eul
+# Combine filters and provide the location of raw .tab files.
+uv run python -m scripts.rebuild_experiments \
+  --model "qwen3.5:9b_1" --task 13 --verbose \
+  --input_dir data/UKDA-5545-tab/tab/safeguarded_eul
 ```
 
 | Flag | Default | Description |
 |------|---------|-------------|
-| `-i`, `--input_dir` | `data/input` | Directory containing raw `.tab` data files |
-| `-t`, `--tmp_dir` | `tmp` | Root directory of experiment outputs |
-| `-m`, `--model` | all | Filter by model name substring (e.g. `qwen3.5:9b`, `devstral-small-2:24b_2`) |
-| `-s`, `--task` | all | Filter by task number (e.g. `4`) |
-| `-v`, `--verbose` | off | Print R script stdout |
+| `-i`, `--input_dir` | `data/input` | Directory containing raw `.tab` files |
+| `-t`, `--tmp_dir` | `tmp` | Root directory of archived experiment contexts |
+| `-m`, `--model` | all | Filter model-run directory names by substring |
+| `-s`, `--task` | all | Filter to one task number |
+| `-v`, `--verbose` | off | Print R-script standard output |

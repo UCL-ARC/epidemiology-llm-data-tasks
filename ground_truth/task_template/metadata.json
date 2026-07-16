@@ -1,0 +1,10 @@
+{
+    "<raw-input-file>.tab": {
+        "description": "Replace with file-level metadata used by the task.",
+        "variables": {
+            "NSID": {
+                "description": "Cohort-member identifier."
+            }
+        }
+    }
+}

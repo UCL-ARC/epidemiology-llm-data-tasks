@@ -1,52 +1,72 @@
 # tabmatch
 
-`tabmatch` compares LLM-generated tabular datasets against human-curated ground truth. It is robust to the naming and label differences that LLM agents routinely introduce — mismatched column names, alternative category labels, and partial outputs — without requiring manual intervention.
+`tabmatch` compares an LLM-generated tabular dataset with human-curated ground truth. It matches columns by normalised name and semantic similarity, falls back to data similarity for unmatched columns, maps compatible categorical labels, and reports row coverage and per-column accuracy.
 
-It can also be used as a **standalone tool** to compare any two pandas DataFrames or CSV files, independent of the LLM experiment pipeline. See [demo.ipynb](demo.ipynb) for worked examples covering common real-world scenarios.
+The comparator works with any two pandas DataFrames. Both DataFrames must have a named index containing the primary key; the index names may differ, but their values are used to join the datasets. Duplicate keys are reported.
 
-For a full description of the algorithm, see the [technical supplement](https://example.com/supplement).
+Technical supplement forthcoming. See [demo.ipynb](demo.ipynb) for worked programmatic examples.
 
-## Usage
+## Programmatic use
 
-Compare a single model's experiment output:
+```python
+import pandas as pd
 
-```sh
-python scripts/run_comparison.py <model>
+from src.tabmatch import DataComparator, print_comparison_report
+
+ground_truth = pd.read_csv("ground_truth.csv", index_col="NSID")
+prediction = pd.read_csv("prediction.csv", index_col="NSID")
+
+result, matched_columns = DataComparator().compare(ground_truth, prediction)
+print_comparison_report(result)
 ```
 
-where `<model>` is the suffix of the context directory (e.g. `_qwen3.5:9b_3` targets `tmp/smolagent_context_qwen3.5:9b_3`).
+`matched_columns` places matched ground-truth and prediction columns side by side. By default, direct `DataComparator` use is strict: categorical values must match exactly and numeric error must be zero for a column to be marked correct. Pass thresholds explicitly to relax that behavior.
 
-Compare all experiment outputs:
+## Experiment CLI
+
+The repository CLI compares task outputs within an experiment context. From the repository root:
 
 ```sh
-python scripts/run_comparison.py --all
+# Compare tmp/smolagent_context_gpt_oss_20b_1.
+uv run python scripts/run_comparison.py _gpt_oss_20b_1
+
+# Compare all smolagent_context_* directories under tmp/.
+uv run python scripts/run_comparison.py --all
 ```
 
-`python -m src.tabmatch` also works as an alias.
+The CLI reads `data/output/output.csv` as ground truth and `data/output/cleaned_data.csv` as the prediction, using the first CSV column as the index. For every completed task it writes:
 
-## Options
+- `comparison_output.csv` — matched values side by side.
+- `column_mapping.csv` — ground-truth-to-prediction column mappings.
+- `category_mapping.csv` — predicted-to-ground-truth category mappings, when categorical mappings are available.
+
+It also writes `comparison_summary.csv` in the experiment-context root.
+
+`uv run python -m src.tabmatch` is an alias for the same CLI.
+
+## CLI options
 
 | Flag | Default | Description |
 |------|---------|-------------|
-| `--all` | — | Run comparison for all `smolagent_context_*` directories |
-| `--base-dir` | `tmp` | Root directory containing experiment outputs |
-| `--gt-filename` | `output.csv` | Ground truth filename within each task directory |
-| `--pred-filename` | `cleaned_data.csv` | Predicted output filename within each task directory |
-| `--categorical-threshold` | `20` | Max unique values for a column to be treated as categorical |
-| `--match-threshold` | `0.8` | Minimum score for a name-based column match |
-| `--column-data-match-threshold` | `0.7` | Minimum data-similarity score for the data-based fallback |
-| `--categorical-match-threshold` | `0.8` | Minimum conditional probability to map a predicted category label |
-| `--categorical-data-match-threshold` | `0.95` | Minimum exact-match rate for a categorical column to count as correct |
-| `--numerical-data-match-threshold` | `0.0001` | Maximum NRMSE for a numeric column to count as correct |
+| `--all` | — | Compare every `smolagent_context_*` directory under `--base-dir` |
+| `--base-dir` | `tmp` | Root directory containing experiment contexts |
+| `--gt-filename` | `output.csv` | Ground-truth filename within each task output directory |
+| `--pred-filename` | `cleaned_data.csv` | Prediction filename within each task output directory |
+| `--categorical-threshold` | `20` | Maximum distinct values for categorical treatment |
+| `--match-threshold` | `0.9` | Minimum name- or semantic-similarity score for a column match |
+| `--column-data-match-threshold` | `0.7` | Minimum data-similarity score for the fallback column match |
+| `--categorical-match-threshold` | `0.8` | Minimum conditional probability for a category mapping |
+| `--categorical-data-match-threshold` | `0.95` | Minimum categorical exact-match rate reported as correct by the CLI |
+| `--numerical-data-match-threshold` | `0.0001` | Maximum numeric NRMSE reported as correct by the CLI |
 | `-v`, `--verbose` | off | Enable debug logging |
 
 ## Module structure
 
 | File | Purpose |
 |------|---------|
-| `data_comparator.py` | `DataComparator` — orchestrates the full pipeline |
-| `column_matcher.py` | Name-based and data-based column matching |
-| `comparisons.py` | Column type inference and per-column comparison |
+| `data_comparator.py` | `DataComparator` orchestration and join checks |
+| `column_matcher.py` | Name-, semantic-, and data-based column matching |
+| `comparisons.py` | Column-type inference and value comparisons |
 | `models.py` | Pydantic result models |
-| `report.py` | `print_comparison_report()` and `aggregate_comparison_results()` |
-| `__main__.py` | Alias shim — delegates to `scripts/run_comparison.py` |
+| `report.py` | Console reports and aggregate summaries |
+| `__main__.py` | CLI alias delegating to `scripts/run_comparison.py` |
